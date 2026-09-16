@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LJSportMind</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="logo.svg" alt="LJSportMind logo" class="logo">
+      <h1>LJSport<span>Mind</span></h1>
+      <p class="tagline">Turning sports moments into content ideas.</p>
+    </header>
+
+    <form id="gameForm">
+      <div class="row">
+        <div class="field">
+          <label for="teamA">Team A</label>
+          <input type="text" id="teamA" placeholder="e.g. Arsenal" required>
+        </div>
+        <div class="field">
+          <label for="teamB">Team B</label>
+          <input type="text" id="teamB" placeholder="e.g. Chelsea" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field small">
+          <label for="scoreA">Score A</label>
+          <input type="number" id="scoreA" min="0" required>
+        </div>
+        <div class="field small">
+          <label for="scoreB">Score B</label>
+          <input type="number" id="scoreB" min="0" required>
+        </div>
+        <div class="field">
+          <label for="sport">Sport</label>
+          <select id="sport">
+            <option value="goal">Soccer</option>
+            <option value="point">Basketball</option>
+            <option value="point">Football</option>
+            <option value="run">Baseball</option>
+            <option value="point">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="momentType">What kind of moment was it?</label>
+        <select id="momentType">
+          <option value="comeback">Comeback</option>
+          <option value="blowout">Blowout</option>
+          <option value="buzzer">Last-Minute / Buzzer-Beater Winner</option>
+          <option value="upset">Upset</option>
+          <option value="controversial">Controversial Call</option>
+          <option value="milestone">Milestone / Record</option>
+          <option value="close">Close, Back-and-Forth Game</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="keyMoment">Key moment</label>
+        <textarea id="keyMoment" rows="2" placeholder="e.g. 89th-minute equalizer off a corner kick" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="observation">Your take / observation (optional)</label>
+        <textarea id="observation" rows="2" placeholder="e.g. Their defense fell apart after the red card"></textarea>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Generate Content Ideas</button>
+        <button type="button" id="regenBtn" class="secondary" hidden>Regenerate</button>
+      </div>
+    </form>
+
+    <section id="results" hidden>
+      <div class="card">
+        <h3>Content Hook</h3>
+        <p id="outHook"></p>
+      </div>
+      <div class="card">
+        <h3>Short-Form Video Idea</h3>
+        <p id="outVideo"></p>
+      </div>
+      <div class="card">
+        <h3>Engagement Question</h3>
+        <p id="outQuestion"></p>
+      </div>
+      <div class="card">
+        <h3>Caption</h3>
+        <p id="outCaption"></p>
+      </div>
+      <div class="card">
+        <h3>Voiceover Script</h3>
+        <ol id="outScript" class="script-list"></ol>
+        <div class="actions">
+          <button type="button" id="playBtn" class="secondary">▶ Play Voiceover</button>
+          <button type="button" id="stopBtn" class="secondary" hidden>■ Stop</button>
+          <button type="button" id="copyScriptBtn" class="secondary">Copy Script</button>
+        </div>
+        <p id="ttsWarning" class="warning" hidden>Your browser doesn't support built-in text-to-speech playback. You can still read/copy the script above.</p>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

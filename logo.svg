@@ -1,0 +1,19 @@
+<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e9c77b"/>
+      <stop offset="50%" stop-color="#c9974a"/>
+      <stop offset="100%" stop-color="#9c6f2f"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="110" cy="110" r="94" fill="#16213a" stroke="url(#goldRing)" stroke-width="6"/>
+
+  <rect x="70" y="54" width="80" height="112" fill="none" stroke="#f4f4f4" stroke-width="2.5"/>
+  <rect x="76" y="60" width="68" height="100" fill="none" stroke="#f4f4f4" stroke-width="1.5"/>
+
+  <g fill="none" stroke="#f7f7f7" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M88,70 L88,150 L100,150"/>
+    <path d="M136,70 L136,112 Q136,150 122,150"/>
+  </g>
+</svg>
