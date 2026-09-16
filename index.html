@@ -12,9 +12,98 @@
     <header>
       <img src="logo.svg" alt="LJSportMind logo" class="logo">
       <h1>LJSport<span>Mind</span></h1>
-      <p class="tagline">Turning sports moments into content ideas.</p>
+      <p class="tagline">Discover Your Path. Create Your Impact.</p>
+      <p id="passportBanner" class="passport-banner" hidden></p>
     </header>
 
+    <nav class="tabs">
+      <button type="button" class="tab active" data-tab="passport">Sports Passport</button>
+      <button type="button" class="tab" data-tab="creator">Creator Studio</button>
+    </nav>
+
+    <section id="passportPanel" class="tab-panel active">
+      <form id="passportForm">
+        <div class="row">
+          <div class="field">
+            <label for="pName">Name</label>
+            <input type="text" id="pName" placeholder="e.g. Luis Juarez">
+          </div>
+          <div class="field">
+            <label for="pLocation">Location</label>
+            <input type="text" id="pLocation" placeholder="e.g. Los Angeles, CA">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="pRole">Current role / experience</label>
+          <select id="pRole">
+            <option>Player</option>
+            <option>Former Player</option>
+            <option>Coach</option>
+            <option>Student</option>
+            <option>Content Creator</option>
+            <option>Fan / Enthusiast</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Skills (select all that apply)</label>
+          <div class="checkbox-grid" id="pSkills">
+            <label class="checkbox-pill"><input type="checkbox" value="video editing"> Video Editing</label>
+            <label class="checkbox-pill"><input type="checkbox" value="writing"> Writing</label>
+            <label class="checkbox-pill"><input type="checkbox" value="coaching"> Coaching</label>
+            <label class="checkbox-pill"><input type="checkbox" value="data & analytics"> Data & Analytics</label>
+            <label class="checkbox-pill"><input type="checkbox" value="social media"> Social Media</label>
+            <label class="checkbox-pill"><input type="checkbox" value="playing experience"> Playing Experience</label>
+            <label class="checkbox-pill"><input type="checkbox" value="event management"> Event Management</label>
+            <label class="checkbox-pill"><input type="checkbox" value="marketing & sales"> Marketing & Sales</label>
+            <label class="checkbox-pill"><input type="checkbox" value="photography / design"> Photography / Design</label>
+            <label class="checkbox-pill"><input type="checkbox" value="broadcasting / on-camera"> Broadcasting / On-Camera</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Interests (select all that apply)</label>
+          <div class="checkbox-grid" id="pInterests">
+            <label class="checkbox-pill"><input type="checkbox" value="content creation"> Content Creation</label>
+            <label class="checkbox-pill"><input type="checkbox" value="coaching & player development"> Coaching & Player Development</label>
+            <label class="checkbox-pill"><input type="checkbox" value="scouting & analytics"> Scouting & Analytics</label>
+            <label class="checkbox-pill"><input type="checkbox" value="journalism & broadcasting"> Journalism & Broadcasting</label>
+            <label class="checkbox-pill"><input type="checkbox" value="marketing & sponsorship"> Marketing & Sponsorship</label>
+            <label class="checkbox-pill"><input type="checkbox" value="event operations"> Event Operations</label>
+            <label class="checkbox-pill"><input type="checkbox" value="front office / team ops"> Front Office / Team Ops</label>
+            <label class="checkbox-pill"><input type="checkbox" value="personal brand building"> Personal Brand Building</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="pGoal">Career goal</label>
+          <select id="pGoal">
+            <option value="media">Break into sports media / content</option>
+            <option value="coach">Become a coach</option>
+            <option value="frontoffice">Work in a team front office</option>
+            <option value="brand">Build my own personal brand</option>
+            <option value="analytics">Become a scout / analyst</option>
+            <option value="explore">Still exploring</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Find My Fit</button>
+        </div>
+      </form>
+
+      <section id="passportResults" hidden>
+        <div class="card">
+          <h3>Your Sports Passport</h3>
+          <p id="passportSummary"></p>
+        </div>
+        <div id="matchList"></div>
+      </section>
+    </section>
+
+    <section id="creatorPanel" class="tab-panel">
     <form id="gameForm">
       <div class="row">
         <div class="field">
@@ -105,6 +194,7 @@
         </div>
         <p id="ttsWarning" class="warning" hidden>Your browser doesn't support built-in text-to-speech playback. You can still read/copy the script above.</p>
       </div>
+    </section>
     </section>
   </div>
 

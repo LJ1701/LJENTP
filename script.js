@@ -161,7 +161,19 @@ function generate(data) {
   };
 }
 
+const GOAL_CTA = {
+  media: "Follow for more breakdowns like this.",
+  coach: "Save this if you coach — bring it to practice.",
+  frontoffice: "Follow for more film breakdowns like this.",
+  brand: "Follow along as I build this out.",
+  analytics: "Follow for more data-backed takes.",
+  explore: "Follow for more breakdowns like this."
+};
+
 function generateScript(data, out) {
+  const passport = loadPassport();
+  const ctaLine = GOAL_CTA[passport && passport.goal] || GOAL_CTA.explore;
+
   return [
     { time: "0:00–0:03", label: "Hook", text: out.hook },
     {
@@ -178,7 +190,7 @@ function generateScript(data, out) {
     {
       time: "0:28–0:35",
       label: "CTA",
-      text: out.question + " Follow for more breakdowns like this."
+      text: out.question + " " + ctaLine
     }
   ];
 }
@@ -287,4 +299,199 @@ form.addEventListener("submit", (e) => {
 
 regenBtn.addEventListener("click", () => {
   if (lastData) render();
+});
+
+// ---- Tab switching ----
+
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab + "Panel").classList.add("active");
+  });
+});
+
+// ---- Sports Passport ----
+
+const CAREER_PATHS = [
+  {
+    name: "Sports Content Creator",
+    blurb: "Building an audience by turning games, players, and takes into short-form content.",
+    nextStep: "Post one piece of content a week using the Creator Studio tab.",
+    tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"]
+  },
+  {
+    name: "Team Video / Media Analyst",
+    blurb: "Breaking down film for a team or program to support coaching and player development.",
+    nextStep: "Offer to cut film for a local club or college team to build a reel.",
+    tags: ["video editing", "data & analytics", "coaching", "coaching & player development"]
+  },
+  {
+    name: "Sports Journalist / Broadcaster",
+    blurb: "Covering games and stories through writing or on-camera work.",
+    nextStep: "Start a match-report or postgame recap series in your own voice.",
+    tags: ["writing", "broadcasting / on-camera", "content creation", "journalism & broadcasting"]
+  },
+  {
+    name: "Youth or Club Coach",
+    blurb: "Developing players directly, using your own playing background.",
+    nextStep: "Volunteer as an assistant coach with a local youth or club team.",
+    tags: ["coaching", "playing experience", "event management", "coaching & player development"]
+  },
+  {
+    name: "Scouting / Analytics",
+    blurb: "Evaluating talent and performance using data and game knowledge.",
+    nextStep: "Start logging your own scouting notes or stats on games you watch.",
+    tags: ["data & analytics", "playing experience", "scouting & analytics"]
+  },
+  {
+    name: "Marketing & Sponsorship",
+    blurb: "Connecting brands, sponsors, and audiences within sports.",
+    nextStep: "Study how a team or athlete you follow runs their sponsor content.",
+    tags: ["marketing & sales", "social media", "content creation", "marketing & sponsorship"]
+  },
+  {
+    name: "Event Operations",
+    blurb: "Running the logistics behind games, tournaments, and sports events.",
+    nextStep: "Volunteer to help run a local tournament or club event.",
+    tags: ["event management", "event operations"]
+  },
+  {
+    name: "Front Office / Team Operations",
+    blurb: "Working behind the scenes for a team or organization.",
+    nextStep: "Look for internship or part-time roles with local clubs or franchises.",
+    tags: ["data & analytics", "marketing & sales", "event management", "playing experience", "front office / team ops"]
+  }
+];
+
+const GOAL_TAGS = {
+  media: ["content creation", "journalism & broadcasting"],
+  coach: ["coaching & player development"],
+  frontoffice: ["front office / team ops"],
+  brand: ["personal brand building", "content creation"],
+  analytics: ["scouting & analytics"],
+  explore: []
+};
+
+const GOAL_LABELS = {
+  media: "breaking into sports media / content",
+  coach: "becoming a coach",
+  frontoffice: "working in a team front office",
+  brand: "building a personal brand",
+  analytics: "becoming a scout / analyst",
+  explore: "still exploring options"
+};
+
+const PASSPORT_KEY = "ljsportmind_passport";
+
+function getCheckedValues(containerId) {
+  return Array.from(document.querySelectorAll(`#${containerId} input:checked`)).map((el) => el.value);
+}
+
+function matchCareerPaths(userTags) {
+  return CAREER_PATHS.map((path) => {
+    const matched = path.tags.filter((t) => userTags.includes(t));
+    return { ...path, score: matched.length, matched };
+  })
+    .filter((p) => p.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4);
+}
+
+function renderMatches(matches) {
+  const list = document.getElementById("matchList");
+  list.innerHTML = "";
+  if (matches.length === 0) {
+    list.innerHTML = `<div class="match-card"><p>Select a few more skills or interests to see career path matches.</p></div>`;
+    return;
+  }
+  matches.forEach((m) => {
+    const div = document.createElement("div");
+    div.className = "match-card";
+    div.innerHTML = `
+      <h4>${m.name}</h4>
+      <p>${m.blurb}</p>
+      <p><strong>Next step:</strong> ${m.nextStep}</p>
+      <p class="matched-tags">Matched on: ${m.matched.join(", ")}</p>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function savePassport(data) {
+  try {
+    localStorage.setItem(PASSPORT_KEY, JSON.stringify(data));
+  } catch {
+    // localStorage unavailable; nothing to persist
+  }
+}
+
+function loadPassport() {
+  try {
+    const raw = localStorage.getItem(PASSPORT_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function applyPassportToForm(data) {
+  document.getElementById("pName").value = data.name || "";
+  document.getElementById("pLocation").value = data.location || "";
+  document.getElementById("pRole").value = data.role || "Player";
+  document.getElementById("pGoal").value = data.goal || "explore";
+  document.querySelectorAll("#pSkills input").forEach((el) => {
+    el.checked = (data.skills || []).includes(el.value);
+  });
+  document.querySelectorAll("#pInterests input").forEach((el) => {
+    el.checked = (data.interests || []).includes(el.value);
+  });
+}
+
+const passportForm = document.getElementById("passportForm");
+const passportResults = document.getElementById("passportResults");
+const passportBanner = document.getElementById("passportBanner");
+
+function renderPassportBanner(data) {
+  if (!data || !data.name) {
+    passportBanner.hidden = true;
+    return;
+  }
+  passportBanner.textContent = `Tailored for ${data.name} — ${GOAL_LABELS[data.goal] || GOAL_LABELS.explore}`;
+  passportBanner.hidden = false;
+}
+
+const savedPassport = loadPassport();
+if (savedPassport) {
+  applyPassportToForm(savedPassport);
+  renderPassportBanner(savedPassport);
+}
+
+passportForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById("pName").value.trim(),
+    location: document.getElementById("pLocation").value.trim(),
+    role: document.getElementById("pRole").value,
+    goal: document.getElementById("pGoal").value,
+    skills: getCheckedValues("pSkills"),
+    interests: getCheckedValues("pInterests")
+  };
+
+  savePassport(data);
+  renderPassportBanner(data);
+
+  const userTags = [...data.skills, ...data.interests, ...(GOAL_TAGS[data.goal] || [])];
+  const matches = matchCareerPaths(userTags);
+
+  const namePart = data.name ? data.name : "You";
+  const locationPart = data.location ? ` based in ${data.location}` : "";
+  document.getElementById("passportSummary").textContent =
+    `${namePart}${locationPart}, currently a ${data.role.toLowerCase()}, working toward ${GOAL_LABELS[data.goal]}.`;
+
+  renderMatches(matches);
+  passportResults.hidden = false;
+  passportResults.scrollIntoView({ behavior: "smooth" });
 });
