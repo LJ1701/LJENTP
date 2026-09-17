@@ -10,93 +10,98 @@
 <body>
   <div class="wrap">
     <header>
+      <select id="langSelect" class="lang-select">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="zh">中文</option>
+      </select>
       <img src="logo.svg" alt="LJSportMind logo" class="logo">
       <h1>LJSport<span>Mind</span></h1>
-      <p class="tagline">Discover Your Path. Create Your Impact.</p>
+      <p class="tagline" data-i18n="tagline">Discover Your Path. Create Your Impact.</p>
       <p id="passportBanner" class="passport-banner" hidden></p>
     </header>
 
     <nav class="tabs">
-      <button type="button" class="tab active" data-tab="passport">Sports Passport</button>
-      <button type="button" class="tab" data-tab="creator">Creator Studio</button>
+      <button type="button" class="tab active" data-tab="passport" data-i18n="tabPassport">Sports Passport</button>
+      <button type="button" class="tab" data-tab="creator" data-i18n="tabCreator">Creator Studio</button>
     </nav>
 
     <section id="passportPanel" class="tab-panel active">
       <form id="passportForm">
         <div class="row">
           <div class="field">
-            <label for="pName">Name</label>
-            <input type="text" id="pName" placeholder="e.g. Luis Juarez">
+            <label for="pName" data-i18n="pNameLabel">Name</label>
+            <input type="text" id="pName" data-i18n-placeholder="pNamePlaceholder" placeholder="e.g. Luis Juarez">
           </div>
           <div class="field">
-            <label for="pLocation">Location</label>
-            <input type="text" id="pLocation" placeholder="e.g. Los Angeles, CA">
+            <label for="pLocation" data-i18n="pLocationLabel">Location</label>
+            <input type="text" id="pLocation" data-i18n-placeholder="pLocationPlaceholder" placeholder="e.g. Los Angeles, CA">
           </div>
         </div>
 
         <div class="field">
-          <label for="pRole">Current role / experience</label>
+          <label for="pRole" data-i18n="pRoleLabel">Current role / experience</label>
           <select id="pRole">
-            <option>Player</option>
-            <option>Former Player</option>
-            <option>Coach</option>
-            <option>Student</option>
-            <option>Content Creator</option>
-            <option>Fan / Enthusiast</option>
-            <option>Other</option>
+            <option value="player" data-i18n="rolePlayer">Player</option>
+            <option value="formerplayer" data-i18n="roleFormerPlayer">Former Player</option>
+            <option value="coach" data-i18n="roleCoach">Coach</option>
+            <option value="student" data-i18n="roleStudent">Student</option>
+            <option value="contentcreator" data-i18n="roleContentCreator">Content Creator</option>
+            <option value="fan" data-i18n="roleFan">Fan / Enthusiast</option>
+            <option value="other" data-i18n="roleOther">Other</option>
           </select>
         </div>
 
         <div class="field">
-          <label>Skills (select all that apply)</label>
+          <label data-i18n="skillsLabel">Skills (select all that apply)</label>
           <div class="checkbox-grid" id="pSkills">
-            <label class="checkbox-pill"><input type="checkbox" value="video editing"> Video Editing</label>
-            <label class="checkbox-pill"><input type="checkbox" value="writing"> Writing</label>
-            <label class="checkbox-pill"><input type="checkbox" value="coaching"> Coaching</label>
-            <label class="checkbox-pill"><input type="checkbox" value="data & analytics"> Data & Analytics</label>
-            <label class="checkbox-pill"><input type="checkbox" value="social media"> Social Media</label>
-            <label class="checkbox-pill"><input type="checkbox" value="playing experience"> Playing Experience</label>
-            <label class="checkbox-pill"><input type="checkbox" value="event management"> Event Management</label>
-            <label class="checkbox-pill"><input type="checkbox" value="marketing & sales"> Marketing & Sales</label>
-            <label class="checkbox-pill"><input type="checkbox" value="photography / design"> Photography / Design</label>
-            <label class="checkbox-pill"><input type="checkbox" value="broadcasting / on-camera"> Broadcasting / On-Camera</label>
+            <label class="checkbox-pill"><input type="checkbox" value="video editing"> <span data-i18n="skillVideoEditing">Video Editing</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="writing"> <span data-i18n="skillWriting">Writing</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="coaching"> <span data-i18n="skillCoaching">Coaching</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="data & analytics"> <span data-i18n="skillDataAnalytics">Data & Analytics</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="social media"> <span data-i18n="skillSocialMedia">Social Media</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="playing experience"> <span data-i18n="skillPlayingExperience">Playing Experience</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="event management"> <span data-i18n="skillEventManagement">Event Management</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="marketing & sales"> <span data-i18n="skillMarketingSales">Marketing & Sales</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="photography / design"> <span data-i18n="skillPhotographyDesign">Photography / Design</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="broadcasting / on-camera"> <span data-i18n="skillBroadcasting">Broadcasting / On-Camera</span></label>
           </div>
         </div>
 
         <div class="field">
-          <label>Interests (select all that apply)</label>
+          <label data-i18n="interestsLabel">Interests (select all that apply)</label>
           <div class="checkbox-grid" id="pInterests">
-            <label class="checkbox-pill"><input type="checkbox" value="content creation"> Content Creation</label>
-            <label class="checkbox-pill"><input type="checkbox" value="coaching & player development"> Coaching & Player Development</label>
-            <label class="checkbox-pill"><input type="checkbox" value="scouting & analytics"> Scouting & Analytics</label>
-            <label class="checkbox-pill"><input type="checkbox" value="journalism & broadcasting"> Journalism & Broadcasting</label>
-            <label class="checkbox-pill"><input type="checkbox" value="marketing & sponsorship"> Marketing & Sponsorship</label>
-            <label class="checkbox-pill"><input type="checkbox" value="event operations"> Event Operations</label>
-            <label class="checkbox-pill"><input type="checkbox" value="front office / team ops"> Front Office / Team Ops</label>
-            <label class="checkbox-pill"><input type="checkbox" value="personal brand building"> Personal Brand Building</label>
+            <label class="checkbox-pill"><input type="checkbox" value="content creation"> <span data-i18n="interestContentCreation">Content Creation</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="coaching & player development"> <span data-i18n="interestCoachingDev">Coaching & Player Development</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="scouting & analytics"> <span data-i18n="interestScouting">Scouting & Analytics</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="journalism & broadcasting"> <span data-i18n="interestJournalism">Journalism & Broadcasting</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="marketing & sponsorship"> <span data-i18n="interestMarketing">Marketing & Sponsorship</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="event operations"> <span data-i18n="interestEventOps">Event Operations</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="front office / team ops"> <span data-i18n="interestFrontOffice">Front Office / Team Ops</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="personal brand building"> <span data-i18n="interestPersonalBrand">Personal Brand Building</span></label>
           </div>
         </div>
 
         <div class="field">
-          <label for="pGoal">Career goal</label>
+          <label for="pGoal" data-i18n="pGoalLabel">Career goal</label>
           <select id="pGoal">
-            <option value="media">Break into sports media / content</option>
-            <option value="coach">Become a coach</option>
-            <option value="frontoffice">Work in a team front office</option>
-            <option value="brand">Build my own personal brand</option>
-            <option value="analytics">Become a scout / analyst</option>
-            <option value="explore">Still exploring</option>
+            <option value="media" data-i18n="goalMedia">Break into sports media / content</option>
+            <option value="coach" data-i18n="goalCoach">Become a coach</option>
+            <option value="frontoffice" data-i18n="goalFrontOffice">Work in a team front office</option>
+            <option value="brand" data-i18n="goalBrand">Build my own personal brand</option>
+            <option value="analytics" data-i18n="goalAnalytics">Become a scout / analyst</option>
+            <option value="explore" data-i18n="goalExplore">Still exploring</option>
           </select>
         </div>
 
         <div class="actions">
-          <button type="submit">Find My Fit</button>
+          <button type="submit" data-i18n="findMyFit">Find My Fit</button>
         </div>
       </form>
 
       <section id="passportResults" hidden>
         <div class="card">
-          <h3>Your Sports Passport</h3>
+          <h3 data-i18n="yourPassport">Your Sports Passport</h3>
           <p id="passportSummary"></p>
         </div>
         <div id="matchList"></div>
@@ -107,92 +112,92 @@
     <form id="gameForm">
       <div class="row">
         <div class="field">
-          <label for="teamA">Team A</label>
-          <input type="text" id="teamA" placeholder="e.g. Arsenal" required>
+          <label for="teamA" data-i18n="teamALabel">Team A</label>
+          <input type="text" id="teamA" data-i18n-placeholder="teamAPlaceholder" placeholder="e.g. Arsenal" required>
         </div>
         <div class="field">
-          <label for="teamB">Team B</label>
-          <input type="text" id="teamB" placeholder="e.g. Chelsea" required>
+          <label for="teamB" data-i18n="teamBLabel">Team B</label>
+          <input type="text" id="teamB" data-i18n-placeholder="teamBPlaceholder" placeholder="e.g. Chelsea" required>
         </div>
       </div>
 
       <div class="row">
         <div class="field small">
-          <label for="scoreA">Score A</label>
+          <label for="scoreA" data-i18n="scoreALabel">Score A</label>
           <input type="number" id="scoreA" min="0" required>
         </div>
         <div class="field small">
-          <label for="scoreB">Score B</label>
+          <label for="scoreB" data-i18n="scoreBLabel">Score B</label>
           <input type="number" id="scoreB" min="0" required>
         </div>
         <div class="field">
-          <label for="sport">Sport</label>
+          <label for="sport" data-i18n="sportLabel">Sport</label>
           <select id="sport">
-            <option value="goal">Soccer</option>
-            <option value="point">Basketball</option>
-            <option value="point">Football</option>
-            <option value="run">Baseball</option>
-            <option value="point">Other</option>
+            <option value="goal" data-i18n="sportSoccer">Soccer</option>
+            <option value="point" data-i18n="sportBasketball">Basketball</option>
+            <option value="point" data-i18n="sportFootball">Football</option>
+            <option value="run" data-i18n="sportBaseball">Baseball</option>
+            <option value="point" data-i18n="sportOther">Other</option>
           </select>
         </div>
       </div>
 
       <div class="field">
-        <label for="momentType">What kind of moment was it?</label>
+        <label for="momentType" data-i18n="momentTypeLabel">What kind of moment was it?</label>
         <select id="momentType">
-          <option value="comeback">Comeback</option>
-          <option value="blowout">Blowout</option>
-          <option value="buzzer">Last-Minute / Buzzer-Beater Winner</option>
-          <option value="upset">Upset</option>
-          <option value="controversial">Controversial Call</option>
-          <option value="milestone">Milestone / Record</option>
-          <option value="close">Close, Back-and-Forth Game</option>
-          <option value="other">Other</option>
+          <option value="comeback" data-i18n="momentComeback">Comeback</option>
+          <option value="blowout" data-i18n="momentBlowout">Blowout</option>
+          <option value="buzzer" data-i18n="momentBuzzer">Last-Minute / Buzzer-Beater Winner</option>
+          <option value="upset" data-i18n="momentUpset">Upset</option>
+          <option value="controversial" data-i18n="momentControversial">Controversial Call</option>
+          <option value="milestone" data-i18n="momentMilestone">Milestone / Record</option>
+          <option value="close" data-i18n="momentClose">Close, Back-and-Forth Game</option>
+          <option value="other" data-i18n="momentOther">Other</option>
         </select>
       </div>
 
       <div class="field">
-        <label for="keyMoment">Key moment</label>
-        <textarea id="keyMoment" rows="2" placeholder="e.g. 89th-minute equalizer off a corner kick" required></textarea>
+        <label for="keyMoment" data-i18n="keyMomentLabel">Key moment</label>
+        <textarea id="keyMoment" rows="2" data-i18n-placeholder="keyMomentPlaceholder" placeholder="e.g. 89th-minute equalizer off a corner kick" required></textarea>
       </div>
 
       <div class="field">
-        <label for="observation">Your take / observation (optional)</label>
-        <textarea id="observation" rows="2" placeholder="e.g. Their defense fell apart after the red card"></textarea>
+        <label for="observation" data-i18n="observationLabel">Your take / observation (optional)</label>
+        <textarea id="observation" rows="2" data-i18n-placeholder="observationPlaceholder" placeholder="e.g. Their defense fell apart after the red card"></textarea>
       </div>
 
       <div class="actions">
-        <button type="submit">Generate Content Ideas</button>
-        <button type="button" id="regenBtn" class="secondary" hidden>Regenerate</button>
+        <button type="submit" data-i18n="generateContent">Generate Content Ideas</button>
+        <button type="button" id="regenBtn" class="secondary" hidden data-i18n="regenerate">Regenerate</button>
       </div>
     </form>
 
     <section id="results" hidden>
       <div class="card">
-        <h3>Content Hook</h3>
+        <h3 data-i18n="contentHook">Content Hook</h3>
         <p id="outHook"></p>
       </div>
       <div class="card">
-        <h3>Short-Form Video Idea</h3>
+        <h3 data-i18n="videoIdea">Short-Form Video Idea</h3>
         <p id="outVideo"></p>
       </div>
       <div class="card">
-        <h3>Engagement Question</h3>
+        <h3 data-i18n="engagementQuestion">Engagement Question</h3>
         <p id="outQuestion"></p>
       </div>
       <div class="card">
-        <h3>Caption</h3>
+        <h3 data-i18n="captionLabel">Caption</h3>
         <p id="outCaption"></p>
       </div>
       <div class="card">
-        <h3>Voiceover Script</h3>
+        <h3 data-i18n="voiceoverScript">Voiceover Script</h3>
         <ol id="outScript" class="script-list"></ol>
         <div class="actions">
-          <button type="button" id="playBtn" class="secondary">▶ Play Voiceover</button>
-          <button type="button" id="stopBtn" class="secondary" hidden>■ Stop</button>
-          <button type="button" id="copyScriptBtn" class="secondary">Copy Script</button>
+          <button type="button" id="playBtn" class="secondary" data-i18n="playVoiceover">▶ Play Voiceover</button>
+          <button type="button" id="stopBtn" class="secondary" hidden data-i18n="stopVoiceover">■ Stop</button>
+          <button type="button" id="copyScriptBtn" class="secondary" data-i18n="copyScript">Copy Script</button>
         </div>
-        <p id="ttsWarning" class="warning" hidden>Your browser doesn't support built-in text-to-speech playback. You can still read/copy the script above.</p>
+        <p id="ttsWarning" class="warning" hidden data-i18n="ttsWarning">Your browser doesn't support built-in text-to-speech playback. You can still read/copy the script above.</p>
       </div>
     </section>
     </section>
