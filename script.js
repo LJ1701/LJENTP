@@ -286,6 +286,101 @@ const I18N = {
     tailoredFor: "为{name}定制 — {goal}",
     defaultTakeLine: "这正是决定比赛走向的关键时刻。",
     setupLine: "{teamA} {scoreA} - {scoreB} {teamB}。事情是这样的。"
+  },
+  ar: {
+    tagline: "اكتشف طريقك. اصنع تأثيرك.",
+    tabPassport: "جواز السفر الرياضي",
+    tabCreator: "استوديو الإبداع",
+    pNameLabel: "الاسم",
+    pNamePlaceholder: "مثال: لويس خواريز",
+    pLocationLabel: "الموقع",
+    pLocationPlaceholder: "مثال: لوس أنجلوس، كاليفورنيا",
+    pRoleLabel: "الدور / الخبرة الحالية",
+    rolePlayer: "لاعب",
+    roleFormerPlayer: "لاعب سابق",
+    roleCoach: "مدرب",
+    roleStudent: "طالب",
+    roleContentCreator: "صانع محتوى",
+    roleFan: "مشجع / هاوٍ",
+    roleOther: "أخرى",
+    skillsLabel: "المهارات (اختر كل ما ينطبق)",
+    skillVideoEditing: "مونتاج الفيديو",
+    skillWriting: "الكتابة",
+    skillCoaching: "التدريب",
+    skillDataAnalytics: "البيانات والتحليل",
+    skillSocialMedia: "وسائل التواصل الاجتماعي",
+    skillPlayingExperience: "خبرة اللعب",
+    skillEventManagement: "إدارة الفعاليات",
+    skillMarketingSales: "التسويق والمبيعات",
+    skillPhotographyDesign: "التصوير / التصميم",
+    skillBroadcasting: "الإذاعة / الظهور أمام الكاميرا",
+    interestsLabel: "الاهتمامات (اختر كل ما ينطبق)",
+    interestContentCreation: "صناعة المحتوى",
+    interestCoachingDev: "التدريب وتطوير اللاعبين",
+    interestScouting: "الكشف عن المواهب والتحليل",
+    interestJournalism: "الصحافة والإذاعة",
+    interestMarketing: "التسويق والرعاية",
+    interestEventOps: "تنظيم الفعاليات",
+    interestFrontOffice: "الإدارة التنفيذية / عمليات الفريق",
+    interestPersonalBrand: "بناء العلامة الشخصية",
+    pGoalLabel: "الهدف المهني",
+    goalMedia: "الدخول إلى الإعلام الرياضي / المحتوى",
+    goalCoach: "أن أصبح مدربًا",
+    goalFrontOffice: "العمل في الإدارة التنفيذية لفريق",
+    goalBrand: "بناء علامتي الشخصية",
+    goalAnalytics: "أن أصبح كشّاف مواهب / محلل",
+    goalExplore: "ما زلت أستكشف",
+    findMyFit: "اكتشف مسيرتي",
+    yourPassport: "جواز سفرك الرياضي",
+    teamALabel: "الفريق أ",
+    teamAPlaceholder: "مثال: أرسنال",
+    teamBLabel: "الفريق ب",
+    teamBPlaceholder: "مثال: تشيلسي",
+    scoreALabel: "نتيجة أ",
+    scoreBLabel: "نتيجة ب",
+    sportLabel: "الرياضة",
+    sportSoccer: "كرة القدم",
+    sportBasketball: "كرة السلة",
+    sportFootball: "كرة القدم الأمريكية",
+    sportBaseball: "البيسبول",
+    sportOther: "أخرى",
+    momentTypeLabel: "ما نوع اللحظة؟",
+    momentComeback: "عودة قوية",
+    momentBlowout: "فوز ساحق",
+    momentBuzzer: "فوز في اللحظات الأخيرة",
+    momentUpset: "مفاجأة",
+    momentControversial: "قرار مثير للجدل",
+    momentMilestone: "إنجاز / رقم قياسي",
+    momentClose: "مباراة متقاربة ومتبادلة",
+    momentOther: "أخرى",
+    keyMomentLabel: "اللحظة الفاصلة",
+    keyMomentPlaceholder: "مثال: تعادل في الدقيقة 89 من ركلة ركنية",
+    observationLabel: "رأيك / ملاحظتك (اختياري)",
+    observationPlaceholder: "مثال: انهار دفاعهم بعد البطاقة الحمراء",
+    generateContent: "توليد أفكار المحتوى",
+    regenerate: "إعادة التوليد",
+    contentHook: "مقدمة جذابة",
+    videoIdea: "فكرة فيديو قصير",
+    engagementQuestion: "سؤال تفاعلي",
+    captionLabel: "التعليق",
+    voiceoverScript: "نص التعليق الصوتي",
+    playVoiceover: "▶ تشغيل التعليق الصوتي",
+    stopVoiceover: "■ إيقاف",
+    copyScript: "نسخ النص",
+    ttsWarning: "متصفحك لا يدعم تشغيل التحويل الصوتي المدمج. لا يزال بإمكانك قراءة/نسخ النص أعلاه.",
+    nextStepLabel: "الخطوة التالية:",
+    matchedOnLabel: "التطابق حسب:",
+    selectMoreSkills: "اختر بعض المهارات أو الاهتمامات الإضافية لرؤية مسارات مهنية مطابقة.",
+    copiedLabel: "تم النسخ!",
+    youFallback: "أنت",
+    beatHook: "المقدمة",
+    beatSetup: "الخلفية",
+    beatMoment: "اللحظة",
+    beatYourTake: "رأيك",
+    beatCTA: "دعوة للتفاعل",
+    tailoredFor: "مخصص لـ {name} — {goal}",
+    defaultTakeLine: "هذه بالضبط اللحظة التي تحسم المباريات.",
+    setupLine: "{teamA} {scoreA} - {scoreB} {teamB}. إليك ما حدث."
   }
 };
 
@@ -713,6 +808,146 @@ const TEMPLATES = {
         "{teamA} {scoreA} - {scoreB} {teamB}。#{teamATag} #{teamBTag} #精彩集锦"
       ]
     }
+  },
+  ar: {
+    comeback: {
+      hook: [
+        "لم يتوقع أحد أن يخرج {teamA} فائزًا بعدما تأخر مبكرًا.",
+        "بدا {teamA} منتهيًا — إلى أن لم يكن كذلك.",
+        "هكذا يتم محو الفارق: {teamA} ضد {teamB}."
+      ],
+      video: [
+        "تحليل لقطة بلقطة للحظة التي قلب فيها {teamA} مجرى المباراة.",
+        "\"نقطة التحول\" — ملخص لمدة 45 ثانية عن {keyMoment}.",
+        "تفاعل مع العودة القوية: شغّل مقطع {keyMoment} وتوقف عند ردود الأفعال."
+      ],
+      question: [
+        "هل انهار {teamB}، أم أن {teamA} أراد الفوز أكثر؟",
+        "ما هي نقطة التحول الحقيقية — {keyMoment}، أم شيء أبكر؟"
+      ],
+      caption: [
+        "{teamA} {scoreA} - {scoreB} {teamB}. خارج المباراة؟ ليس هذه المرة. 🔥 #{teamATag} #{teamBTag} #عودة_قوية"
+      ]
+    },
+    blowout: {
+      hook: [
+        "{teamA} لم يكتفِ بهزيمة {teamB} — بل أرسل رسالة.",
+        "{scoreA} - {scoreB}. لا توجد طريقة أخرى لقولها: فوز كاسح لـ{teamA}."
+      ],
+      video: [
+        "أفضل 3 لقطات من سيطرة {teamA}، مبنية حول {keyMoment}.",
+        "\"كيف خرج الأمر عن السيطرة هكذا؟\" — شرح سريع لـ{keyMoment}."
+      ],
+      question: [
+        "هل {teamB} في ورطة بعد نتيجة كهذه، أم أنها كانت مجرد ليلة سيئة؟",
+        "هل كانت {keyMoment} اللحظة التي انفلتت فيها المباراة؟"
+      ],
+      caption: [
+        "{teamA} {scoreA} - {scoreB} {teamB}. سيطرة كاملة. #{teamATag} #{teamBTag} #أبرز_اللحظات"
+      ]
+    },
+    buzzer: {
+      hook: [
+        "في الثواني الأخيرة، فعل {teamA} ما لا يُصدَّق.",
+        "حُسمت مباراة {teamA} ضد {teamB} في آخر هجمة — ولم تخيّب الآمال."
+      ],
+      video: [
+        "إعادة بطيئة لـ{keyMoment} مع عداد تنازلي على الشاشة.",
+        "\"أين كنت عندما حدث هذا؟\" — تفاعل مع {keyMoment}."
+      ],
+      question: [
+        "أفضل لحظة حاسمة شاهدتها هذا الموسم — هل تتصدر {keyMoment} قائمتك؟",
+        "هل كان دفاع {teamB} في تلك اللحظة الأخيرة خطأ تكتيكيًا أم مجرد حظ سيئ؟"
+      ],
+      caption: [
+        "{teamA} {scoreA} - {scoreB} {teamB}. حتى اللحظة الأخيرة. 😱 #{teamATag} #{teamBTag} #لحظة_حاسمة"
+      ]
+    },
+    upset: {
+      hook: [
+        "لم يكن أحد يتوقع فوز {teamA} في هذه المباراة. لا أحد.",
+        "فاجأ {teamA} الجميع بهزيمة {teamB}."
+      ],
+      video: [
+        "\"المفاجأة\" — فيديو ملخص مبني حول {keyMoment}.",
+        "فيديو ردود أفعال: مشاهدة جمهور {teamB} وهم يستوعبون {keyMoment} مباشرة."
+      ],
+      question: [
+        "أكبر مفاجأة هذا الموسم حتى الآن — هل تغيّر هذه النتيجة ترتيبك لهذين الفريقين؟",
+        "هل كان {teamB} مبالغًا في تقديره طوال الوقت؟"
+      ],
+      caption: [
+        "{teamA} {scoreA} - {scoreB} {teamB}. لم يكن أحد يتوقع هذا. #{teamATag} #{teamBTag} #مفاجأة"
+      ]
+    },
+    controversial: {
+      hook: [
+        "هذا القرار سيكون الحديث الوحيد بعد مباراة {teamA} ضد {teamB}.",
+        "انسَ النتيجة للحظة — {keyMoment} هو ما يتجادل فيه الجميع."
+      ],
+      video: [
+        "تحليل من زوايا متعددة لـ{keyMoment} — دع الجمهور يقرر.",
+        "\"هل كان القرار صحيحًا؟\" — إعادة بطيئة لـ{keyMoment}."
+      ],
+      question: [
+        "قرار صحيح أم سرقة؟ أعطني رأيك الصريح في {keyMoment}.",
+        "هل تتغير النتيجة لو صحح الحكام قرارهم بشأن {keyMoment}؟"
+      ],
+      caption: [
+        "{teamA} {scoreA} - {scoreB} {teamB}. الجميع يتحدث عن {keyMoment}. 👀 #{teamATag} #{teamBTag} #جدل"
+      ]
+    },
+    milestone: {
+      hook: [
+        "صُنع التاريخ في مباراة {teamA} ضد {teamB}.",
+        "هذه لحظة سيتذكرها جمهور {teamA} طويلًا."
+      ],
+      video: [
+        "فيديو بأسلوب أبرز محطات المسيرة مبني حول {keyMoment}.",
+        "\"لحظة في التاريخ\" — مقطع قصير بأسلوب وثائقي عن {keyMoment}."
+      ],
+      question: [
+        "أين تضع {keyMoment} ضمن أفضل اللحظات التي شاهدتها هذا الموسم؟",
+        "هل يغيّر هذا الإنجاز طريقة حديثنا عن هذا الفريق/اللاعب؟"
+      ],
+      caption: [
+        "{teamA} {scoreA} - {scoreB} {teamB}. لحظة تُكتب في كتب التاريخ. 🏆 #{teamATag} #{teamBTag} #إنجاز"
+      ]
+    },
+    close: {
+      hook: [
+        "مباراة {teamA} ضد {teamB} حُسمت حتى اللحظة الأخيرة.",
+        "لم يستطع أحد الفصل بين {teamA} و{teamB} حتى النهاية."
+      ],
+      video: [
+        "ملخص شد وجذب: كل تحول رئيسي في مباراة {teamA} ضد {teamB}، مع التركيز على {keyMoment}.",
+        "\"ما مدى تقارب هذه المباراة؟\" — تحليل {keyMoment} وما تعنيه."
+      ],
+      question: [
+        "هل فاز الفريق المستحق، أم كان يجب أن تسير الأمور بشكل معاكس؟",
+        "ما كان الفارق الحقيقي — {keyMoment}، أم شيء آخر؟"
+      ],
+      caption: [
+        "{teamA} {scoreA} - {scoreB} {teamB}. كلاسيكية فورية. #{teamATag} #{teamBTag} #مباراة_متقاربة"
+      ]
+    },
+    other: {
+      hook: [
+        "قدمت مباراة {teamA} ضد {teamB} الكثير للحديث عنه.",
+        "هذا أبرز ما ميّز مباراة {teamA} ضد {teamB}."
+      ],
+      video: [
+        "ملخص سريع يركز على {keyMoment}.",
+        "فيديو تحليلي: لماذا كانت {keyMoment} مهمة."
+      ],
+      question: [
+        "ما رأيك في {keyMoment}؟",
+        "ما مدى أهمية {keyMoment} في الصورة الأكبر؟"
+      ],
+      caption: [
+        "{teamA} {scoreA} - {scoreB} {teamB}. #{teamATag} #{teamBTag} #أبرز_اللحظات"
+      ]
+    }
   }
 };
 
@@ -763,6 +998,14 @@ const GOAL_CTA = {
     brand: "关注我，一起见证成长过程。",
     analytics: "关注我获取更多数据驱动的观点。",
     explore: "关注我获取更多类似解析。"
+  },
+  ar: {
+    media: "تابعني للمزيد من التحليلات مثل هذه.",
+    coach: "احفظ هذا إذا كنت مدربًا — واستخدمه في التدريب.",
+    frontoffice: "تابعني للمزيد من تحليلات الفيديو.",
+    brand: "تابعني بينما أبني هذا المشروع.",
+    analytics: "تابعني للمزيد من الآراء المبنية على البيانات.",
+    explore: "تابعني للمزيد من التحليلات مثل هذه."
   }
 };
 
@@ -842,7 +1085,7 @@ if (speechSupported) {
     if (!lastScript) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(scriptToText(lastScript));
-    utterance.lang = currentLang === "es" ? "es-ES" : currentLang === "zh" ? "zh-CN" : "en-US";
+    utterance.lang = currentLang === "es" ? "es-ES" : currentLang === "zh" ? "zh-CN" : currentLang === "ar" ? "ar-SA" : "en-US";
     utterance.rate = 1;
     utterance.onend = () => {
       playBtn.hidden = false;
@@ -1061,6 +1304,56 @@ const CAREER_PATHS = {
       nextStep: "寻找当地俱乐部或球队的实习或兼职机会。",
       tags: ["data & analytics", "marketing & sales", "event management", "playing experience", "front office / team ops"]
     }
+  ],
+  ar: [
+    {
+      name: "صانع محتوى رياضي",
+      blurb: "بناء جمهور من خلال تحويل المباريات واللاعبين والآراء إلى محتوى قصير.",
+      nextStep: "انشر قطعة محتوى واحدة أسبوعيًا باستخدام تبويب استوديو الإبداع.",
+      tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"]
+    },
+    {
+      name: "محلل فيديو / إعلام لفريق",
+      blurb: "تحليل الفيديو لفريق أو برنامج لدعم التدريب وتطوير اللاعبين.",
+      nextStep: "اعرض تحرير الفيديو لنادٍ محلي أو فريق جامعي لبناء ملفك الخاص.",
+      tags: ["video editing", "data & analytics", "coaching", "coaching & player development"]
+    },
+    {
+      name: "صحفي / معلّق رياضي",
+      blurb: "تغطية المباريات والقصص من خلال الكتابة أو الظهور أمام الكاميرا.",
+      nextStep: "ابدأ سلسلة تقارير مباريات أو ملخصات بأسلوبك الخاص.",
+      tags: ["writing", "broadcasting / on-camera", "content creation", "journalism & broadcasting"]
+    },
+    {
+      name: "مدرب ناشئين أو نادٍ",
+      blurb: "تطوير اللاعبين مباشرة، بالاستفادة من خبرتك كلاعب.",
+      nextStep: "تطوّع كمدرب مساعد في فريق ناشئين أو نادٍ محلي.",
+      tags: ["coaching", "playing experience", "event management", "coaching & player development"]
+    },
+    {
+      name: "الكشف عن المواهب / التحليل",
+      blurb: "تقييم المواهب والأداء باستخدام البيانات ومعرفة اللعبة.",
+      nextStep: "ابدأ بتسجيل ملاحظات الكشف عن المواهب أو الإحصاءات الخاصة بك للمباريات التي تشاهدها.",
+      tags: ["data & analytics", "playing experience", "scouting & analytics"]
+    },
+    {
+      name: "التسويق والرعاية",
+      blurb: "ربط العلامات التجارية والرعاة والجمهور داخل عالم الرياضة.",
+      nextStep: "ادرس كيف يدير فريق أو رياضي تتابعه محتوى الرعاية الخاص به.",
+      tags: ["marketing & sales", "social media", "content creation", "marketing & sponsorship"]
+    },
+    {
+      name: "تنظيم الفعاليات",
+      blurb: "إدارة الجوانب اللوجستية وراء المباريات والبطولات والفعاليات الرياضية.",
+      nextStep: "تطوّع للمساعدة في تنظيم بطولة أو فعالية محلية.",
+      tags: ["event management", "event operations"]
+    },
+    {
+      name: "الإدارة التنفيذية / عمليات الفريق",
+      blurb: "العمل خلف الكواليس لفريق أو منظمة.",
+      nextStep: "ابحث عن فرص تدريب أو عمل بدوام جزئي مع أندية أو فرق محلية.",
+      tags: ["data & analytics", "marketing & sales", "event management", "playing experience", "front office / team ops"]
+    }
   ]
 };
 
@@ -1097,34 +1390,43 @@ const GOAL_LABELS = {
     brand: "打造个人品牌",
     analytics: "成为球探/分析师",
     explore: "继续探索方向"
+  },
+  ar: {
+    media: "الدخول إلى الإعلام الرياضي / المحتوى",
+    coach: "أن أصبح مدربًا",
+    frontoffice: "العمل في الإدارة التنفيذية لفريق",
+    brand: "بناء علامة شخصية",
+    analytics: "أن أصبح كشّاف مواهب / محلل",
+    explore: "الاستمرار في الاستكشاف"
   }
 };
 
 const ROLE_LABELS = {
   en: { player: "player", formerplayer: "former player", coach: "coach", student: "student", contentcreator: "content creator", fan: "fan", other: "other" },
   es: { player: "jugador/a", formerplayer: "ex-jugador/a", coach: "entrenador/a", student: "estudiante", contentcreator: "creador/a de contenido", fan: "aficionado/a", other: "otro/a" },
-  zh: { player: "球员", formerplayer: "退役球员", coach: "教练", student: "学生", contentcreator: "内容创作者", fan: "球迷", other: "其他" }
+  zh: { player: "球员", formerplayer: "退役球员", coach: "教练", student: "学生", contentcreator: "内容创作者", fan: "球迷", other: "其他" },
+  ar: { player: "لاعب", formerplayer: "لاعب سابق", coach: "مدرب", student: "طالب", contentcreator: "صانع محتوى", fan: "مشجع", other: "آخر" }
 };
 
 const TAG_LABELS = {
-  "video editing": { en: "Video Editing", es: "Edición de Video", zh: "视频剪辑" },
-  "writing": { en: "Writing", es: "Escritura", zh: "写作" },
-  "coaching": { en: "Coaching", es: "Entrenamiento", zh: "教练指导" },
-  "data & analytics": { en: "Data & Analytics", es: "Datos y Análisis", zh: "数据与分析" },
-  "social media": { en: "Social Media", es: "Redes Sociales", zh: "社交媒体" },
-  "playing experience": { en: "Playing Experience", es: "Experiencia como Jugador", zh: "球员经验" },
-  "event management": { en: "Event Management", es: "Gestión de Eventos", zh: "赛事管理" },
-  "marketing & sales": { en: "Marketing & Sales", es: "Marketing y Ventas", zh: "市场与销售" },
-  "photography / design": { en: "Photography / Design", es: "Fotografía / Diseño", zh: "摄影/设计" },
-  "broadcasting / on-camera": { en: "Broadcasting / On-Camera", es: "Locución / Frente a Cámara", zh: "解说/镜头表现" },
-  "content creation": { en: "Content Creation", es: "Creación de Contenido", zh: "内容创作" },
-  "coaching & player development": { en: "Coaching & Player Development", es: "Entrenamiento y Desarrollo de Jugadores", zh: "教练与球员发展" },
-  "scouting & analytics": { en: "Scouting & Analytics", es: "Scouting y Análisis", zh: "球探与数据分析" },
-  "journalism & broadcasting": { en: "Journalism & Broadcasting", es: "Periodismo y Locución", zh: "新闻与解说" },
-  "marketing & sponsorship": { en: "Marketing & Sponsorship", es: "Marketing y Patrocinios", zh: "市场与赞助" },
-  "event operations": { en: "Event Operations", es: "Operaciones de Eventos", zh: "赛事运营" },
-  "front office / team ops": { en: "Front Office / Team Ops", es: "Front Office / Operaciones de Equipo", zh: "球队管理层/运营" },
-  "personal brand building": { en: "Personal Brand Building", es: "Construcción de Marca Personal", zh: "打造个人品牌" }
+  "video editing": { en: "Video Editing", es: "Edición de Video", zh: "视频剪辑", ar: "مونتاج الفيديو" },
+  "writing": { en: "Writing", es: "Escritura", zh: "写作", ar: "الكتابة" },
+  "coaching": { en: "Coaching", es: "Entrenamiento", zh: "教练指导", ar: "التدريب" },
+  "data & analytics": { en: "Data & Analytics", es: "Datos y Análisis", zh: "数据与分析", ar: "البيانات والتحليل" },
+  "social media": { en: "Social Media", es: "Redes Sociales", zh: "社交媒体", ar: "وسائل التواصل الاجتماعي" },
+  "playing experience": { en: "Playing Experience", es: "Experiencia como Jugador", zh: "球员经验", ar: "خبرة اللعب" },
+  "event management": { en: "Event Management", es: "Gestión de Eventos", zh: "赛事管理", ar: "إدارة الفعاليات" },
+  "marketing & sales": { en: "Marketing & Sales", es: "Marketing y Ventas", zh: "市场与销售", ar: "التسويق والمبيعات" },
+  "photography / design": { en: "Photography / Design", es: "Fotografía / Diseño", zh: "摄影/设计", ar: "التصوير / التصميم" },
+  "broadcasting / on-camera": { en: "Broadcasting / On-Camera", es: "Locución / Frente a Cámara", zh: "解说/镜头表现", ar: "الإذاعة / الظهور أمام الكاميرا" },
+  "content creation": { en: "Content Creation", es: "Creación de Contenido", zh: "内容创作", ar: "صناعة المحتوى" },
+  "coaching & player development": { en: "Coaching & Player Development", es: "Entrenamiento y Desarrollo de Jugadores", zh: "教练与球员发展", ar: "التدريب وتطوير اللاعبين" },
+  "scouting & analytics": { en: "Scouting & Analytics", es: "Scouting y Análisis", zh: "球探与数据分析", ar: "الكشف عن المواهب والتحليل" },
+  "journalism & broadcasting": { en: "Journalism & Broadcasting", es: "Periodismo y Locución", zh: "新闻与解说", ar: "الصحافة والإذاعة" },
+  "marketing & sponsorship": { en: "Marketing & Sponsorship", es: "Marketing y Patrocinios", zh: "市场与赞助", ar: "التسويق والرعاية" },
+  "event operations": { en: "Event Operations", es: "Operaciones de Eventos", zh: "赛事运营", ar: "تنظيم الفعاليات" },
+  "front office / team ops": { en: "Front Office / Team Ops", es: "Front Office / Operaciones de Equipo", zh: "球队管理层/运营", ar: "الإدارة التنفيذية / عمليات الفريق" },
+  "personal brand building": { en: "Personal Brand Building", es: "Construcción de Marca Personal", zh: "打造个人品牌", ar: "بناء العلامة الشخصية" }
 };
 
 function tagLabel(value) {
@@ -1207,6 +1509,10 @@ function buildSummary(name, location, roleLabel, goalLabel) {
     const loc = location ? `（来自${location}）` : "";
     return `${name}${loc}目前是${roleLabel}，目标是${goalLabel}。`;
   }
+  if (currentLang === "ar") {
+    const loc = location ? ` من ${location}` : "";
+    return `${name}${loc}، ${roleLabel}، ويعمل على ${goalLabel}.`;
+  }
   const loc = location ? ` from ${location}` : "";
   return `${name}${loc} is a ${roleLabel}, working toward ${goalLabel}.`;
 }
@@ -1281,6 +1587,7 @@ function applyLanguage(lang) {
     // localStorage unavailable; language choice won't persist
   }
   document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   langSelect.value = lang;
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -1291,10 +1598,8 @@ function applyLanguage(lang) {
   });
 
   const passport = loadPassport();
-  if (passport) {
-    renderPassportBanner(passport);
-    if (!passportResults.hidden) renderPassportSummaryAndMatches(passport);
-  }
+  renderPassportBanner(passport);
+  if (passport && !passportResults.hidden) renderPassportSummaryAndMatches(passport);
   if (lastData && !results.hidden) render();
 }
 
