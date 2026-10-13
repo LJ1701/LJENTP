@@ -32,7 +32,7 @@ async function saveSubscription(userId, sub) {
 const handler = async (req, res) => {
   if (req.method !== "POST") return res.status(405).end();
   const client = stripe();
-  if (!client || !process.env.STRIPE_WEBHOOK_SECRET || !supabaseAdmin()) return res.status(503).end();
+  if (!client || !process.env.STRIPE_WEBHOOK_SECRET) return res.status(503).end();
 
   let event;
   try {
@@ -40,6 +40,9 @@ const handler = async (req, res) => {
   } catch {
     return res.status(400).end();
   }
+
+  // Without accounts, Pro is checked live with Stripe (api/pro.js), so there is nothing to record.
+  if (!supabaseAdmin()) return res.status(200).json({ received: true });
 
   try {
     const obj = event.data.object;

@@ -1,14 +1,22 @@
 // Shared helpers for the API functions. Vercel doesn't deploy files under api/_lib as endpoints.
+const crypto = require("crypto");
 const { createClient } = require("@supabase/supabase-js");
 const Stripe = require("stripe");
 
 const PRO_STATUSES = ["active", "trialing"];
 
+// Accounts (Supabase) are optional. They count as set up only when all three values are present
+// and the anon key looks like a real Supabase public key; otherwise Pro runs on Stripe alone.
+function accountsEnabled() {
+  const anon = String(process.env.SUPABASE_ANON_KEY || "").trim();
+  return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY && /^(eyJ|sb_publishable_)/.test(anon));
+}
+
 let adminClient = null;
 function supabaseAdmin() {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return null;
+  if (!accountsEnabled()) return null;
   if (!adminClient) adminClient = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
   return adminClient;
 }
@@ -21,7 +29,64 @@ function stripe() {
 }
 
 function stripeEnabled() {
-  return !!(process.env.STRIPE_SECRET_KEY && supabaseAdmin());
+  return !!process.env.STRIPE_SECRET_KEY;
+}
+
+// ---- Pro passes (Stripe-only mode) ----
+// After checkout the browser gets a signed pass naming its Stripe customer and subscription.
+// The signature stops forged passes; the subscription is re-checked with Stripe, so a
+// cancelled or unpaid subscription stops counting as Pro.
+
+function passKey() {
+  return process.env.PRO_PASS_SECRET || process.env.STRIPE_SECRET_KEY;
+}
+
+function signPass(customerId, subscriptionId) {
+  const body = Buffer.from(JSON.stringify({ c: customerId, s: subscriptionId })).toString("base64url");
+  const sig = crypto.createHmac("sha256", passKey()).update(body).digest("base64url");
+  return `${body}.${sig}`;
+}
+
+function readPass(pass) {
+  const [body, sig] = String(pass || "").split(".");
+  if (!body || !sig || !passKey()) return null;
+  const expected = crypto.createHmac("sha256", passKey()).update(body).digest("base64url");
+  const a = Buffer.from(sig), b = Buffer.from(expected);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+  try {
+    const data = JSON.parse(Buffer.from(body, "base64url").toString());
+    return data.c && data.s ? { customerId: data.c, subscriptionId: data.s } : null;
+  } catch {
+    return null;
+  }
+}
+
+const statusCache = new Map(); // subscriptionId -> { active, at }
+async function subscriptionActive(subscriptionId) {
+  const hit = statusCache.get(subscriptionId);
+  if (hit && Date.now() - hit.at < 10 * 60 * 1000) return hit.active;
+  const sub = await stripe().subscriptions.retrieve(subscriptionId);
+  const active = PRO_STATUSES.includes(sub.status);
+  statusCache.set(subscriptionId, { active, at: Date.now() });
+  return active;
+}
+
+function passFromRequest(req) {
+  return readPass(req.headers["x-pro-pass"]);
+}
+
+// Pro by pass (Stripe-only) or by signed-in account (Supabase), whichever the request carries.
+async function requestIsPro(req) {
+  const pass = passFromRequest(req);
+  if (pass && stripe()) {
+    try {
+      if (await subscriptionActive(pass.subscriptionId)) return true;
+    } catch {
+      // unknown subscription: not Pro
+    }
+  }
+  const user = await userFromRequest(req);
+  return !!user && (await isPro(user.id));
 }
 
 // The Pro price: STRIPE_PRICE_ID if set; otherwise an existing active $4.99/month USD price in the
@@ -77,4 +142,4 @@ function siteUrl(req) {
   return (process.env.SITE_URL || `https://${req.headers.host}`).replace(/\/$/, "");
 }
 
-module.exports = { PRO_STATUSES, supabaseAdmin, stripe, stripeEnabled, proPriceId, userFromRequest, subscriptionFor, isPro, siteUrl };
+module.exports = { PRO_STATUSES, accountsEnabled, supabaseAdmin, stripe, stripeEnabled, proPriceId, signPass, readPass, passFromRequest, subscriptionActive, requestIsPro, userFromRequest, subscriptionFor, isPro, siteUrl };

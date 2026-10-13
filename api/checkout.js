@@ -1,6 +1,7 @@
-const { PRO_STATUSES, stripe, stripeEnabled, proPriceId, userFromRequest, subscriptionFor, siteUrl } = require("./_lib/server");
+const { PRO_STATUSES, accountsEnabled, stripe, stripeEnabled, proPriceId, userFromRequest, subscriptionFor, passFromRequest, subscriptionActive, siteUrl } = require("./_lib/server");
 
-// Starts a Stripe Checkout for the Pro plan, tied to the signed-in account.
+// Starts a Stripe Checkout for the Pro plan. With accounts set up it's tied to the signed-in user;
+// without them anyone can buy, and the browser receives a Pro pass after paying (see api/pro.js).
 module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   res.setHeader("Cache-Control", "no-store");
@@ -9,29 +10,36 @@ module.exports = async (req, res) => {
   if (req.method !== "POST") return fail(405, "method_not_allowed");
   if (!stripeEnabled()) return fail(503, "not_configured");
 
-  const user = await userFromRequest(req);
-  if (!user) return fail(401, "sign_in_required");
-
   try {
-    const existing = await subscriptionFor(user.id);
-    if (existing && PRO_STATUSES.includes(existing.status)) return fail(409, "already_pro");
+    const pass = passFromRequest(req);
+    if (pass && (await subscriptionActive(pass.subscriptionId).catch(() => false))) return fail(409, "already_pro");
 
     const base = siteUrl(req);
-    const session = await stripe().checkout.sessions.create({
+    const params = {
       mode: "subscription",
       line_items: [{ price: await proPriceId(), quantity: 1 }],
-      success_url: `${base}/?pro=success`,
+      success_url: `${base}/?pro=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/?pro=cancel`,
-      client_reference_id: user.id,
-      ...(existing && existing.stripe_customer_id
-        ? { customer: existing.stripe_customer_id }
-        : { customer_email: user.email }),
-      subscription_data: { metadata: { user_id: user.id } },
-      metadata: { user_id: user.id },
       allow_promotion_codes: true
-    });
+    };
+
+    if (accountsEnabled()) {
+      const user = await userFromRequest(req);
+      if (!user) return fail(401, "sign_in_required");
+      const existing = await subscriptionFor(user.id);
+      if (existing && PRO_STATUSES.includes(existing.status)) return fail(409, "already_pro");
+      Object.assign(params, {
+        client_reference_id: user.id,
+        ...(existing && existing.stripe_customer_id ? { customer: existing.stripe_customer_id } : { customer_email: user.email }),
+        subscription_data: { metadata: { user_id: user.id } },
+        metadata: { user_id: user.id }
+      });
+    }
+
+    const session = await stripe().checkout.sessions.create(params);
     return res.status(200).json({ url: session.url });
-  } catch {
+  } catch (err) {
+    console.error("checkout.js stripe error:", err && err.type, err && err.code, err && err.statusCode);
     return fail(502, "stripe_error");
   }
 };

@@ -112,10 +112,8 @@ module.exports = async (req, res) => {
 
   // Off during early access; set REQUIRE_PRO_FOR_AI=true in Vercel to make AI a Pro feature.
   if (process.env.REQUIRE_PRO_FOR_AI === "true") {
-    const { userFromRequest, isPro } = require("./_lib/server");
-    const user = await userFromRequest(req);
-    if (!user) return fail(401, "sign_in_required");
-    if (!(await isPro(user.id))) return fail(402, "pro_required");
+    const { requestIsPro } = require("./_lib/server");
+    if (!(await requestIsPro(req))) return fail(402, "pro_required");
   }
 
   const body = req.body && typeof req.body === "object" ? req.body : {};
@@ -145,6 +143,7 @@ module.exports = async (req, res) => {
 
     return res.status(200).json({ text });
   } catch (err) {
+    console.error("assistant error:", err && err.constructor && err.constructor.name, err && err.status);
     if (err instanceof Anthropic.RateLimitError) return fail(429, "rate_limited");
     if (err instanceof Anthropic.AuthenticationError) return fail(503, "not_configured");
     if (err instanceof Anthropic.APIError) return fail(502, "upstream_error");
