@@ -3190,9 +3190,14 @@ function aiErrorText(code) {
 
 // The signed-in user's token, so the server can check who is asking (and whether they're Pro).
 async function authHeaders() {
-  if (!sb || !sbUser) return {};
-  const { data } = await sb.auth.getSession();
-  return data.session ? { Authorization: "Bearer " + data.session.access_token } : {};
+  const headers = {};
+  const pass = getProPass();
+  if (pass) headers["x-pro-pass"] = pass;
+  if (sb && sbUser) {
+    const { data } = await sb.auth.getSession();
+    if (data.session) headers.Authorization = "Bearer " + data.session.access_token;
+  }
+  return headers;
 }
 
 async function callAssistant(payload) {
@@ -3309,7 +3314,26 @@ let sb = null;
 let sbUser = null;
 let checkoutEnabled = false;
 let proRequiredForAi = false;
+let accountsMode = false;
 let userIsPro = false;
+
+// Stripe-only Pro: the signed pass this browser received after paying.
+const PRO_PASS_KEY = "ljsportmind_pro_pass";
+function getProPass() {
+  try {
+    return localStorage.getItem(PRO_PASS_KEY) || "";
+  } catch {
+    return "";
+  }
+}
+function setProPass(pass) {
+  try {
+    if (pass) localStorage.setItem(PRO_PASS_KEY, pass);
+    else localStorage.removeItem(PRO_PASS_KEY);
+  } catch {
+    // storage unavailable; Pro won't persist on this device
+  }
+}
 let syncState = "";
 let accMsgKey = "";
 
@@ -3415,14 +3439,27 @@ async function initAccounts() {
     const res = await fetch("/api/config");
     if (!res.ok) return;
     cfg = await res.json();
-    if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) return;
-    await loadScript(SUPABASE_JS_URL, SUPABASE_JS_INTEGRITY);
   } catch {
-    return; // Accounts not set up yet: the app keeps working with a browser-only profile.
+    return; // Server settings unavailable: the app keeps working with a browser-only profile.
   }
-  sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
   checkoutEnabled = !!cfg.checkoutEnabled;
   proRequiredForAi = !!cfg.proRequiredForAi;
+  accountsMode = !!cfg.accountsEnabled;
+  if (!accountsMode) {
+    // No accounts: profiles stay on the device and Pro runs on a Stripe pass.
+    renderPro();
+    await loadProStatus();
+    return;
+  }
+  try {
+    await loadScript(SUPABASE_JS_URL, SUPABASE_JS_INTEGRITY);
+  } catch {
+    accountsMode = false;
+    renderPro();
+    await loadProStatus();
+    return;
+  }
+  sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
   sb.auth.onAuthStateChange((event, session) => {
     const user = session ? session.user : null;
     const newUser = !!user && (!sbUser || sbUser.id !== user.id);
@@ -3544,15 +3581,28 @@ function renderPro() {
   if (!checkoutEnabled) return;
 
   document.getElementById("proBuyTitle").textContent = t(userIsPro ? "proIsProTitle" : "proBuyTitle");
-  document.getElementById("proBuyText").textContent = t(userIsPro ? "proIsPro" : sbUser ? "proBuyBody" : "proSignInFirst");
+  const needsSignIn = accountsMode && !sbUser;
+  document.getElementById("proBuyText").textContent = t(userIsPro ? "proIsPro" : needsSignIn ? "proSignInFirst" : "proBuyBody");
   proBuyBtn.hidden = userIsPro;
-  proBuyBtn.textContent = t(sbUser ? "proBuyBtn" : "proSignInBtn");
+  proBuyBtn.textContent = t(needsSignIn ? "proSignInBtn" : "proBuyBtn");
   proManageBtn.hidden = !userIsPro;
   showProBuyMsg(proBuyMsgKey);
 }
 
 async function loadProStatus() {
-  if (!sb || !sbUser) {
+  const pass = getProPass();
+  if (pass) {
+    try {
+      const res = await fetch("/api/pro", { method: "POST", headers: { "Content-Type": "application/json", "x-pro-pass": pass }, body: "{}" });
+      const body = await res.json();
+      if (res.ok) {
+        userIsPro = !!body.pro;
+        if (!body.pro) setProPass(""); // cancelled or unpaid: back to Free
+      }
+    } catch {
+      // offline: keep the last known status
+    }
+  } else if (!sb || !sbUser) {
     userIsPro = false;
   } else {
     const { data } = await sb.from("subscriptions").select("status").eq("user_id", sbUser.id).maybeSingle();
@@ -3582,7 +3632,7 @@ async function goToStripe(endpoint, errorKey) {
 }
 
 proBuyBtn.addEventListener("click", () => {
-  if (!sbUser) {
+  if (accountsMode && !sbUser) {
     // Pro belongs to an account, so sign-in comes first.
     accForm.hidden = false;
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -3600,13 +3650,33 @@ proManageBtn.addEventListener("click", () => goToStripe("/api/portal", "accError
 async function handleProReturn() {
   const params = new URLSearchParams(location.search);
   const result = params.get("pro");
+  const sessionId = params.get("session_id");
   if (!result) return;
   params.delete("pro");
+  params.delete("session_id");
   history.replaceState(null, "", location.pathname + (params.toString() ? "?" + params : "") + location.hash);
   openPro();
   if (result === "cancel") return showProBuyMsg("proCanceled");
   if (result !== "success") return;
   showProBuyMsg("proActivating");
+  // Stripe-only: trade the finished checkout for a Pro pass.
+  if (sessionId) {
+    for (let i = 0; i < 5; i++) {
+      try {
+        const res = await fetch("/api/pro", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionId }) });
+        const body = await res.json();
+        if (body.pass) {
+          setProPass(body.pass);
+          userIsPro = true;
+          renderPro();
+          return showProBuyMsg("proWelcome");
+        }
+      } catch {
+        // try again
+      }
+      await new Promise((r) => setTimeout(r, 2000));
+    }
+  }
   for (let i = 0; i < 10; i++) {
     if (sbUser && (await loadProStatus())) return showProBuyMsg("proWelcome");
     await new Promise((r) => setTimeout(r, 2000));
