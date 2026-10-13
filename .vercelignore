@@ -1,0 +1,10 @@
+# Private working files: keep them off the live site.
+research/
+strategy/
+pricing simulator/
+prd.md
+build-log.md
+supabase/
+.claude/
+.env*
+.DS_Store
