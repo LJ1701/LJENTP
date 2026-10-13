@@ -23,6 +23,14 @@ module.exports = async (req, res) => {
       allow_promotion_codes: true
     };
 
+    // Stripe Tax: switch on with STRIPE_AUTOMATIC_TAX=true only after Tax is set up in the
+    // Stripe dashboard (origin address + registrations); before that, Checkout would refuse it.
+    const automaticTax = process.env.STRIPE_AUTOMATIC_TAX === "true";
+    if (automaticTax) {
+      params.automatic_tax = { enabled: true };
+      params.billing_address_collection = "required";
+    }
+
     if (accountsEnabled()) {
       const user = await userFromRequest(req);
       if (!user) return fail(401, "sign_in_required");
@@ -30,7 +38,9 @@ module.exports = async (req, res) => {
       if (existing && PRO_STATUSES.includes(existing.status)) return fail(409, "already_pro");
       Object.assign(params, {
         client_reference_id: user.id,
-        ...(existing && existing.stripe_customer_id ? { customer: existing.stripe_customer_id } : { customer_email: user.email }),
+        ...(existing && existing.stripe_customer_id
+          ? { customer: existing.stripe_customer_id, ...(automaticTax ? { customer_update: { address: "auto" } } : {}) }
+          : { customer_email: user.email }),
         subscription_data: { metadata: { user_id: user.id } },
         metadata: { user_id: user.id }
       });
