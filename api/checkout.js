@@ -1,4 +1,4 @@
-const { PRO_STATUSES, stripe, stripeEnabled, userFromRequest, subscriptionFor, siteUrl } = require("./_lib/server");
+const { PRO_STATUSES, stripe, stripeEnabled, proPriceId, userFromRequest, subscriptionFor, siteUrl } = require("./_lib/server");
 
 // Starts a Stripe Checkout for the Pro plan, tied to the signed-in account.
 module.exports = async (req, res) => {
@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     const base = siteUrl(req);
     const session = await stripe().checkout.sessions.create({
       mode: "subscription",
-      line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
+      line_items: [{ price: await proPriceId(), quantity: 1 }],
       success_url: `${base}/?pro=success`,
       cancel_url: `${base}/?pro=cancel`,
       client_reference_id: user.id,
