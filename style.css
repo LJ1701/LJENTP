@@ -637,6 +637,66 @@ body.is-locked { overflow: hidden; }
 .tool-body { padding: 0 18px 18px; }
 .tool-body textarea { width: 100%; }
 
+/* Play: body-controlled mini-games */
+.play-modes { display: flex; gap: 8px; margin-top: 16px; }
+.play-mode { flex: 1; }
+.play-mode.active { background: linear-gradient(135deg, var(--accent-light), var(--accent)); color: var(--bg); border-color: transparent; }
+.play-note { margin: 12px 0 0 !important; font-size: 13px !important; color: var(--muted); }
+.game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  text-align: start;
+  font-weight: 400;
+}
+.game-card:hover { border-color: var(--accent); opacity: 1; }
+.game-card strong { font-size: 16px; font-weight: 800; }
+.game-icon { font-size: 26px; line-height: 1; margin-bottom: 4px; }
+.game-sub { font-size: 13px; color: var(--muted); line-height: 1.4; }
+.game-best { margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--accent-light); }
+.play-top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; margin-bottom: 10px; }
+.play-top strong { font-size: 18px; font-weight: 800; }
+#playHud { font-size: 13px; color: var(--accent-light); font-weight: 700; }
+.play-canvas-wrap { position: relative; border-radius: 14px; overflow: hidden; border: 2px solid var(--accent); touch-action: none; }
+#playCanvas { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; }
+.play-cam { position: absolute; top: 8px; inset-inline-end: 8px; width: 26%; border-radius: 8px; overflow: hidden; border: 2px solid var(--accent); background: #000; }
+.play-cam video, .play-cam canvas { display: block; width: 100%; transform: scaleX(-1); }
+.play-cam canvas { position: absolute; inset: 0; height: 100%; }
+.play-prompt {
+  position: absolute;
+  inset-inline: 10px;
+  bottom: 10px;
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+.play-prompt:empty { display: none; }
+.play-result {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  text-align: center;
+  background: rgba(10, 14, 26, 0.86);
+}
+.play-result[hidden] { display: none; }
+.play-result-score { margin: 0; font-size: 28px; font-weight: 800; }
+.play-result-best { margin: 0; color: var(--accent-light); font-weight: 800; }
+.play-result-actions { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
+.play-howto { margin: 12px 0 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
 /* Creator Studio: louder than the rest of the app on purpose. */
 .studio-hero {
   margin-bottom: 24px;

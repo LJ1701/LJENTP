@@ -51,7 +51,8 @@ function profileBlock(profile, matches) {
     `Achievements:\n${clean(p.achievements, 1500) || "none listed"}`,
     `Readiness for their goal: ${clean(p.readiness, 400) || "unknown"}`,
     `Change since their own baseline: ${clean(p.sinceBaseline, 400) || "unknown"}`,
-    `Movement checks (from their phone camera): ${clean(p.movement, 1200) || "none yet"}`
+    `Movement checks (from their phone camera): ${clean(p.movement, 1200) || "none yet"}`,
+    `Soccer mini-games in the app: ${clean(p.games, 600) || "none played yet"}`
   ];
   const m = (Array.isArray(matches) ? matches : []).slice(0, 4).map((x) =>
     `- ${clean(x && x.name, 80)} (fit ${Number(x && x.fit) || 0}%): has ${cleanList(x && x.have).join(", ") || "none"}; gaps ${cleanList(x && x.gaps).join(", ") || "none"}`
