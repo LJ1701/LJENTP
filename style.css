@@ -535,6 +535,20 @@ button:hover { opacity: 0.9; }
 .mem-count { margin-top: 8px !important; font-size: 12px; color: var(--muted); }
 @media (max-width: 420px) { .fp-row { flex-direction: column; align-items: flex-start; } }
 
+/* Passport identity and AI Coach */
+.passport-id-card { border-color: var(--accent); background: linear-gradient(135deg, var(--navy), var(--card)); }
+.passport-id-card #passportSummary { margin-bottom: 8px; font-weight: 600; }
+.coach-card { border: 2px solid var(--accent); }
+.coach-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.coach-label { font-size: 12px; font-weight: 700; color: var(--accent-light); white-space: nowrap; }
+.coach-read p { margin: 6px 0 !important; font-size: 15px; line-height: 1.55; white-space: pre-wrap; }
+.coach-sub { margin: 16px 0 6px !important; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.coach-steps { margin: 0; padding-inline-start: 22px; line-height: 1.6; font-size: 14px; }
+.coach-refresh { margin-top: 10px; font-size: 13px; }
+.coach-snapshot { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); display: grid; gap: 14px; }
+.coach-chat { margin-top: 8px; padding-top: 4px; border-top: 1px solid var(--border); }
+.opp-ask { margin-top: 12px; width: 100%; }
+
 /* Movement Memory */
 .move-card { margin-top: 28px; border-color: var(--accent); }
 .mv-consent { display: inline-flex; margin: 4px 0 8px; font-size: 13px; }

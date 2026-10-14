@@ -846,6 +846,27 @@ const I18N_BRAND = {
     footerBy: "LJSportMind by LJSOCCER",
     creditText: "Made with LJSportMind by @ljsoccer01",
     studioKicker: "Creator Studio",
+    coachTitle: "Your AI Coach",
+    coachQuick: "Quick read",
+    coachAi: "AI analysis",
+    coachAnalyzing: "Analyzing…",
+    coachRefresh: "Refresh analysis",
+    coachChatTitle: "Ask your coach",
+    cStepsTitle: "Your next steps",
+    cReadReady: "You're {n}% ready for {path}.",
+    cReadStrong: "Your strengths: {list}.",
+    cReadGap: "Biggest gap: {gap}.",
+    cReadProgress: "Since your baseline, readiness went from {a}% to {b}%.",
+    cReadMove: "Body: {met} of {total} movement checks met for {goal}.",
+    cReadMoveNone: "Your body isn't in the picture yet. A 1-minute Movement check adds it.",
+    cReadGames: "From your games: {list}.",
+    cStepGap: "Build {gap}. It's the biggest gap for {path}.",
+    cStepMove: "Do a 1-minute Movement check so your coach can include your body.",
+    cStepMoveAgain: "Repeat your Movement check in 1–2 weeks to track your body.",
+    cStepPlay: "Play Keeper Reflex to measure your reaction time.",
+    cStepProfile: "Add your {field} to sharpen the analysis.",
+    oppAskCoach: "Ask my coach about this",
+    oppAskQuestion: "I'm looking at an opportunity. My fit is {n}%. It asks for: {asks}. I'm missing: {gaps}. Should I apply, and how do I close the gaps fast?",
     fpTitle: "Your Sports Fingerprint",
     fpBody: "Yours alone. Each ring turns gold as you add a skill or interest.",
     fpId: "Fingerprint ID: {id}",
@@ -913,6 +934,27 @@ const I18N_BRAND = {
     footerBy: "LJSportMind por LJSOCCER",
     creditText: "Hecho con LJSportMind por @ljsoccer01",
     studioKicker: "Estudio de Creadores",
+    coachTitle: "Tu Coach IA",
+    coachQuick: "Lectura rápida",
+    coachAi: "Análisis con IA",
+    coachAnalyzing: "Analizando…",
+    coachRefresh: "Actualizar análisis",
+    coachChatTitle: "Pregunta a tu coach",
+    cStepsTitle: "Tus próximos pasos",
+    cReadReady: "Estás {n}% listo para {path}.",
+    cReadStrong: "Tus puntos fuertes: {list}.",
+    cReadGap: "Mayor carencia: {gap}.",
+    cReadProgress: "Desde tu punto de partida, tu preparación pasó de {a}% a {b}%.",
+    cReadMove: "Cuerpo: cumples {met} de {total} criterios de movimiento para {goal}.",
+    cReadMoveNone: "Tu cuerpo aún no está en el análisis. Una prueba de movimiento de 1 minuto lo añade.",
+    cReadGames: "Según tus juegos: {list}.",
+    cStepGap: "Desarrolla {gap}. Es la mayor carencia para {path}.",
+    cStepMove: "Haz una prueba de movimiento de 1 minuto para que tu coach incluya tu cuerpo.",
+    cStepMoveAgain: "Repite tu prueba de movimiento en 1–2 semanas para seguir tu cuerpo.",
+    cStepPlay: "Juega a Reflejos de portero para medir tu tiempo de reacción.",
+    cStepProfile: "Añade tu {field} para afinar el análisis.",
+    oppAskCoach: "Preguntar a mi coach",
+    oppAskQuestion: "Estoy mirando una oportunidad. Mi encaje es {n}%. Pide: {asks}. Me falta: {gaps}. ¿Debo aplicar y cómo cierro las carencias rápido?",
     fpTitle: "Tu Huella Deportiva",
     fpBody: "Solo tuya. Cada anillo se vuelve dorado al sumar una habilidad o interés.",
     fpId: "ID de huella: {id}",
@@ -980,6 +1022,27 @@ const I18N_BRAND = {
     footerBy: "LJSportMind · LJSOCCER 出品",
     creditText: "由 @ljsoccer01 的 LJSportMind 制作",
     studioKicker: "创作工作室",
+    coachTitle: "你的 AI 教练",
+    coachQuick: "快速解读",
+    coachAi: "AI 分析",
+    coachAnalyzing: "分析中…",
+    coachRefresh: "刷新分析",
+    coachChatTitle: "问问你的教练",
+    cStepsTitle: "你的下一步",
+    cReadReady: "你对{path}的准备度为 {n}%。",
+    cReadStrong: "你的优势：{list}。",
+    cReadGap: "最大差距：{gap}。",
+    cReadProgress: "与起点相比，准备度从 {a}% 提升到 {b}%。",
+    cReadMove: "身体：在{goal}的动作标准中满足 {total} 项中的 {met} 项。",
+    cReadMoveNone: "分析里还没有你的身体数据。做一次 1 分钟动作测试即可加入。",
+    cReadGames: "来自你的游戏：{list}。",
+    cStepGap: "提升{gap}，这是{path}最大的差距。",
+    cStepMove: "做一次 1 分钟动作测试，让教练把你的身体也纳入分析。",
+    cStepMoveAgain: "1–2 周后再做一次动作测试，追踪身体变化。",
+    cStepPlay: "玩“门将反应”来测量你的反应时间。",
+    cStepProfile: "补充你的{field}，让分析更精准。",
+    oppAskCoach: "问问我的教练",
+    oppAskQuestion: "我在看一个机会。我的匹配度是 {n}%。它要求：{asks}。我缺少：{gaps}。我该申请吗？怎样快速补齐差距？",
     fpTitle: "你的体育指纹",
     fpBody: "独属于你。每增加一项技能或兴趣，就有一圈变成金色。",
     fpId: "指纹 ID：{id}",
@@ -1047,6 +1110,27 @@ const I18N_BRAND = {
     footerBy: "LJSportMind من LJSOCCER",
     creditText: "صُنع باستخدام LJSportMind من ‎@ljsoccer01",
     studioKicker: "استوديو المبدعين",
+    coachTitle: "مدربك بالذكاء الاصطناعي",
+    coachQuick: "قراءة سريعة",
+    coachAi: "تحليل بالذكاء الاصطناعي",
+    coachAnalyzing: "جارٍ التحليل…",
+    coachRefresh: "حدّث التحليل",
+    coachChatTitle: "اسأل مدربك",
+    cStepsTitle: "خطواتك التالية",
+    cReadReady: "أنت جاهز بنسبة {n}% لـ{path}.",
+    cReadStrong: "نقاط قوتك: {list}.",
+    cReadGap: "أكبر فجوة: {gap}.",
+    cReadProgress: "منذ نقطة بدايتك، ارتفعت جاهزيتك من {a}% إلى {b}%.",
+    cReadMove: "الجسم: {met} من {total} معايير حركة متحققة لـ{goal}.",
+    cReadMoveNone: "جسمك ليس ضمن التحليل بعد. فحص حركة لمدة دقيقة يضيفه.",
+    cReadGames: "من ألعابك: {list}.",
+    cStepGap: "طوّر {gap}. إنها أكبر فجوة لـ{path}.",
+    cStepMove: "أجرِ فحص حركة لمدة دقيقة ليضم مدربك جسمك إلى التحليل.",
+    cStepMoveAgain: "كرّر فحص الحركة بعد أسبوع أو أسبوعين لتتابع جسمك.",
+    cStepPlay: "العب ردّة فعل الحارس لتقيس زمن ردّة فعلك.",
+    cStepProfile: "أضف {field} لتحسين التحليل.",
+    oppAskCoach: "اسأل مدربي عن هذا",
+    oppAskQuestion: "أنظر إلى فرصة. نسبة توافقي {n}%. تطلب: {asks}. ينقصني: {gaps}. هل أتقدّم، وكيف أسد الفجوات بسرعة؟",
     fpTitle: "بصمتك الرياضية",
     fpBody: "خاصة بك وحدك. تصبح كل حلقة ذهبية عندما تضيف مهارة أو اهتمامًا.",
     fpId: "معرّف البصمة: {id}",
@@ -2576,6 +2660,13 @@ function checkOpportunity() {
         ${degreeLine}
       </div>
     </div>`;
+  const ask = el("button", "secondary opp-ask", t("oppAskCoach"));
+  ask.type = "button";
+  ask.addEventListener("click", () => {
+    openCoach();
+    askAssistant(tf("oppAskQuestion", { n: pct, asks: asks.map(tagLabel).join(", "), gaps: gaps.map(tagLabel).join(", ") || "-" }));
+  });
+  box.append(ask);
 }
 
 function savePassport(data) {
@@ -2643,6 +2734,7 @@ function renderPassportSummaryAndMatches(data) {
   const userTags = [...eff.skills, ...eff.interests, ...(GOAL_TAGS[data.goal] || [])];
   renderMatches(matchCareerPaths(userTags), data.location, data, eff);
   renderPassportIdentity(data);
+  renderCoach(data);
 }
 
 // ---- Passport identity: fingerprint, readiness, memory ----
@@ -2814,6 +2906,124 @@ function renderPassportIdentity(data) {
   }
   memBody.append(el("p", "mem-count", tf("memSaves", { n: history.length })));
 }
+
+// ---- The AI Coach: one place that analyses everything and coaches ----
+// It always shows a quick read built from the numbers, and swaps in a full AI analysis when the
+// AI is available. The AI analysis is cached per profile state so it isn't re-run on every visit.
+
+const COACH_KEY = "ljsportmind_coach_read";
+const MOVE_GOAL_KEYS = { soccer: "mvGoalSoccer", running: "mvGoalRunning", strength: "mvGoalStrength", everyday: "mvGoalEveryday" };
+let coachPending = false;
+
+function coachCache() {
+  try {
+    return JSON.parse(localStorage.getItem(COACH_KEY) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function setCoachCache(value) {
+  try {
+    localStorage.setItem(COACH_KEY, JSON.stringify(value));
+  } catch {
+    // storage unavailable; the analysis is just re-run next time
+  }
+}
+
+function coachHash() {
+  return hashString(JSON.stringify(aiContext()) + "|" + currentLang).toString(36);
+}
+
+function playInsights() {
+  if (typeof loadPlay !== "function") return [];
+  const p = loadPlay();
+  const out = [];
+  const kl = avg(p.kickL), kr = avg(p.kickR);
+  if (kl && kr) {
+    const diff = Math.round((Math.abs(kl - kr) / Math.min(kl, kr)) * 100);
+    out.push(diff < 8 ? t("bFootEven") : tf("bStrongFoot", { foot: t(kl > kr ? "bLeft" : "bRight"), n: diff }));
+  }
+  if (p.reactions && p.reactions.length) out.push(tf("bReaction", { ms: Math.round(avg(p.reactions)) }));
+  if (p.jumps && p.jumps.length) out.push(tf("bJump", { n: Math.round(avg(p.jumps)) }));
+  return out;
+}
+
+// The quick read: a few sentences that tie career readiness, body and games together.
+function quickRead(data) {
+  const r = readinessOf(data);
+  const lines = [tf("cReadReady", { n: r.pct, path: r.path.name })];
+  if (r.have.length) lines.push(tf("cReadStrong", { list: r.have.slice(0, 3).map(tagLabel).join(", ") }));
+  if (r.gaps.length) lines.push(tf("cReadGap", { gap: tagLabel(r.gaps[0]) }));
+  const h = Array.isArray(data.history) ? data.history : [];
+  if (h.length > 1 && h[h.length - 1].ready !== h[0].ready) lines.push(tf("cReadProgress", { a: h[0].ready, b: h[h.length - 1].ready }));
+  const moves = Array.isArray(data.movement) ? data.movement : [];
+  if (moves.length && typeof moveReadiness === "function") {
+    const last = moves[moves.length - 1];
+    const goal = data.movementGoal || last.goal;
+    const mr = moveReadiness(last, goal);
+    lines.push(tf("cReadMove", { met: mr.met, total: mr.total, goal: t(MOVE_GOAL_KEYS[goal] || "mvGoalEveryday").toLowerCase() }));
+  } else {
+    lines.push(t("cReadMoveNone"));
+  }
+  const games = playInsights();
+  if (games.length) lines.push(tf("cReadGames", { list: games.join("; ") }));
+  return lines;
+}
+
+function coachSteps(data) {
+  const r = readinessOf(data);
+  const steps = [];
+  if (r.gaps.length) steps.push(tf("cStepGap", { gap: tagLabel(r.gaps[0]), path: r.path.name }));
+  if (r.path.nextStep) steps.push(r.path.nextStep);
+  const moves = Array.isArray(data.movement) ? data.movement : [];
+  steps.push(t(moves.length ? "cStepMoveAgain" : "cStepMove"));
+  const play = typeof loadPlay === "function" ? loadPlay() : {};
+  if (!play.reactions || !play.reactions.length) steps.push(t("cStepPlay"));
+  const next = computeStrength(data).next;
+  if (next) steps.push(tf("cStepProfile", { field: t(next).replace(/\s*\(.*\)\s*$/, "").toLowerCase() }));
+  return steps.slice(0, 4);
+}
+
+function renderCoach(data, force = false) {
+  const read = document.getElementById("coachRead");
+  const label = document.getElementById("coachLabel");
+  const stepsWrap = document.getElementById("coachStepsWrap");
+  const hash = coachHash();
+  const cached = coachCache();
+  read.innerHTML = "";
+  if (cached && cached.hash === hash && cached.text && !force) {
+    label.textContent = t("coachAi");
+    cached.text.split(/\n+/).filter(Boolean).forEach((line) => read.append(el("p", "", line)));
+    stepsWrap.hidden = true;
+  } else {
+    label.textContent = t(coachPending ? "coachAnalyzing" : "coachQuick");
+    quickRead(data).forEach((line) => read.append(el("p", "", line)));
+    const list = document.getElementById("coachSteps");
+    list.innerHTML = "";
+    coachSteps(data).forEach((step) => list.append(el("li", "", step)));
+    stepsWrap.hidden = false;
+    requestAnalysis(hash, cached, force);
+  }
+}
+
+// Ask the AI for the full analysis once per profile state; back off for 10 minutes after a failure.
+async function requestAnalysis(hash, cached, force) {
+  if (coachPending) return;
+  if (!force && cached && cached.hash === hash && cached.failedAt && Date.now() - cached.failedAt < 10 * 60 * 1000) return;
+  coachPending = true;
+  document.getElementById("coachLabel").textContent = t("coachAnalyzing");
+  const reply = await callAssistant({ mode: "analysis" });
+  coachPending = false;
+  setCoachCache(reply.text ? { hash, text: reply.text, at: Date.now() } : { hash, failedAt: Date.now() });
+  const data = loadPassport();
+  if (data && !passportResults.hidden) renderCoach(data);
+}
+
+document.getElementById("coachRefreshBtn").addEventListener("click", () => {
+  const data = loadPassport();
+  if (data) renderCoach(data, true);
+});
 
 const passportForm = document.getElementById("passportForm");
 const passportResults = document.getElementById("passportResults");
@@ -3249,9 +3459,16 @@ async function askAssistant(question) {
 // The AI Coach lives inside the Passport now; this opens it and brings it into view.
 function openCoach() {
   activateTab("passport");
-  const coach = document.getElementById("coachTool");
-  coach.open = true;
-  coach.scrollIntoView({ behavior: "smooth", block: "start" });
+  const data = loadPassport();
+  if (!data) {
+    document.getElementById("pName").focus();
+    return;
+  }
+  if (passportResults.hidden) {
+    passportResults.hidden = false;
+    renderPassportSummaryAndMatches(data);
+  }
+  document.getElementById("coachCard").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 aiForm.addEventListener("submit", (e) => {
@@ -3729,4 +3946,5 @@ function applyLanguage(lang) {
 
 langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
 
+if (loadPassport()) passportResults.hidden = false;
 applyLanguage(currentLang);

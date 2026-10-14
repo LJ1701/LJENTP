@@ -176,33 +176,66 @@
       </form>
 
       <section id="passportResults" hidden>
-        <div class="card">
+        <div class="card passport-id-card">
           <h3 data-i18n="yourPassport">Your Sports Passport</h3>
-          <p id="passportSummary"></p>
-        </div>
-
-        <div class="card fingerprint-card">
-          <h3 data-i18n="fpTitle">Your Sports Fingerprint</h3>
           <div class="fp-row">
             <div id="fpSvg" class="fp-svg" aria-hidden="true"></div>
             <div>
+              <p id="passportSummary"></p>
               <p id="fpId" class="fp-id"></p>
               <p class="fp-body" data-i18n="fpBody">Yours alone. Each ring turns gold as you add a skill or interest.</p>
             </div>
           </div>
         </div>
 
-        <div class="card ready-card">
-          <h3 data-i18n="readyTitle">Ready for what?</h3>
-          <div id="readyBody"></div>
-        </div>
+        <div class="card coach-card" id="coachCard">
+          <div class="coach-head">
+            <h3 data-i18n="coachTitle">Your AI Coach</h3>
+            <span id="coachLabel" class="coach-label"></span>
+          </div>
+          <div id="coachRead" class="coach-read" dir="auto"></div>
+          <div id="coachStepsWrap">
+            <p class="coach-sub" data-i18n="cStepsTitle">Your next steps</p>
+            <ol id="coachSteps" class="coach-steps"></ol>
+          </div>
+          <button type="button" id="coachRefreshBtn" class="link-btn coach-refresh" data-i18n="coachRefresh">Refresh analysis</button>
 
-        <div class="card memory-card">
-          <h3 data-i18n="memTitle">Since your baseline</h3>
-          <div id="memBody"></div>
+          <div class="coach-snapshot">
+            <div id="readyBody"></div>
+            <div id="memBody"></div>
+          </div>
+
+          <div class="coach-chat">
+            <p class="coach-sub" data-i18n="coachChatTitle">Ask your coach</p>
+              <p id="aiProfileNote" class="profile-note" hidden></p>
+
+              <div class="ai-suggestions">
+                <button type="button" class="secondary ai-suggest" data-i18n="aiSuggest1">What should I do next?</button>
+                <button type="button" class="secondary ai-suggest" data-i18n="aiSuggest2">Which match fits me best and why?</button>
+                <button type="button" class="secondary ai-suggest" data-i18n="aiSuggest3">How do I close my biggest gap?</button>
+              </div>
+
+              <div id="aiLog" class="ai-log" aria-live="polite"></div>
+
+              <form id="aiForm">
+                <div class="field">
+                  <label for="aiQuestion" class="visually-hidden" data-i18n="aiAsk">Ask</label>
+                  <textarea id="aiQuestion" rows="3" data-i18n-placeholder="aiPlaceholder" placeholder="e.g. What should I do this month to get closer to my goal?"></textarea>
+                </div>
+                <div class="actions">
+                  <button type="submit" id="aiAskBtn" data-i18n="aiAsk">Ask</button>
+                  <button type="button" id="aiClearBtn" class="secondary" hidden data-i18n="aiClear">Clear conversation</button>
+                </div>
+              </form>
+
+              <p class="section-blurb"><span id="aiAccessNote" data-i18n="aiEarlyAccess">Free in early access.</span> <button type="button" class="link-btn pro-link" data-i18n="proSee">See Pro</button></p>
+              <p class="section-blurb" data-i18n="aiPrivacy">Private: your questions aren't stored.</p>
+          
+          </div>
         </div>
 
         <div id="matchList"></div>
+
       </section>
 
 
@@ -210,37 +243,6 @@
 
       <div class="tools">
         <h2 class="tools-title" data-i18n="toolsTitle">Put your Passport to work</h2>
-        <details class="tool" id="coachTool" open>
-          <summary>
-            <span class="tool-name" data-i18n="toolCoach">Ask your AI Coach</span>
-            <span class="tool-sub" data-i18n="toolCoachSub">Advice built on your profile, matches and progress</span>
-          </summary>
-          <div class="tool-body">
-            <p id="aiProfileNote" class="profile-note"></p>
-
-            <div class="ai-suggestions">
-              <button type="button" class="secondary ai-suggest" data-i18n="aiSuggest1">What should I do next?</button>
-              <button type="button" class="secondary ai-suggest" data-i18n="aiSuggest2">Which match fits me best and why?</button>
-              <button type="button" class="secondary ai-suggest" data-i18n="aiSuggest3">How do I close my biggest gap?</button>
-            </div>
-
-            <div id="aiLog" class="ai-log" aria-live="polite"></div>
-
-            <form id="aiForm">
-              <div class="field">
-                <label for="aiQuestion" class="visually-hidden" data-i18n="aiAsk">Ask</label>
-                <textarea id="aiQuestion" rows="3" data-i18n-placeholder="aiPlaceholder" placeholder="e.g. What should I do this month to get closer to my goal?"></textarea>
-              </div>
-              <div class="actions">
-                <button type="submit" id="aiAskBtn" data-i18n="aiAsk">Ask</button>
-                <button type="button" id="aiClearBtn" class="secondary" hidden data-i18n="aiClear">Clear conversation</button>
-              </div>
-            </form>
-
-            <p class="section-blurb"><span id="aiAccessNote" data-i18n="aiEarlyAccess">Free in early access.</span> <button type="button" class="link-btn pro-link" data-i18n="proSee">See Pro</button></p>
-            <p class="section-blurb" data-i18n="aiPrivacy">Private: your questions aren't stored.</p>
-          </div>
-        </details>
         <details class="tool" id="oppTool">
           <summary>
             <span class="tool-name" data-i18n="toolOpp">Check an opportunity</span>
