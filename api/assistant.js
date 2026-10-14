@@ -77,9 +77,22 @@ Caption: (end the caption with exactly this line: ${credit})
 Voiceover script (five short timed beats, e.g. "0-3s: ..."):`;
 }
 
+const ANALYSIS_PROMPT = `Act as my coach and analyse me as one whole person: my career readiness, my progress since my own baseline, my body (movement checks) and my results in the soccer mini-games. Connect them where they relate.
+
+Write plain text in exactly this shape, under 170 words:
+A 2-sentence overall read of where I stand.
+Strengths: then 2-3 short "- " bullets.
+Watch: then 1-2 short "- " bullets on gaps or risks.
+This week: then 3 numbered, concrete steps I can do in the next 7 days.
+Only use facts from my data. If an area has no data, say in one short line what to do to add it.`;
+
 function buildMessages(body) {
   const lang = LANG_NAMES[body.lang] || LANG_NAMES.en;
   const context = `${profileBlock(body.profile, body.matches)}\n\nReply in ${lang}.`;
+
+  if (body.mode === "analysis") {
+    return [{ role: "user", content: `${context}\n\n${ANALYSIS_PROMPT}` }];
+  }
 
   if (body.mode === "content") {
     const credit = clean(body.credit, 80) || "Made with LJSportMind by @ljsoccer01";
