@@ -42,6 +42,7 @@
 
     <nav class="tabs">
       <button type="button" class="tab active" data-tab="passport" data-i18n="tabPassport">Sports Passport</button>
+      <button type="button" class="tab" data-tab="play" data-i18n="tabPlay">Play</button>
       <button type="button" class="tab" data-tab="creator" data-i18n="tabCreator">Creator Studio</button>
     </nav>
 
@@ -295,6 +296,46 @@
       </div>
     </section>
 
+    <section id="playPanel" class="tab-panel">
+      <div class="studio-hero play-hero">
+        <p class="studio-kicker" data-i18n="playKicker">Play</p>
+        <h2 data-i18n="playTitle">Train your body. Beat the keeper.</h2>
+        <div class="play-modes">
+          <button type="button" class="play-mode secondary" data-mode="body" data-i18n="playModeBody">Body (camera)</button>
+          <button type="button" class="play-mode secondary" data-mode="touch" data-i18n="playModeTouch">Touch</button>
+        </div>
+        <p id="playNote" class="play-note"></p>
+      </div>
+
+      <div id="playMenu">
+        <div id="gameGrid" class="game-grid"></div>
+        <div class="card play-body-card">
+          <h3 data-i18n="playBodyTitle">Your body in play</h3>
+          <ul id="playBody" class="mem-list"></ul>
+        </div>
+      </div>
+
+      <div id="playStage" hidden>
+        <div class="play-top">
+          <strong id="playGameName"></strong>
+          <span id="playHud"></span>
+        </div>
+        <div class="play-canvas-wrap">
+          <canvas id="playCanvas" width="800" height="500"></canvas>
+          <div id="playCam" class="play-cam" hidden>
+            <video id="playVideo" playsinline muted></video>
+            <canvas id="playCamCanvas"></canvas>
+          </div>
+          <p id="playPrompt" class="play-prompt"></p>
+          <div id="playResult" class="play-result" hidden></div>
+        </div>
+        <p id="playHowTo" class="play-howto"></p>
+        <div class="actions">
+          <button type="button" id="playQuitBtn" class="secondary" data-i18n="playQuit">Back to games</button>
+        </div>
+      </div>
+    </section>
+
     <section id="creatorPanel" class="tab-panel">
     <div class="studio-hero">
       <p class="studio-kicker" data-i18n="studioKicker">Creator Studio</p>
@@ -506,6 +547,7 @@
 
   <script src="script.js"></script>
   <script src="movement.js"></script>
+  <script src="games.js"></script>
   <script src="lock.js"></script>
 </body>
 </html>

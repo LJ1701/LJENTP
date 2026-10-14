@@ -3125,7 +3125,8 @@ function aiContext() {
       achievements: data.achievements,
       readiness: aiReadinessText(data),
       sinceBaseline: aiBaselineText(data),
-      movement: typeof moveSummaryText === "function" ? moveSummaryText(data.movement) : ""
+      movement: typeof moveSummaryText === "function" ? moveSummaryText(data.movement) : "",
+      games: typeof playSummaryText === "function" ? playSummaryText() : ""
     },
     matches
   };
