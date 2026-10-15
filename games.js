@@ -10,8 +10,8 @@ const PLAY_H = 500;
 
 const I18N_PLAY = {
   en: {
-    tabPlay: "Play",
-    playKicker: "Play",
+    tabPlay: "Sports Lab",
+    playKicker: "Sports Lab",
     playTitle: "Train your body. Beat the keeper.",
     playModeBody: "Body (camera)",
     playModeTouch: "Touch",
@@ -78,8 +78,8 @@ const I18N_PLAY = {
     bEmpty: "Play a few games and this fills in. Body mode adds kick power, jump and knee balance."
   },
   es: {
-    tabPlay: "Jugar",
-    playKicker: "Jugar",
+    tabPlay: "Sports Lab",
+    playKicker: "Sports Lab",
     playTitle: "Entrena tu cuerpo. Gánale al portero.",
     playModeBody: "Cuerpo (cámara)",
     playModeTouch: "Táctil",
@@ -146,8 +146,8 @@ const I18N_PLAY = {
     bEmpty: "Juega unas partidas y esto se completa. El modo Cuerpo añade potencia de patada, salto y equilibrio de rodillas."
   },
   zh: {
-    tabPlay: "游戏",
-    playKicker: "游戏",
+    tabPlay: "Sports Lab",
+    playKicker: "Sports Lab",
     playTitle: "锻炼身体，攻破门将。",
     playModeBody: "身体（摄像头）",
     playModeTouch: "触控",
@@ -214,8 +214,8 @@ const I18N_PLAY = {
     bEmpty: "多玩几局就会显示。身体模式还会加入踢球力量、跳跃和膝盖平衡。"
   },
   ar: {
-    tabPlay: "العب",
-    playKicker: "العب",
+    tabPlay: "Sports Lab",
+    playKicker: "Sports Lab",
     playTitle: "درّب جسمك. اهزم الحارس.",
     playModeBody: "الجسم (الكاميرا)",
     playModeTouch: "اللمس",

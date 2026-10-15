@@ -25,7 +25,8 @@ Rules:
 - Ground every answer in the profile and matches provided. Name the specific profile facts you relied on (for example "your video editing skill" or "your goal of working in a front office").
 - Judge progress against the user's own baseline, not general standards, and use their readiness gaps to pick next steps.
 - Movement numbers come from a phone camera, not a clinician. Never diagnose an injury or clear someone to play; for pain, injury or recovery, tell them to see a physio or doctor.
-- Never invent facts about the user. If something you need is missing from the profile, say what to add to the Sports Profile.
+- Matches are keyword-based guidance. Never present percentages or scores as validated measures of readiness or hiring chances.
+- Never invent facts about the user, job openings, salaries, companies or statistics. If something you need is missing from the profile, say what to add to the Sports Profile.
 - Be specific and practical: concrete next steps a person can take this week or month.
 - Keep answers under 200 words unless the user asks for more.
 - Write plain text with short paragraphs or simple "- " bullets. No markdown headings, bold or tables.
@@ -55,7 +56,7 @@ function profileBlock(profile, matches) {
     `Soccer mini-games in the app: ${clean(p.games, 600) || "none played yet"}`
   ];
   const m = (Array.isArray(matches) ? matches : []).slice(0, 4).map((x) =>
-    `- ${clean(x && x.name, 80)} (fit ${Number(x && x.fit) || 0}%): has ${cleanList(x && x.have).join(", ") || "none"}; gaps ${cleanList(x && x.gaps).join(", ") || "none"}`
+    `- ${clean(x && x.name, 80)} (covers ${cleanList(x && x.have).length} of ${cleanList(x && x.have).length + cleanList(x && x.gaps).length} typical skills): has ${cleanList(x && x.have).join(", ") || "none"}; gaps ${cleanList(x && x.gaps).join(", ") || "none"}`
   );
   return `<sports_profile>\n${lines.join("\n")}\n</sports_profile>\n<career_matches>\n${m.join("\n") || "No matches yet."}\n</career_matches>`;
 }
@@ -77,14 +78,14 @@ Caption: (end the caption with exactly this line: ${credit})
 Voiceover script (five short timed beats, e.g. "0-3s: ..."):`;
 }
 
-const ANALYSIS_PROMPT = `Act as my coach and analyse me as one whole person: my career readiness, my progress since my own baseline, my body (movement checks) and my results in the soccer mini-games. Connect them where they relate.
+const ANALYSIS_PROMPT = `Act as my sports career coach. Analyse my career fit, my skill gaps and my progress since my own baseline, using my Sports Passport and career matches. Focus on careers; don't mention games or movement checks unless they clearly matter for my goal.
 
 Write plain text in exactly this shape, under 170 words:
 A 2-sentence overall read of where I stand.
-Strengths: then 2-3 short "- " bullets.
-Watch: then 1-2 short "- " bullets on gaps or risks.
+Strengths: then 2-3 short "- " bullets citing evidence from my profile.
+Gaps: then 1-2 short "- " bullets.
 This week: then 3 numbered, concrete steps I can do in the next 7 days.
-Only use facts from my data. If an area has no data, say in one short line what to do to add it.`;
+Use counts like "4 of 6 skills", never percentages or scores. Only use facts from my data.`;
 
 function buildMessages(body) {
   const lang = LANG_NAMES[body.lang] || LANG_NAMES.en;

@@ -8,21 +8,34 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <select id="langSelect" class="lang-select">
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="zh">中文</option>
-        <option value="ar">العربية</option>
-      </select>
-      <img src="logo.svg" alt="LJSportMind logo" class="logo">
-      <h1>LJSport<span>Mind</span></h1>
-      <p class="brand-line"><a href="https://www.tiktok.com/@ljsoccer01" target="_blank" rel="noopener noreferrer" data-i18n="brandByline">by LJSOCCER · @ljsoccer01</a></p>
-      <p class="tagline" data-i18n="tagline">Discover Your Path. Create Your Impact.</p>
-      <button type="button" id="proOpenBtn" class="pro-btn" data-i18n="proOpen">Go Pro</button>
-      <p id="passportBanner" class="passport-banner" hidden></p>
+  <a class="skip-link" href="#main" data-i18n="skipToMain">Skip to main content</a>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#main" id="brandHome" aria-label="LJSportMind">
+        <img src="logo.svg" alt="" class="brand-logo" width="40" height="40">
+        <span class="brand-word">LJSport<span>Mind</span></span>
+      </a>
+      <nav class="tabs" aria-label="Main">
+        <button type="button" class="tab active" data-tab="passport" data-i18n="navDiscover">Discover</button>
+        <button type="button" class="tab" data-tab="creator" data-i18n="tabCreator">Creator Studio</button>
+        <button type="button" class="tab" data-tab="play" data-i18n="tabPlay">Sports Lab</button>
+      </nav>
+      <div class="topbar-actions">
+        <select id="langSelect" class="lang-select" aria-label="Language">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="zh">中文</option>
+          <option value="ar">العربية</option>
+        </select>
+        <button type="button" id="proOpenBtn" class="pro-btn" data-i18n="proOpen">Pricing</button>
+      </div>
+    </div>
+  </header>
 
+  <div class="wrap" id="main" tabindex="-1">
+    <div class="status-row">
+      <p id="passportBanner" class="passport-banner" hidden></p>
       <div id="accountBar" class="account-bar" hidden>
         <div id="accSignedOut">
           <button type="button" id="accOpenBtn" class="secondary" data-i18n="accSignIn">Sign in</button>
@@ -38,15 +51,36 @@
         </div>
         <p id="accMsg" class="acc-msg" hidden></p>
       </div>
-    </header>
-
-    <nav class="tabs">
-      <button type="button" class="tab active" data-tab="passport" data-i18n="tabPassport">Sports Passport</button>
-      <button type="button" class="tab" data-tab="play" data-i18n="tabPlay">Play</button>
-      <button type="button" class="tab" data-tab="creator" data-i18n="tabCreator">Creator Studio</button>
-    </nav>
+    </div>
 
     <section id="passportPanel" class="tab-panel active">
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero-copy">
+          <p class="eyebrow" data-i18n="heroEyebrow">AI sports career discovery · by LJSOCCER</p>
+          <h1 id="heroTitle" data-i18n="heroTitle">Find your place in the sports industry.</h1>
+          <p class="hero-sub" data-i18n="heroSub">Discover careers that fit your experience, identify your skill gaps, and build your path forward.</p>
+          <p class="hero-audience" data-i18n="heroAudience">Built for college students and early-career professionals entering the sports industry.</p>
+          <div class="hero-ctas">
+            <a href="#passportStart" class="btn-gold" data-i18n="heroCta">Build my Sports Passport</a>
+            <a href="tour.html" class="btn-ghost" data-i18n="heroTour">How it works</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orbit orbit-1"></div>
+          <div class="orbit orbit-2"></div>
+          <img src="logo.svg" alt="" class="hero-logo">
+        </div>
+      </section>
+
+      <ol class="flow-steps" aria-label="How it works">
+        <li><span class="flow-num">1</span><strong data-i18n="step1T">Build your Passport</strong><span data-i18n="step1D">Your experience, skills and the evidence behind them.</span></li>
+        <li><span class="flow-num">2</span><strong data-i18n="step2T">Discover roles</strong><span data-i18n="step2D">Sports careers matched to you, each explained.</span></li>
+        <li><span class="flow-num">3</span><strong data-i18n="step3T">Close your gaps</strong><span data-i18n="step3D">Missing skills, next steps and an AI coach.</span></li>
+        <li><span class="flow-num">4</span><strong data-i18n="step4T">Check opportunities</strong><span data-i18n="step4D">Test a real job posting against your Passport.</span></li>
+      </ol>
+
+      <h2 class="section-title" id="passportStart"><span class="step-num">1</span> <span data-i18n="secPassport">Your Sports Passport</span></h2>
+      <p class="section-sub" data-i18n="secPassportSub">Your profile and the evidence behind it. Saved on this device.</p>
       <div class="profile-intro">
         <div class="strength">
           <div class="strength-bar"><div id="strengthFill" class="strength-fill"></div></div>
@@ -175,9 +209,12 @@
         </div>
       </form>
 
-      <section id="passportResults" hidden>
+      <section id="passportResults" hidden aria-live="polite">
         <div class="card passport-id-card">
-          <h3 data-i18n="yourPassport">Your Sports Passport</h3>
+          <div class="card-head">
+            <h3 data-i18n="yourPassport">Your Sports Passport</h3>
+            <button type="button" id="lockOfferBtn" class="link-btn" hidden data-i18n="lockOffer">Lock this Passport</button>
+          </div>
           <div class="fp-row">
             <div id="fpSvg" class="fp-svg" aria-hidden="true"></div>
             <div>
@@ -186,6 +223,17 @@
               <p class="fp-body" data-i18n="fpBody">Yours alone. Each ring turns gold as you add a skill or interest.</p>
             </div>
           </div>
+          <div id="memBody" class="passport-progress"></div>
+        </div>
+
+        <h2 class="section-title"><span class="step-num">2</span> <span data-i18n="secRoles">Roles that fit you</span></h2>
+        <p class="section-sub" data-i18n="secRolesNote">Matches compare what you listed with the skills each role typically uses. They're guidance, not a validated assessment.</p>
+        <div id="matchList"></div>
+
+        <h2 class="section-title"><span class="step-num">3</span> <span data-i18n="secGaps">Close your skill gaps</span></h2>
+        <div class="card gap-card">
+          <h3 data-i18n="gapTitle">Skills that open the most doors</h3>
+          <div id="readyBody"></div>
         </div>
 
         <div class="card coach-card" id="coachCard">
@@ -199,12 +247,6 @@
             <ol id="coachSteps" class="coach-steps"></ol>
           </div>
           <button type="button" id="coachRefreshBtn" class="link-btn coach-refresh" data-i18n="coachRefresh">Refresh analysis</button>
-
-          <div class="coach-snapshot">
-            <div id="readyBody"></div>
-            <div id="memBody"></div>
-          </div>
-
           <div class="coach-chat">
             <p class="coach-sub" data-i18n="coachChatTitle">Ask your coach</p>
               <p id="aiProfileNote" class="profile-note" hidden></p>
@@ -234,21 +276,9 @@
           </div>
         </div>
 
-        <div id="matchList"></div>
-
-      </section>
-
-
-
-
-      <div class="tools">
-        <h2 class="tools-title" data-i18n="toolsTitle">Put your Passport to work</h2>
-        <details class="tool" id="oppTool">
-          <summary>
-            <span class="tool-name" data-i18n="toolOpp">Check an opportunity</span>
-            <span class="tool-sub" data-i18n="toolOppSub">Paste a job and see how well you fit</span>
-          </summary>
-          <div class="tool-body">
+        <h2 class="section-title"><span class="step-num">4</span> <span data-i18n="toolOpp">Check an opportunity</span></h2>
+        <p class="section-sub" data-i18n="toolOppSub">Paste a job and see how well you fit</p>
+        <div class="card opp-card" id="oppSection">
           <div class="field">
             <textarea id="oppText" rows="6" data-i18n-placeholder="oppPlaceholder" placeholder="Paste the job or opportunity description here…"></textarea>
           </div>
@@ -256,9 +286,52 @@
             <button type="button" id="oppCheckBtn" data-i18n="oppButton">Check My Fit</button>
           </div>
           <div id="oppResult" hidden></div>
+                  </div>
+      </section>
+    </section>
+
+    <section id="playPanel" class="tab-panel">
+      <div class="studio-hero play-hero">
+        <p class="studio-kicker" data-i18n="playKicker">Sports Lab</p>
+        <h2 data-i18n="playTitle">Train your body. Beat the keeper.</h2>
+        <p class="lab-note" data-i18n="labNote">Experimental extras: body-tracking games and movement checks. They're separate from career discovery.</p>
+        <div class="play-modes">
+          <button type="button" class="play-mode secondary" data-mode="body" data-i18n="playModeBody">Body (camera)</button>
+          <button type="button" class="play-mode secondary" data-mode="touch" data-i18n="playModeTouch">Touch</button>
+        </div>
+        <p id="playNote" class="play-note"></p>
+      </div>
+
+      <div id="playMenu">
+        <div id="gameGrid" class="game-grid"></div>
+        <div class="card play-body-card">
+          <h3 data-i18n="playBodyTitle">Your body in play</h3>
+          <ul id="playBody" class="mem-list"></ul>
+        </div>
+      </div>
+
+      <div id="playStage" hidden>
+        <div class="play-top">
+          <strong id="playGameName"></strong>
+          <span id="playHud"></span>
+        </div>
+        <div class="play-canvas-wrap">
+          <canvas id="playCanvas" width="800" height="500"></canvas>
+          <div id="playCam" class="play-cam" hidden>
+            <video id="playVideo" playsinline muted></video>
+            <canvas id="playCamCanvas"></canvas>
           </div>
-        </details>
-        <details class="tool" id="moveSection">
+          <p id="playPrompt" class="play-prompt"></p>
+          <div id="playResult" class="play-result" hidden></div>
+        </div>
+        <p id="playHowTo" class="play-howto"></p>
+        <div class="actions">
+          <button type="button" id="playQuitBtn" class="secondary" data-i18n="playQuit">Back to games</button>
+        </div>
+      </div>
+
+      <h2 class="section-title lab-title" data-i18n="mvTitle">Movement Memory</h2>
+      <details class="tool lab-move" id="moveSection">
           <summary>
             <span class="tool-name" data-i18n="mvTitle">Movement Memory</span>
             <span class="tool-sub" data-i18n="toolMoveSub">AI body scan + 2 quick exercises · 1 minute</span>
@@ -295,52 +368,12 @@
           <div id="mvResults"></div>
           </div>
         </details>
-      </div>
-    </section>
-
-    <section id="playPanel" class="tab-panel">
-      <div class="studio-hero play-hero">
-        <p class="studio-kicker" data-i18n="playKicker">Play</p>
-        <h2 data-i18n="playTitle">Train your body. Beat the keeper.</h2>
-        <div class="play-modes">
-          <button type="button" class="play-mode secondary" data-mode="body" data-i18n="playModeBody">Body (camera)</button>
-          <button type="button" class="play-mode secondary" data-mode="touch" data-i18n="playModeTouch">Touch</button>
-        </div>
-        <p id="playNote" class="play-note"></p>
-      </div>
-
-      <div id="playMenu">
-        <div id="gameGrid" class="game-grid"></div>
-        <div class="card play-body-card">
-          <h3 data-i18n="playBodyTitle">Your body in play</h3>
-          <ul id="playBody" class="mem-list"></ul>
-        </div>
-      </div>
-
-      <div id="playStage" hidden>
-        <div class="play-top">
-          <strong id="playGameName"></strong>
-          <span id="playHud"></span>
-        </div>
-        <div class="play-canvas-wrap">
-          <canvas id="playCanvas" width="800" height="500"></canvas>
-          <div id="playCam" class="play-cam" hidden>
-            <video id="playVideo" playsinline muted></video>
-            <canvas id="playCamCanvas"></canvas>
-          </div>
-          <p id="playPrompt" class="play-prompt"></p>
-          <div id="playResult" class="play-result" hidden></div>
-        </div>
-        <p id="playHowTo" class="play-howto"></p>
-        <div class="actions">
-          <button type="button" id="playQuitBtn" class="secondary" data-i18n="playQuit">Back to games</button>
-        </div>
-      </div>
     </section>
 
     <section id="creatorPanel" class="tab-panel">
     <div class="studio-hero">
       <p class="studio-kicker" data-i18n="studioKicker">Creator Studio</p>
+      <p class="lab-note" data-i18n="studioNote">A separate tool for content creators: turn a game moment into a ready-to-post package.</p>
       <h2 data-i18n="studioTitle">Last night's game. Today's post.</h2>
       <ul class="studio-gets">
         <li><strong data-i18n="get1">Hook</strong><span data-i18n="get1Sub">first 2 seconds that stop the scroll</span></li>
@@ -469,22 +502,27 @@
 
     <section id="proPanel" class="tab-panel">
       <div class="profile-intro">
-        <h2 data-i18n="proTitle">LJSportMind Pro</h2>
+        <h2 data-i18n="pricingTitle">Pricing</h2>
         <p id="proIntroText" data-i18n="proIntro">Unlock the AI Coach and AI-written posts for $4.99 a month. Free while in early access — join the waitlist.</p>
       </div>
 
       <table class="pro-table">
+        <caption class="visually-hidden" data-i18n="pricingTitle">Pricing</caption>
         <thead>
-          <tr><th data-i18n="proColFeature">Feature</th><th data-i18n="proColFree">Free</th><th data-i18n="proColPro">Pro · $4.99/mo</th></tr>
+          <tr><th scope="col" data-i18n="proColFeature">Feature</th><th scope="col" data-i18n="proColFree">Free</th><th scope="col" data-i18n="proColPro">Pro · $4.99/mo</th></tr>
         </thead>
         <tbody>
-          <tr><td data-i18n="proRowProfile">Sports Profile and account sync</td><td>✓</td><td>✓</td></tr>
-          <tr><td data-i18n="proRowMatches">Career matches and opportunity check</td><td>✓</td><td>✓</td></tr>
-          <tr><td data-i18n="proRowTemplates">Creator Studio templates</td><td>✓</td><td>✓</td></tr>
-          <tr><td data-i18n="proRowCoach">AI Coach</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
-          <tr><td data-i18n="proRowDrafts">Write with AI drafts</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowPassport">Sports Passport and evidence record</td><td>✓</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowRoles">Role discovery with explanations</td><td>✓</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowGaps">Skill-gap analysis and next steps</td><td>✓</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowOpp">Opportunity checker</td><td>✓</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowQuick">AI Coach quick read</td><td>✓</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowAi">Full AI Coach analysis and chat</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowSharpen">Sharpen with AI in Creator Studio</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowExtras">Creator Studio templates and Sports Lab</td><td>✓</td><td>✓</td></tr>
         </tbody>
       </table>
+      <p class="section-sub pricing-note" data-i18n="pricingNote">The $4.99/month Pro price is a hypothesis we're testing. Everything marked Free stays free.</p>
 
       <div id="proBuy" class="card" hidden>
         <h3 id="proBuyTitle" data-i18n="proBuyTitle">Upgrade to Pro</h3>
@@ -522,6 +560,8 @@
       <a href="https://www.tiktok.com/@ljsoccer01" target="_blank" rel="noopener noreferrer" data-i18n="footerFollow">Follow @ljsoccer01 on TikTok</a>
       <span aria-hidden="true">·</span>
       <span data-i18n="footerBy">LJSportMind by LJSOCCER</span>
+      <span aria-hidden="true">·</span>
+      <a href="tour.html" data-i18n="heroTour">How it works</a>
     </footer>
   </div>
 
@@ -544,6 +584,7 @@
       </div>
       <p id="lockMsg" class="acc-msg" hidden></p>
       <button type="button" id="lockResetBtn" class="link-btn lock-reset" hidden></button>
+      <button type="button" id="lockCancelBtn" class="link-btn lock-reset" hidden></button>
     </div>
   </div>
 
