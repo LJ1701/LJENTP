@@ -11,6 +11,7 @@ module.exports = (req, res) => {
     supabaseUrl: accounts ? process.env.SUPABASE_URL : null,
     supabaseAnonKey: accounts ? process.env.SUPABASE_ANON_KEY.trim() : null,
     checkoutEnabled: stripeEnabled(),
-    proRequiredForAi: process.env.REQUIRE_PRO_FOR_AI === "true"
+    proRequiredForAi: process.env.REQUIRE_PRO_FOR_AI === "true",
+    jobsEnabled: !!process.env.JSEARCH_API_KEY
   });
 };

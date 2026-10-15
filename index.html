@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LJSportMind</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,9 +20,8 @@
         <span class="brand-word">LJSport<span>Mind</span></span>
       </a>
       <nav class="tabs" aria-label="Main">
-        <button type="button" class="tab active" data-tab="passport" data-i18n="navDiscover">Discover</button>
-        <button type="button" class="tab" data-tab="creator" data-i18n="tabCreator">Creator Studio</button>
-        <button type="button" class="tab" data-tab="play" data-i18n="tabPlay">Sports Lab</button>
+        <button type="button" class="tab active" data-tab="passport" data-i18n="navDiscover">Career Discovery</button>
+        <a class="nav-link" href="tour.html" data-i18n="heroTour">How it works</a>
       </nav>
       <div class="topbar-actions">
         <select id="langSelect" class="lang-select" aria-label="Language">
@@ -54,7 +56,12 @@
     </div>
 
     <section id="passportPanel" class="tab-panel active">
-      <section class="hero" aria-labelledby="heroTitle">
+      <div id="welcomeBack" class="welcome-back card" hidden>
+        <p id="welcomeText"></p>
+        <a href="#planSection" class="btn-gold" data-i18n="welcomeGo">Go to my plan</a>
+      </div>
+
+      <section class="hero landing" aria-labelledby="heroTitle">
         <div class="hero-copy">
           <p class="eyebrow" data-i18n="heroEyebrow">AI sports career discovery · by LJSOCCER</p>
           <h1 id="heroTitle" data-i18n="heroTitle">Find your place in the sports industry.</h1>
@@ -62,25 +69,64 @@
           <p class="hero-audience" data-i18n="heroAudience">Built for college students and early-career professionals entering the sports industry.</p>
           <div class="hero-ctas">
             <a href="#passportStart" class="btn-gold" data-i18n="heroCta">Build my Sports Passport</a>
-            <a href="tour.html" class="btn-ghost" data-i18n="heroTour">How it works</a>
+            <a href="#exampleSection" class="text-link" data-i18n="heroSeeExample">See an example first</a>
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
           <div class="orbit orbit-1"></div>
           <div class="orbit orbit-2"></div>
+          <svg class="hero-pitch" viewBox="0 0 200 200" aria-hidden="true">
+            <rect x="20" y="20" width="160" height="160" rx="6"/>
+            <line x1="20" y1="100" x2="180" y2="100"/>
+            <circle cx="100" cy="100" r="26"/>
+            <rect x="62" y="20" width="76" height="30"/>
+            <rect x="62" y="150" width="76" height="30"/>
+          </svg>
           <img src="logo.svg" alt="" class="hero-logo">
         </div>
       </section>
 
-      <ol class="flow-steps" aria-label="How it works">
+      <section class="landing problem" aria-labelledby="problemTitle">
+        <p class="eyebrow" data-i18n="problemEyebrow">The problem</p>
+        <h2 id="problemTitle" data-i18n="problemTitle">Loving sports doesn't tell you which sports job fits you.</h2>
+        <p data-i18n="problemBody">Most students who want to work in sports don't know which roles exist beyond playing, which ones match what they've already done, or what they're missing. Job boards list openings. They don't tell you whether you fit or how to get there.</p>
+      </section>
+
+      <section class="landing" aria-labelledby="howTitle">
+        <p class="eyebrow" data-i18n="howEyebrow">How LJSportMind helps</p>
+        <h2 id="howTitle" class="visually-hidden" data-i18n="howEyebrow">How LJSportMind helps</h2>
+      <ol class="flow-steps">
         <li><span class="flow-num">1</span><strong data-i18n="step1T">Build your Passport</strong><span data-i18n="step1D">Your experience, skills and the evidence behind them.</span></li>
         <li><span class="flow-num">2</span><strong data-i18n="step2T">Discover roles</strong><span data-i18n="step2D">Sports careers matched to you, each explained.</span></li>
         <li><span class="flow-num">3</span><strong data-i18n="step3T">Close your gaps</strong><span data-i18n="step3D">Missing skills, next steps and an AI coach.</span></li>
         <li><span class="flow-num">4</span><strong data-i18n="step4T">Check opportunities</strong><span data-i18n="step4D">Test a real job posting against your Passport.</span></li>
       </ol>
+      </section>
+
+      <section class="landing example" id="exampleSection" aria-labelledby="exampleTitle">
+        <p class="eyebrow" data-i18n="exampleEyebrow">Example</p>
+        <h2 id="exampleTitle" data-i18n="exampleTitle">What you get, on a sample profile</h2>
+        <p class="section-sub" data-i18n="exampleNote">This sample profile runs through the same matching you'll use. It isn't a real person.</p>
+        <div id="exampleBody" class="example-grid"></div>
+      </section>
+
+      <section class="landing why" aria-labelledby="whyTitle">
+        <p class="eyebrow" data-i18n="whyEyebrow">Why not just ask a chatbot?</p>
+        <h2 id="whyTitle" data-i18n="whyTitle">A chatbot starts from a blank page every time. Your Passport doesn't.</h2>
+        <ul class="why-list">
+          <li><strong data-i18n="why1T">Structured career paths</strong><span data-i18n="why1D">Eight sports career paths, each with the typical skills it uses, so every recommendation is checked against the same list.</span></li>
+          <li><strong data-i18n="why2T">Evidence, not guesses</strong><span data-i18n="why2D">Each match shows which of your skills and achievements back it up, and exactly what's missing.</span></li>
+          <li><strong data-i18n="why3T">A plan you keep</strong><span data-i18n="why3D">Pick a target role and get a checklist that's saved with your Passport. Steps tick off as you add skills.</span></li>
+          <li><strong data-i18n="why4T">AI that explains, not decides</strong><span data-i18n="why4D">Matching follows rules you can see. The AI Coach explains them and helps you act, using only your Passport.</span></li>
+        </ul>
+        <p class="section-sub" data-i18n="whyLimits">Honest limits: 8 career paths today, matched by keywords. It's guidance, not a hiring prediction.</p>
+      </section>
+
 
       <h2 class="section-title" id="passportStart"><span class="step-num">1</span> <span data-i18n="secPassport">Your Sports Passport</span></h2>
       <p class="section-sub" data-i18n="secPassportSub">Your profile and the evidence behind it. Saved on this device.</p>
+      <details class="passport-editor" id="passportEditor" open>
+        <summary data-i18n="editorSummary">Edit my profile and evidence</summary>
       <div class="profile-intro">
         <div class="strength">
           <div class="strength-bar"><div id="strengthFill" class="strength-fill"></div></div>
@@ -208,6 +254,7 @@
           <button type="button" id="accDeleteBtn" class="secondary" hidden data-i18n="accDelete">Delete my saved profile</button>
         </div>
       </form>
+      </details>
 
       <section id="passportResults" hidden aria-live="polite">
         <div class="card passport-id-card">
@@ -226,11 +273,15 @@
           <div id="memBody" class="passport-progress"></div>
         </div>
 
-        <h2 class="section-title"><span class="step-num">2</span> <span data-i18n="secRoles">Roles that fit you</span></h2>
+        <h2 class="section-title"><span class="step-num">2</span> <span data-i18n="secRoles">Your career matches</span></h2>
         <p class="section-sub" data-i18n="secRolesNote">Matches compare what you listed with the skills each role typically uses. They're guidance, not a validated assessment.</p>
         <div id="matchList"></div>
 
-        <h2 class="section-title"><span class="step-num">3</span> <span data-i18n="secGaps">Close your skill gaps</span></h2>
+        <h2 class="section-title" id="planSection"><span class="step-num">3</span> <span data-i18n="secPlan">Your development plan</span></h2>
+        <div class="card plan-card" id="planCard">
+          <div id="planBody"></div>
+        </div>
+
         <div class="card gap-card">
           <h3 data-i18n="gapTitle">Skills that open the most doors</h3>
           <div id="readyBody"></div>
@@ -239,6 +290,7 @@
         <div class="card coach-card" id="coachCard">
           <div class="coach-head">
             <h3 data-i18n="coachTitle">Your AI Coach</h3>
+            <p class="coach-role" data-i18n="coachRole">Explains your matches and helps you work through your plan.</p>
             <span id="coachLabel" class="coach-label"></span>
           </div>
           <div id="coachRead" class="coach-read" dir="auto"></div>
@@ -250,6 +302,7 @@
           <div class="coach-chat">
             <p class="coach-sub" data-i18n="coachChatTitle">Ask your coach</p>
               <p id="aiProfileNote" class="profile-note" hidden></p>
+            <p id="aiOffNote" class="section-sub" hidden data-i18n="aiOffNote">The AI Coach chat turns on when the AI service is connected. Your matches, gaps and plan work without it.</p>
 
               <div class="ai-suggestions">
                 <button type="button" class="secondary ai-suggest" data-i18n="aiSuggest1">What should I do next?</button>
@@ -276,8 +329,8 @@
           </div>
         </div>
 
-        <h2 class="section-title"><span class="step-num">4</span> <span data-i18n="toolOpp">Check an opportunity</span></h2>
-        <p class="section-sub" data-i18n="toolOppSub">Paste a job and see how well you fit</p>
+        <h2 class="section-title"><span class="step-num">4</span> <span data-i18n="secPosting">Compare against a real job posting</span></h2>
+        <p class="section-sub" data-i18n="secPostingSub">Paste a posting you found. See its requirements next to your evidence, then add what's missing to your plan.</p>
         <div class="card opp-card" id="oppSection">
           <div class="field">
             <textarea id="oppText" rows="6" data-i18n-placeholder="oppPlaceholder" placeholder="Paste the job or opportunity description here…"></textarea>
@@ -515,6 +568,7 @@
           <tr><td data-i18n="prRowPassport">Sports Passport and evidence record</td><td>✓</td><td>✓</td></tr>
           <tr><td data-i18n="prRowRoles">Role discovery with explanations</td><td>✓</td><td>✓</td></tr>
           <tr><td data-i18n="prRowGaps">Skill-gap analysis and next steps</td><td>✓</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowPlan">Development plan and saved progress</td><td>✓</td><td>✓</td></tr>
           <tr><td data-i18n="prRowOpp">Opportunity checker</td><td>✓</td><td>✓</td></tr>
           <tr><td data-i18n="prRowQuick">AI Coach quick read</td><td>✓</td><td>✓</td></tr>
           <tr><td data-i18n="prRowAi">Full AI Coach analysis and chat</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
@@ -557,6 +611,10 @@
     </section>
 
     <footer class="brand-footer">
+      <p class="more-tools"><span data-i18n="moreTools">More from LJSportMind:</span>
+        <button type="button" class="tab footer-tab" data-tab="creator" data-i18n="tabCreator">Creator Studio</button>
+        <button type="button" class="tab footer-tab" data-tab="play" data-i18n="tabPlay">Sports Lab</button>
+      </p>
       <a href="https://www.tiktok.com/@ljsoccer01" target="_blank" rel="noopener noreferrer" data-i18n="footerFollow">Follow @ljsoccer01 on TikTok</a>
       <span aria-hidden="true">·</span>
       <span data-i18n="footerBy">LJSportMind by LJSOCCER</span>

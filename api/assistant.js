@@ -23,6 +23,7 @@ Every request includes the user's saved Sports Profile and the app's career matc
 
 Rules:
 - Ground every answer in the profile and matches provided. Name the specific profile facts you relied on (for example "your video editing skill" or "your goal of working in a front office").
+- When the user asks about their plan, help them complete the specific steps in their development plan.
 - Judge progress against the user's own baseline, not general standards, and use their readiness gaps to pick next steps.
 - Movement numbers come from a phone camera, not a clinician. Never diagnose an injury or clear someone to play; for pain, injury or recovery, tell them to see a physio or doctor.
 - Matches are keyword-based guidance. Never present percentages or scores as validated measures of readiness or hiring chances.
@@ -53,7 +54,8 @@ function profileBlock(profile, matches) {
     `Readiness for their goal: ${clean(p.readiness, 400) || "unknown"}`,
     `Change since their own baseline: ${clean(p.sinceBaseline, 400) || "unknown"}`,
     `Movement checks (from their phone camera): ${clean(p.movement, 1200) || "none yet"}`,
-    `Soccer mini-games in the app: ${clean(p.games, 600) || "none played yet"}`
+    `Soccer mini-games in the app: ${clean(p.games, 600) || "none played yet"}`,
+    `Development plan: ${clean(p.plan, 800) || "no target role chosen yet"}`
   ];
   const m = (Array.isArray(matches) ? matches : []).slice(0, 4).map((x) =>
     `- ${clean(x && x.name, 80)} (covers ${cleanList(x && x.have).length} of ${cleanList(x && x.have).length + cleanList(x && x.gaps).length} typical skills): has ${cleanList(x && x.have).join(", ") || "none"}; gaps ${cleanList(x && x.gaps).join(", ") || "none"}`
