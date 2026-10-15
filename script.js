@@ -1,5 +1,8 @@
 const LANG_KEY = "ljsportmind_lang";
 let currentLang = localStorage.getItem(LANG_KEY) || "en";
+// Skills and interests are detected from the experience text. "added" = picked by hand or from a
+// resume; "excluded" = removed by the user, so detection won't bring them back.
+const skillSets = { added: new Set(), excluded: new Set() };
 
 const I18N = {
   en: {
@@ -1803,7 +1806,69 @@ const I18N_V2 = {
     "proPayUnavailable": "المدفوعات ليست متاحة بعد. انضم إلى قائمة الانتظار أدناه وسنخبرك عند إطلاق Pro."
   }
 };
-Object.keys(I18N_PROFILE).forEach((lang) => Object.assign(I18N[lang], I18N_PROFILE[lang], I18N_AI[lang], I18N_ACCOUNT[lang], I18N_BRAND[lang], I18N_SIMPLE[lang], I18N_REDESIGN[lang], I18N_V2[lang]));
+const I18N_AUTO = {
+  "en": {
+    "expLabel": "Your experience (one per line)",
+    "expHint": "Write what you've actually done: teams, jobs, classes, clubs, projects. Your skills appear below automatically.",
+    "expPlaceholder": "e.g. Captain of the varsity soccer team\nRan the club's Instagram (2,000 followers)\nWrote match recaps for the student newspaper",
+    "foundTitle": "Skills and interests we found",
+    "foundEmpty": "Nothing yet. Describe what you've done above and your skills will appear here.",
+    "foundFrom": "from “{line}”",
+    "foundAdded": "added by you or your resume",
+    "removeLabel": "Remove {skill}",
+    "addMissed": "Missed something? Add it",
+    "addMissedPlaceholder": "+ Missed something? Add it",
+    "skillsLabel": "Skills",
+    "interestsLabel": "Interests",
+    "pAchLabel": "Your experience"
+  },
+  "es": {
+    "expLabel": "Tu experiencia (una por línea)",
+    "expHint": "Escribe lo que has hecho de verdad: equipos, trabajos, clases, clubes, proyectos. Tus habilidades aparecen abajo automáticamente.",
+    "expPlaceholder": "p. ej. Capitán del equipo universitario de fútbol\nManejé el Instagram del club (2,000 seguidores)\nEscribí crónicas de partidos para el periódico estudiantil",
+    "foundTitle": "Habilidades e intereses que encontramos",
+    "foundEmpty": "Aún nada. Describe arriba lo que has hecho y tus habilidades aparecerán aquí.",
+    "foundFrom": "de “{line}”",
+    "foundAdded": "añadido por ti o tu currículum",
+    "removeLabel": "Quitar {skill}",
+    "addMissed": "¿Falta algo? Añádelo",
+    "addMissedPlaceholder": "+ ¿Falta algo? Añádelo",
+    "skillsLabel": "Habilidades",
+    "interestsLabel": "Intereses",
+    "pAchLabel": "Tu experiencia"
+  },
+  "zh": {
+    "expLabel": "你的经历（每行一条）",
+    "expHint": "写下你真正做过的事：球队、工作、课程、社团、项目。你的技能会自动显示在下方。",
+    "expPlaceholder": "例如：校队足球队队长\n运营俱乐部的 Instagram（2,000 粉丝）\n为学生报撰写比赛报道",
+    "foundTitle": "我们找到的技能和兴趣",
+    "foundEmpty": "还没有。在上方描述你做过的事，技能就会出现在这里。",
+    "foundFrom": "来自“{line}”",
+    "foundAdded": "由你或你的简历添加",
+    "removeLabel": "移除{skill}",
+    "addMissed": "漏了什么？添加",
+    "addMissedPlaceholder": "+ 漏了什么？添加",
+    "skillsLabel": "技能",
+    "interestsLabel": "兴趣",
+    "pAchLabel": "你的经历"
+  },
+  "ar": {
+    "expLabel": "خبرتك (سطر لكل خبرة)",
+    "expHint": "اكتب ما فعلته فعلًا: فرق، وظائف، مواد دراسية، أندية، مشاريع. تظهر مهاراتك أدناه تلقائيًا.",
+    "expPlaceholder": "مثال: قائد فريق كرة القدم الجامعي\nأدرت حساب إنستغرام للنادي (2,000 متابع)\nكتبت ملخصات مباريات لصحيفة الطلاب",
+    "foundTitle": "المهارات والاهتمامات التي وجدناها",
+    "foundEmpty": "لا شيء بعد. صف ما فعلته في الأعلى وستظهر مهاراتك هنا.",
+    "foundFrom": "من “{line}”",
+    "foundAdded": "أضفتها أنت أو سيرتك الذاتية",
+    "removeLabel": "أزل {skill}",
+    "addMissed": "هل فاتنا شيء؟ أضفه",
+    "addMissedPlaceholder": "+ هل فاتنا شيء؟ أضفه",
+    "skillsLabel": "المهارات",
+    "interestsLabel": "الاهتمامات",
+    "pAchLabel": "خبرتك"
+  }
+};
+Object.keys(I18N_PROFILE).forEach((lang) => Object.assign(I18N[lang], I18N_PROFILE[lang], I18N_AI[lang], I18N_ACCOUNT[lang], I18N_BRAND[lang], I18N_SIMPLE[lang], I18N_REDESIGN[lang], I18N_V2[lang], I18N_AUTO[lang]));
 
 function tf(key, vars) {
   return Object.entries(vars || {}).reduce((str, [k, v]) => str.split("{" + k + "}").join(v), t(key));
@@ -3035,11 +3100,11 @@ function matchStrengthKey(m) {
 
 // Where a matched skill comes from: the profile's lists, an achievement line, or the career goal.
 function evidenceFor(value, data) {
-  if ((data.skills || []).includes(value) || (data.interests || []).includes(value)) return t("evListed");
   const table = SKILL_KEYWORDS[value] ? SKILL_KEYWORDS : INTEREST_KEYWORDS;
   const line = (data.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean)
     .find((l) => findKeywordMatches(l, { [value]: table[value] || [] }).length);
   if (line) return tf("evAch", { line: line.length > 90 ? line.slice(0, 87) + "…" : line });
+  if ((data.skills || []).includes(value) || (data.interests || []).includes(value)) return t("evListed");
   if ((GOAL_TAGS[data.goal] || []).includes(value)) return t("evGoal");
   return t("evListed");
 }
@@ -3137,7 +3202,9 @@ function collectProfile() {
     skills: getCheckedValues("pSkills"),
     interests: getCheckedValues("pInterests"),
     education: document.getElementById("pEducation").value,
-    achievements: document.getElementById("pAchievements").value.trim()
+    achievements: document.getElementById("pAchievements").value.trim(),
+    added: [...skillSets.added],
+    excluded: [...skillSets.excluded]
   };
 }
 
@@ -3146,11 +3213,12 @@ function effectiveProfile(data) {
   const interests = [...(data.interests || [])];
   const fromAch = new Set();
   if (data.achievements) {
+    const removed = data.excluded || [];
     findKeywordMatches(data.achievements, SKILL_KEYWORDS).forEach(({ value }) => {
-      if (!skills.includes(value)) { skills.push(value); fromAch.add(value); }
+      if (!skills.includes(value) && !removed.includes(value)) { skills.push(value); fromAch.add(value); }
     });
     findKeywordMatches(data.achievements, INTEREST_KEYWORDS).forEach(({ value }) => {
-      if (!interests.includes(value)) { interests.push(value); fromAch.add(value); }
+      if (!interests.includes(value) && !removed.includes(value)) { interests.push(value); fromAch.add(value); }
     });
   }
   return { skills, interests, fromAch };
@@ -3940,27 +4008,27 @@ document.getElementById("oppCheckBtn").addEventListener("click", checkOpportunit
 // ---- Resume import ----
 
 const SKILL_KEYWORDS = {
-  "video editing": ["video edit", "editing video", "premiere", "final cut", "davinci", "capcut", "after effects", "filmora", "videograph", "video production", "motion graphics"],
-  "writing": ["writing", "copywrit", "content writ", "blog", "newsletter", "storytelling", "articles", "reporting"],
-  "coaching": ["coach", "mentor", "instructor", "trainer"],
-  "data & analytics": ["analytics", "data analysis", "excel", "sql", "tableau", "power bi", "statistic", "python", "sabermetric", "data-driven"],
-  "social media": ["social media", "instagram", "tiktok", "twitter", "facebook", "youtube", "hootsuite", "community management", "content calendar"],
-  "playing experience": ["varsity", "captain", "ncaa", "division i", "all-conference", "collegiate athlete", "student-athlete", "student athlete", "semi-pro", "professional player", "club team", "travel team", "academy"],
-  "event management": ["event management", "event planning", "event coordinat", "tournament", "logistics", "game day", "gameday", "volunteer coordinat"],
-  "marketing & sales": ["marketing", "sales", "business development", "seo", "advertising", "brand partnership", "crm", "salesforce", "fundraising"],
-  "photography / design": ["photograph", "photoshop", "lightroom", "canva", "graphic design", "illustrator", "figma", "indesign"],
-  "broadcasting / on-camera": ["broadcast", "announcer", "commentat", "play-by-play", "on-camera", "on camera", "podcast", "radio", "sideline report", "voiceover", "voice-over", "color analyst"]
+  "video editing": ["edited video", "edit video", "video editor", "highlight reel", "highlight video", "highlight tape", "premiere pro", "video edit", "editing video", "premiere", "final cut", "davinci", "capcut", "after effects", "filmora", "videograph", "video production", "motion graphics"],
+  "writing": ["wrote", "written", "writer", "recap", "match report", "column", "press release", "editor of", "writing", "copywrit", "content writ", "blog", "newsletter", "storytelling", "articles", "reporting"],
+  "coaching": ["coached", "taught", "teaching", "camp counselor", "training sessions", "drills", "coach", "mentor", "instructor", "trainer"],
+  "data & analytics": ["data", "stats", "spreadsheet", "google sheets", "analyzed", "analysed", "analysis", "analytics", "data analysis", "excel", "sql", "tableau", "power bi", "statistic", "python", "sabermetric", "data-driven"],
+  "social media": ["social", "snapchat", "linkedin", "posted", "followers", "social media", "instagram", "tiktok", "twitter", "facebook", "youtube", "hootsuite", "community management", "content calendar"],
+  "playing experience": ["played", "player", "starter", "jv", "intramural", "athlete", "club soccer", "club basketball", "high school team", "varsity", "captain", "ncaa", "division i", "all-conference", "collegiate athlete", "student-athlete", "student athlete", "semi-pro", "professional player", "club team", "travel team", "academy"],
+  "event management": ["organized", "organised", "planned", "hosted", "event", "volunteer", "event management", "event planning", "event coordinat", "tournament", "logistics", "game day", "gameday", "volunteer coordinat"],
+  "marketing & sales": ["promoted", "promotion", "campaign", "ticket sales", "sponsor", "marketing", "sales", "business development", "seo", "advertising", "brand partnership", "crm", "salesforce", "fundraising"],
+  "photography / design": ["photo", "designed", "graphics", "poster", "flyer", "logo", "photograph", "photoshop", "lightroom", "canva", "graphic design", "illustrator", "figma", "indesign"],
+  "broadcasting / on-camera": ["announced", "on air", "livestream", "live stream", "commentary", "host of", "broadcast", "announcer", "commentat", "play-by-play", "on-camera", "on camera", "podcast", "radio", "sideline report", "voiceover", "voice-over", "color analyst"]
 };
 
 const INTEREST_KEYWORDS = {
-  "content creation": ["content creat", "youtuber", "youtube channel", "influencer", "vlog", "short-form", "reels", "tiktok"],
-  "coaching & player development": ["player development", "athlete development", "youth development", "talent development"],
-  "scouting & analytics": ["scout", "recruiting", "recruit", "talent evaluation", "performance analysis", "sabermetric"],
-  "journalism & broadcasting": ["journalis", "reporter", "sports writer", "broadcast", "media relations"],
-  "marketing & sponsorship": ["sponsorship", "brand partnership", "sports marketing", "partnerships"],
-  "event operations": ["event operations", "game day", "gameday", "tournament", "facilities", "venue"],
-  "front office / team ops": ["front office", "team operations", "operations coordinator", "athletic department", "athletics administration", "athletic administration", "sports management", "sport management", "general manager"],
-  "personal brand building": ["personal brand", "own brand", "influencer", "followers"]
+  "content creation": ["content", "youtube", "creator", "videos", "content creat", "youtuber", "youtube channel", "influencer", "vlog", "short-form", "reels", "tiktok"],
+  "coaching & player development": ["coach", "coaching", "mentored", "player development", "athlete development", "youth development", "talent development"],
+  "scouting & analytics": ["scouting", "film study", "opponent analysis", "scout", "recruiting", "recruit", "talent evaluation", "performance analysis", "sabermetric"],
+  "journalism & broadcasting": ["newspaper", "journal", "article", "press", "radio", "podcast", "journalis", "reporter", "sports writer", "broadcast", "media relations"],
+  "marketing & sponsorship": ["sponsor", "marketing", "sponsorship", "brand partnership", "sports marketing", "partnerships"],
+  "event operations": ["event", "operations", "stadium", "arena", "ticketing", "event operations", "game day", "gameday", "tournament", "facilities", "venue"],
+  "front office / team ops": ["athletics department", "athletic department", "team office", "operations intern", "front office", "team operations", "operations coordinator", "athletic department", "athletics administration", "athletic administration", "sports management", "sport management", "general manager"],
+  "personal brand building": ["my brand", "my channel", "personal brand", "own brand", "influencer", "followers"]
 };
 
 function findKeywordMatches(text, table) {
@@ -3979,6 +4047,85 @@ function checkPassportBoxes(containerId, values) {
     if (values.includes(el.value)) el.checked = true;
   });
 }
+
+// ---- Automatic skills ----
+
+const ALL_SKILL_VALUES = [...Object.keys(SKILL_KEYWORDS), ...Object.keys(INTEREST_KEYWORDS)];
+
+// value -> the first line of the experience text that mentions it
+function detectFromText(text) {
+  const found = new Map();
+  text.split("\n").map((l) => l.trim()).filter(Boolean).forEach((line) => {
+    [...findKeywordMatches(line, SKILL_KEYWORDS), ...findKeywordMatches(line, INTEREST_KEYWORDS)].forEach(({ value }) => {
+      if (!found.has(value)) found.set(value, line);
+    });
+  });
+  return found;
+}
+
+function loadSkillSets(data) {
+  skillSets.added = new Set();
+  skillSets.excluded = new Set((data && data.excluded) || []);
+  if (!data) return;
+  if (Array.isArray(data.added)) {
+    data.added.forEach((v) => skillSets.added.add(v));
+  } else {
+    // Profiles saved before automatic skills: keep every ticked skill that the text doesn't explain.
+    const detected = detectFromText(data.achievements || "");
+    [...(data.skills || []), ...(data.interests || [])].forEach((v) => {
+      if (!detected.has(v)) skillSets.added.add(v);
+    });
+  }
+}
+
+function syncDetectedSkills() {
+  const detected = detectFromText(document.getElementById("pAchievements").value);
+  const active = new Set([...detected.keys(), ...skillSets.added].filter((v) => !skillSets.excluded.has(v)));
+  document.querySelectorAll("#pSkills input, #pInterests input").forEach((input) => (input.checked = active.has(input.value)));
+  renderFoundChips(detected, active);
+  renderStrength();
+}
+
+function renderFoundChips(detected, active) {
+  const box = document.getElementById("foundChips");
+  box.innerHTML = "";
+  if (!active.size) box.append(el("p", "field-hint", t("foundEmpty")));
+  ALL_SKILL_VALUES.filter((v) => active.has(v)).forEach((v) => {
+    const chip = el("span", "found-chip" + (SKILL_KEYWORDS[v] ? "" : " interest"));
+    chip.append(el("strong", "", tagLabel(v)));
+    const line = detected.get(v);
+    chip.append(el("span", "found-src", line ? tf("foundFrom", { line: line.length > 48 ? line.slice(0, 45) + "…" : line }) : t("foundAdded")));
+    const remove = el("button", "found-x", "×");
+    remove.type = "button";
+    remove.setAttribute("aria-label", tf("removeLabel", { skill: tagLabel(v) }));
+    remove.addEventListener("click", () => {
+      skillSets.excluded.add(v);
+      skillSets.added.delete(v);
+      syncDetectedSkills();
+    });
+    chip.append(remove);
+    box.append(chip);
+  });
+  const select = document.getElementById("addMissed");
+  select.innerHTML = "";
+  select.append(new Option(t("addMissedPlaceholder"), ""));
+  ALL_SKILL_VALUES.filter((v) => !active.has(v)).forEach((v) => select.append(new Option(tagLabel(v), v)));
+  select.hidden = select.options.length <= 1;
+}
+
+document.getElementById("addMissed").addEventListener("change", (e) => {
+  const v = e.target.value;
+  if (!v) return;
+  skillSets.added.add(v);
+  skillSets.excluded.delete(v);
+  syncDetectedSkills();
+});
+
+let detectTimer = 0;
+document.getElementById("pAchievements").addEventListener("input", () => {
+  clearTimeout(detectTimer);
+  detectTimer = setTimeout(syncDetectedSkills, 250);
+});
 
 const resumeText = document.getElementById("resumeText");
 const resumeFile = document.getElementById("resumeFile");
@@ -4059,9 +4206,10 @@ function analyzeResume(text) {
   }
   const skills = findKeywordMatches(trimmed, SKILL_KEYWORDS);
   const interests = findKeywordMatches(trimmed, INTEREST_KEYWORDS);
-  checkPassportBoxes("pSkills", skills.map((s) => s.value));
-  checkPassportBoxes("pInterests", interests.map((i) => i.value));
-  renderStrength();
+  [...skills, ...interests].forEach(({ value }) => {
+    if (!skillSets.excluded.has(value)) skillSets.added.add(value);
+  });
+  syncDetectedSkills();
   resumeState = { type: "results", skills, interests };
   renderResume();
   return true;
@@ -4444,6 +4592,7 @@ function clearPassport() {
 
 function refreshProfileViews() {
   const data = loadPassport();
+  loadSkillSets(data);
   if (data) {
     applyPassportToForm(data);
     if (!passportResults.hidden) renderPassportSummaryAndMatches(data);
@@ -4452,7 +4601,7 @@ function refreshProfileViews() {
     passportResults.hidden = true;
   }
   renderPassportBanner(data);
-  renderStrength();
+  syncDetectedSkills();
   renderCreatorNote();
   renderAiNote();
   renderSync();
@@ -4817,6 +4966,7 @@ function applyLanguage(lang) {
   renderSync();
   renderExample();
   renderWelcome();
+  syncDetectedSkills();
   showProMsg(proMsgKey);
   renderPro();
   if (lastCaption) renderCaption();
@@ -4825,6 +4975,7 @@ function applyLanguage(lang) {
 
 langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
 
+loadSkillSets(loadPassport());
 if (loadPassport()) {
   passportResults.hidden = false;
   setReturning(true);
