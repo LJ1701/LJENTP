@@ -1305,9 +1305,9 @@ const I18N_REDESIGN = {
     "matchCovers": "Covers {have} of {total} skills this role typically uses",
     "matchWhy": "Why it fits, evidence and next steps",
     "evidenceLabel": "Evidence",
-    "evListed": "listed in your Passport",
-    "evAch": "from your achievements: “{line}”",
-    "evGoal": "from your career goal",
+    "evListed": "listed in the Passport",
+    "evAch": "from an achievement: “{line}”",
+    "evGoal": "from the career goal",
     "missingLabel": "Missing",
     "nextStepsLabel": "Next steps",
     "stepBuild": "Build {skill}: get one project or experience that shows it, then add it to your achievements.",
@@ -1374,9 +1374,9 @@ const I18N_REDESIGN = {
     "matchCovers": "Cubre {have} de {total} habilidades que suele usar este rol",
     "matchWhy": "Por qué encaja, pruebas y próximos pasos",
     "evidenceLabel": "Pruebas",
-    "evListed": "indicado en tu Pasaporte",
-    "evAch": "de tus logros: “{line}”",
-    "evGoal": "de tu objetivo profesional",
+    "evListed": "indicado en el Pasaporte",
+    "evAch": "de un logro: “{line}”",
+    "evGoal": "del objetivo profesional",
     "missingLabel": "Te falta",
     "nextStepsLabel": "Próximos pasos",
     "stepBuild": "Desarrolla {skill}: consigue un proyecto o experiencia que lo demuestre y añádelo a tus logros.",
@@ -1443,9 +1443,9 @@ const I18N_REDESIGN = {
     "matchCovers": "覆盖该职位常用 {total} 项技能中的 {have} 项",
     "matchWhy": "匹配原因、证据和下一步",
     "evidenceLabel": "证据",
-    "evListed": "已写入你的护照",
-    "evAch": "来自你的成就：“{line}”",
-    "evGoal": "来自你的职业目标",
+    "evListed": "已写入护照",
+    "evAch": "来自一项成就：“{line}”",
+    "evGoal": "来自职业目标",
     "missingLabel": "缺少",
     "nextStepsLabel": "下一步",
     "stepBuild": "提升{skill}：完成一个能体现它的项目或经历，然后写进你的成就。",
@@ -1512,9 +1512,9 @@ const I18N_REDESIGN = {
     "matchCovers": "يغطي {have} من {total} مهارات يستخدمها هذا الدور عادةً",
     "matchWhy": "سبب التوافق والأدلة والخطوات التالية",
     "evidenceLabel": "الأدلة",
-    "evListed": "مذكورة في جوازك",
-    "evAch": "من إنجازاتك: “{line}”",
-    "evGoal": "من هدفك المهني",
+    "evListed": "مذكورة في الجواز",
+    "evAch": "من أحد الإنجازات: “{line}”",
+    "evGoal": "من الهدف المهني",
     "missingLabel": "ينقصك",
     "nextStepsLabel": "الخطوات التالية",
     "stepBuild": "طوّر {skill}: احصل على مشروع أو تجربة تُظهرها، ثم أضفها إلى إنجازاتك.",
@@ -1549,7 +1549,261 @@ const I18N_REDESIGN = {
     "tagline": "اعثر على مكانك في صناعة الرياضة."
   }
 };
-Object.keys(I18N_PROFILE).forEach((lang) => Object.assign(I18N[lang], I18N_PROFILE[lang], I18N_AI[lang], I18N_ACCOUNT[lang], I18N_BRAND[lang], I18N_SIMPLE[lang], I18N_REDESIGN[lang]));
+const I18N_V2 = {
+  "en": {
+    "navDiscover": "Career Discovery",
+    "secRoles": "Your career matches",
+    "heroSeeExample": "See an example first",
+    "welcomeGo": "Go to my plan",
+    "welcomeText": "Welcome back, {name}. Your plan: {done} of {total} steps done.",
+    "welcomeNoPlan": "Welcome back, {name}. Pick a target role to start your plan.",
+    "problemEyebrow": "The problem",
+    "problemTitle": "Loving sports doesn't tell you which sports job fits you.",
+    "problemBody": "Most students who want to work in sports don't know which roles exist beyond playing, which ones match what they've already done, or what they're missing. Job boards list openings. They don't tell you whether you fit or how to get there.",
+    "howEyebrow": "How LJSportMind helps",
+    "exampleEyebrow": "Example",
+    "exampleTitle": "What you get, on a sample profile",
+    "exampleNote": "This sample profile runs through the same matching you'll use. It isn't a real person.",
+    "exSample": "Sample Passport",
+    "exTopMatch": "Top match",
+    "exGaps": "Gaps across top roles",
+    "whyEyebrow": "Why not just ask a chatbot?",
+    "whyTitle": "A chatbot starts from a blank page every time. Your Passport doesn't.",
+    "why1T": "Structured career paths",
+    "why1D": "Eight sports career paths, each with the typical skills it uses, so every recommendation is checked against the same list.",
+    "why2T": "Evidence, not guesses",
+    "why2D": "Each match shows which of your skills and achievements back it up, and exactly what's missing.",
+    "why3T": "A plan you keep",
+    "why3D": "Pick a target role and get a checklist that's saved with your Passport. Steps tick off as you add skills.",
+    "why4T": "AI that explains, not decides",
+    "why4D": "Matching follows rules you can see. The AI Coach explains them and helps you act, using only your Passport.",
+    "whyLimits": "Honest limits: 8 career paths today, matched by keywords. It's guidance, not a hiring prediction.",
+    "editorSummary": "Edit my profile and evidence",
+    "secPlan": "Your development plan",
+    "coachRole": "Explains your matches and helps you work through your plan.",
+    "secPosting": "Compare against a real job posting",
+    "secPostingSub": "Paste a posting you found. See its requirements next to your evidence, then add what's missing to your plan.",
+    "aiOffNote": "The AI Coach chat turns on when the AI service is connected. Your matches, gaps and plan work without it.",
+    "moreTools": "More from LJSportMind:",
+    "prRowPlan": "Development plan and saved progress",
+    "setTarget": "Make this my target role",
+    "isTarget": "Your target role",
+    "explainMatch": "Explain this match",
+    "askExplainMatch": "Explain why {role} fits me and what I should do first.",
+    "askStartPlan": "How should I start my development plan this week?",
+    "askEvidence": "How can I show evidence of {skill}?",
+    "askHelpStep": "Help me with this plan step: {step}",
+    "planTitle": "Development plan",
+    "planEmpty": "Pick a target role from your matches to turn its gaps into a checklist you can track.",
+    "planStartTop": "Make {role} my target",
+    "planProgress": "{done} of {total} steps done",
+    "planAuto": "now in your Passport",
+    "planEvidence": "Add an achievement that proves one of your matching skills.",
+    "planPosting": "Compare one real job posting for this role in step 4.",
+    "planApply": "Apply to one {role} opening using the job links.",
+    "planAskCoach": "Ask coach",
+    "planChange": "Change target role",
+    "planStarted": "Started {date}",
+    "strengthCount": "{n} of {total} sections filled",
+    "oppClosest": "Closest of your career paths: {role}",
+    "oppEvidenceTitle": "Requirements vs. your evidence",
+    "oppMissingEv": "not in your Passport yet",
+    "oppAddPlan": "Add missing skills to my plan",
+    "oppAdded": "Added to your plan",
+    "cReadPlan": "Your plan for {role}: {done} of {total} steps done.",
+    "proPayUnavailable": "Payments aren't live yet. Join the waitlist below and we'll tell you when Pro launches."
+  },
+  "es": {
+    "navDiscover": "Descubrir carreras",
+    "secRoles": "Tus coincidencias profesionales",
+    "heroSeeExample": "Ver un ejemplo primero",
+    "welcomeGo": "Ir a mi plan",
+    "welcomeText": "Hola de nuevo, {name}. Tu plan: {done} de {total} pasos hechos.",
+    "welcomeNoPlan": "Hola de nuevo, {name}. Elige un rol objetivo para empezar tu plan.",
+    "problemEyebrow": "El problema",
+    "problemTitle": "Que te guste el deporte no te dice qué trabajo deportivo encaja contigo.",
+    "problemBody": "La mayoría de los estudiantes que quieren trabajar en el deporte no saben qué roles existen más allá de jugar, cuáles encajan con lo que ya han hecho ni qué les falta. Los portales de empleo muestran ofertas, pero no te dicen si encajas ni cómo llegar.",
+    "howEyebrow": "Cómo te ayuda LJSportMind",
+    "exampleEyebrow": "Ejemplo",
+    "exampleTitle": "Lo que obtienes, con un perfil de ejemplo",
+    "exampleNote": "Este perfil de ejemplo pasa por el mismo sistema de coincidencias que usarás. No es una persona real.",
+    "exSample": "Pasaporte de ejemplo",
+    "exTopMatch": "Mejor coincidencia",
+    "exGaps": "Carencias en los roles principales",
+    "whyEyebrow": "¿Por qué no preguntar a un chatbot?",
+    "whyTitle": "Un chatbot empieza desde cero cada vez. Tu Pasaporte no.",
+    "why1T": "Carreras estructuradas",
+    "why1D": "Ocho carreras deportivas, cada una con las habilidades que suele usar, para que cada recomendación se compare con la misma lista.",
+    "why2T": "Pruebas, no suposiciones",
+    "why2D": "Cada coincidencia muestra qué habilidades y logros tuyos la respaldan y qué te falta exactamente.",
+    "why3T": "Un plan que conservas",
+    "why3D": "Elige un rol objetivo y obtén una lista que se guarda con tu Pasaporte. Los pasos se marcan al añadir habilidades.",
+    "why4T": "IA que explica, no decide",
+    "why4D": "Las coincidencias siguen reglas que puedes ver. El Coach IA las explica y te ayuda a actuar, usando solo tu Pasaporte.",
+    "whyLimits": "Límites honestos: hoy 8 carreras, comparadas por palabras clave. Es una guía, no una predicción de contratación.",
+    "editorSummary": "Editar mi perfil y pruebas",
+    "secPlan": "Tu plan de desarrollo",
+    "coachRole": "Explica tus coincidencias y te ayuda a avanzar en tu plan.",
+    "secPosting": "Compara con una oferta real",
+    "secPostingSub": "Pega una oferta que hayas encontrado. Mira sus requisitos junto a tus pruebas y añade lo que falte a tu plan.",
+    "aiOffNote": "El chat del Coach IA se activa cuando el servicio de IA está conectado. Tus coincidencias, carencias y plan funcionan sin él.",
+    "moreTools": "Más de LJSportMind:",
+    "prRowPlan": "Plan de desarrollo y progreso guardado",
+    "setTarget": "Hacer de este mi rol objetivo",
+    "isTarget": "Tu rol objetivo",
+    "explainMatch": "Explicar esta coincidencia",
+    "askExplainMatch": "Explica por qué {role} encaja conmigo y qué debería hacer primero.",
+    "askStartPlan": "¿Cómo empiezo mi plan de desarrollo esta semana?",
+    "askEvidence": "¿Cómo puedo demostrar {skill}?",
+    "askHelpStep": "Ayúdame con este paso del plan: {step}",
+    "planTitle": "Plan de desarrollo",
+    "planEmpty": "Elige un rol objetivo de tus coincidencias para convertir sus carencias en una lista que puedas seguir.",
+    "planStartTop": "Hacer de {role} mi objetivo",
+    "planProgress": "{done} de {total} pasos hechos",
+    "planAuto": "ya está en tu Pasaporte",
+    "planEvidence": "Añade un logro que demuestre una de tus habilidades coincidentes.",
+    "planPosting": "Compara una oferta real de este rol en el paso 4.",
+    "planApply": "Aplica a una oferta de {role} usando los enlaces de empleo.",
+    "planAskCoach": "Preguntar al coach",
+    "planChange": "Cambiar rol objetivo",
+    "planStarted": "Empezado el {date}",
+    "strengthCount": "{n} de {total} secciones completadas",
+    "oppClosest": "La más cercana de tus carreras: {role}",
+    "oppEvidenceTitle": "Requisitos frente a tus pruebas",
+    "oppMissingEv": "aún no está en tu Pasaporte",
+    "oppAddPlan": "Añadir lo que falta a mi plan",
+    "oppAdded": "Añadido a tu plan",
+    "cReadPlan": "Tu plan para {role}: {done} de {total} pasos hechos.",
+    "proPayUnavailable": "Los pagos aún no están activos. Únete a la lista de espera de abajo y te avisaremos cuando salga Pro."
+  },
+  "zh": {
+    "navDiscover": "职业探索",
+    "secRoles": "你的职业匹配",
+    "heroSeeExample": "先看一个示例",
+    "welcomeGo": "查看我的计划",
+    "welcomeText": "欢迎回来，{name}。你的计划：已完成 {total} 步中的 {done} 步。",
+    "welcomeNoPlan": "欢迎回来，{name}。选择一个目标职位来开始你的计划。",
+    "problemEyebrow": "问题",
+    "problemTitle": "喜欢体育，并不代表知道哪份体育工作适合你。",
+    "problemBody": "大多数想进入体育行业的学生不知道除了当运动员还有哪些职位，哪些和自己的经历匹配，自己又缺少什么。招聘网站只列出职位，不会告诉你是否合适、怎样达到要求。",
+    "howEyebrow": "LJSportMind 如何帮你",
+    "exampleEyebrow": "示例",
+    "exampleTitle": "用一个示例档案看看你会得到什么",
+    "exampleNote": "这个示例档案使用的就是你将使用的同一套匹配规则。它不是真实的人。",
+    "exSample": "示例护照",
+    "exTopMatch": "最佳匹配",
+    "exGaps": "主要职位中的差距",
+    "whyEyebrow": "为什么不直接问聊天机器人？",
+    "whyTitle": "聊天机器人每次都从零开始，你的护照不会。",
+    "why1T": "结构化的职业路径",
+    "why1D": "八条体育职业路径，每条都列出常用技能，所有推荐都对照同一份清单。",
+    "why2T": "依据证据，而非猜测",
+    "why2D": "每个匹配都会显示哪些技能和成就支撑它，以及具体缺少什么。",
+    "why3T": "能保存的计划",
+    "why3D": "选择目标职位，得到一份随护照保存的清单。添加技能后步骤会自动勾选。",
+    "why4T": "AI 负责解释，而不是决定",
+    "why4D": "匹配遵循你能看到的规则。AI 教练只根据你的护照解释它们并帮你行动。",
+    "whyLimits": "坦白说明：目前只有 8 条职业路径，按关键词匹配。仅供参考，不代表录用预测。",
+    "editorSummary": "编辑我的档案和证据",
+    "secPlan": "你的发展计划",
+    "coachRole": "解释你的匹配结果，并帮你完成计划。",
+    "secPosting": "对照真实的职位",
+    "secPostingSub": "粘贴你找到的职位，对照它的要求和你的证据，再把缺少的内容加入计划。",
+    "aiOffNote": "接入 AI 服务后，AI 教练对话才会开启。你的匹配、差距和计划不需要它也能使用。",
+    "moreTools": "LJSportMind 的更多工具：",
+    "prRowPlan": "发展计划和保存的进度",
+    "setTarget": "设为我的目标职位",
+    "isTarget": "你的目标职位",
+    "explainMatch": "解释这个匹配",
+    "askExplainMatch": "解释为什么{role}适合我，以及我应该先做什么。",
+    "askStartPlan": "这周我该如何开始我的发展计划？",
+    "askEvidence": "我怎样才能证明自己具备{skill}？",
+    "askHelpStep": "帮我完成这个计划步骤：{step}",
+    "planTitle": "发展计划",
+    "planEmpty": "从你的匹配中选择一个目标职位，把它的差距变成可追踪的清单。",
+    "planStartTop": "把{role}设为目标",
+    "planProgress": "已完成 {total} 步中的 {done} 步",
+    "planAuto": "已在你的护照中",
+    "planEvidence": "添加一项能证明你某个匹配技能的成就。",
+    "planPosting": "在第 4 步对照一个该职位的真实招聘信息。",
+    "planApply": "通过职位链接申请一个{role}职位。",
+    "planAskCoach": "问教练",
+    "planChange": "更换目标职位",
+    "planStarted": "开始于 {date}",
+    "strengthCount": "已填写 {total} 部分中的 {n} 部分",
+    "oppClosest": "与你最接近的职业路径：{role}",
+    "oppEvidenceTitle": "要求与你的证据对照",
+    "oppMissingEv": "尚未在你的护照中",
+    "oppAddPlan": "把缺少的技能加入我的计划",
+    "oppAdded": "已加入你的计划",
+    "cReadPlan": "你的{role}计划：已完成 {total} 步中的 {done} 步。",
+    "proPayUnavailable": "付款功能尚未上线。加入下方的候补名单，Pro 上线时我们会通知你。"
+  },
+  "ar": {
+    "navDiscover": "اكتشاف المهن",
+    "secRoles": "توافقاتك المهنية",
+    "heroSeeExample": "شاهد مثالًا أولًا",
+    "welcomeGo": "اذهب إلى خطتي",
+    "welcomeText": "أهلًا بعودتك يا {name}. خطتك: أُنجزت {done} من {total} خطوات.",
+    "welcomeNoPlan": "أهلًا بعودتك يا {name}. اختر دورًا مستهدفًا لتبدأ خطتك.",
+    "problemEyebrow": "المشكلة",
+    "problemTitle": "حبّك للرياضة لا يخبرك أي وظيفة رياضية تناسبك.",
+    "problemBody": "معظم الطلاب الذين يريدون العمل في الرياضة لا يعرفون الأدوار الموجودة بعيدًا عن اللعب، ولا أيها يناسب ما فعلوه، ولا ما ينقصهم. مواقع التوظيف تعرض الوظائف، لكنها لا تخبرك إن كنت مناسبًا ولا كيف تصل.",
+    "howEyebrow": "كيف يساعدك LJSportMind",
+    "exampleEyebrow": "مثال",
+    "exampleTitle": "ما ستحصل عليه، على ملف تجريبي",
+    "exampleNote": "يمرّ هذا الملف التجريبي عبر نظام التوافق نفسه الذي ستستخدمه. إنه ليس شخصًا حقيقيًا.",
+    "exSample": "جواز تجريبي",
+    "exTopMatch": "أفضل توافق",
+    "exGaps": "الفجوات في الأدوار الرئيسية",
+    "whyEyebrow": "لماذا لا تسأل روبوت دردشة فقط؟",
+    "whyTitle": "روبوت الدردشة يبدأ من الصفر في كل مرة. جوازك لا يفعل ذلك.",
+    "why1T": "مسارات مهنية منظَّمة",
+    "why1D": "ثمانية مسارات مهنية رياضية، لكل منها المهارات التي يستخدمها عادةً، فتُقارَن كل توصية بالقائمة نفسها.",
+    "why2T": "أدلة لا تخمينات",
+    "why2D": "يُظهر كل توافق المهارات والإنجازات التي تدعمه وما ينقصك بالضبط.",
+    "why3T": "خطة تحتفظ بها",
+    "why3D": "اختر دورًا مستهدفًا واحصل على قائمة تُحفظ مع جوازك. تُعلَّم الخطوات كلما أضفت مهارات.",
+    "why4T": "ذكاء اصطناعي يشرح ولا يقرّر",
+    "why4D": "يتبع التوافق قواعد يمكنك رؤيتها. يشرحها مدرب الذكاء الاصطناعي ويساعدك على التنفيذ باستخدام جوازك فقط.",
+    "whyLimits": "حدود بصراحة: 8 مسارات مهنية حاليًا، تُطابَق بالكلمات المفتاحية. إنها إرشاد وليست توقعًا للتوظيف.",
+    "editorSummary": "عدّل ملفي وأدلتي",
+    "secPlan": "خطة تطويرك",
+    "coachRole": "يشرح توافقاتك ويساعدك على إنجاز خطتك.",
+    "secPosting": "قارن بإعلان وظيفة حقيقي",
+    "secPostingSub": "الصق إعلانًا وجدته. شاهد متطلباته بجانب أدلتك، ثم أضف ما ينقصك إلى خطتك.",
+    "aiOffNote": "تُفعَّل دردشة مدرب الذكاء الاصطناعي عند ربط خدمة الذكاء الاصطناعي. توافقاتك وفجواتك وخطتك تعمل من دونها.",
+    "moreTools": "المزيد من LJSportMind:",
+    "prRowPlan": "خطة التطوير والتقدم المحفوظ",
+    "setTarget": "اجعل هذا دوري المستهدف",
+    "isTarget": "دورك المستهدف",
+    "explainMatch": "اشرح هذا التوافق",
+    "askExplainMatch": "اشرح لماذا يناسبني {role} وما الذي يجب أن أفعله أولًا.",
+    "askStartPlan": "كيف أبدأ خطة تطويري هذا الأسبوع؟",
+    "askEvidence": "كيف أُثبت أنني أمتلك {skill}؟",
+    "askHelpStep": "ساعدني في خطوة الخطة هذه: {step}",
+    "planTitle": "خطة التطوير",
+    "planEmpty": "اختر دورًا مستهدفًا من توافقاتك لتحويل فجواته إلى قائمة يمكنك متابعتها.",
+    "planStartTop": "اجعل {role} هدفي",
+    "planProgress": "أُنجزت {done} من {total} خطوات",
+    "planAuto": "موجودة الآن في جوازك",
+    "planEvidence": "أضف إنجازًا يُثبت إحدى مهاراتك المتوافقة.",
+    "planPosting": "قارن إعلان وظيفة حقيقيًا لهذا الدور في الخطوة 4.",
+    "planApply": "تقدّم إلى وظيفة {role} واحدة عبر روابط الوظائف.",
+    "planAskCoach": "اسأل المدرب",
+    "planChange": "غيّر الدور المستهدف",
+    "planStarted": "بدأت في {date}",
+    "strengthCount": "{n} من {total} أقسام مكتملة",
+    "oppClosest": "الأقرب من مساراتك المهنية: {role}",
+    "oppEvidenceTitle": "المتطلبات مقابل أدلتك",
+    "oppMissingEv": "ليست في جوازك بعد",
+    "oppAddPlan": "أضف المهارات الناقصة إلى خطتي",
+    "oppAdded": "أُضيفت إلى خطتك",
+    "cReadPlan": "خطتك لـ{role}: أُنجزت {done} من {total} خطوات.",
+    "proPayUnavailable": "المدفوعات ليست متاحة بعد. انضم إلى قائمة الانتظار أدناه وسنخبرك عند إطلاق Pro."
+  }
+};
+Object.keys(I18N_PROFILE).forEach((lang) => Object.assign(I18N[lang], I18N_PROFILE[lang], I18N_AI[lang], I18N_ACCOUNT[lang], I18N_BRAND[lang], I18N_SIMPLE[lang], I18N_REDESIGN[lang], I18N_V2[lang]));
 
 function tf(key, vars) {
   return Object.entries(vars || {}).reduce((str, [k, v]) => str.split("{" + k + "}").join(v), t(key));
@@ -2691,7 +2945,9 @@ function matchCareerPaths(userTags) {
     return { ...path, idx, score: matched.length, matched, fit: Math.round((100 * matched.length) / path.tags.length) };
   })
     .filter((p) => p.score > 0)
-    .sort((a, b) => b.score - a.score)
+    // Rank by how much of each role's typical skill set is covered, then by count, so short
+    // skill lists aren't penalised and long ones aren't favoured.
+    .sort((a, b) => b.score / b.tags.length - a.score / a.tags.length || b.score - a.score)
     .slice(0, 4);
 }
 
@@ -2845,6 +3101,19 @@ function renderMatches(matches, location, data, eff) {
     div.append(btn, box);
     if (openingsCache.has(`${m.idx}|${location || ""}`)) loadOpenings(m.idx, location, box, btn);
 
+    const isTarget = !!(data.plan && data.plan.roleIdx === m.idx);
+    const acts = el("div", "match-actions");
+    const target = el("button", isTarget ? "secondary" : "", t(isTarget ? "isTarget" : "setTarget"));
+    target.type = "button";
+    target.disabled = isTarget;
+    target.addEventListener("click", () => setTargetRole(m.idx));
+    const explain = el("button", "secondary", t("explainMatch"));
+    explain.type = "button";
+    explain.addEventListener("click", () => coachAsk(tf("askExplainMatch", { role: m.name })));
+    acts.append(target, explain);
+    div.querySelector(".match-detail").after(acts);
+    if (isTarget) div.classList.add("is-target");
+
     list.appendChild(div);
   });
 
@@ -2905,14 +3174,14 @@ function computeStrength(data) {
   ];
   const pct = checks.reduce((sum, [pts, ok]) => sum + (ok ? pts : 0), 0);
   const missing = checks.filter(([, ok]) => !ok).map(([, , key]) => key);
-  return { pct, next: missing[0] };
+  return { pct, next: missing[0], filled: checks.length - missing.length, total: checks.length };
 }
 
 function renderStrength() {
-  const { pct, next } = computeStrength(collectProfile());
-  document.getElementById("strengthFill").style.width = pct + "%";
+  const { next, filled, total } = computeStrength(collectProfile());
+  document.getElementById("strengthFill").style.width = (100 * filled) / total + "%";
   const saved = loadPassport();
-  const parts = [`${t("strengthLabel")}: ${pct}%`];
+  const parts = [`${t("strengthLabel")}: ${tf("strengthCount", { n: filled, total })}`];
   if (saved && saved.updatedAt) {
     parts.push(`${t("updatedLabel")}: ${new Date(saved.updatedAt).toLocaleDateString(currentLang)}`);
   }
@@ -2932,6 +3201,12 @@ function renderCreatorNote() {
   if (skill) text += " " + tf("creatorAngle", { skill: tagLabel(skill) });
   note.textContent = text;
   note.hidden = false;
+}
+
+// The career path whose typical skills overlap most with a posting's requirements.
+function closestPath(asks) {
+  const paths = CAREER_PATHS[currentLang] || CAREER_PATHS.en;
+  return paths.map((p, idx) => ({ ...p, idx, n: p.tags.filter((tg) => asks.includes(tg)).length })).sort((a, b) => b.n - a.n)[0];
 }
 
 function checkOpportunity() {
@@ -2962,19 +3237,35 @@ function checkOpportunity() {
       <h4>${verdict}</h4>
       <p>${tf("oppCovers", { have: have.length, total: asks.length })} <span class="muted">${t("oppNote")}</span></p>
       <div class="explain">
-        <p><strong>${t("oppAsks")}</strong> ${asks.map(tagLabel).join(", ")}</p>
-        <p class="have"><strong>${t("haveLabel")}</strong> ${have.length ? have.map(label).join(", ") : "-"}</p>
-        <p class="gap"><strong>${t("gapsLabel")}</strong> ${gaps.length ? `${gaps.map(tagLabel).join(", ")}. ${tf("gapAdvice", { skills: gaps.slice(0, 2).map(tagLabel).join(" / ") })}` : t("noGaps")}</p>
+        <p class="detail-label">${t("oppEvidenceTitle")}</p>
+        <ul class="req-list">${asks.map((v) => have.includes(v)
+          ? `<li class="have"><strong>${tagLabel(v)}</strong> · ${esc(evidenceFor(v, data))}</li>`
+          : `<li class="gap"><strong>${tagLabel(v)}</strong> · ${t("oppMissingEv")}</li>`).join("")}</ul>
+        <p class="muted">${tf("oppClosest", { role: closestPath(asks).name })}</p>
         ${degreeLine}
       </div>
     </div>`;
-  const ask = el("button", "secondary opp-ask", t("oppAskCoach"));
+  const acts = el("div", "match-actions");
+  if (gaps.length && loadPassport()) {
+    const add = el("button", "", t("oppAddPlan"));
+    add.type = "button";
+    add.addEventListener("click", () => {
+      updatePassport((d) => {
+        if (!d.plan) d.plan = buildPlan(closestPath(asks).idx, d);
+        gaps.forEach((skill) => {
+          if (!d.plan.items.some((i) => i.id === "skill:" + skill)) d.plan.items.unshift({ id: "skill:" + skill, kind: "skill", skill, done: false, from: "posting" });
+        });
+      });
+      add.textContent = t("oppAdded");
+      add.disabled = true;
+    });
+    acts.append(add);
+  }
+  const ask = el("button", "secondary", t("oppAskCoach"));
   ask.type = "button";
-  ask.addEventListener("click", () => {
-    openCoach();
-    askAssistant(tf("oppAskQuestion", { n: pct, asks: asks.map(tagLabel).join(", "), gaps: gaps.map(tagLabel).join(", ") || "-" }));
-  });
-  box.append(ask);
+  ask.addEventListener("click", () => coachAsk(tf("oppAskQuestion", { n: pct, asks: asks.map(tagLabel).join(", "), gaps: gaps.map(tagLabel).join(", ") || "-" })));
+  acts.append(ask);
+  box.append(acts);
 }
 
 function savePassport(data) {
@@ -3042,7 +3333,21 @@ function renderPassportSummaryAndMatches(data) {
   const userTags = [...eff.skills, ...eff.interests, ...(GOAL_TAGS[data.goal] || [])];
   renderMatches(matchCareerPaths(userTags), data.location, data, eff);
   renderPassportIdentity(data);
+  renderPlan(data);
   renderCoach(data);
+  renderCoachSuggestions(data);
+}
+
+// Coach prompts follow the user's own matches, gaps and plan.
+function renderCoachSuggestions(data) {
+  const top = topMatches(data)[0];
+  const gap = gapFrequency(data).gaps[0];
+  const questions = [
+    top ? tf("askExplainMatch", { role: top.name }) : t("aiSuggest1"),
+    data.plan ? t("askStartPlan") : t("aiSuggest2"),
+    gap ? tf("askEvidence", { skill: tagLabel(gap.skill) }) : t("aiSuggest3")
+  ];
+  document.querySelectorAll(".ai-suggest").forEach((b, i) => (b.textContent = questions[i]));
 }
 
 // ---- Passport identity: fingerprint, readiness, memory ----
@@ -3188,7 +3493,6 @@ function renderPassportIdentity(data) {
   const lines = [];
   if (gained.length) lines.push(tf("memNewTags", { n: gained.length, list: gained.map(tagLabel).join(", ") }));
   if (now.ach !== base.ach) lines.push(tf("memAch", { n: (now.ach > base.ach ? "+" : "") + (now.ach - base.ach) }));
-  if (now.strength !== base.strength) lines.push(tf("memStrength", { a: base.strength, b: now.strength }));
   const focus = readinessOf(data).path;
   const coveredAt = (snap) => focus.tags.filter((tg) => snap.tags.includes(tg)).length;
   if (coveredAt(now) !== coveredAt(base)) lines.push(tf("memCovered", { path: focus.name, a: coveredAt(base), b: coveredAt(now), total: focus.tags.length }));
@@ -3201,6 +3505,236 @@ function renderPassportIdentity(data) {
     memBody.append(ul);
   }
   memBody.append(el("p", "mem-count", tf("memSaves", { n: history.length })));
+}
+
+// ---- Development plan: a target role's gaps and next steps as a checklist saved with the Passport ----
+
+function pathByIdx(idx) {
+  return (CAREER_PATHS[currentLang] || CAREER_PATHS.en)[idx];
+}
+
+function buildPlan(idx, data) {
+  const eff = effectiveProfile(data);
+  const gaps = pathByIdx(idx).tags.filter((v) => SKILL_KEYWORDS[v] && !eff.skills.includes(v));
+  const items = [...gaps.map((skill) => ({ id: "skill:" + skill, kind: "skill", skill })),
+    { id: "next", kind: "next" }, { id: "evidence", kind: "evidence" }, { id: "posting", kind: "posting" }, { id: "apply", kind: "apply" }];
+  return { roleIdx: idx, createdAt: new Date().toISOString(), items: items.map((i) => ({ ...i, done: false })) };
+}
+
+function planItemText(item, path) {
+  if (item.kind === "skill") return tf("stepBuild", { skill: tagLabel(item.skill) });
+  if (item.kind === "next") return path.nextStep;
+  if (item.kind === "evidence") return t("planEvidence");
+  if (item.kind === "posting") return t("planPosting");
+  return tf("planApply", { role: path.name });
+}
+
+// A skill step counts as done once that skill is in the Passport (listed or found in achievements).
+function planItemState(item, eff) {
+  const auto = item.kind === "skill" && eff.skills.includes(item.skill);
+  return { done: !!item.done || auto, auto };
+}
+
+function planCounts(data) {
+  if (!data || !data.plan) return null;
+  const eff = effectiveProfile(data);
+  const done = data.plan.items.filter((i) => planItemState(i, eff).done).length;
+  return { done, total: data.plan.items.length };
+}
+
+function updatePassport(mutate) {
+  const data = loadPassport();
+  if (!data) return null;
+  mutate(data);
+  data.updatedAt = new Date().toISOString();
+  savePassport(data);
+  uploadProfile(data);
+  renderPassportSummaryAndMatches(data);
+  renderWelcome();
+  return data;
+}
+
+function setTargetRole(idx) {
+  updatePassport((data) => {
+    const keep = data.plan && data.plan.roleIdx === idx ? data.plan : null;
+    data.plan = keep || buildPlan(idx, data);
+  });
+  document.getElementById("planSection").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderPlan(data) {
+  const box = document.getElementById("planBody");
+  box.innerHTML = "";
+  if (!data.plan) {
+    box.append(el("h3", "", t("planTitle")));
+    box.append(el("p", "section-sub", t("planEmpty")));
+    const top = topMatches(data)[0];
+    if (top) {
+      const start = el("button", "", tf("planStartTop", { role: top.name }));
+      start.type = "button";
+      start.addEventListener("click", () => setTargetRole(top.idx));
+      box.append(start);
+    }
+    return;
+  }
+  const path = pathByIdx(data.plan.roleIdx);
+  const eff = effectiveProfile(data);
+  // Same evidence the match card counts: skills, interests and the career goal.
+  const have = new Set([...eff.skills, ...eff.interests, ...(GOAL_TAGS[data.goal] || [])]);
+  const counts = planCounts(data);
+  box.append(
+    el("p", "plan-role", path.name),
+    el("p", "match-covers", tf("matchCovers", { have: path.tags.filter((tg) => have.has(tg)).length, total: path.tags.length }))
+  );
+  const progress = el("div", "plan-progress");
+  progress.setAttribute("role", "img");
+  progress.setAttribute("aria-label", tf("planProgress", counts));
+  data.plan.items.forEach((item) => progress.append(el("span", planItemState(item, eff).done ? "seg on" : "seg", "")));
+  box.append(progress, el("p", "plan-count", tf("planProgress", counts)));
+
+  const list = el("ul", "plan-list");
+  data.plan.items.forEach((item, i) => {
+    const state = planItemState(item, eff);
+    const li = el("li", state.done ? "done" : "");
+    const label = el("label", "plan-item");
+    const box2 = document.createElement("input");
+    box2.type = "checkbox";
+    box2.checked = state.done;
+    box2.disabled = state.auto;
+    box2.addEventListener("change", () => updatePassport((d) => {
+      d.plan.items[i].done = box2.checked;
+      d.plan.items[i].doneAt = box2.checked ? new Date().toISOString() : null;
+    }));
+    const text = planItemText(item, path);
+    label.append(box2, el("span", "", text));
+    li.append(label);
+    if (state.auto) li.append(el("span", "plan-auto", t("planAuto")));
+    if (!state.done) {
+      const ask = el("button", "link-btn plan-ask", t("planAskCoach"));
+      ask.type = "button";
+      ask.addEventListener("click", () => coachAsk(tf("askHelpStep", { step: text })));
+      li.append(ask);
+    }
+    list.append(li);
+  });
+  box.append(list);
+  const foot = el("p", "plan-foot", tf("planStarted", { date: new Date(data.plan.createdAt).toLocaleDateString(currentLang) }) + " · ");
+  const change = el("button", "link-btn", t("planChange"));
+  change.type = "button";
+  change.addEventListener("click", () => document.getElementById("matchList").scrollIntoView({ behavior: "smooth", block: "start" }));
+  foot.append(change);
+  box.append(foot);
+}
+
+function planSummaryText(data) {
+  if (!data || !data.plan) return "";
+  const path = (CAREER_PATHS.en || [])[data.plan.roleIdx];
+  const eff = effectiveProfile(data);
+  return `Target role ${path.name}. ` + data.plan.items.map((i) => `${planItemState(i, eff).done ? "[done]" : "[todo]"} ${i.kind === "skill" ? "build " + i.skill : i.kind}`).join("; ");
+}
+
+// Ask the coach about something specific, from anywhere in the workflow.
+function coachAsk(question) {
+  document.getElementById("coachCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  if (aiUnavailable) return;
+  askAssistant(question);
+}
+
+let aiUnavailable = false;
+function setAiUnavailable() {
+  aiUnavailable = true;
+  document.getElementById("aiForm").hidden = true;
+  document.querySelector(".ai-suggestions").hidden = true;
+  document.getElementById("coachRefreshBtn").hidden = true;
+  document.getElementById("aiOffNote").hidden = false;
+}
+
+// ---- Returning visitors land on their plan, not the marketing ----
+
+function setReturning(on) {
+  document.getElementById("passportPanel").classList.toggle("returning", on);
+  document.getElementById("passportEditor").open = !on;
+  renderWelcome();
+}
+
+function renderWelcome() {
+  const box = document.getElementById("welcomeBack");
+  const data = loadPassport();
+  const on = !!data && document.getElementById("passportPanel").classList.contains("returning");
+  box.hidden = !on;
+  if (!on) return;
+  const name = data.name || t("youFallback");
+  const counts = planCounts(data);
+  document.getElementById("welcomeText").textContent = counts ? tf("welcomeText", { name, done: counts.done, total: counts.total }) : tf("welcomeNoPlan", { name });
+}
+
+// ---- Landing example: a sample profile run through the real matching ----
+
+const EXAMPLE_PROFILE = {
+  name: "Maya",
+  role: "student",
+  goal: "media",
+  education: "college",
+  skills: ["writing", "playing experience"],
+  interests: ["journalism & broadcasting", "content creation"],
+  achievements: "Wrote articles for the campus newspaper sports section\nRan the club soccer team's Instagram account\nPlayed four years of club soccer"
+};
+
+function renderExample() {
+  const box = document.getElementById("exampleBody");
+  if (!box) return;
+  box.innerHTML = "";
+  const d = EXAMPLE_PROFILE;
+  const eff = effectiveProfile(d);
+  const roleLabels = ROLE_LABELS[currentLang] || ROLE_LABELS.en;
+  const goalLabels = GOAL_LABELS[currentLang] || GOAL_LABELS.en;
+
+  const left = el("div", "card example-card");
+  left.append(el("h3", "", t("exSample")), el("p", "example-name", `${d.name} · ${roleLabels[d.role]}`), el("p", "section-sub", goalLabels[d.goal]));
+  const chips = el("div", "coverage");
+  [...d.skills, ...d.interests].forEach((v) => chips.append(el("span", "cov on", tagLabel(v))));
+  left.append(chips);
+  const ach = el("ul", "evidence");
+  d.achievements.split("\n").forEach((line) => ach.append(el("li", "", line)));
+  left.append(el("p", "detail-label", t("pAchLabel").replace(/\s*\(.*\)\s*$/, "")), ach);
+
+  const top = topMatches(d)[0];
+  const right = el("div", "card example-card example-result");
+  right.append(el("h3", "", t("exTopMatch")));
+  const head = el("div", "match-top");
+  const key = matchStrengthKey(top);
+  head.append(el("h4", "", top.name), el("span", "match-badge " + key, t(key)));
+  right.append(head);
+  const cov = el("div", "coverage");
+  top.tags.forEach((tag) => cov.append(el("span", top.matched.includes(tag) ? "cov on" : "cov", tagLabel(tag))));
+  right.append(cov, el("p", "match-covers", tf("matchCovers", { have: top.matched.length, total: top.tags.length })));
+  const ev = el("ul", "evidence");
+  top.matched.slice(0, 3).forEach((tag) => {
+    const li = el("li", "");
+    li.append(el("strong", "", tagLabel(tag)), document.createTextNode(" · " + evidenceFor(tag, d)));
+    ev.append(li);
+  });
+  right.append(el("p", "detail-label", t("evidenceLabel")), ev);
+  const gaps = top.tags.filter((v) => SKILL_KEYWORDS[v] && !eff.skills.includes(v));
+  right.append(el("p", "detail-label", t("missingLabel")), el("p", "gap", gaps.map(tagLabel).join(", ") || t("noGaps")));
+  const freq = gapFrequency(d);
+  if (freq.gaps.length) {
+    right.append(el("p", "detail-label", t("exGaps")));
+    const bars = el("ul", "gap-bars");
+    freq.gaps.slice(0, 3).forEach(({ skill, n }) => {
+      const li = el("li", "");
+      const label = el("div", "gap-bar-label");
+      label.append(el("strong", "", tagLabel(skill)), el("span", "", tf("gapIn", { n, total: freq.total })));
+      const bar = el("div", "gap-bar", "");
+      const fill = el("div", "gap-bar-fill", "");
+      fill.style.width = (100 * n) / freq.total + "%";
+      bar.append(fill);
+      li.append(label, bar);
+      bars.append(li);
+    });
+    right.append(bars);
+  }
+  box.append(left, right);
 }
 
 // Which missing skills come up most across the top matches: the skills that open the most doors.
@@ -3293,6 +3827,8 @@ function quickRead(data) {
     const gained = h[h.length - 1].tags.filter((tg) => !h[0].tags.includes(tg)).length;
     if (gained) lines.push(tf("cReadAdded", { n: gained }));
   }
+  const counts = planCounts(data);
+  if (counts) lines.push(tf("cReadPlan", { role: pathByIdx(data.plan.roleIdx).name, done: counts.done, total: counts.total }));
   if (achievementCount(data) < 2) lines.push(t("cReadEvidence"));
   return lines;
 }
@@ -3379,6 +3915,7 @@ passportForm.addEventListener("submit", (e) => {
   // Movement checks and their goal live with the profile but aren't part of the form.
   if (previous && previous.movement) data.movement = previous.movement;
   if (previous && previous.movementGoal) data.movementGoal = previous.movementGoal;
+  if (previous && previous.plan) data.plan = previous.plan;
   data.history = nextHistory(previous, data);
 
   savePassport(data);
@@ -3392,7 +3929,8 @@ passportForm.addEventListener("submit", (e) => {
   renderPassportSummaryAndMatches(data);
 
   passportResults.hidden = false;
-  passportResults.scrollIntoView({ behavior: "smooth" });
+  setReturning(true);
+  document.getElementById("passportResults").scrollIntoView({ behavior: "smooth" });
 });
 
 passportForm.addEventListener("input", renderStrength);
@@ -3660,7 +4198,8 @@ function aiContext() {
       readiness: aiReadinessText(data),
       sinceBaseline: aiBaselineText(data),
       movement: typeof moveSummaryText === "function" ? moveSummaryText(data.movement) : "",
-      games: typeof playSummaryText === "function" ? playSummaryText() : ""
+      games: typeof playSummaryText === "function" ? playSummaryText() : "",
+      plan: planSummaryText(data)
     },
     matches
   };
@@ -3743,7 +4282,11 @@ async function callAssistant(payload) {
       body: JSON.stringify({ ...payload, ...aiContext(), lang: currentLang })
     });
     const body = await res.json().catch(() => ({}));
-    if (!res.ok || !body.text) return { error: aiErrorText(body.error) };
+    if (!res.ok || !body.text) {
+      const code = body.error || (res.status === 404 ? "not_configured" : "");
+      if (code === "not_configured") setAiUnavailable();
+      return { error: aiErrorText(code), code };
+    }
     return { text: body.text };
   } catch {
     return { error: t("aiErrGeneric") };
@@ -3987,6 +4530,7 @@ async function initAccounts() {
   checkoutEnabled = !!cfg.checkoutEnabled;
   proRequiredForAi = !!cfg.proRequiredForAi;
   accountsMode = !!cfg.accountsEnabled;
+  document.body.classList.toggle("jobs-on", !!cfg.jobsEnabled);
   if (!accountsMode) {
     // No accounts: profiles stay on the device and Pro runs on a Stripe pass.
     renderPro();
@@ -4154,6 +4698,15 @@ async function loadProStatus() {
   return userIsPro;
 }
 
+// If checkout can't start (for example Stripe isn't connected), say so and offer the waitlist.
+function payFailed(endpoint, errorKey) {
+  if (endpoint === "/api/checkout") {
+    proForm.hidden = false;
+    return showProBuyMsg("proPayUnavailable");
+  }
+  showProBuyMsg(errorKey);
+}
+
 async function goToStripe(endpoint, errorKey) {
   showProBuyMsg("proRedirecting");
   try {
@@ -4167,9 +4720,9 @@ async function goToStripe(endpoint, errorKey) {
       await loadProStatus();
       return showProBuyMsg("");
     }
-    showProBuyMsg(errorKey);
+    payFailed(endpoint, errorKey);
   } catch {
-    showProBuyMsg(errorKey);
+    payFailed(endpoint, errorKey);
   }
 }
 
@@ -4262,6 +4815,8 @@ function applyLanguage(lang) {
   renderAiLog();
   renderAccount();
   renderSync();
+  renderExample();
+  renderWelcome();
   showProMsg(proMsgKey);
   renderPro();
   if (lastCaption) renderCaption();
@@ -4270,5 +4825,8 @@ function applyLanguage(lang) {
 
 langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
 
-if (loadPassport()) passportResults.hidden = false;
+if (loadPassport()) {
+  passportResults.hidden = false;
+  setReturning(true);
+}
 applyLanguage(currentLang);
