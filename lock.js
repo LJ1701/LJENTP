@@ -174,6 +174,7 @@ const lockPlayerBtn = document.getElementById("lockPlayerBtn");
 const lockBioBtn = document.getElementById("lockBioBtn");
 const lockBioSetupBtn = document.getElementById("lockBioSetupBtn");
 const lockResetBtn = document.getElementById("lockResetBtn");
+const lockCancelBtn = document.getElementById("lockCancelBtn");
 let lockState = { mode: "", msg: "", bio: false };
 let failed = 0;
 let waitUntil = 0;
@@ -202,6 +203,8 @@ function renderLock() {
   lockBioBtn.textContent = t("lkBioUnlock");
   lockResetBtn.hidden = !mode.startsWith("unlock");
   lockResetBtn.textContent = t("lkReset");
+  lockCancelBtn.hidden = !mode.startsWith("setup");
+  lockCancelBtn.textContent = t("lkNotNow");
   lockMsg.textContent = msg ? (typeof msg === "string" ? t(msg) : tf(msg.key, msg.vars)) : "";
   lockMsg.hidden = !msg;
 }
@@ -215,21 +218,31 @@ function showLock(mode, msg = "") {
 function welcome() {
   lockPlayer.value = "";
   failed = 0;
+  renderLockOffer();
   showLock("welcome");
   clearTimeout(welcomeTimer);
   welcomeTimer = setTimeout(() => showLock(""), 1600);
 }
 
-// Decide what to show: no profile = nothing to lock; profile without a lock = set one up.
+// The lock is optional: a locked Passport asks to unlock; an unlocked one just offers the lock.
 async function checkLock() {
-  if (!loadPassport()) {
-    showLock("");
+  renderLockOffer();
+  const lock = getLock();
+  if (!loadPassport() || !lock) {
+    if (lockState.mode && !lockState.mode.startsWith("setup") && lockState.mode !== "welcome") showLock("");
     return;
   }
+  showLock(lock.type === "bio" ? "unlockBio" : "unlockPlayer");
+}
+
+async function startLockSetup() {
   lockState.bio = await biometricsAvailable();
-  const lock = getLock();
-  if (!lock) showLock(lockState.bio ? "setup" : "setupPlayer");
-  else showLock(lock.type === "bio" ? "unlockBio" : "unlockPlayer");
+  showLock(lockState.bio ? "setup" : "setupPlayer");
+}
+
+function renderLockOffer() {
+  const btn = document.getElementById("lockOfferBtn");
+  if (btn) btn.hidden = !(loadPassport() && !getLock());
 }
 
 lockBioSetupBtn.addEventListener("click", async () => {
@@ -298,9 +311,9 @@ refreshProfileViews = function () {
   if (!getLock() || !loadPassport()) checkLock();
 };
 
-passportForm.addEventListener("submit", () => {
-  if (!getLock()) checkLock();
-});
+passportForm.addEventListener("submit", renderLockOffer);
+document.getElementById("lockOfferBtn").addEventListener("click", startLockSetup);
+lockCancelBtn.addEventListener("click", () => showLock(""));
 
 document.getElementById("langSelect").addEventListener("change", renderLock);
 

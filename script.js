@@ -1271,7 +1271,285 @@ const I18N_SIMPLE = {
     exampleTake: "بدوا مهزومين بين الشوطين، ثم غيّرت التبديلات كل شيء"
   }
 };
-Object.keys(I18N_PROFILE).forEach((lang) => Object.assign(I18N[lang], I18N_PROFILE[lang], I18N_AI[lang], I18N_ACCOUNT[lang], I18N_BRAND[lang], I18N_SIMPLE[lang]));
+const I18N_REDESIGN = {
+  "en": {
+    "skipToMain": "Skip to main content",
+    "navDiscover": "Discover",
+    "proOpen": "Pricing",
+    "heroEyebrow": "AI sports career discovery · by LJSOCCER",
+    "heroTitle": "Find your place in the sports industry.",
+    "heroSub": "Discover careers that fit your experience, identify your skill gaps, and build your path forward.",
+    "heroAudience": "Built for college students and early-career professionals entering the sports industry.",
+    "heroCta": "Build my Sports Passport",
+    "heroTour": "How it works",
+    "step1T": "Build your Passport",
+    "step1D": "Your experience, skills and the evidence behind them.",
+    "step2T": "Discover roles",
+    "step2D": "Sports careers matched to you, each explained.",
+    "step3T": "Close your gaps",
+    "step3D": "Missing skills, next steps and an AI coach.",
+    "step4T": "Check opportunities",
+    "step4D": "Test a real job posting against your Passport.",
+    "secPassport": "Your Sports Passport",
+    "secPassportSub": "Your profile and the evidence behind it. Saved on this device.",
+    "secRoles": "Roles that fit you",
+    "secRolesNote": "Matches compare what you listed with the skills each role typically uses. They're guidance, not a validated assessment.",
+    "secGaps": "Close your skill gaps",
+    "gapTitle": "Skills that open the most doors",
+    "gapIn": "missing in {n} of your top {total} roles",
+    "gapNone": "No skill gaps across your top roles. Add achievements to keep your evidence current.",
+    "gapHint": "Building one of these improves several matches at once.",
+    "matchStrong": "Strong match",
+    "matchGood": "Good match",
+    "matchPossible": "Possible match",
+    "matchCovers": "Covers {have} of {total} skills this role typically uses",
+    "matchWhy": "Why it fits, evidence and next steps",
+    "evidenceLabel": "Evidence",
+    "evListed": "listed in your Passport",
+    "evAch": "from your achievements: “{line}”",
+    "evGoal": "from your career goal",
+    "missingLabel": "Missing",
+    "nextStepsLabel": "Next steps",
+    "stepBuild": "Build {skill}: get one project or experience that shows it, then add it to your achievements.",
+    "strengthLabel": "Profile completeness",
+    "memStrength": "Profile completeness {a}% → {b}%",
+    "memCovered": "{path}: skills covered {a} → {b} of {total}",
+    "cReadTop": "Your closest match is {path}: you cover {have} of the {total} skills it typically uses.",
+    "cReadGapDoors": "The skill that opens the most doors: {gap}, missing in {n} of your top {total} roles.",
+    "cReadAdded": "Since your baseline you've added {n} skills or interests.",
+    "cReadEvidence": "Add a few achievements. They're the evidence that makes your matches specific.",
+    "cStepOpp": "Paste a real job posting in step 4 to test your Passport against it.",
+    "oppCovers": "You match {have} of {total} skills this posting mentions.",
+    "oppNote": "Based on keywords in the posting, so treat it as a guide, not a hiring prediction.",
+    "lockOffer": "Lock this Passport",
+    "lkNotNow": "Not now",
+    "tabCreator": "Creator Studio",
+    "studioNote": "A separate tool for content creators: turn a game moment into a ready-to-post package.",
+    "labNote": "Experimental extras: body-tracking games and movement checks. They're separate from career discovery.",
+    "pricingTitle": "Pricing",
+    "proColPro": "Pro · $4.99/mo",
+    "pricingNote": "The $4.99/month Pro price is a hypothesis we're testing. Everything marked Free stays free.",
+    "prRowPassport": "Sports Passport and evidence record",
+    "prRowRoles": "Role discovery with explanations",
+    "prRowGaps": "Skill-gap analysis and next steps",
+    "prRowOpp": "Opportunity checker",
+    "prRowQuick": "AI Coach quick read",
+    "prRowAi": "Full AI Coach analysis and chat",
+    "prRowSharpen": "Sharpen with AI in Creator Studio",
+    "prRowExtras": "Creator Studio templates and Sports Lab",
+    "proIntro": "Everything you need to discover and pursue a sports career is free. Pro adds the full AI Coach for $4.99/month, free during early access.",
+    "proIntroLive": "Everything you need to discover and pursue a sports career is free. Pro adds the full AI Coach for $4.99/month.",
+    "tagline": "Find your place in the sports industry."
+  },
+  "es": {
+    "skipToMain": "Saltar al contenido principal",
+    "navDiscover": "Descubrir",
+    "proOpen": "Precios",
+    "heroEyebrow": "Descubrimiento de carreras deportivas con IA · por LJSOCCER",
+    "heroTitle": "Encuentra tu lugar en la industria del deporte.",
+    "heroSub": "Descubre carreras que encajan con tu experiencia, identifica las habilidades que te faltan y construye tu camino.",
+    "heroAudience": "Pensado para universitarios y profesionales que empiezan su carrera en la industria del deporte.",
+    "heroCta": "Crear mi Pasaporte Deportivo",
+    "heroTour": "Cómo funciona",
+    "step1T": "Crea tu Pasaporte",
+    "step1D": "Tu experiencia, tus habilidades y las pruebas que las respaldan.",
+    "step2T": "Descubre roles",
+    "step2D": "Carreras deportivas que encajan contigo, cada una explicada.",
+    "step3T": "Cierra tus carencias",
+    "step3D": "Habilidades que faltan, próximos pasos y un coach con IA.",
+    "step4T": "Revisa oportunidades",
+    "step4D": "Compara una oferta real con tu Pasaporte.",
+    "secPassport": "Tu Pasaporte Deportivo",
+    "secPassportSub": "Tu perfil y las pruebas que lo respaldan. Se guarda en este dispositivo.",
+    "secRoles": "Roles que encajan contigo",
+    "secRolesNote": "Las coincidencias comparan lo que indicaste con las habilidades que suele usar cada rol. Son una guía, no una evaluación validada.",
+    "secGaps": "Cierra tus carencias",
+    "gapTitle": "Habilidades que abren más puertas",
+    "gapIn": "falta en {n} de tus {total} roles principales",
+    "gapNone": "No hay carencias en tus roles principales. Añade logros para mantener tus pruebas al día.",
+    "gapHint": "Desarrollar una de estas mejora varias coincidencias a la vez.",
+    "matchStrong": "Coincidencia fuerte",
+    "matchGood": "Buena coincidencia",
+    "matchPossible": "Coincidencia posible",
+    "matchCovers": "Cubre {have} de {total} habilidades que suele usar este rol",
+    "matchWhy": "Por qué encaja, pruebas y próximos pasos",
+    "evidenceLabel": "Pruebas",
+    "evListed": "indicado en tu Pasaporte",
+    "evAch": "de tus logros: “{line}”",
+    "evGoal": "de tu objetivo profesional",
+    "missingLabel": "Te falta",
+    "nextStepsLabel": "Próximos pasos",
+    "stepBuild": "Desarrolla {skill}: consigue un proyecto o experiencia que lo demuestre y añádelo a tus logros.",
+    "strengthLabel": "Perfil completado",
+    "memStrength": "Perfil completado {a}% → {b}%",
+    "memCovered": "{path}: habilidades cubiertas {a} → {b} de {total}",
+    "cReadTop": "Tu coincidencia más cercana es {path}: cubres {have} de las {total} habilidades que suele usar.",
+    "cReadGapDoors": "La habilidad que abre más puertas: {gap}, que falta en {n} de tus {total} roles principales.",
+    "cReadAdded": "Desde tu punto de partida has añadido {n} habilidades o intereses.",
+    "cReadEvidence": "Añade algunos logros. Son las pruebas que hacen tus coincidencias más precisas.",
+    "cStepOpp": "Pega una oferta real en el paso 4 para compararla con tu Pasaporte.",
+    "oppCovers": "Cumples {have} de las {total} habilidades que menciona la oferta.",
+    "oppNote": "Basado en palabras clave de la oferta: tómalo como una guía, no como una predicción de contratación.",
+    "lockOffer": "Bloquear este Pasaporte",
+    "lkNotNow": "Ahora no",
+    "tabCreator": "Estudio de Creadores",
+    "studioNote": "Una herramienta aparte para creadores: convierte una jugada en un post listo para publicar.",
+    "labNote": "Extras experimentales: juegos con seguimiento corporal y pruebas de movimiento. Están separados del descubrimiento de carreras.",
+    "pricingTitle": "Precios",
+    "proColPro": "Pro · $4.99/mes",
+    "pricingNote": "El precio de Pro de $4.99/mes es una hipótesis que estamos probando. Todo lo marcado como Gratis seguirá siendo gratis.",
+    "prRowPassport": "Pasaporte Deportivo y registro de pruebas",
+    "prRowRoles": "Descubrimiento de roles con explicaciones",
+    "prRowGaps": "Análisis de carencias y próximos pasos",
+    "prRowOpp": "Revisión de oportunidades",
+    "prRowQuick": "Lectura rápida del Coach IA",
+    "prRowAi": "Análisis completo y chat del Coach IA",
+    "prRowSharpen": "Mejorar con IA en el Estudio de Creadores",
+    "prRowExtras": "Plantillas del Estudio de Creadores y Sports Lab",
+    "proIntro": "Todo lo que necesitas para descubrir y perseguir una carrera deportiva es gratis. Pro añade el Coach IA completo por $4.99/mes, gratis durante el acceso anticipado.",
+    "proIntroLive": "Todo lo que necesitas para descubrir y perseguir una carrera deportiva es gratis. Pro añade el Coach IA completo por $4.99/mes.",
+    "tagline": "Encuentra tu lugar en la industria del deporte."
+  },
+  "zh": {
+    "skipToMain": "跳到主要内容",
+    "navDiscover": "探索",
+    "proOpen": "价格",
+    "heroEyebrow": "AI 体育职业探索 · LJSOCCER 出品",
+    "heroTitle": "在体育行业找到你的位置。",
+    "heroSub": "发现适合你经历的职业，找出你的技能差距，规划你的发展路径。",
+    "heroAudience": "专为准备进入体育行业的大学生和职场新人打造。",
+    "heroCta": "创建我的体育护照",
+    "heroTour": "如何使用",
+    "step1T": "创建你的护照",
+    "step1D": "你的经历、技能以及支撑它们的证据。",
+    "step2T": "发现职位",
+    "step2D": "与你匹配的体育职业，每个都有解释。",
+    "step3T": "弥补差距",
+    "step3D": "缺少的技能、下一步和 AI 教练。",
+    "step4T": "检查机会",
+    "step4D": "用你的护照对照真实的职位。",
+    "secPassport": "你的体育护照",
+    "secPassportSub": "你的档案及其证据，保存在此设备上。",
+    "secRoles": "适合你的职位",
+    "secRolesNote": "匹配结果是把你填写的内容与各职位常用的技能进行对比，仅供参考，并非经过验证的评估。",
+    "secGaps": "弥补你的技能差距",
+    "gapTitle": "能打开最多机会的技能",
+    "gapIn": "在你的前 {total} 个职位中有 {n} 个缺少",
+    "gapNone": "你的主要职位中没有技能差距。继续添加成就以保持证据更新。",
+    "gapHint": "掌握其中一项可以同时提升多个匹配。",
+    "matchStrong": "高度匹配",
+    "matchGood": "较好匹配",
+    "matchPossible": "可能匹配",
+    "matchCovers": "覆盖该职位常用 {total} 项技能中的 {have} 项",
+    "matchWhy": "匹配原因、证据和下一步",
+    "evidenceLabel": "证据",
+    "evListed": "已写入你的护照",
+    "evAch": "来自你的成就：“{line}”",
+    "evGoal": "来自你的职业目标",
+    "missingLabel": "缺少",
+    "nextStepsLabel": "下一步",
+    "stepBuild": "提升{skill}：完成一个能体现它的项目或经历，然后写进你的成就。",
+    "strengthLabel": "档案完整度",
+    "memStrength": "档案完整度 {a}% → {b}%",
+    "memCovered": "{path}：覆盖技能 {a} → {b}（共 {total} 项）",
+    "cReadTop": "与你最接近的职位是{path}：你覆盖了它常用的 {total} 项技能中的 {have} 项。",
+    "cReadGapDoors": "能打开最多机会的技能：{gap}，在你的前 {total} 个职位中有 {n} 个缺少。",
+    "cReadAdded": "与起点相比，你新增了 {n} 项技能或兴趣。",
+    "cReadEvidence": "添加一些成就，它们是让匹配更具体的证据。",
+    "cStepOpp": "在第 4 步粘贴一个真实职位，用你的护照对照检查。",
+    "oppCovers": "你符合该职位提到的 {total} 项技能中的 {have} 项。",
+    "oppNote": "基于职位中的关键词，仅作参考，不代表录用预测。",
+    "lockOffer": "锁定此护照",
+    "lkNotNow": "暂不",
+    "tabCreator": "创作工作室",
+    "studioNote": "为内容创作者准备的独立工具：把比赛瞬间变成可直接发布的内容。",
+    "labNote": "实验性功能：身体追踪游戏和动作测试，与职业探索分开。",
+    "pricingTitle": "价格",
+    "proColPro": "Pro · $4.99/月",
+    "pricingNote": "Pro 每月 $4.99 的价格是我们正在测试的假设。所有标为免费的功能会一直免费。",
+    "prRowPassport": "体育护照和证据记录",
+    "prRowRoles": "带解释的职位探索",
+    "prRowGaps": "技能差距分析和下一步",
+    "prRowOpp": "机会检查",
+    "prRowQuick": "AI 教练快速解读",
+    "prRowAi": "完整的 AI 教练分析和对话",
+    "prRowSharpen": "创作工作室的 AI 润色",
+    "prRowExtras": "创作工作室模板和 Sports Lab",
+    "proIntro": "探索和追求体育职业所需的一切都是免费的。Pro 每月 $4.99，增加完整的 AI 教练，抢先体验期间免费。",
+    "proIntroLive": "探索和追求体育职业所需的一切都是免费的。Pro 每月 $4.99，增加完整的 AI 教练。",
+    "tagline": "在体育行业找到你的位置。"
+  },
+  "ar": {
+    "skipToMain": "انتقل إلى المحتوى الرئيسي",
+    "navDiscover": "اكتشف",
+    "proOpen": "الأسعار",
+    "heroEyebrow": "اكتشاف المهن الرياضية بالذكاء الاصطناعي · من LJSOCCER",
+    "heroTitle": "اعثر على مكانك في صناعة الرياضة.",
+    "heroSub": "اكتشف المهن التي تناسب خبرتك، وحدّد المهارات التي تنقصك، وابنِ طريقك إلى الأمام.",
+    "heroAudience": "مصمَّم لطلاب الجامعات والمهنيين في بداية مسيرتهم الذين يدخلون صناعة الرياضة.",
+    "heroCta": "أنشئ جوازي الرياضي",
+    "heroTour": "كيف يعمل",
+    "step1T": "أنشئ جوازك",
+    "step1D": "خبرتك ومهاراتك والأدلة التي تدعمها.",
+    "step2T": "اكتشف الأدوار",
+    "step2D": "مهن رياضية تناسبك، مع شرح لكل منها.",
+    "step3T": "سدّ فجواتك",
+    "step3D": "المهارات الناقصة والخطوات التالية ومدرب بالذكاء الاصطناعي.",
+    "step4T": "افحص الفرص",
+    "step4D": "قارن إعلان وظيفة حقيقيًا بجوازك.",
+    "secPassport": "جوازك الرياضي",
+    "secPassportSub": "ملفك والأدلة التي تدعمه. محفوظ على هذا الجهاز.",
+    "secRoles": "أدوار تناسبك",
+    "secRolesNote": "تقارن التوافقات ما أدخلته بالمهارات التي يستخدمها كل دور عادةً. إنها إرشاد وليست تقييمًا موثَّقًا.",
+    "secGaps": "سدّ فجوات مهاراتك",
+    "gapTitle": "المهارات التي تفتح أكبر عدد من الأبواب",
+    "gapIn": "ناقصة في {n} من أدوارك الرئيسية الـ{total}",
+    "gapNone": "لا توجد فجوات في أدوارك الرئيسية. أضف إنجازات لتبقى أدلتك محدّثة.",
+    "gapHint": "تطوير واحدة منها يحسّن عدة توافقات في الوقت نفسه.",
+    "matchStrong": "توافق قوي",
+    "matchGood": "توافق جيد",
+    "matchPossible": "توافق محتمل",
+    "matchCovers": "يغطي {have} من {total} مهارات يستخدمها هذا الدور عادةً",
+    "matchWhy": "سبب التوافق والأدلة والخطوات التالية",
+    "evidenceLabel": "الأدلة",
+    "evListed": "مذكورة في جوازك",
+    "evAch": "من إنجازاتك: “{line}”",
+    "evGoal": "من هدفك المهني",
+    "missingLabel": "ينقصك",
+    "nextStepsLabel": "الخطوات التالية",
+    "stepBuild": "طوّر {skill}: احصل على مشروع أو تجربة تُظهرها، ثم أضفها إلى إنجازاتك.",
+    "strengthLabel": "اكتمال الملف",
+    "memStrength": "اكتمال الملف {a}% ← {b}%",
+    "memCovered": "{path}: المهارات المغطاة {a} ← {b} من {total}",
+    "cReadTop": "أقرب توافق لك هو {path}: تغطي {have} من {total} مهارات يستخدمها عادةً.",
+    "cReadGapDoors": "المهارة التي تفتح أكبر عدد من الأبواب: {gap}، ناقصة في {n} من أدوارك الرئيسية الـ{total}.",
+    "cReadAdded": "منذ نقطة بدايتك أضفت {n} مهارات أو اهتمامات.",
+    "cReadEvidence": "أضف بعض الإنجازات. إنها الأدلة التي تجعل توافقاتك أدق.",
+    "cStepOpp": "الصق إعلان وظيفة حقيقيًا في الخطوة 4 لتقارنه بجوازك.",
+    "oppCovers": "تستوفي {have} من {total} مهارات يذكرها الإعلان.",
+    "oppNote": "مبني على الكلمات المفتاحية في الإعلان، فاعتبره إرشادًا وليس توقعًا للتوظيف.",
+    "lockOffer": "اقفل هذا الجواز",
+    "lkNotNow": "ليس الآن",
+    "tabCreator": "استوديو المبدعين",
+    "studioNote": "أداة منفصلة لصنّاع المحتوى: حوّل لحظة من مباراة إلى منشور جاهز للنشر.",
+    "labNote": "إضافات تجريبية: ألعاب تتبّع الجسم وفحوصات الحركة. إنها منفصلة عن اكتشاف المهن.",
+    "pricingTitle": "الأسعار",
+    "proColPro": "Pro · ‎$4.99 شهريًا",
+    "pricingNote": "سعر Pro البالغ ‎$4.99 شهريًا فرضية نختبرها. كل ما هو مُعلَّم مجانيًا سيبقى مجانيًا.",
+    "prRowPassport": "الجواز الرياضي وسجل الأدلة",
+    "prRowRoles": "اكتشاف الأدوار مع الشرح",
+    "prRowGaps": "تحليل فجوات المهارات والخطوات التالية",
+    "prRowOpp": "فاحص الفرص",
+    "prRowQuick": "القراءة السريعة لمدرب الذكاء الاصطناعي",
+    "prRowAi": "التحليل الكامل والدردشة مع مدرب الذكاء الاصطناعي",
+    "prRowSharpen": "التحسين بالذكاء الاصطناعي في استوديو المبدعين",
+    "prRowExtras": "قوالب استوديو المبدعين وSports Lab",
+    "proIntro": "كل ما تحتاجه لاكتشاف مهنة رياضية والسعي إليها مجاني. يضيف Pro مدرب الذكاء الاصطناعي الكامل مقابل ‎$4.99 شهريًا، مجانًا خلال الوصول المبكر.",
+    "proIntroLive": "كل ما تحتاجه لاكتشاف مهنة رياضية والسعي إليها مجاني. يضيف Pro مدرب الذكاء الاصطناعي الكامل مقابل ‎$4.99 شهريًا.",
+    "tagline": "اعثر على مكانك في صناعة الرياضة."
+  }
+};
+Object.keys(I18N_PROFILE).forEach((lang) => Object.assign(I18N[lang], I18N_PROFILE[lang], I18N_AI[lang], I18N_ACCOUNT[lang], I18N_BRAND[lang], I18N_SIMPLE[lang], I18N_REDESIGN[lang]));
 
 function tf(key, vars) {
   return Object.entries(vars || {}).reduce((str, [k, v]) => str.split("{" + k + "}").join(v), t(key));
@@ -2073,13 +2351,19 @@ regenBtn.addEventListener("click", () => {
 // ---- Tab switching ----
 
 function activateTab(name) {
-  document.querySelectorAll(".tab").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
+  document.querySelectorAll(".tab").forEach((b) => {
+    b.classList.toggle("active", b.dataset.tab === name);
+    if (b.dataset.tab === name) b.setAttribute("aria-current", "page");
+    else b.removeAttribute("aria-current");
+  });
   document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.id === name + "Panel"));
 }
 
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => activateTab(tab.dataset.tab));
 });
+
+document.getElementById("brandHome").addEventListener("click", () => activateTab("passport"));
 
 // ---- Sports Passport ----
 
@@ -2483,6 +2767,32 @@ async function loadOpenings(idx, location, box, btn) {
   if (result.status === "ok") btn.hidden = true;
 }
 
+function esc(text) {
+  return String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
+// A word, not a score: how much of a role's typical skill set the profile covers.
+function matchStrengthKey(m) {
+  const r = m.matched.length / m.tags.length;
+  return r >= 0.67 ? "matchStrong" : r >= 0.34 ? "matchGood" : "matchPossible";
+}
+
+// Where a matched skill comes from: the profile's lists, an achievement line, or the career goal.
+function evidenceFor(value, data) {
+  if ((data.skills || []).includes(value) || (data.interests || []).includes(value)) return t("evListed");
+  const table = SKILL_KEYWORDS[value] ? SKILL_KEYWORDS : INTEREST_KEYWORDS;
+  const line = (data.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean)
+    .find((l) => findKeywordMatches(l, { [value]: table[value] || [] }).length);
+  if (line) return tf("evAch", { line: line.length > 90 ? line.slice(0, 87) + "…" : line });
+  if ((GOAL_TAGS[data.goal] || []).includes(value)) return t("evGoal");
+  return t("evListed");
+}
+
+function topMatches(data) {
+  const eff = effectiveProfile(data);
+  return matchCareerPaths([...eff.skills, ...eff.interests, ...(GOAL_TAGS[data.goal] || [])]);
+}
+
 function renderMatches(matches, location, data, eff) {
   const list = document.getElementById("matchList");
   list.innerHTML = "";
@@ -2490,14 +2800,38 @@ function renderMatches(matches, location, data, eff) {
     list.innerHTML = `<div class="match-card"><p>${t("selectMoreSkills")}</p></div>`;
     return;
   }
-  matches.forEach((m) => {
-    const div = document.createElement("div");
+  const goalLabels = GOAL_LABELS[currentLang] || GOAL_LABELS.en;
+  matches.forEach((m, index) => {
+    const gaps = m.tags.filter((v) => SKILL_KEYWORDS[v] && !eff.skills.includes(v));
+    const why = [tf("whyBase", { have: m.matched.map(tagLabel).join(", ") })];
+    if ((GOAL_TAGS[data.goal] || []).some((g) => m.tags.includes(g))) why.push(tf("whyGoal", { goal: goalLabels[data.goal] }));
+    const covers = tf("matchCovers", { have: m.matched.length, total: m.tags.length });
+    const key = matchStrengthKey(m);
+    const div = document.createElement("article");
     div.className = "match-card";
     div.innerHTML = `
-      <h4>${m.name}<span class="fit-badge">${tf("fitLabel", { n: m.fit })}</span></h4>
-      <p>${m.blurb}</p>
-      <p><strong>${t("nextStepLabel")}</strong> ${m.nextStep}</p>
-      ${explainMatchHTML(m, data, eff)}
+      <div class="match-top">
+        <h4>${m.name}</h4>
+        <span class="match-badge ${key}">${t(key)}</span>
+      </div>
+      <p class="match-blurb">${m.blurb}</p>
+      <div class="coverage" role="img" aria-label="${esc(covers)}">
+        ${m.tags.map((tag) => `<span class="cov${m.matched.includes(tag) ? " on" : ""}">${tagLabel(tag)}</span>`).join("")}
+      </div>
+      <p class="match-covers">${covers}</p>
+      <details class="match-detail"${index === 0 ? " open" : ""}>
+        <summary>${t("matchWhy")}</summary>
+        <div class="explain">
+          <p><strong>${t("whyLabel")}</strong> ${why.join(" ")}</p>
+          <p class="detail-label">${t("evidenceLabel")}</p>
+          <ul class="evidence">${m.matched.map((tag) => `<li><strong>${tagLabel(tag)}</strong> · ${esc(evidenceFor(tag, data))}</li>`).join("")}</ul>
+          <p class="detail-label">${t("missingLabel")}</p>
+          <p class="gap">${gaps.length ? gaps.map(tagLabel).join(", ") : t("noGaps")}</p>
+          ${EDU_KEYS[data.education] ? `<p class="have">${tf("haveEdu", { edu: t(EDU_KEYS[data.education]) })}</p>` : ""}
+          <p class="detail-label">${t("nextStepsLabel")}</p>
+          <ol class="next-steps"><li>${m.nextStep}</li>${gaps.slice(0, 2).map((g) => `<li>${tf("stepBuild", { skill: tagLabel(g) })}</li>`).join("")}</ol>
+        </div>
+      </details>
       <p class="job-links">${t("jobSearchLabel")} ${linksToHTML(jobSearchLinks(JOB_QUERIES[m.idx], location))}</p>
     `;
 
@@ -2515,7 +2849,7 @@ function renderMatches(matches, location, data, eff) {
   });
 
   const boards = document.createElement("div");
-  boards.className = "match-card";
+  boards.className = "match-card boards-card";
   boards.innerHTML = `
     <p><strong>${t("jobBoardsLabel")}</strong></p>
     <p class="job-links">${linksToHTML(SPORTS_JOB_BOARDS)}</p>
@@ -2555,32 +2889,6 @@ function effectiveProfile(data) {
 
 function achievementCount(data) {
   return (data.achievements || "").split("\n").filter((l) => l.trim()).length;
-}
-
-function explainMatchHTML(m, data, eff) {
-  const goalLabels = GOAL_LABELS[currentLang] || GOAL_LABELS.en;
-  const label = (v) => tagLabel(v) + (eff.fromAch.has(v) ? " " + t("fromAch") : "");
-
-  const why = [tf("whyBase", { have: m.matched.map(tagLabel).join(", ") })];
-  if ((GOAL_TAGS[data.goal] || []).some((g) => m.tags.includes(g))) {
-    why.push(tf("whyGoal", { goal: goalLabels[data.goal] }));
-  }
-  const ach = m.matched.filter((v) => eff.fromAch.has(v));
-  if (ach.length) why.push(tf("whyAch", { ach: ach.map(tagLabel).join(", ") }));
-
-  const have = [m.matched.map(label).join(", ")];
-  if (EDU_KEYS[data.education]) have.push(tf("haveEdu", { edu: t(EDU_KEYS[data.education]) }));
-
-  const gaps = m.tags.filter((v) => SKILL_KEYWORDS[v] && !eff.skills.includes(v));
-  const gapHTML = gaps.length
-    ? `${gaps.map(tagLabel).join(", ")}. ${tf("gapAdvice", { skills: gaps.slice(0, 2).map(tagLabel).join(" / ") })}`
-    : t("noGaps");
-
-  return `<div class="explain">
-      <p><strong>${t("whyLabel")}</strong> ${why.join(" ")}</p>
-      <p class="have"><strong>${t("haveLabel")}</strong> ${have.join(" · ")}</p>
-      <p class="gap"><strong>${t("gapsLabel")}</strong> ${gapHTML}</p>
-    </div>`;
 }
 
 function computeStrength(data) {
@@ -2651,8 +2959,8 @@ function checkOpportunity() {
 
   box.innerHTML = `
     <div class="match-card">
-      <h4>${tf("oppFit", { n: pct })}</h4>
-      <p>${verdict} ${tf("oppWhy", { n: have.length, total: asks.length })}</p>
+      <h4>${verdict}</h4>
+      <p>${tf("oppCovers", { have: have.length, total: asks.length })} <span class="muted">${t("oppNote")}</span></p>
       <div class="explain">
         <p><strong>${t("oppAsks")}</strong> ${asks.map(tagLabel).join(", ")}</p>
         <p class="have"><strong>${t("haveLabel")}</strong> ${have.length ? have.map(label).join(", ") : "-"}</p>
@@ -2864,21 +3172,7 @@ function renderPassportIdentity(data) {
   document.getElementById("fpSvg").innerHTML = fingerprintSvg(data);
   document.getElementById("fpId").textContent = tf("fpId", { id: fingerprintId(data) });
 
-  const ready = readinessOf(data);
-  const goalLabels = GOAL_LABELS[currentLang] || GOAL_LABELS.en;
-  const readyBody = document.getElementById("readyBody");
-  readyBody.innerHTML = "";
-  readyBody.append(
-    el("p", "ready-goal", tf("readyGoal", { goal: goalLabels[data.goal] || goalLabels.explore, path: ready.path.name })),
-    el("div", "ready-bar", ""),
-    el("p", "ready-level", tf("readyLevel", { n: ready.pct })),
-    el("p", "have", `${t("readyHave")} ${ready.have.map(tagLabel).join(", ") || "—"}`),
-    el("p", "gap", `${t("readyGaps")} ${ready.gaps.map(tagLabel).join(", ") || "—"}`),
-    el("p", "ready-stage", t(ready.pct >= 80 ? "readyStageReady" : ready.pct >= 40 ? "readyStageClose" : "readyStageBuilding"))
-  );
-  const fill = el("div", "ready-fill", "");
-  fill.style.width = ready.pct + "%";
-  readyBody.querySelector(".ready-bar").appendChild(fill);
+  renderGapOverview(data);
 
   const memBody = document.getElementById("memBody");
   memBody.innerHTML = "";
@@ -2895,7 +3189,9 @@ function renderPassportIdentity(data) {
   if (gained.length) lines.push(tf("memNewTags", { n: gained.length, list: gained.map(tagLabel).join(", ") }));
   if (now.ach !== base.ach) lines.push(tf("memAch", { n: (now.ach > base.ach ? "+" : "") + (now.ach - base.ach) }));
   if (now.strength !== base.strength) lines.push(tf("memStrength", { a: base.strength, b: now.strength }));
-  if (now.ready !== base.ready) lines.push(tf("memReady", { a: base.ready, b: now.ready }));
+  const focus = readinessOf(data).path;
+  const coveredAt = (snap) => focus.tags.filter((tg) => snap.tags.includes(tg)).length;
+  if (coveredAt(now) !== coveredAt(base)) lines.push(tf("memCovered", { path: focus.name, a: coveredAt(base), b: coveredAt(now), total: focus.tags.length }));
   memBody.append(el("p", "", tf("memSince", { date: day(base.at) })));
   if (!lines.length) {
     memBody.append(el("p", "", t("memNoChange")));
@@ -2905,6 +3201,40 @@ function renderPassportIdentity(data) {
     memBody.append(ul);
   }
   memBody.append(el("p", "mem-count", tf("memSaves", { n: history.length })));
+}
+
+// Which missing skills come up most across the top matches: the skills that open the most doors.
+function gapFrequency(data) {
+  const eff = effectiveProfile(data);
+  const matches = topMatches(data);
+  const counts = new Map();
+  matches.forEach((m) => m.tags.forEach((v) => {
+    if (SKILL_KEYWORDS[v] && !eff.skills.includes(v)) counts.set(v, (counts.get(v) || 0) + 1);
+  }));
+  return { total: matches.length, gaps: [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([skill, n]) => ({ skill, n })) };
+}
+
+function renderGapOverview(data) {
+  const box = document.getElementById("readyBody");
+  box.innerHTML = "";
+  const { total, gaps } = gapFrequency(data);
+  if (!total || !gaps.length) {
+    box.append(el("p", "have", t("gapNone")));
+    return;
+  }
+  const list = el("ul", "gap-bars");
+  gaps.slice(0, 5).forEach(({ skill, n }) => {
+    const li = el("li", "");
+    const label = el("div", "gap-bar-label");
+    label.append(el("strong", "", tagLabel(skill)), el("span", "", tf("gapIn", { n, total })));
+    const bar = el("div", "gap-bar", "");
+    const fill = el("div", "gap-bar-fill", "");
+    fill.style.width = (100 * n) / total + "%";
+    bar.append(fill);
+    li.append(label, bar);
+    list.append(li);
+  });
+  box.append(list, el("p", "section-sub", t("gapHint")));
 }
 
 // ---- The AI Coach: one place that analyses everything and coaches ----
@@ -2949,37 +3279,31 @@ function playInsights() {
   return out;
 }
 
-// The quick read: a few sentences that tie career readiness, body and games together.
+// The quick read: a few sentences about career fit, gaps and progress, built from the profile.
 function quickRead(data) {
+  const lines = [];
+  const top = topMatches(data)[0];
+  if (top) lines.push(tf("cReadTop", { path: top.name, have: top.matched.length, total: top.tags.length }));
   const r = readinessOf(data);
-  const lines = [tf("cReadReady", { n: r.pct, path: r.path.name })];
   if (r.have.length) lines.push(tf("cReadStrong", { list: r.have.slice(0, 3).map(tagLabel).join(", ") }));
-  if (r.gaps.length) lines.push(tf("cReadGap", { gap: tagLabel(r.gaps[0]) }));
+  const freq = gapFrequency(data);
+  if (freq.gaps.length) lines.push(tf("cReadGapDoors", { gap: tagLabel(freq.gaps[0].skill), n: freq.gaps[0].n, total: freq.total }));
   const h = Array.isArray(data.history) ? data.history : [];
-  if (h.length > 1 && h[h.length - 1].ready !== h[0].ready) lines.push(tf("cReadProgress", { a: h[0].ready, b: h[h.length - 1].ready }));
-  const moves = Array.isArray(data.movement) ? data.movement : [];
-  if (moves.length && typeof moveReadiness === "function") {
-    const last = moves[moves.length - 1];
-    const goal = data.movementGoal || last.goal;
-    const mr = moveReadiness(last, goal);
-    lines.push(tf("cReadMove", { met: mr.met, total: mr.total, goal: t(MOVE_GOAL_KEYS[goal] || "mvGoalEveryday").toLowerCase() }));
-  } else {
-    lines.push(t("cReadMoveNone"));
+  if (h.length > 1) {
+    const gained = h[h.length - 1].tags.filter((tg) => !h[0].tags.includes(tg)).length;
+    if (gained) lines.push(tf("cReadAdded", { n: gained }));
   }
-  const games = playInsights();
-  if (games.length) lines.push(tf("cReadGames", { list: games.join("; ") }));
+  if (achievementCount(data) < 2) lines.push(t("cReadEvidence"));
   return lines;
 }
 
 function coachSteps(data) {
-  const r = readinessOf(data);
   const steps = [];
-  if (r.gaps.length) steps.push(tf("cStepGap", { gap: tagLabel(r.gaps[0]), path: r.path.name }));
-  if (r.path.nextStep) steps.push(r.path.nextStep);
-  const moves = Array.isArray(data.movement) ? data.movement : [];
-  steps.push(t(moves.length ? "cStepMoveAgain" : "cStepMove"));
-  const play = typeof loadPlay === "function" ? loadPlay() : {};
-  if (!play.reactions || !play.reactions.length) steps.push(t("cStepPlay"));
+  const freq = gapFrequency(data);
+  const top = topMatches(data)[0];
+  if (freq.gaps.length) steps.push(tf("stepBuild", { skill: tagLabel(freq.gaps[0].skill) }));
+  if (top && top.nextStep) steps.push(top.nextStep);
+  steps.push(t("cStepOpp"));
   const next = computeStrength(data).next;
   if (next) steps.push(tf("cStepProfile", { field: t(next).replace(/\s*\(.*\)\s*$/, "").toLowerCase() }));
   return steps.slice(0, 4);
@@ -3345,7 +3669,7 @@ function aiContext() {
 // Plain-English summaries for the AI, independent of the interface language.
 function aiReadinessText(data) {
   const r = readinessOf(data);
-  return `${r.pct}% ready for ${r.path.name}. Has: ${r.have.join(", ") || "none"}. Gaps: ${r.gaps.join(", ") || "none"}.`;
+  return `Closest goal path ${r.path.name}: covers ${r.have.length} of ${r.needs.length} of its typical skills. Has: ${r.have.join(", ") || "none"}. Gaps: ${r.gaps.join(", ") || "none"}.`;
 }
 
 function aiBaselineText(data) {
@@ -3353,7 +3677,7 @@ function aiBaselineText(data) {
   if (h.length < 2) return "Only a baseline so far.";
   const base = h[0], now = h[h.length - 1];
   const gained = now.tags.filter((tg) => !base.tags.includes(tg));
-  return `Baseline ${String(base.at).slice(0, 10)}: readiness ${base.ready}% -> ${now.ready}%, profile strength ${base.strength}% -> ${now.strength}%, achievements ${base.ach} -> ${now.ach}, new skills/interests: ${gained.join(", ") || "none"}.`;
+  return `Baseline ${String(base.at).slice(0, 10)}: achievements ${base.ach} -> ${now.ach}, new skills/interests since then: ${gained.join(", ") || "none"}.`;
 }
 
 function renderAiNote() {
