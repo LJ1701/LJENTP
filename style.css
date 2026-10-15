@@ -1296,3 +1296,38 @@ body.jobs-on .openings-btn { display: inline-flex; }
   .example-grid, .why-list { grid-template-columns: 1fr; }
   .welcome-back { flex-direction: column; align-items: flex-start; }
 }
+
+
+/* Automatic skills */
+.field-hint { margin: 0 0 8px; font-size: 13px; color: var(--muted); line-height: 1.45; }
+.field-label { margin: 0 0 8px; font-size: 13px; color: #b9bcc4; font-weight: 500; }
+.found-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.found-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(233, 199, 123, 0.45);
+  background: rgba(233, 199, 123, 0.1);
+  font-size: 13px;
+  max-width: 100%;
+}
+.found-chip.interest { border-color: rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.04); }
+.found-chip strong { color: var(--accent-light); font-weight: 700; white-space: nowrap; }
+.found-chip.interest strong { color: var(--text); }
+.found-src { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.found-x {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1;
+  box-shadow: none !important;
+}
+.found-x:hover { background: rgba(240, 120, 100, 0.25); transform: none; }
+.add-missed { max-width: 320px; }

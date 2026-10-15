@@ -192,6 +192,18 @@
         </div>
 
         <div class="field">
+          <label for="pAchievements" data-i18n="expLabel">Your experience (one per line)</label>
+          <p class="field-hint" data-i18n="expHint">Write what you've actually done: teams, jobs, classes, clubs, projects. Your skills appear below automatically.</p>
+          <textarea id="pAchievements" rows="5" data-i18n-placeholder="expPlaceholder" placeholder="e.g. Captain of the varsity soccer team&#10;Ran the club's Instagram (2,000 followers)&#10;Wrote match recaps for the student newspaper"></textarea>
+        </div>
+
+        <div class="field found-field">
+          <p class="field-label" data-i18n="foundTitle">Skills and interests we found</p>
+          <div id="foundChips" class="found-chips" aria-live="polite"></div>
+          <label for="addMissed" class="visually-hidden" data-i18n="addMissed">Missed something? Add it</label>
+          <select id="addMissed" class="add-missed"></select>
+          <div hidden>
+        <div class="field">
           <label data-i18n="skillsLabel">Skills (select all that apply)</label>
           <div class="checkbox-grid" id="pSkills">
             <label class="checkbox-pill"><input type="checkbox" value="video editing"> <span data-i18n="skillVideoEditing">Video Editing</span></label>
@@ -221,6 +233,9 @@
           </div>
         </div>
 
+          </div>
+        </div>
+
         <div class="field">
           <label for="pGoal" data-i18n="pGoalLabel">Career goal</label>
           <select id="pGoal">
@@ -244,10 +259,6 @@
           </select>
         </div>
 
-        <div class="field">
-          <label for="pAchievements" data-i18n="pAchLabel">Achievements &amp; experiences (one per line)</label>
-          <textarea id="pAchievements" rows="4" data-i18n-placeholder="pAchPlaceholder" placeholder="e.g. Captain of the varsity soccer team&#10;Ran Instagram for my club (2,000 followers)"></textarea>
-        </div>
 
         <div class="actions">
           <button type="submit" data-i18n="findMyFit">Find My Fit</button>
