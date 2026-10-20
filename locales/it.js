@@ -1,6 +1,6 @@
 registerLocale("it", {
   ui: {
-    heroLiveNow: "Live e ultimi risultati", heroCta2: "Apri LIVE Studio", hfBodyT: "Body ID", hfBodyD: "Scansione di 20 secondi. Il tuo corpo diventa il tuo ID.", hfCareerT: "La tua carriera", hfCareerD: "Ruoli nello sport adatti a te, con un piano.", hfLiveT: "LIVE Studio", hfLiveD: "Partite vere trasformate in post e video.",
+    heroCta2: "Vedi le carriere adatte a me", hfBodyT: "Body ID", hfBodyD: "Scansione di 20 secondi. Il tuo corpo diventa il tuo ID.", hfCareerT: "La tua carriera", hfCareerD: "Ruoli nello sport adatti a te, con un piano.", hfPlanT: "Il tuo piano", hfPlanD: "Un percorso salvato, passo dopo passo, verso la tua carriera obiettivo.",
     lsAiOff: "La scrittura con IA si attiva quando la chiave IA del sito è collegata.", lsAiHooks: "Ganci", lsAiCaptions: "Didascalie", lsAiPrompts: "Domande per i commenti", lsUse: "Usa questa", lsInUse: "In uso ✓", lsAiAgain: "Altre opzioni",
     lsBaseball: "Baseball", lsHockey: "Hockey",
     summaryLine: "{name}{loc} è {role} e punta a {goal}.",
@@ -133,7 +133,7 @@ registerLocale("it", {
     prRowGaps: "Analisi delle lacune e prossimi passi", prRowOpp: "Verifica offerte",
     prRowQuick: "Lettura rapida del Coach IA", prRowAi: "Analisi e chat complete del Coach IA",
     prRowSharpen: "Resoconti di fine partita migliorati con IA nel LIVE Studio",
-    prRowExtras: "Post live del LIVE Studio e scansione LJ Body ID",
+    prRowExtras: "Scansione LJ Body ID e punti di attenzione per la salute",
     welcomeGo: "Vai al mio piano", welcomeText: "Bentornato, {name}. Il tuo piano: {done} passi su {total} completati.",
     welcomeNoPlan: "Bentornato, {name}. Scegli una carriera obiettivo per iniziare il piano.",
     exSample: "Passaporto di esempio", exTopMatch: "Abbinamento migliore", exGaps: "Lacune nelle carriere principali",
@@ -270,7 +270,7 @@ registerLocale("it", {
     lkResetConfirm: "Questo rimuove il profilo da questo dispositivo. Se hai effettuato l'accesso, tornerà al prossimo accesso. Continuare?"
   },
   careers: [
-    { name: "Content creator sportivo", blurb: "Costruire un pubblico trasformando partite, giocatori e opinioni in contenuti brevi.", nextStep: "Pubblica un momento live a settimana con il LIVE Studio." },
+    { name: "Content creator sportivo", blurb: "Costruire un pubblico trasformando partite, giocatori e opinioni in contenuti brevi.", nextStep: "Pubblica un contenuto su una partita ogni settimana e aggiungilo ai tuoi risultati." },
     { name: "Video / media analyst di squadra", blurb: "Analizzare i video delle partite per supportare staff tecnico e crescita dei giocatori.", nextStep: "Offriti di montare video per un club locale o universitario e crea uno showreel." },
     { name: "Giornalista / telecronista sportivo", blurb: "Raccontare partite e storie scrivendo o davanti alla telecamera.", nextStep: "Avvia una serie di resoconti post-partita con la tua voce." },
     { name: "Allenatore giovanile o di club", blurb: "Far crescere i giocatori sfruttando la tua esperienza in campo.", nextStep: "Fai il vice allenatore volontario in una squadra giovanile o di club locale." },

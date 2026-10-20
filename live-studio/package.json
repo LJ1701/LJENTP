@@ -1,0 +1,8 @@
+{
+  "name": "lj-live-studio",
+  "private": true,
+  "description": "LJ LIVE Studio by LJSOCCER: real games turned into ready-to-post videos.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.132.0"
+  }
+}

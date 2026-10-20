@@ -1,6 +1,6 @@
 registerLocale("pt", {
   ui: {
-    heroLiveNow: "Ao vivo e recentes", heroCta2: "Abrir o LIVE Studio", hfBodyT: "Body ID", hfBodyD: "Scan de 20 segundos. Seu corpo vira sua ID.", hfCareerT: "Sua carreira", hfCareerD: "Carreiras no esporte que combinam com você, com um plano.", hfLiveT: "LIVE Studio", hfLiveD: "Jogos reais viram posts e vídeos.",
+    heroCta2: "Ver minhas carreiras compatíveis", hfBodyT: "Body ID", hfBodyD: "Scan de 20 segundos. Seu corpo vira sua ID.", hfCareerT: "Sua carreira", hfCareerD: "Carreiras no esporte que combinam com você, com um plano.", hfPlanT: "Seu plano", hfPlanD: "Um caminho salvo, passo a passo, até sua carreira alvo.",
     lsAiOff: "A escrita com IA liga quando a chave de IA do site estiver conectada.", lsAiHooks: "Ganchos", lsAiCaptions: "Legendas", lsAiPrompts: "Perguntas para comentários", lsUse: "Usar esta", lsInUse: "Em uso ✓", lsAiAgain: "Mais opções",
     lsBaseball: "Beisebol", lsHockey: "Hóquei",
     summaryLine: "{name}{loc} é {role} e quer {goal}.",
@@ -133,7 +133,7 @@ registerLocale("pt", {
     prRowGaps: "Análise de lacunas e próximos passos", prRowOpp: "Verificador de vagas",
     prRowQuick: "Leitura rápida do Coach IA", prRowAi: "Análise e chat completos do Coach IA",
     prRowSharpen: "Resumos de fim de jogo melhorados com IA no LIVE Studio",
-    prRowExtras: "Posts ao vivo do LIVE Studio e scan LJ Body ID",
+    prRowExtras: "Scan LJ Body ID e pontos de atenção à saúde",
     welcomeGo: "Ir para meu plano", welcomeText: "Bem-vindo de volta, {name}. Seu plano: {done} de {total} passos feitos.",
     welcomeNoPlan: "Bem-vindo de volta, {name}. Escolha uma carreira alvo para começar seu plano.",
     exSample: "Passaporte de exemplo", exTopMatch: "Melhor combinação", exGaps: "Lacunas nas melhores carreiras",
@@ -270,7 +270,7 @@ registerLocale("pt", {
     lkResetConfirm: "Isso remove o perfil deste aparelho. Se você estiver conectado, ele volta quando entrar de novo. Continuar?"
   },
   careers: [
-    { name: "Criador de conteúdo esportivo", blurb: "Construir uma audiência transformando jogos, jogadores e opiniões em conteúdo curto.", nextStep: "Poste um momento ao vivo por semana com o LIVE Studio." },
+    { name: "Criador de conteúdo esportivo", blurb: "Construir uma audiência transformando jogos, jogadores e opiniões em conteúdo curto.", nextStep: "Publique um conteúdo sobre um jogo por semana e adicione às suas conquistas." },
     { name: "Analista de vídeo / mídia do time", blurb: "Analisar vídeos de jogos para apoiar a comissão técnica e o desenvolvimento de atletas.", nextStep: "Ofereça-se para editar vídeos de um clube local ou universitário e montar um portfólio." },
     { name: "Jornalista / narrador esportivo", blurb: "Cobrir jogos e histórias escrevendo ou em frente às câmeras.", nextStep: "Comece uma série de resumos pós-jogo com a sua voz." },
     { name: "Treinador de base ou clube", blurb: "Desenvolver jogadores diretamente usando sua vivência como atleta.", nextStep: "Seja auxiliar técnico voluntário em um time local de base." },

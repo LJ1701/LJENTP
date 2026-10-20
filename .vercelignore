@@ -8,3 +8,5 @@ supabase/
 .claude/
 .env*
 .DS_Store
+
+live-studio/

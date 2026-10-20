@@ -1,6 +1,6 @@
 registerLocale("fr", {
   ui: {
-    heroLiveNow: "En direct et derniers résultats", heroCta2: "Ouvrir LIVE Studio", hfBodyT: "Body ID", hfBodyD: "Scan de 20 secondes. Ton corps devient ton ID.", hfCareerT: "Ton métier", hfCareerD: "Les métiers du sport faits pour toi, avec un plan.", hfLiveT: "LIVE Studio", hfLiveD: "De vrais matchs transformés en posts et vidéos.",
+    heroCta2: "Voir mes métiers compatibles", hfBodyT: "Body ID", hfBodyD: "Scan de 20 secondes. Ton corps devient ton ID.", hfCareerT: "Ton métier", hfCareerD: "Les métiers du sport faits pour toi, avec un plan.", hfPlanT: "Ton plan", hfPlanD: "Un parcours enregistré, étape par étape, vers ton métier cible.",
     lsAiOff: "L'écriture IA s'active dès que la clé IA du site est connectée.", lsAiHooks: "Accroches", lsAiCaptions: "Légendes", lsAiPrompts: "Questions pour les commentaires", lsUse: "Utiliser", lsInUse: "Utilisé ✓", lsAiAgain: "Plus d'options",
     lsBaseball: "Baseball", lsHockey: "Hockey",
     summaryLine: "{name}{loc} est {role} et vise : {goal}.",
@@ -134,7 +134,7 @@ registerLocale("fr", {
     prRowGaps: "Analyse des manques et prochaines étapes", prRowOpp: "Vérificateur d'offres",
     prRowQuick: "Lecture rapide du Coach IA", prRowAi: "Analyse et chat complets du Coach IA",
     prRowSharpen: "Récaps de fin de match améliorés par IA dans LIVE Studio",
-    prRowExtras: "Posts en direct LIVE Studio et scan LJ Body ID",
+    prRowExtras: "Scan LJ Body ID et points de vigilance santé",
     welcomeGo: "Voir mon plan", welcomeText: "Bon retour, {name}. Ton plan : {done} étapes sur {total} faites.",
     welcomeNoPlan: "Bon retour, {name}. Choisis un métier cible pour lancer ton plan.",
     exSample: "Passeport exemple", exTopMatch: "Meilleur métier", exGaps: "Manques dans les meilleurs métiers",
@@ -271,7 +271,7 @@ registerLocale("fr", {
     lkResetConfirm: "Cela supprime le profil de cet appareil. Si tu es connecté, il reviendra à ta prochaine connexion. Continuer ?"
   },
   careers: [
-    { name: "Créateur de contenu sportif", blurb: "Construire une audience en transformant matchs, joueurs et opinions en contenus courts.", nextStep: "Publie un moment en direct par semaine avec LIVE Studio." },
+    { name: "Créateur de contenu sportif", blurb: "Construire une audience en transformant matchs, joueurs et opinions en contenus courts.", nextStep: "Publie un contenu sur un match chaque semaine et ajoute-le à tes réalisations." },
     { name: "Analyste vidéo / médias d'équipe", blurb: "Décortiquer les images de match pour aider le staff et le développement des joueurs.", nextStep: "Propose de monter les vidéos d'un club local ou universitaire pour te constituer un showreel." },
     { name: "Journaliste / commentateur sportif", blurb: "Raconter les matchs et les histoires par l'écrit ou face caméra.", nextStep: "Lance une série de comptes rendus d'après-match avec ta propre voix." },
     { name: "Entraîneur jeunes ou club", blurb: "Faire progresser les joueurs directement grâce à ton vécu de joueur.", nextStep: "Deviens entraîneur adjoint bénévole dans un club local." },

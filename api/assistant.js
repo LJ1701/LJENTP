@@ -91,41 +91,7 @@ Gaps: then 1-2 short "- " bullets.
 This week: then 3 numbered, concrete steps I can do in the next 7 days.
 Use counts like "4 of 6 skills", never percentages or scores. Only use facts from my data.`;
 
-// LIVE Studio: several post options built only from the live feed's facts.
-const LIVE_SYSTEM = `You write social posts for a sports creator (@ljsoccer01) while a game is happening.
-
-Rules:
-- The facts you are given come from an official live score feed. They are the ONLY facts you may use. Never add players, statistics, minutes, records, injuries, quotes, transfers or history that are not listed.
-- A "take" is the creator's own opinion. Keep it clearly framed as their opinion, never as fact.
-- Hype is welcome in tone, but every factual claim must match the facts exactly.
-- Return ONLY a JSON object, no other text, in this shape:
-{"hooks": [3 strings], "captions": [3 strings], "prompts": [3 strings]}
-- hooks: punchy on-screen first lines, each under 70 characters.
-- captions: one hype, one news-style, one very short; each under 230 characters and ending with 2-4 relevant hashtags.
-- prompts: comment questions that invite replies, each under 40 characters and ending with 👇.`;
-
-function livePrompt(live) {
-  const l = live && typeof live === "object" ? live : {};
-  const lines = [
-    `Sport: ${clean(l.sport, 40)}`,
-    `Competition: ${clean(l.league, 60) || "unknown"}`,
-    `Game: ${clean(l.home, 60)} v ${clean(l.away, 60)}`,
-    `Status: ${clean(l.status, 60)}`,
-    `Official score now: ${clean(l.score, 40)}`,
-    `Post type: ${clean(l.type, 40)}`
-  ];
-  if (l.moment) lines.push(`This moment: ${clean(l.moment, 300)}`);
-  if (l.events) lines.push(`Key events from the feed: ${clean(l.events, 900)}`);
-  if (l.story) lines.push(`Result story (computed from the events): ${clean(l.story, 60)}`);
-  if (l.take) lines.push(`The creator's take (opinion): ${clean(l.take, 240)}`);
-  return `<facts>\n${lines.join("\n")}\n</facts>\n\nWrite 3 hooks, 3 captions and 3 comment prompts for this post.`;
-}
-
 function buildMessages(body) {
-  if (body.mode === "live") {
-    const lang = LANG_NAMES[body.lang] || LANG_NAMES.en;
-    return [{ role: "user", content: `${livePrompt(body.live)}\n\nWrite everything in ${lang}.` }];
-  }
   const lang = LANG_NAMES[body.lang] || LANG_NAMES.en;
   const context = `${profileBlock(body.profile, body.matches)}\n\nReply in ${lang}.`;
 
@@ -181,7 +147,7 @@ module.exports = async (req, res) => {
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
       output_config: { effort: "low" },
-      system: body.mode === "live" ? LIVE_SYSTEM : SYSTEM,
+      system: SYSTEM,
       messages
     });
 

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LJ LIVE Studio</title>
+<meta name="description" content="Follow a real game and post it as it happens. Goals, red cards and score changes from a live score feed become ready-to-post 9:16 videos and captions automatically. By LJSOCCER.">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="live-app">
+  <header class="topbar app-chrome">
+    <div class="topbar-inner">
+      <a class="brand" href="./" aria-label="LJ LIVE Studio">
+        <img src="logo.svg" alt="" class="brand-logo" width="40" height="40">
+        <span class="brand-word">LJ <span>LIVE</span> Studio</span>
+      </a>
+      <span class="live-app-tag" data-i18n="appTag">by LJSOCCER · @ljsoccer01</span>
+      <div class="topbar-actions">
+        <select id="langSelect" class="lang-select" aria-label="Language"></select>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap" id="main">
+    <section class="hero-x live-ticker-wrap">
+        <div class="hero-ticker" id="heroTicker" hidden>
+          <span class="hero-ticker-label"><span class="ls-dot"></span><span data-i18n="heroLiveNow">Live &amp; latest</span></span>
+          <div class="hero-ticker-track"><div class="hero-ticker-run" id="heroTickerRun"></div></div>
+        </div>
+    </section>
+
+    <section id="creatorPanel" class="tab-panel active">
+      <div class="ls-hero">
+        <p class="ls-kicker"><span class="ls-dot"></span><span data-i18n="lsKicker">LIVE Studio</span></p>
+        <h2 data-i18n="lsTitle">Post the moment while it's still happening.</h2>
+      </div>
+
+      <div id="lsSetup" class="card ls-setup">
+        <div class="ls-pick-head">
+          <h3 data-i18n="lsPick">Pick a real game</h3>
+          <span class="ls-list-meta"><span id="lsListUpdated" class="ls-updated"></span> <button type="button" id="lsRefreshBtn" class="link-btn" data-i18n="lsRefresh">Refresh</button></span>
+        </div>
+        <div class="ls-sports" role="tablist">
+          <button type="button" class="ls-sport active" data-sport="soccer" data-i18n="lsSoccer">Soccer</button>
+          <button type="button" class="ls-sport" data-sport="basketball" data-i18n="lsBasketball">Basketball</button>
+          <button type="button" class="ls-sport" data-sport="football" data-i18n="lsFootball">Football</button>
+          <button type="button" class="ls-sport" data-sport="baseball" data-i18n="lsBaseball">Baseball</button>
+          <button type="button" class="ls-sport" data-sport="hockey" data-i18n="lsHockey">Hockey</button>
+        </div>
+        <div id="lsGames" class="ls-games"></div>
+        <p class="ls-source" data-i18n="lsSourceNote">Scores and events come from ESPN's public live scoreboard.</p>
+      </div>
+
+      <div id="lsLive" hidden>
+        <div class="ls-board">
+          <div class="ls-team">
+            <span id="lsHomeName" class="ls-team-name"></span>
+            <strong id="lsHomeScore" class="ls-score">0</strong>
+          </div>
+          <div class="ls-mid">
+            <span class="ls-pill"><span class="ls-dot"></span><span id="lsStatus">LIVE</span></span>
+            <span id="lsClock" class="ls-clock"></span>
+          </div>
+          <div class="ls-team">
+            <span id="lsAwayName" class="ls-team-name"></span>
+            <strong id="lsAwayScore" class="ls-score">0</strong>
+          </div>
+        </div>
+        <p class="ls-status-note"><span id="lsStatusNote"></span> <span id="lsUpdated" class="ls-updated"></span></p>
+
+        <p class="ls-sub" data-i18n="lsCreate">Create</p>
+        <div id="lsCreateTiles" class="ls-tiles"></div>
+        <div id="lsSpotRow" class="ls-chips" hidden></div>
+        <form id="lsTakeForm" class="ls-take">
+          <input type="text" id="lsTakeInput" data-i18n-placeholder="lsTakePh" placeholder="Your hot take…" maxlength="120">
+          <button type="submit" class="secondary" data-i18n="lsTakeBtn">Add my take</button>
+        </form>
+
+        <div class="ls-style-row">
+          <span class="ls-sub" data-i18n="lsStyle">Style</span>
+          <div id="lsStyles" class="ls-chips"></div>
+        </div>
+        <div id="lsDrop"></div>
+        <div class="ls-tl-head">
+          <h3 class="ls-tl-title" data-i18n="lsTimeline">Timeline</h3>
+          <button type="button" id="lsNewBtn" class="link-btn" data-i18n="lsNewMatch">Pick another game</button>
+        </div>
+        <ol id="lsTimeline" class="ls-timeline"></ol>
+        <p class="ls-source" data-i18n="lsSourceNote">Scores and events come from ESPN's public live scoreboard.</p>
+      </div>
+    </section>
+
+
+    <footer class="brand-footer app-chrome">
+      <a href="https://www.tiktok.com/@ljsoccer01" target="_blank" rel="noopener noreferrer">TikTok @ljsoccer01</a>
+      <span aria-hidden="true">·</span>
+      <span data-i18n="alsoFrom">Also from LJSOCCER:</span> <a href="https://ljentp.vercel.app">LJSportMind</a>
+    </footer>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="studio.js"></script>
+</body>
+</html>

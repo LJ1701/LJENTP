@@ -1,6 +1,6 @@
 registerLocale("ja", {
   ui: {
-    heroLiveNow: "ライブ＆最新", heroCta2: "LIVE Studioを開く", hfBodyT: "Body ID", hfBodyD: "20秒のスキャンで、体があなたのIDに。", hfCareerT: "キャリアマッチ", hfCareerD: "あなたに合うスポーツの仕事と、そのプラン。", hfLiveT: "LIVE Studio", hfLiveD: "実際の試合を投稿と動画に。",
+    heroCta2: "自分に合うキャリアを見る", hfBodyT: "Body ID", hfBodyD: "20秒のスキャンで、体があなたのIDに。", hfCareerT: "キャリアマッチ", hfCareerD: "あなたに合うスポーツの仕事と、そのプラン。", hfPlanT: "あなたのプラン", hfPlanD: "目標の職種までの、保存されたステップごとの道筋。",
     lsAiOff: "サイトのAIキーが接続されるとAIライティングが使えます。", lsAiHooks: "フック", lsAiCaptions: "キャプション", lsAiPrompts: "コメント用の質問", lsUse: "これを使う", lsInUse: "使用中 ✓", lsAiAgain: "ほかの案",
     lsBaseball: "野球", lsHockey: "アイスホッケー",
     summaryLine: "{name}{loc}は{role}で、目標は「{goal}」です。",
@@ -133,7 +133,7 @@ registerLocale("ja", {
     prRowGaps: "スキル不足の分析と次のステップ", prRowOpp: "求人チェッカー",
     prRowQuick: "AIコーチのクイック分析", prRowAi: "AIコーチの詳細分析とチャット",
     prRowSharpen: "LIVE Studioで試合後のまとめをAIで磨く",
-    prRowExtras: "LIVE Studioのライブ投稿とLJ Body IDスキャン",
+    prRowExtras: "LJ Body IDスキャンと健康チェックリスト",
     welcomeGo: "プランへ", welcomeText: "おかえりなさい、{name}さん。プラン：{total}ステップ中{done}ステップ完了。",
     welcomeNoPlan: "おかえりなさい、{name}さん。目標の職種を選んでプランを始めましょう。",
     exSample: "サンプルパスポート", exTopMatch: "一番のマッチ", exGaps: "上位キャリアでの不足",
@@ -270,7 +270,7 @@ registerLocale("ja", {
     lkResetConfirm: "この端末からプロフィールを削除します。ログインしている場合は、次回ログイン時に戻ります。続けますか？"
   },
   careers: [
-    { name: "スポーツコンテンツクリエイター", blurb: "試合や選手、意見を短い動画にしてファンを増やす仕事。", nextStep: "LIVE Studioで毎週1回ライブの瞬間を投稿しよう。" },
+    { name: "スポーツコンテンツクリエイター", blurb: "試合や選手、意見を短い動画にしてファンを増やす仕事。", nextStep: "毎週1本、試合についてのコンテンツを投稿して実績に追加しよう。" },
     { name: "チームの映像・メディアアナリスト", blurb: "試合映像を分析し、指導や選手育成を支える仕事。", nextStep: "地元のクラブや大学チームの映像編集を引き受けて、作品集をつくろう。" },
     { name: "スポーツ記者・キャスター", blurb: "文章やカメラの前で試合やストーリーを伝える仕事。", nextStep: "自分の言葉で試合レポートのシリーズを始めよう。" },
     { name: "ユース・クラブのコーチ", blurb: "自分の競技経験を生かして選手を直接育てる仕事。", nextStep: "地元のユースやクラブチームでアシスタントコーチのボランティアをしよう。" },
