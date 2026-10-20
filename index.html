@@ -22,14 +22,10 @@
       <nav class="tabs" aria-label="Main">
         <button type="button" class="tab active" data-tab="passport" data-i18n="navDiscover">Career Discovery</button>
         <button type="button" class="tab tab-live" data-tab="creator"><span class="ls-dot"></span><span data-i18n="tabCreator">LIVE Studio</span></button>
-        <a class="nav-link" href="tour.html" data-i18n="heroTour">How it works</a>
       </nav>
       <div class="topbar-actions">
         <select id="langSelect" class="lang-select" aria-label="Language">
           <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="zh">中文</option>
-          <option value="ar">العربية</option>
         </select>
         <button type="button" id="proOpenBtn" class="pro-btn" data-i18n="proOpen">Pricing</button>
       </div>
@@ -62,26 +58,49 @@
         <a href="#planSection" class="btn-gold" data-i18n="welcomeGo">Go to my plan</a>
       </div>
 
-      <section class="hero landing" aria-labelledby="heroTitle">
-        <div class="hero-copy">
-          <p class="eyebrow" data-i18n="heroEyebrow">AI sports career discovery · by LJSOCCER</p>
-          <h1 id="heroTitle" data-i18n="heroTitle">Find your place in the sports industry.</h1>
-          <p class="hero-sub" data-i18n="heroSub">Discover careers that fit your experience, identify your skill gaps, and build your path forward.</p>
-          <div class="hero-ctas">
-            <a href="#bodyIdStart" class="btn-gold" data-i18n="heroCta">Start with my Body ID</a>
+      <section class="hero-x landing" aria-labelledby="heroTitle">
+        <div class="hero-ticker" id="heroTicker" hidden>
+          <span class="hero-ticker-label"><span class="ls-dot"></span><span data-i18n="heroLiveNow">Live &amp; latest</span></span>
+          <div class="hero-ticker-track"><div class="hero-ticker-run" id="heroTickerRun"></div></div>
+        </div>
+        <div class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow" data-i18n="heroEyebrow">AI sports career discovery · by LJSOCCER</p>
+            <h1 id="heroTitle" class="hero-title" data-i18n="heroTitle">Find your place in the sports industry.</h1>
+            <p class="hero-sub" data-i18n="heroSub">Discover careers that fit your experience, identify your skill gaps, and build your path forward.</p>
+            <div class="hero-ctas">
+              <a href="#bodyIdStart" class="btn-gold btn-big" data-i18n="heroCta">Start with my Body ID</a>
+              <button type="button" id="heroLiveBtn" class="btn-ghost btn-big hero-live-btn"><span class="ls-dot"></span><span data-i18n="heroCta2">Open LIVE Studio</span></button>
+            </div>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="orbit orbit-1"></div>
+            <div class="orbit orbit-2"></div>
+            <svg class="hero-sig" viewBox="0 0 200 200">
+              <polygon class="hero-sig-grid" points="100,30 150,50 170,100 150,150 100,170 50,150 30,100 50,50"/>
+              <polygon class="hero-sig-grid" points="100,65 125,75 135,100 125,125 100,135 75,125 65,100 75,75"/>
+              <polygon class="hero-sig-shape" points="100,42 142,58 158,100 136,138 100,152 62,140 48,100 66,62"/>
+            </svg>
+            <img src="logo.svg" alt="" class="hero-logo">
+            <div class="hero-scan"></div>
           </div>
         </div>
-        <div class="hero-visual" aria-hidden="true">
-          <div class="orbit orbit-1"></div>
-          <div class="orbit orbit-2"></div>
-          <svg class="hero-pitch" viewBox="0 0 200 200" aria-hidden="true">
-            <rect x="20" y="20" width="160" height="160" rx="6"/>
-            <line x1="20" y1="100" x2="180" y2="100"/>
-            <circle cx="100" cy="100" r="26"/>
-            <rect x="62" y="20" width="76" height="30"/>
-            <rect x="62" y="150" width="76" height="30"/>
-          </svg>
-          <img src="logo.svg" alt="" class="hero-logo">
+        <div class="hero-features">
+          <a href="#bodyIdStart" class="hero-feature">
+            <span class="hero-feature-icon">🧬</span>
+            <strong data-i18n="hfBodyT">Body ID</strong>
+            <span data-i18n="hfBodyD">20-second scan. Your body becomes your ID.</span>
+          </a>
+          <a href="#passportStart" class="hero-feature">
+            <span class="hero-feature-icon">🧭</span>
+            <strong data-i18n="hfCareerT">Career match</strong>
+            <span data-i18n="hfCareerD">Sports roles that fit you, with a plan.</span>
+          </a>
+          <button type="button" class="hero-feature" id="heroLiveCard">
+            <span class="hero-feature-icon">🔴</span>
+            <strong data-i18n="hfLiveT">LIVE Studio</strong>
+            <span data-i18n="hfLiveD">Real games turned into posts and videos.</span>
+          </button>
         </div>
       </section>
 
@@ -295,8 +314,8 @@
             <p class="coach-sub" data-i18n="cStepsTitle">Your next steps</p>
             <ol id="coachSteps" class="coach-steps"></ol>
           </div>
-          <button type="button" id="coachRefreshBtn" class="link-btn coach-refresh" data-i18n="coachRefresh">Refresh analysis</button>
-          <div class="coach-chat">
+          <button type="button" id="coachRefreshBtn" class="link-btn coach-refresh needs-ai" data-i18n="coachRefresh">Refresh analysis</button>
+          <div class="coach-chat needs-ai">
             <p class="coach-sub" data-i18n="coachChatTitle">Ask your coach</p>
               <p id="aiProfileNote" class="profile-note" hidden></p>
             <p id="aiOffNote" class="section-sub" hidden data-i18n="aiOffNote">The AI Coach chat turns on when the AI service is connected. Your matches, gaps and plan work without it.</p>
@@ -348,12 +367,14 @@
       <div id="lsSetup" class="card ls-setup">
         <div class="ls-pick-head">
           <h3 data-i18n="lsPick">Pick a real game</h3>
-          <button type="button" id="lsRefreshBtn" class="link-btn" data-i18n="lsRefresh">Refresh</button>
+          <span class="ls-list-meta"><span id="lsListUpdated" class="ls-updated"></span> <button type="button" id="lsRefreshBtn" class="link-btn" data-i18n="lsRefresh">Refresh</button></span>
         </div>
         <div class="ls-sports" role="tablist">
           <button type="button" class="ls-sport active" data-sport="soccer" data-i18n="lsSoccer">Soccer</button>
           <button type="button" class="ls-sport" data-sport="basketball" data-i18n="lsBasketball">Basketball</button>
           <button type="button" class="ls-sport" data-sport="football" data-i18n="lsFootball">Football</button>
+          <button type="button" class="ls-sport" data-sport="baseball" data-i18n="lsBaseball">Baseball</button>
+          <button type="button" class="ls-sport" data-sport="hockey" data-i18n="lsHockey">Hockey</button>
         </div>
         <div id="lsGames" class="ls-games"></div>
         <p class="ls-source" data-i18n="lsSourceNote">Scores and events come from ESPN's public live scoreboard.</p>
@@ -462,8 +483,6 @@
       <a href="https://www.tiktok.com/@ljsoccer01" target="_blank" rel="noopener noreferrer" data-i18n="footerFollow">Follow @ljsoccer01 on TikTok</a>
       <span aria-hidden="true">·</span>
       <span data-i18n="footerBy">LJSportMind by LJSOCCER</span>
-      <span aria-hidden="true">·</span>
-      <a href="tour.html" data-i18n="heroTour">How it works</a>
     </footer>
   </div>
 

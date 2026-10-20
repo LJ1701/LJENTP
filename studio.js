@@ -5,15 +5,20 @@
 // Your own hot take can be added, and it is always labelled as your opinion.
 
 const LIVE_KEY = "ljsportmind_live";
-const LIVE_POLL_MS = 20000;
+const LIVE_POLL_MS = 15000;
+const LIST_POLL_MS = 30000;
 const LS_EMOJI = {
-  goal: "⚽", red: "🟥", score: { basketball: "🏀", football: "🏈", soccer: "⚽" }, update: "📊", take: "💬", ft: "🏁",
+  goal: "⚽", red: "🟥", score: { basketball: "🏀", football: "🏈", soccer: "⚽", baseball: "⚾", hockey: "🏒" }, update: "📊", take: "💬", ft: "🏁",
   matchday: "🗓️", poll: "🗳️", spot: "⭐"
 };
-const LS_HASH = { soccer: "#football #soccer", basketball: "#basketball", football: "#football" };
+const LS_HASH = { soccer: "#football #soccer", basketball: "#basketball", football: "#football", baseball: "#baseball", hockey: "#hockey" };
 
 const I18N_LIVE = {
   en: {
+    heroLiveNow: "Live & latest", heroCta2: "Open LIVE Studio", hfBodyT: "Body ID", hfBodyD: "20-second scan. Your body becomes your ID.", hfCareerT: "Career match", hfCareerD: "Sports roles that fit you, with a plan.", hfLiveT: "LIVE Studio", hfLiveD: "Real games turned into posts and videos.",
+    lsAiOff: "AI writing turns on once the site's AI key is connected.", lsAiHooks: "Hooks", lsAiCaptions: "Captions", lsAiPrompts: "Comment prompts", lsUse: "Use this", lsInUse: "In use ✓", lsAiAgain: "More options",
+    lsBaseball: "Baseball", lsHockey: "Hockey",
+    lsCredit: "Made by @ljsoccer01",
     lsCreate: "Create", lsStyle: "Style",
     stHype: "Hype", stBreaking: "Breaking", stClean: "Clean", stTeam: "Team colours",
     cMatchday: "Matchday", cPoll: "Prediction poll", cScore: "Score now", cSpot: "Player spotlight", cRecap: "Full-time recap",
@@ -79,6 +84,10 @@ const I18N_LIVE = {
     r_story_comeback: "Comeback", r_story_late: "Late winner", r_story_blowout: "Big win", r_story_draw: "Draw", r_story_win: "Win"
   },
   es: {
+    heroLiveNow: "En vivo y recientes", heroCta2: "Abrir LIVE Studio", hfBodyT: "Body ID", hfBodyD: "Escaneo de 20 segundos. Tu cuerpo es tu ID.", hfCareerT: "Tu carrera", hfCareerD: "Puestos del deporte para ti, con un plan.", hfLiveT: "LIVE Studio", hfLiveD: "Partidos reales convertidos en posts y videos.",
+    lsAiOff: "La escritura con IA se activa cuando se conecte la clave de IA del sitio.", lsAiHooks: "Ganchos", lsAiCaptions: "Textos", lsAiPrompts: "Preguntas para comentarios", lsUse: "Usar esta", lsInUse: "En uso ✓", lsAiAgain: "Más opciones",
+    lsBaseball: "Béisbol", lsHockey: "Hockey",
+    lsCredit: "Hecho por @ljsoccer01",
     lsCreate: "Crear", lsStyle: "Estilo",
     stHype: "Épico", stBreaking: "Última hora", stClean: "Limpio", stTeam: "Colores del equipo",
     cMatchday: "Día de partido", cPoll: "Encuesta", cScore: "Marcador ahora", cSpot: "Jugador destacado", cRecap: "Resumen final",
@@ -144,6 +153,10 @@ const I18N_LIVE = {
     r_story_comeback: "Remontada", r_story_late: "Gol tardío", r_story_blowout: "Gran victoria", r_story_draw: "Empate", r_story_win: "Victoria"
   },
   zh: {
+    heroLiveNow: "直播与最新", heroCta2: "打开 LIVE 工作室", hfBodyT: "Body ID", hfBodyD: "20 秒扫描，你的身体就是你的 ID。", hfCareerT: "职业匹配", hfCareerD: "适合你的体育岗位，附带计划。", hfLiveT: "LIVE 工作室", hfLiveD: "把真实比赛变成帖子和视频。",
+    lsAiOff: "网站的 AI 密钥接通后即可使用 AI 写作。", lsAiHooks: "开头钩子", lsAiCaptions: "文案", lsAiPrompts: "评论引导", lsUse: "使用这条", lsInUse: "使用中 ✓", lsAiAgain: "更多选项",
+    lsBaseball: "棒球", lsHockey: "冰球",
+    lsCredit: "由 @ljsoccer01 制作",
     lsCreate: "创建", lsStyle: "风格",
     stHype: "燃", stBreaking: "快讯", stClean: "简洁", stTeam: "球队配色",
     cMatchday: "比赛日", cPoll: "胜负投票", cScore: "当前比分", cSpot: "球员焦点", cRecap: "全场回顾",
@@ -209,6 +222,10 @@ const I18N_LIVE = {
     r_story_comeback: "逆转", r_story_late: "绝杀", r_story_blowout: "大胜", r_story_draw: "平局", r_story_win: "胜利"
   },
   ar: {
+    heroLiveNow: "مباشر وأحدث النتائج", heroCta2: "افتح LIVE Studio", hfBodyT: "Body ID", hfBodyD: "مسح لمدة 20 ثانية. جسمك هو هويتك.", hfCareerT: "مسارك المهني", hfCareerD: "وظائف رياضية تناسبك مع خطة.", hfLiveT: "LIVE Studio", hfLiveD: "مباريات حقيقية تتحول إلى منشورات وفيديوهات.",
+    lsAiOff: "تعمل الكتابة بالذكاء الاصطناعي بعد ربط مفتاح الذكاء الاصطناعي للموقع.", lsAiHooks: "افتتاحيات", lsAiCaptions: "نصوص", lsAiPrompts: "أسئلة للتعليقات", lsUse: "استخدم هذا", lsInUse: "قيد الاستخدام ✓", lsAiAgain: "خيارات أكثر",
+    lsBaseball: "البيسبول", lsHockey: "الهوكي",
+    lsCredit: "صنعه @ljsoccer01",
     lsCreate: "أنشئ", lsStyle: "النمط",
     stHype: "حماسي", stBreaking: "عاجل", stClean: "بسيط", stTeam: "ألوان الفريق",
     cMatchday: "يوم المباراة", cPoll: "استطلاع الفائز", cScore: "النتيجة الآن", cSpot: "نجم المباراة", cRecap: "ملخص نهاية المباراة",
@@ -374,7 +391,7 @@ function lsMomentText(m, mo) {
   if (mo.type === "poll") capKey = m.sport === "soccer" ? "c_poll3" : "c_poll2";
   const hooks = lsArr(hookKey);
   const hook = lsFill(hooks[(mo.variant || 0) % hooks.length], vars);
-  const caption = `${lsFill(lsArr(capKey)[0], vars)}\n\n${lsHashtags(m)}\n${t("creditText")}`;
+  const caption = `${lsFill(lsArr(capKey)[0], vars)}\n\n${lsHashtags(m)}\n${t("lsCredit")}`;
   return { hook, caption, goals };
 }
 
@@ -385,7 +402,7 @@ function lsStory(m) {
   const winner = hs > as ? "h" : "a";
   const known = m.moments.filter((mo) => mo.scoreKnown && ["goal", "pen", "og"].includes(mo.type));
   if (known.some((mo) => (winner === "h" ? mo.hs < mo.as : mo.as < mo.hs))) return "comeback";
-  const big = { soccer: 3, basketball: 20, football: 21 }[m.sport] || 3;
+  const big = { soccer: 3, basketball: 20, football: 21, baseball: 6, hockey: 4 }[m.sport] || 3;
   if (Math.abs(hs - as) >= big) return "blowout";
   const last = known[known.length - 1];
   if (m.sport === "soccer" && last && last.minute >= 85 && Math.abs(hs - as) === 1 && last.team === winner) return "late";
@@ -400,9 +417,9 @@ function lsRecap(m) {
   const hook = lsFill(t(`r_${story}`), { winner, line, diff: Math.abs(m.hs - m.as), min: lateGoal ? lateGoal.clock : "" });
   const key = m.moments.filter((mo) => mo.type !== "take" && mo.type !== "update").slice(0, 8);
   const row = (mo) => `${mo.clock} ${lsEmoji(mo.type, m.sport)} ${t(`m_${mo.type}`)} · ${mo.player || (mo.team === "h" ? m.home : m.away)}`;
-  const caption = `${hook}\n\n${key.length ? `${t("r_moments")}\n${key.map(row).join("\n")}\n\n` : ""}${t("r_question")}\n\n${lsHashtags(m)}\n${t("creditText")}`;
+  const caption = `${hook}\n\n${key.length ? `${t("r_moments")}\n${key.map(row).join("\n")}\n\n` : ""}${t("r_question")}\n\n${lsHashtags(m)}\n${t("lsCredit")}`;
   const takes = m.moments.filter((mo) => mo.type === "take").map((mo) => `💬 ${mo.note}`);
-  const thread = [hook, ...key.map(row), ...takes, `${t("r_question")} ${t("creditText")}`]
+  const thread = [hook, ...key.map(row), ...takes, `${t("r_question")} ${t("lsCredit")}`]
     .map((x, i, all) => `${i + 1}/${all.length} ${x}`).join("\n\n");
   const voice = [hook, ...key.map((mo) => lsMomentText(m, mo).hook), t("r_question")].join(" ");
   return { story, hook, caption, thread, voice, key, row };
@@ -410,12 +427,18 @@ function lsRecap(m) {
 
 // ---- 9:16 graphic ----
 
+// Wraps on spaces; a "word" wider than the line (e.g. Japanese or Chinese, which don't use spaces)
+// is broken between characters instead.
 function lsWrap(ctx, text, maxWidth) {
-  const words = String(text).split(/\s+/);
+  const pieces = [];
+  String(text).split(/\s+/).filter(Boolean).forEach((word) => {
+    if (ctx.measureText(word).width <= maxWidth) return pieces.push({ t: word, space: true });
+    [...word].forEach((ch, i) => pieces.push({ t: ch, space: i === 0 }));
+  });
   const lines = [];
   let line = "";
-  words.forEach((w) => {
-    const test = line ? `${line} ${w}` : w;
+  pieces.forEach(({ t: w, space }) => {
+    const test = line ? `${line}${space ? " " : ""}${w}` : w;
     if (ctx.measureText(test).width > maxWidth && line) {
       lines.push(line);
       line = w;
@@ -458,7 +481,9 @@ function lsTheme(name, opts) {
 }
 
 // One frame of a post. p is time in seconds since the clip started; Infinity draws the finished still.
-// Everything is laid out on a 1080x1920 grid and scaled to the canvas.
+// Layout: a fixed top bar and footer, and a measured middle stack (hook, emoji, headline, team, panel,
+// list or prompt) that is scaled down as a whole when it doesn't fit, so nothing overlaps or gets cut.
+// Every line of text is also shrunk (and, as a last resort, shortened with …) to fit its width.
 const LS_W = 1080, LS_H = 1920;
 const lsEase = (x) => 1 - Math.pow(1 - Math.min(Math.max(x, 0), 1), 3);
 const lsBack = (x) => {
@@ -467,11 +492,40 @@ const lsBack = (x) => {
 };
 const lsSpan = (p, start, dur) => (p - start) / dur;
 
+// Sets ctx.font to the largest size (down to min) where text fits maxWidth; returns the text,
+// shortened with … only if it still doesn't fit at the minimum size.
+function lsFitText(ctx, text, maxWidth, size, weight, family, min = 26) {
+  let s = size;
+  ctx.font = `${weight} ${s}px ${family}`;
+  while (ctx.measureText(text).width > maxWidth && s > min) {
+    s -= 2;
+    ctx.font = `${weight} ${s}px ${family}`;
+  }
+  if (ctx.measureText(text).width <= maxWidth) return text;
+  let cut = text;
+  while (cut.length > 1 && ctx.measureText(`${cut}…`).width > maxWidth) cut = cut.slice(0, -1);
+  return `${cut.trimEnd()}…`;
+}
+
+// Wraps text into at most maxLines lines at the largest font size (down to min) that fits.
+function lsFitLines(ctx, text, maxWidth, size, weight, family, maxLines, min = 34) {
+  for (let s = size; s >= min; s -= 2) {
+    ctx.font = `${weight} ${s}px ${family}`;
+    const lines = lsWrap(ctx, text, maxWidth);
+    if (lines.length <= maxLines && lines.every((ln) => ctx.measureText(ln).width <= maxWidth)) return { lines, size: s };
+  }
+  ctx.font = `${weight} ${min}px ${family}`;
+  const lines = lsWrap(ctx, text, maxWidth).slice(0, maxLines);
+  lines[lines.length - 1] = lsFitText(ctx, lines[lines.length - 1], maxWidth, min, weight, family, min);
+  return { lines, size: min };
+}
+
 function lsDraw(ctx, m, opts, p) {
   const W = LS_W, H = LS_H;
   const th = lsTheme(opts.theme, opts);
   const display = '"Space Grotesk", "Inter", system-ui, sans-serif';
   const body = '"Inter", system-ui, sans-serif';
+  const emojiFont = 'system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
   const still = p === Infinity;
   const kind = opts.kind || "moment";
   const headFill = (y0, y1) => {
@@ -481,7 +535,7 @@ function lsDraw(ctx, m, opts, p) {
     return g;
   };
 
-  // Background, impact flash and slow drift.
+  // ---- Background, impact flash and slow drift ----
   const bg = ctx.createLinearGradient(0, 0, 0, H);
   bg.addColorStop(0, th.bg[0]);
   bg.addColorStop(th.team ? 0.55 : 1, th.bg[1]);
@@ -511,7 +565,7 @@ function lsDraw(ctx, m, opts, p) {
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  // Top: status pill + clock, or a news band for the "breaking" style.
+  // ---- Top bar: status + clock, or a news band for "breaking" ----
   const top = still ? 1 : lsEase(lsSpan(p, 0, 0.5));
   ctx.save();
   ctx.translate(0, (1 - top) * -160);
@@ -520,15 +574,15 @@ function lsDraw(ctx, m, opts, p) {
     ctx.fillStyle = th.accent;
     ctx.fillRect(0, 70, W, 130);
     ctx.fillStyle = "#ffffff";
-    ctx.font = `900 72px ${display}`;
     ctx.textAlign = "left";
-    ctx.fillText(opts.final ? opts.status : "BREAKING", 70, 138);
+    const left = lsFitText(ctx, opts.final ? opts.status : "BREAKING", W * 0.55, 72, 900, display, 36);
+    ctx.fillText(left, 70, 138);
     ctx.textAlign = "right";
-    ctx.font = `700 64px ${display}`;
-    ctx.fillText(opts.clock, W - 70, 138);
+    const right = lsFitText(ctx, opts.clock || "", W * 0.35, 64, 700, display, 30);
+    ctx.fillText(right, W - 70, 138);
   } else {
-    ctx.font = `800 40px ${body}`;
-    const pw = ctx.measureText(opts.status).width + 110;
+    const status = lsFitText(ctx, opts.status || "", W * 0.5, 40, 800, body, 26);
+    const pw = ctx.measureText(status).width + 110;
     ctx.fillStyle = opts.final || kind === "matchday" ? th.accent : "#e5383b";
     ctx.beginPath();
     ctx.roundRect(80, 120, pw, 84, 42);
@@ -541,203 +595,24 @@ function lsDraw(ctx, m, opts, p) {
     ctx.fill();
     ctx.globalAlpha = top;
     ctx.textAlign = "left";
-    ctx.fillText(opts.status, 152, 164);
+    ctx.fillText(status, 152, 164);
     ctx.textAlign = "right";
     ctx.fillStyle = th.text;
-    ctx.font = `700 76px ${display}`;
-    ctx.fillText(opts.clock, W - 80, 166);
+    const clock = lsFitText(ctx, opts.clock || "", W - 80 - (80 + pw) - 40, 76, 700, display, 30);
+    ctx.fillText(clock, W - 80, 166);
   }
   ctx.restore();
   ctx.textAlign = "center";
 
-  // Hook on screen from the first frame: the first second decides whether people keep watching.
-  if (opts.hook) {
-    const h = still ? 1 : lsEase(lsSpan(p, 0, 0.25));
-    ctx.save();
-    ctx.globalAlpha = h;
-    ctx.font = `800 58px ${display}`;
-    lsWrap(ctx, opts.hook, W - 160).slice(0, 2).forEach((ln, i) => {
-      const y = 300 + i * 72;
-      const w = ctx.measureText(ln).width + 36;
-      ctx.fillStyle = th.light ? "rgba(255, 255, 255, 0.9)" : "rgba(0, 0, 0, 0.55)";
-      ctx.beginPath();
-      ctx.roundRect(W / 2 - w / 2, y - 38, w, 76, 14);
-      ctx.fill();
-      ctx.fillStyle = th.text;
-      ctx.fillText(ln, W / 2, y + 2);
-    });
-    ctx.restore();
-  }
-
-  // Emoji pops in.
-  const pop = still ? 1 : lsBack(lsSpan(p, 0.15, 0.6));
-  if (pop > 0 && opts.emoji) {
-    ctx.save();
-    ctx.translate(W / 2, 580);
-    ctx.scale(pop, pop);
-    ctx.font = `190px system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
-    ctx.fillText(opts.emoji, 0, 0);
-    ctx.restore();
-  }
-
-  // Headline slams down with a short shake.
-  const slam = still ? 1 : lsEase(lsSpan(p, 0.45, 0.4));
-  if (slam > 0) {
-    const shake = still || p < 0.85 ? 0 : Math.max(0, 1 - lsSpan(p, 0.85, 0.35)) * Math.sin(p * 70) * 12;
-    ctx.save();
-    ctx.translate(W / 2 + shake, 820);
-    const sc = 1 + (1 - slam) * 1.4;
-    ctx.scale(sc, sc);
-    ctx.globalAlpha = slam;
-    lsFit(ctx, opts.headline, W - 140, 210, 900, display);
-    ctx.fillStyle = headFill(-100, 100);
-    ctx.fillText(opts.headline, 0, 0);
-    ctx.restore();
-  }
-  const sub = still ? 1 : lsEase(lsSpan(p, 1.0, 0.5));
-  if (opts.team) {
-    ctx.save();
-    ctx.globalAlpha = sub;
-    ctx.fillStyle = th.text;
-    lsFit(ctx, opts.team.toUpperCase(), W - 160, 76, 700, display);
-    ctx.fillText(opts.team.toUpperCase(), W / 2, 985 + (1 - sub) * 40);
-    ctx.restore();
-  }
-
-  const rise = still ? 1 : lsEase(lsSpan(p, 1.3, 0.55));
-  const panel = (y, h) => {
-    ctx.fillStyle = th.board;
-    ctx.strokeStyle = th.stroke;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.roundRect(70, y, W - 140, h, 36);
-    ctx.fill();
-    ctx.stroke();
-  };
-
-  if (kind === "matchday") {
-    // The two teams, stacked big.
-    [opts.homeName, "VS", opts.awayName].forEach((txt, i) => {
-      const a = still ? 1 : lsEase(lsSpan(p, 1.1 + i * 0.25, 0.5));
-      if (a <= 0) return;
-      ctx.save();
-      ctx.globalAlpha = a;
-      ctx.translate((1 - a) * (i === 1 ? 0 : i === 0 ? -200 : 200), 0);
-      if (i === 1) {
-        ctx.fillStyle = th.accent;
-        ctx.font = `800 64px ${display}`;
-      } else {
-        ctx.fillStyle = th.text;
-        lsFit(ctx, txt.toUpperCase(), W - 160, 120, 900, display);
-      }
-      ctx.fillText(i === 1 ? txt : txt.toUpperCase(), W / 2, 1110 + i * 130);
-      ctx.restore();
-    });
-  } else if (kind === "poll") {
-    // Comment-to-vote options.
-    (opts.options || []).forEach((o, i, all) => {
-      const a = still ? 1 : lsBack(lsSpan(p, 1.1 + i * 0.25, 0.45));
-      if (a <= 0) return;
-      const y = 1080 + i * 150 - (all.length === 2 ? 0 : 20);
-      ctx.save();
-      ctx.globalAlpha = Math.min(1, a);
-      ctx.translate(W / 2, y);
-      ctx.scale(Math.max(a, 0.01), Math.max(a, 0.01));
-      ctx.fillStyle = th.board;
-      ctx.strokeStyle = th.stroke;
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.roundRect(-(W - 180) / 2, -58, W - 180, 116, 58);
-      ctx.fill();
-      ctx.stroke();
-      ctx.fillStyle = th.accent;
-      ctx.beginPath();
-      ctx.arc(-(W - 180) / 2 + 66, 0, 44, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = th.onAccent;
-      ctx.font = `900 50px ${display}`;
-      ctx.fillText(o.key, -(W - 180) / 2 + 66, 3);
-      ctx.fillStyle = th.text;
-      ctx.textAlign = "left";
-      lsFit(ctx, o.label, W - 380, 56, 700, body);
-      ctx.fillText(o.label, -(W - 180) / 2 + 140, 3);
-      ctx.restore();
-    });
-  } else if (kind === "spotlight") {
-    if (rise > 0) {
-      ctx.save();
-      ctx.globalAlpha = rise;
-      ctx.translate(0, (1 - rise) * 120);
-      panel(1090, 220);
-      ctx.fillStyle = th.text;
-      lsFit(ctx, opts.detailLine || "", W - 220, 64, 800, display);
-      ctx.fillText(opts.detailLine || "", W / 2, 1200);
-      ctx.restore();
-    }
-  } else if (rise > 0) {
-    // Scoreboard rises; the score pops.
-    const by = 1090 + (1 - rise) * 120, bh = 220;
-    ctx.save();
-    ctx.globalAlpha = rise;
-    panel(by, bh);
-    ctx.fillStyle = th.text;
-    lsFit(ctx, m.home, 300, 54, 700, body);
-    ctx.textAlign = "left";
-    ctx.fillText(m.home, 110, by + bh / 2);
-    lsFit(ctx, m.away, 300, 54, 700, body);
-    ctx.textAlign = "right";
-    ctx.fillText(m.away, W - 110, by + bh / 2);
-    ctx.textAlign = "center";
-    const sp = still ? 1 : lsBack(lsSpan(p, 1.6, 0.5));
-    ctx.translate(W / 2, by + bh / 2 + 6);
-    ctx.scale(Math.max(sp, 0.01), Math.max(sp, 0.01));
-    ctx.font = `800 120px ${display}`;
-    ctx.fillStyle = headFill(-60, 60);
-    ctx.fillText(opts.hs === null || opts.hs === undefined ? "v" : `${opts.hs}–${opts.as}`, 0, 0);
-    ctx.restore();
-  }
-
-  // Bottom: the recap's moments one by one, or a comment prompt.
-  ctx.fillStyle = th.sub;
-  if (opts.list) {
-    ctx.font = `600 46px ${body}`;
-    ctx.textAlign = "left";
-    opts.list.slice(0, 6).forEach((row, i) => {
-      const a = still ? 1 : lsEase(lsSpan(p, 2.0 + i * 0.35, 0.4));
-      if (a <= 0) return;
-      ctx.globalAlpha = a;
-      ctx.fillText(row.length > 34 ? `${row.slice(0, 33)}…` : row, 110 + (1 - a) * 60, 1400 + i * 64);
-    });
-    ctx.globalAlpha = 1;
-    ctx.textAlign = "center";
-  } else if (opts.prompt) {
-    const q = still ? 1 : lsBack(lsSpan(p, 2.2, 0.5));
-    if (q > 0) {
-      const pulse = still ? 1 : 1 + 0.04 * Math.sin(Math.max(0, p - 2.7) * 5);
-      const y = kind === "poll" ? 1560 : kind === "matchday" ? 1480 : 1500;
-      ctx.save();
-      ctx.translate(W / 2, y);
-      ctx.scale(Math.max(q, 0.01) * pulse, Math.max(q, 0.01) * pulse);
-      lsFit(ctx, opts.prompt, W - 180, 68, 800, display);
-      const w = ctx.measureText(opts.prompt).width + 80;
-      ctx.fillStyle = th.accent;
-      ctx.beginPath();
-      ctx.roundRect(-w / 2, -60, w, 120, 60);
-      ctx.fill();
-      ctx.fillStyle = th.onAccent;
-      ctx.fillText(opts.prompt, 0, 4);
-      ctx.restore();
-    }
-  }
-
-  // News ticker for the "breaking" style.
+  // ---- Footer: news ticker ("breaking") and credit ----
+  const tickerTop = H - 330;
   if (th.ticker && opts.ticker) {
-    const ty = H - 290;
+    const ty = tickerTop + 40;
     ctx.fillStyle = th.accent;
-    ctx.fillRect(0, ty - 40, W, 80);
+    ctx.fillRect(0, tickerTop, W, 80);
     ctx.save();
     ctx.beginPath();
-    ctx.rect(0, ty - 40, W, 80);
+    ctx.rect(0, tickerTop, W, 80);
     ctx.clip();
     ctx.fillStyle = "#ffffff";
     ctx.font = `700 42px ${body}`;
@@ -749,16 +624,250 @@ function lsDraw(ctx, m, opts, p) {
     ctx.restore();
     ctx.textAlign = "center";
   }
-
-  // Credit
   const cr = still ? 1 : lsEase(lsSpan(p, 2.6, 0.6));
   ctx.globalAlpha = cr;
   ctx.fillStyle = th.light ? "#9c6f2f" : th.team ? "#ffffff" : "#e9c77b";
   ctx.font = `700 44px ${display}`;
-  ctx.fillText("@ljsoccer01", W / 2, H - 150);
-  ctx.fillStyle = th.light ? "#5b5e66" : "#9da1ab";
-  ctx.font = `500 34px ${body}`;
-  ctx.fillText("Made with LJSportMind", W / 2, H - 96);
+  ctx.fillText(lsFitText(ctx, opts.credit || "Made by @ljsoccer01", W - 160, 44, 700, display, 28), W / 2, H - 120);
+  ctx.globalAlpha = 1;
+
+  // ---- Middle stack: measure every block, then scale the stack to fit between the bars ----
+  const safeTop = 240;
+  const safeBottom = (th.ticker && opts.ticker ? tickerTop : H - 180) - 30;
+  const textW = W - 160;
+  const blocks = [];
+
+  let hookFit = null;
+  if (opts.hook) {
+    hookFit = lsFitLines(ctx, opts.hook, textW - 40, 58, 800, display, 3, 34);
+    blocks.push({ key: "hook", h: hookFit.lines.length * (hookFit.size * 1.25) + 16 });
+  }
+  if (opts.emoji) blocks.push({ key: "emoji", h: 200 });
+  ctx.font = `900 210px ${display}`;
+  const headline = lsFitText(ctx, opts.headline || "", textW, 210, 900, display, 70);
+  const headSize = parseInt(ctx.font.match(/(\d+)px/)[1], 10);
+  blocks.push({ key: "headline", h: headSize * 1.05, size: headSize, text: headline });
+  if (opts.team) blocks.push({ key: "team", h: 96 });
+  if (kind === "matchday") blocks.push({ key: "matchday", h: 3 * 130 });
+  else if (kind === "poll") blocks.push({ key: "poll", h: (opts.options || []).length * 150 });
+  else if (kind === "spotlight") blocks.push({ key: "spot", h: 220 });
+  else blocks.push({ key: "board", h: 220 });
+  const listRows = opts.list ? opts.list.slice(0, 6) : null;
+  if (listRows) blocks.push({ key: "list", h: listRows.length * 64 + 10 });
+  else if (opts.prompt) blocks.push({ key: "prompt", h: 128 });
+
+  const avail = safeBottom - safeTop;
+  const gap = 34;
+  const natural = blocks.reduce((sum, b) => sum + b.h, 0) + gap * (blocks.length - 1);
+  const k = Math.min(1, avail / natural);
+  // Spare room is shared out as extra spacing (capped), so short posts don't bunch at the top.
+  const spare = Math.max(0, avail - natural * k);
+  const extra = Math.min(70, spare / (blocks.length + 1));
+  let y = safeTop + extra + Math.max(0, spare - extra * (blocks.length + 1)) / 2;
+  const at = {};
+  blocks.forEach((b) => {
+    at[b.key] = { y: y + (b.h * k) / 2, h: b.h * k };
+    y += b.h * k + gap * k + extra;
+  });
+
+  // Draws a block centred at its slot, scaled by k, with its own entrance animation.
+  const block = (key, draw) => {
+    if (!at[key]) return;
+    ctx.save();
+    ctx.translate(W / 2, at[key].y);
+    ctx.scale(k, k);
+    draw();
+    ctx.restore();
+  };
+
+  // Hook: on screen from the first frame (the first second decides whether people keep watching).
+  block("hook", () => {
+    const h = still ? 1 : lsEase(lsSpan(p, 0, 0.25));
+    ctx.globalAlpha = h;
+    ctx.font = `800 ${hookFit.size}px ${display}`;
+    const lh = hookFit.size * 1.25;
+    const y0 = -((hookFit.lines.length - 1) * lh) / 2;
+    hookFit.lines.forEach((ln, i) => {
+      const w = ctx.measureText(ln).width + 36;
+      ctx.fillStyle = th.light ? "rgba(255, 255, 255, 0.9)" : "rgba(0, 0, 0, 0.55)";
+      ctx.beginPath();
+      ctx.roundRect(-w / 2, y0 + i * lh - lh / 2 + 4, w, lh - 8, 14);
+      ctx.fill();
+      ctx.fillStyle = th.text;
+      ctx.fillText(ln, 0, y0 + i * lh + 2);
+    });
+  });
+
+  block("emoji", () => {
+    const pop = still ? 1 : lsBack(lsSpan(p, 0.15, 0.6));
+    if (pop <= 0) return;
+    ctx.scale(pop, pop);
+    ctx.font = `180px ${emojiFont}`;
+    ctx.fillText(opts.emoji, 0, 0);
+  });
+
+  block("headline", () => {
+    const slam = still ? 1 : lsEase(lsSpan(p, 0.45, 0.4));
+    if (slam <= 0) return;
+    const shake = still || p < 0.85 ? 0 : Math.max(0, 1 - lsSpan(p, 0.85, 0.35)) * Math.sin(p * 70) * 12;
+    ctx.translate(shake, 0);
+    const sc = 1 + (1 - slam) * 1.4;
+    ctx.scale(sc, sc);
+    ctx.globalAlpha = slam;
+    const b = blocks.find((x) => x.key === "headline");
+    ctx.font = `900 ${b.size}px ${display}`;
+    ctx.fillStyle = headFill(-100, 100);
+    ctx.fillText(b.text, 0, 0);
+  });
+
+  const sub = still ? 1 : lsEase(lsSpan(p, 1.0, 0.5));
+  block("team", () => {
+    ctx.globalAlpha = sub;
+    ctx.fillStyle = th.text;
+    const text = lsFitText(ctx, opts.team.toUpperCase(), textW, 76, 700, display, 34);
+    ctx.fillText(text, 0, (1 - sub) * 40);
+  });
+
+  const rise = still ? 1 : lsEase(lsSpan(p, 1.3, 0.55));
+  const panel = (h) => {
+    ctx.fillStyle = th.board;
+    ctx.strokeStyle = th.stroke;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.roundRect(-(W - 140) / 2, -h / 2, W - 140, h, 36);
+    ctx.fill();
+    ctx.stroke();
+  };
+
+  block("board", () => {
+    if (rise <= 0) return;
+    ctx.globalAlpha = rise;
+    ctx.translate(0, (1 - rise) * 120);
+    panel(220);
+    // Score in the middle gets the room it needs; team names share what's left. If the names would
+    // have to shrink below a readable size, they move above the score, each with half the width.
+    const scoreText = opts.hs === null || opts.hs === undefined ? "v" : `${opts.hs}–${opts.as}`;
+    ctx.font = `800 120px ${display}`;
+    const scoreTxt = lsFitText(ctx, scoreText, 380, 120, 800, display, 60);
+    const scoreFont = ctx.font;
+    const scoreW = ctx.measureText(scoreTxt).width;
+    const sideW = (W - 140 - 80 - scoreW - 60) / 2;
+    const fitsAt = (name, w) => {
+      ctx.font = `700 40px ${body}`;
+      return ctx.measureText(name).width <= w;
+    };
+    const stacked = !(fitsAt(m.home, sideW) && fitsAt(m.away, sideW));
+    ctx.fillStyle = th.text;
+    let scoreY = 6;
+    if (stacked) {
+      const half = (W - 140) / 2 - 50;
+      ctx.textAlign = "left";
+      ctx.fillText(lsFitText(ctx, m.home, half, 48, 700, body, 26), -(W - 140) / 2 + 40, -62);
+      ctx.textAlign = "right";
+      ctx.fillText(lsFitText(ctx, m.away, half, 48, 700, body, 26), (W - 140) / 2 - 40, -62);
+      scoreY = 40;
+    } else {
+      ctx.textAlign = "left";
+      ctx.fillText(lsFitText(ctx, m.home, sideW, 54, 700, body, 40), -(W - 140) / 2 + 40, 0);
+      ctx.textAlign = "right";
+      ctx.fillText(lsFitText(ctx, m.away, sideW, 54, 700, body, 40), (W - 140) / 2 - 40, 0);
+    }
+    ctx.textAlign = "center";
+    const sp = still ? 1 : lsBack(lsSpan(p, 1.6, 0.5));
+    ctx.translate(0, scoreY);
+    ctx.scale(Math.max(sp, 0.01), Math.max(sp, 0.01));
+    ctx.font = scoreFont;
+    ctx.fillStyle = headFill(-60, 60);
+    ctx.fillText(scoreTxt, 0, 0);
+  });
+
+  block("spot", () => {
+    if (rise <= 0) return;
+    ctx.globalAlpha = rise;
+    ctx.translate(0, (1 - rise) * 120);
+    panel(220);
+    ctx.fillStyle = th.text;
+    ctx.fillText(lsFitText(ctx, opts.detailLine || "", W - 240, 64, 800, display, 30), 0, 0);
+  });
+
+  block("matchday", () => {
+    [opts.homeName, "VS", opts.awayName].forEach((txt, i) => {
+      const a = still ? 1 : lsEase(lsSpan(p, 1.1 + i * 0.25, 0.5));
+      if (a <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = a;
+      ctx.translate((1 - a) * (i === 1 ? 0 : i === 0 ? -200 : 200), (i - 1) * 130);
+      if (i === 1) {
+        ctx.fillStyle = th.accent;
+        ctx.font = `800 64px ${display}`;
+        ctx.fillText(txt, 0, 0);
+      } else {
+        ctx.fillStyle = th.text;
+        ctx.fillText(lsFitText(ctx, String(txt || "").toUpperCase(), textW, 120, 900, display, 40), 0, 0);
+      }
+      ctx.restore();
+    });
+  });
+
+  block("poll", () => {
+    const list = opts.options || [];
+    list.forEach((o, i) => {
+      const a = still ? 1 : lsBack(lsSpan(p, 1.1 + i * 0.25, 0.45));
+      if (a <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = Math.min(1, a);
+      ctx.translate(0, (i - (list.length - 1) / 2) * 150);
+      ctx.scale(Math.max(a, 0.01), Math.max(a, 0.01));
+      const w = W - 180;
+      ctx.fillStyle = th.board;
+      ctx.strokeStyle = th.stroke;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(-w / 2, -58, w, 116, 58);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = th.accent;
+      ctx.beginPath();
+      ctx.arc(-w / 2 + 66, 0, 44, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = th.onAccent;
+      ctx.font = `900 50px ${display}`;
+      ctx.fillText(o.key, -w / 2 + 66, 3);
+      ctx.fillStyle = th.text;
+      ctx.textAlign = "left";
+      ctx.fillText(lsFitText(ctx, o.label, w - 200, 56, 700, body, 26), -w / 2 + 140, 3);
+      ctx.restore();
+    });
+  });
+
+  block("list", () => {
+    const rowsH = listRows.length * 64;
+    ctx.fillStyle = th.sub;
+    ctx.textAlign = "left";
+    listRows.forEach((row, i) => {
+      const a = still ? 1 : lsEase(lsSpan(p, 2.0 + i * 0.35, 0.4));
+      if (a <= 0) return;
+      ctx.globalAlpha = a;
+      ctx.fillText(lsFitText(ctx, row, W - 240, 46, 600, body, 26), -(W - 220) / 2 + (1 - a) * 60, -rowsH / 2 + 32 + i * 64);
+    });
+    ctx.globalAlpha = 1;
+    ctx.textAlign = "center";
+  });
+
+  block("prompt", () => {
+    const q = still ? 1 : lsBack(lsSpan(p, 2.2, 0.5));
+    if (q <= 0) return;
+    const pulse = still ? 1 : 1 + 0.04 * Math.sin(Math.max(0, p - 2.7) * 5);
+    ctx.scale(Math.max(q, 0.01) * pulse, Math.max(q, 0.01) * pulse);
+    const text = lsFitText(ctx, opts.prompt, W - 260, 68, 800, display, 32);
+    const w = ctx.measureText(text).width + 80;
+    ctx.fillStyle = th.accent;
+    ctx.beginPath();
+    ctx.roundRect(-w / 2, -60, w, 120, 60);
+    ctx.fill();
+    ctx.fillStyle = th.onAccent;
+    ctx.fillText(text, 0, 4);
+  });
   ctx.globalAlpha = 1;
 }
 
@@ -827,6 +936,7 @@ function lsRecord(m, opts) {
   let feedError = false;
   let shown = null; // moment id, or "ft"
   let poll = 0;
+  let listUpdatedAt = null;
   const STYLES = ["hype", "breaking", "clean", "team"];
   let style = "hype";
   try {
@@ -847,7 +957,7 @@ function lsRecord(m, opts) {
   }
 
   function translate() {
-    panel.querySelectorAll("[data-i18n]").forEach((n) => (n.textContent = t(n.dataset.i18n)));
+    document.querySelectorAll("#creatorPanel [data-i18n], .hero-x [data-i18n]:not([data-i18n=heroCta])").forEach((n) => (n.textContent = t(n.dataset.i18n)));
     panel.querySelectorAll("[data-i18n-placeholder]").forEach((n) => (n.placeholder = t(n.dataset.i18nPlaceholder)));
     document.querySelectorAll('[data-i18n="tabCreator"]').forEach((n) => (n.textContent = t("tabCreator")));
     render();
@@ -855,19 +965,31 @@ function lsRecord(m, opts) {
 
   // ---- Game picker ----
 
-  async function loadGames() {
-    games = null;
-    feedError = false;
-    renderGames();
-    try {
-      const res = await fetch(`/api/live?sport=${sport}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      games = data.games || [];
-    } catch {
-      games = [];
-      feedError = true;
+  // silent = background refresh: keep the current list on screen and swap in the new scores.
+  async function loadGames(silent) {
+    if (silent !== true) {
+      games = null;
+      feedError = false;
+      renderGames();
     }
+    const wanted = sport;
+    // Try twice before showing an error: the feed occasionally blips for a second.
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fetch(`/api/live?sport=${wanted}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        games = data.games || [];
+        feedError = false;
+        break;
+      } catch {
+        games = [];
+        feedError = true;
+        if (attempt === 0) await new Promise((r) => setTimeout(r, 1500));
+      }
+    }
+    if (wanted !== sport) return;
+    listUpdatedAt = feedError ? listUpdatedAt : new Date();
     renderGames();
   }
 
@@ -877,9 +999,15 @@ function lsRecord(m, opts) {
 
   function renderGames() {
     document.querySelectorAll(".ls-sport").forEach((b) => b.classList.toggle("active", b.dataset.sport === sport));
+    document.getElementById("lsListUpdated").textContent = listUpdatedAt
+      ? tf("lsUpdated", { time: listUpdatedAt.toLocaleTimeString(currentLang, { hour: "numeric", minute: "2-digit", second: "2-digit" }) })
+      : "";
     gamesBox.innerHTML = "";
     if (games === null) return gamesBox.append(el("p", "ls-empty", t("lsLoading")));
-    if (feedError) return gamesBox.append(el("p", "ls-empty", t("lsFeedError")));
+    if (feedError) {
+      gamesBox.append(el("p", "ls-empty", t("lsFeedError")));
+      return gamesBox.append(btn(t("lsRefresh"), "secondary", loadGames));
+    }
     if (!games.length) return gamesBox.append(el("p", "ls-empty", t("lsNoGames")));
     games.forEach((g) => {
       const b = btn("", `ls-game state-${g.state}`, () => follow(g));
@@ -902,8 +1030,8 @@ function lsRecord(m, opts) {
       if (existing) Object.assign(existing, { hs: mo.hs, as: mo.as, scoreKnown: mo.scoreKnown });
       else match.moments.push({ ...mo, variant: Math.floor(Math.random() * 4) });
     });
-    // Football has no event feed here, so each change in the official score becomes a "score" moment.
-    if (announce && match.updatedAt && match.sport === "football" && match.state === "in" && (g.home.score !== match.hs || g.away.score !== match.as)) {
+    // Football, baseball and hockey have no event feed here, so each change in the official score becomes a "score" moment.
+    if (announce && match.updatedAt && ["football", "baseball", "hockey"].includes(match.sport) && match.state === "in" && (g.home.score !== match.hs || g.away.score !== match.as)) {
       const team = g.home.score > match.hs ? "h" : "a";
       match.moments.push({
         id: `s${g.home.score}-${g.away.score}`, type: "score", team, player: "", clock: g.detail, status: g.detail,
@@ -970,7 +1098,7 @@ function lsRecord(m, opts) {
     document.getElementById("lsStatus").textContent = t(match.state === "in" ? "lsLive" : match.state === "post" ? "lsFT" : "lsUpcoming");
     live.classList.toggle("is-ended", match.state === "post");
     live.classList.toggle("is-paused", match.state === "pre");
-    const followKey = match.sport === "football" ? "lsFollowingFootball" : match.sport === "basketball" ? "lsFollowingBasketball" : "lsFollowing";
+    const followKey = ["football", "baseball", "hockey"].includes(match.sport) ? "lsFollowingFootball" : match.sport === "basketball" ? "lsFollowingBasketball" : "lsFollowing";
     document.getElementById("lsStatusNote").textContent = t(match.state === "in" ? followKey : match.state === "post" ? "lsFinalNote" : "lsPreNote");
     document.getElementById("lsUpdated").textContent = match.updatedAt ? tf("lsUpdated", { time: new Date(match.updatedAt).toLocaleTimeString(currentLang, { hour: "numeric", minute: "2-digit", second: "2-digit" }) }) : "";
     document.getElementById("lsTakeForm").hidden = match.state === "pre";
@@ -1100,15 +1228,97 @@ function lsRecord(m, opts) {
     const mo = match.moments.find((x) => x.id === shown);
     if (!mo) return;
     const text = lsMomentText(match, mo);
-    const opts = momentOpts(mo, text);
-    const { wrap, actions } = mediaBlock(`${match.id}|${mo.id}|${style}|${currentLang}`, opts, `${fileBase()}-${tag(mo.clock)}-${mo.type}`);
+    const ai = mo.ai || {};
+    const hook = ai.hook || text.hook;
+    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : text.caption;
+    const opts = { ...momentOpts(mo, text), hook, ticker: hook };
+    if (ai.prompt && opts.prompt) opts.prompt = ai.prompt;
+    const { wrap, actions } = mediaBlock(`${match.id}|${mo.id}|${style}|${currentLang}|${hook}|${opts.prompt}`, opts, `${fileBase()}-${tag(mo.clock)}-${mo.type}`);
     const body = el("div", "ls-drop-body");
-    body.append(el("p", "ls-hook", text.hook), el("p", "ls-caption", text.caption));
-    actions.append(copyBtn("lsCopy", text.caption));
-    body.append(actions);
+    body.append(el("p", "ls-hook", hook), el("p", "ls-caption", caption));
+    actions.append(copyBtn("lsCopy", caption));
+    body.append(actions, aiPanel(mo, liveFacts(mo, text), (pick) => {
+      mo.ai = { ...(mo.ai || {}), ...pick };
+      save();
+      renderDrop();
+    }));
     const card = el("div", "card ls-drop");
     card.append(wrap, body);
     drop.append(card);
+  }
+
+  // Facts for the AI, in English and taken only from the feed (plus the user's own take, marked as opinion).
+  const TYPE_NAMES = { goal: "goal", pen: "penalty goal", og: "own goal", red: "red card", score: "score change", update: "score update", take: "hot take", matchday: "matchday preview", poll: "who-wins poll", spot: "player spotlight" };
+  function gameFacts() {
+    return {
+      sport: match.sport, league: match.leagueName || "", home: match.home, away: match.away,
+      status: match.detail || "", score: match.state === "pre" ? "not started" : `${match.home} ${match.hs}–${match.as} ${match.away}`
+    };
+  }
+
+  function liveFacts(mo, text) {
+    const sc = lsScoreOf(match, mo);
+    const parts = [TYPE_NAMES[mo.type] || mo.type];
+    if (mo.player) parts.push(`player: ${mo.player}`);
+    if (teamOf(mo)) parts.push(`team: ${teamOf(mo)}`);
+    if (mo.clock && !["matchday", "poll"].includes(mo.type)) parts.push(`time: ${mo.clock}`);
+    if (sc && !["matchday", "poll"].includes(mo.type)) parts.push(`score after it: ${match.home} ${sc.hs}–${sc.as} ${match.away}`);
+    if (text.goals && text.goals.length > 1 && mo.player) parts.push(`${mo.player}'s goals in this game: ${text.goals.map((g) => g.clock).join(", ")}`);
+    const feedEvents = match.moments.filter((x) => ["goal", "pen", "og", "red"].includes(x.type))
+      .map((x) => `${x.clock} ${TYPE_NAMES[x.type]}${x.player ? ` ${x.player}` : ""} (${teamOf(x)})`).join("; ");
+    return { ...gameFacts(), type: TYPE_NAMES[mo.type] || mo.type, moment: parts.join(", "), events: feedEvents, take: mo.type === "take" ? mo.note : "" };
+  }
+
+  function parseAiOptions(text) {
+    try {
+      const json = JSON.parse(text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1));
+      const list = (v) => (Array.isArray(v) ? v.map((x) => String(x).trim()).filter(Boolean).slice(0, 5) : []);
+      return { hooks: list(json.hooks), captions: list(json.captions), prompts: list(json.prompts) };
+    } catch {
+      return null;
+    }
+  }
+
+  // "Sharpen with AI": several hooks, captions and comment prompts to pick from. "Use this" swaps it into the post.
+  function aiPanel(mo, facts, onPick) {
+    const box = el("div", "ls-ai-panel needs-ai");
+    const out = el("div", "ls-ai-out");
+    const current = (mo ? mo.ai : match.ftAi) || {};
+    const go = btn(`✨ ${t("lsSharpen")}`, "ls-ai-btn", async () => {
+      go.disabled = true;
+      out.innerHTML = "";
+      out.append(el("p", "ls-empty", t("lsThinking")));
+      const reply = await callAssistant({ mode: "live", live: facts });
+      go.disabled = false;
+      go.textContent = `✨ ${t("lsAiAgain")}`;
+      out.innerHTML = "";
+      if (!reply.text) {
+        out.append(el("p", "ls-ai-note", reply.code === "not_configured" ? t("lsAiOff") : reply.error));
+        return;
+      }
+      const options = parseAiOptions(reply.text);
+      if (!options) {
+        out.append(el("p", "ls-caption", reply.text));
+        return;
+      }
+      const group = (titleKey, items, field) => {
+        if (!items.length) return;
+        out.append(el("p", "ls-sub", t(titleKey)));
+        items.forEach((item) => {
+          const row = el("div", `ls-ai-opt ${current[field] === item ? "in-use" : ""}`);
+          row.append(el("p", "", item));
+          const acts = el("div", "ls-ai-acts");
+          acts.append(btn(current[field] === item ? t("lsInUse") : t("lsUse"), "ls-chip", () => onPick({ [field]: item })), copyBtn("lsCopy", item));
+          row.append(acts);
+          out.append(row);
+        });
+      };
+      group("lsAiHooks", options.hooks, "hook");
+      group("lsAiCaptions", options.captions, "caption");
+      group("lsAiPrompts", options.prompts, "prompt");
+    });
+    box.append(go, out);
+    return box;
   }
 
   function colorsFor(team) {
@@ -1123,7 +1333,7 @@ function lsRecord(m, opts) {
   // What to draw for each kind of post. Every value comes from the feed or from what the user typed as a take.
   function momentOpts(mo, text) {
     const sc = lsScoreOf(match, mo);
-    const base = { theme: style, ...colorsFor(mo.team), status: statusLabel(), clock: mo.clock, emoji: lsEmoji(mo.type, match.sport), hook: text.hook, ticker: text.hook };
+    const base = { theme: style, credit: t("lsCredit"), ...colorsFor(mo.team), status: statusLabel(), clock: mo.clock, emoji: lsEmoji(mo.type, match.sport), hook: text.hook, ticker: text.hook };
     if (mo.type === "matchday") {
       return { ...base, kind: "matchday", status: statusLabel(), clock: mo.clock, headline: t("m_matchday").toUpperCase(), homeName: match.home, awayName: match.away, prompt: t("q_matchday") };
     }
@@ -1218,15 +1428,18 @@ function lsRecord(m, opts) {
   function renderRecap() {
     const r = lsRecap(match);
     const rows = r.key.map((mo) => `${mo.clock} ${t(`m_${mo.type}`)} · ${mo.player || teamOf(mo)}`);
+    const ai = match.ftAi || {};
+    const hook = ai.hook || r.hook;
+    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : r.caption;
     const opts = {
-      theme: style, ...colorsFor(match.hs >= match.as ? "h" : "a"), ticker: r.hook,
+      theme: style, credit: t("lsCredit"), ...colorsFor(match.hs >= match.as ? "h" : "a"), ticker: hook,
       status: t("lsFT"), clock: "FT", emoji: LS_EMOJI.ft, headline: t(`r_story_${r.story}`).toUpperCase(),
-      team: "", hs: match.hs, as: match.as, hook: r.hook, list: rows.length ? rows : null, prompt: rows.length ? "" : t("r_question"), final: true, hot: true
+      team: "", hs: match.hs, as: match.as, hook, list: rows.length ? rows : null, prompt: rows.length ? "" : (ai.prompt || t("r_question")), final: true, hot: true
     };
-    const { wrap, actions } = mediaBlock(`${match.id}|ft|${match.moments.length}|${style}|${currentLang}`, opts, `${fileBase()}-full-time`);
+    const { wrap, actions } = mediaBlock(`${match.id}|ft|${match.moments.length}|${style}|${currentLang}|${hook}`, opts, `${fileBase()}-full-time`);
     const body = el("div", "ls-drop-body");
-    body.append(el("p", "ls-hook", r.hook), el("p", "ls-caption", r.caption));
-    actions.append(copyBtn("lsCopy", r.caption));
+    body.append(el("p", "ls-hook", hook), el("p", "ls-caption", caption));
+    actions.append(copyBtn("lsCopy", caption));
     body.append(actions);
     body.append(el("p", "ls-sub", t("lsThread")), el("p", "ls-caption ls-thread", r.thread));
     const more = el("div", "actions ls-drop-actions");
@@ -1239,35 +1452,21 @@ function lsRecord(m, opts) {
           return;
         }
         const u = new SpeechSynthesisUtterance(r.voice);
-        u.lang = currentLang === "es" ? "es-ES" : currentLang === "zh" ? "zh-CN" : currentLang === "ar" ? "ar-SA" : "en-US";
+        u.lang = SPEECH_LANGS[currentLang] || "en-US";
         u.onend = () => (play.textContent = t("lsPlay"));
         speechSynthesis.speak(u);
         play.textContent = t("lsStop");
       });
       more.append(play);
     }
-    const aiOut = el("p", "ls-caption ls-ai", "");
-    aiOut.hidden = true;
-    const sharpen = btn(t("lsSharpen"), "secondary", async () => {
-      sharpen.disabled = true;
-      aiOut.hidden = false;
-      aiOut.textContent = t("lsThinking");
-      const reply = await callAssistant({
-        mode: "content",
-        credit: t("creditText"),
-        game: {
-          teamA: match.home, teamB: match.away, scoreA: match.hs, scoreB: match.as,
-          sport: t(`ls${match.sport[0].toUpperCase()}${match.sport.slice(1)}`),
-          momentType: t(`r_story_${r.story}`),
-          keyMoment: `Official events from the live feed: ${rows.join("; ") || "none reported"}. Use only these facts.`,
-          observation: match.moments.filter((mo) => mo.type === "take").map((mo) => mo.note).join("; ")
-        }
-      });
-      sharpen.disabled = false;
-      aiOut.textContent = reply.text || reply.error;
-    });
-    more.append(sharpen);
-    body.append(more, aiOut);
+    body.append(more, aiPanel(null, {
+      ...gameFacts(), type: "full-time recap", story: t(`r_story_${r.story}`),
+      events: rows.join("; ") || "none reported", take: match.moments.filter((mo) => mo.type === "take").map((mo) => mo.note).join("; ")
+    }, (pick) => {
+      match.ftAi = { ...(match.ftAi || {}), ...pick };
+      save();
+      renderDrop();
+    }));
     const card = el("div", "card ls-drop ls-recap");
     card.append(wrap, body);
     drop.append(card);
@@ -1321,21 +1520,85 @@ function lsRecord(m, opts) {
     if (!games || !games.length) loadGames();
   });
 
-  // Opening the studio refreshes the list or the followed game.
-  document.querySelectorAll('.tab[data-tab="creator"]').forEach((tab) => tab.addEventListener("click", () => {
+  // Opening the studio (or coming back to the app) refreshes the list or the followed game straight away.
+  const refreshNow = () => {
     if (match && match.state !== "post") refreshGame(true);
-    else if (!match && !games) loadGames();
-  }));
+    else if (!match) loadGames(!!(games && games.length));
+  };
+  document.querySelectorAll('.tab[data-tab="creator"]').forEach((tab) => tab.addEventListener("click", refreshNow));
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && match && match.state !== "post" && panel.classList.contains("active")) refreshGame(true);
+    if (!document.hidden && panel.classList.contains("active")) refreshNow();
   });
+  // The game list keeps itself up to date too: scores, new kickoffs and finals every 30 seconds.
+  setInterval(() => {
+    if (!match && games && panel.classList.contains("active") && !document.hidden) loadGames(true);
+  }, LIST_POLL_MS);
+
+  // A finished game left open from an earlier day gives way to today's list.
+  if (match && match.state === "post" && match.updatedAt && Date.now() - new Date(match.updatedAt).getTime() > 6 * 3600 * 1000) {
+    match = null;
+    save();
+  }
 
   if (match) {
     const feed = match.moments.filter((mo) => mo.type !== "take" && mo.type !== "update");
     shown = match.state === "post" ? "ft" : feed.length ? feed[feed.length - 1].id : null;
     startPolling();
   }
-  document.getElementById("langSelect").addEventListener("change", translate);
+  // ---- Intro: live-scores strip and LIVE Studio shortcuts ----
+  const heroTicker = document.getElementById("heroTicker");
+  const heroRun = document.getElementById("heroTickerRun");
+  let heroGames = [];
+  function renderHeroTicker() {
+    if (!heroGames.length) {
+      heroTicker.hidden = true;
+      return;
+    }
+    heroRun.innerHTML = "";
+    const item = (g) => {
+      const span = el("span", `hero-tk ${g.state}`);
+      span.append(
+        el("span", "hero-tk-state", g.state === "in" ? `● ${g.detail}` : t("lsStatePost")),
+        el("span", "", `${g.home.name} ${g.home.score}–${g.away.score} ${g.away.name}`),
+        el("span", "hero-tk-league", g.leagueName)
+      );
+      return span;
+    };
+    // Two copies side by side make the scroll loop seamlessly.
+    for (let copy = 0; copy < 2; copy++) heroGames.forEach((g) => heroRun.append(item(g)));
+    heroRun.style.animationDuration = `${Math.max(20, heroGames.length * 6)}s`;
+    heroTicker.hidden = false;
+  }
+  async function loadHeroTicker() {
+    try {
+      const lists = await Promise.all(["soccer", "basketball", "football", "hockey", "baseball"].map((sp) =>
+        fetch(`/api/live?sport=${sp}`).then((r) => (r.ok ? r.json() : { games: [] })).catch(() => ({ games: [] }))));
+      // Live games first, then finals, taking turns across sports so the strip isn't all one league.
+      const mix = (state) => {
+        const pools = lists.map((d) => (d.games || []).filter((g) => g.state === state));
+        const out = [];
+        for (let i = 0; pools.some((pl) => pl[i]); i++) pools.forEach((pl) => pl[i] && out.push(pl[i]));
+        return out;
+      };
+      heroGames = [...mix("in"), ...mix("post")].slice(0, 14);
+    } catch {
+      heroGames = [];
+    }
+    renderHeroTicker();
+  }
+  const openLive = () => {
+    document.querySelector('.tab[data-tab="creator"]').click();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  document.getElementById("heroLiveBtn").addEventListener("click", openLive);
+  document.getElementById("heroLiveCard").addEventListener("click", openLive);
+  loadHeroTicker();
+  setInterval(() => !document.hidden && loadHeroTicker(), 60000);
+
+  document.getElementById("langSelect").addEventListener("change", () => {
+    translate();
+    renderHeroTicker();
+  });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => match && renderDrop());
   translate();
 })();
