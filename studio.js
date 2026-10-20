@@ -7,12 +7,25 @@
 const LIVE_KEY = "ljsportmind_live";
 const LIVE_POLL_MS = 20000;
 const LS_EMOJI = {
-  goal: "⚽", red: "🟥", score: { basketball: "🏀", football: "🏈", soccer: "⚽" }, update: "📊", take: "💬", ft: "🏁"
+  goal: "⚽", red: "🟥", score: { basketball: "🏀", football: "🏈", soccer: "⚽" }, update: "📊", take: "💬", ft: "🏁",
+  matchday: "🗓️", poll: "🗳️", spot: "⭐"
 };
 const LS_HASH = { soccer: "#football #soccer", basketball: "#basketball", football: "#football" };
 
 const I18N_LIVE = {
   en: {
+    lsCreate: "Create", lsStyle: "Style",
+    stHype: "Hype", stBreaking: "Breaking", stClean: "Clean", stTeam: "Team colours",
+    cMatchday: "Matchday", cPoll: "Prediction poll", cScore: "Score now", cSpot: "Player spotlight", cRecap: "Full-time recap",
+    lsDrawOpt: "Draw", lsNoScorers: "No scorers yet.",
+    m_matchday: "Matchday", m_poll: "Who wins?", m_spot: "Spotlight", m_brace: "Brace", m_hat: "Hat-trick",
+    h_matchday: ["{league} · {when}"], c_matchday: "{home} v {away} · {league} · {when}.",
+    h_poll: ["{home} v {away} · {when}"], c_poll2: "Who wins {home} v {away}? Comment 1 for {home} or 2 for {away}. {when}.",
+    c_poll3: "Who wins {home} v {away}? Comment 1 for {home}, X for a draw or 2 for {away}. {when}.",
+    q_matchday: "Who wins? 👇", q_poll2: "Comment 1 or 2 👇", q_poll3: "Comment 1, X or 2 👇",
+    h_spot1: ["{player} scores for {team} at {mins}."], h_spotN: ["{player}: {n} goals for {team} ({mins})."],
+    c_spot: "{player} ({team}): {n} goal(s) in {home} v {away} at {mins}. {when}: {line}.", q_spot: "Rate this performance 1–10 👇",
+    h_brace: ["{player} scores again: 2 goals for {team}."], h_hat: ["HAT-TRICK: {player} has 3 for {team}."],
     lsFollowingFootball: "Following live. Every score change turns into a post automatically.",
     lsFollowingBasketball: "Following live. The score updates every 20 seconds; tap to post it.",
     tabCreator: "LIVE Studio",
@@ -66,6 +79,18 @@ const I18N_LIVE = {
     r_story_comeback: "Comeback", r_story_late: "Late winner", r_story_blowout: "Big win", r_story_draw: "Draw", r_story_win: "Win"
   },
   es: {
+    lsCreate: "Crear", lsStyle: "Estilo",
+    stHype: "Épico", stBreaking: "Última hora", stClean: "Limpio", stTeam: "Colores del equipo",
+    cMatchday: "Día de partido", cPoll: "Encuesta", cScore: "Marcador ahora", cSpot: "Jugador destacado", cRecap: "Resumen final",
+    lsDrawOpt: "Empate", lsNoScorers: "Aún no hay goleadores.",
+    m_matchday: "Día de partido", m_poll: "¿Quién gana?", m_spot: "Destacado", m_brace: "Doblete", m_hat: "Hat-trick",
+    h_matchday: ["{league} · {when}"], c_matchday: "{home} v {away} · {league} · {when}.",
+    h_poll: ["{home} v {away} · {when}"], c_poll2: "¿Quién gana {home} v {away}? Comenta 1 por {home} o 2 por {away}. {when}.",
+    c_poll3: "¿Quién gana {home} v {away}? Comenta 1 por {home}, X por empate o 2 por {away}. {when}.",
+    q_matchday: "¿Quién gana? 👇", q_poll2: "Comenta 1 o 2 👇", q_poll3: "Comenta 1, X o 2 👇",
+    h_spot1: ["{player} marca para {team} en el {mins}."], h_spotN: ["{player}: {n} goles para {team} ({mins})."],
+    c_spot: "{player} ({team}): {n} gol(es) en {home} v {away}, en el {mins}. {when}: {line}.", q_spot: "Puntúa su partido del 1 al 10 👇",
+    h_brace: ["{player} marca otra vez: 2 goles para {team}."], h_hat: ["HAT-TRICK: {player} lleva 3 para {team}."],
     lsFollowingFootball: "Siguiendo en vivo. Cada cambio en el marcador se convierte en publicación automáticamente.",
     lsFollowingBasketball: "Siguiendo en vivo. El marcador se actualiza cada 20 segundos; toca para publicarlo.",
     tabCreator: "LIVE Studio",
@@ -119,6 +144,18 @@ const I18N_LIVE = {
     r_story_comeback: "Remontada", r_story_late: "Gol tardío", r_story_blowout: "Gran victoria", r_story_draw: "Empate", r_story_win: "Victoria"
   },
   zh: {
+    lsCreate: "创建", lsStyle: "风格",
+    stHype: "燃", stBreaking: "快讯", stClean: "简洁", stTeam: "球队配色",
+    cMatchday: "比赛日", cPoll: "胜负投票", cScore: "当前比分", cSpot: "球员焦点", cRecap: "全场回顾",
+    lsDrawOpt: "平局", lsNoScorers: "暂无进球者。",
+    m_matchday: "比赛日", m_poll: "谁会赢？", m_spot: "焦点", m_brace: "梅开二度", m_hat: "帽子戏法",
+    h_matchday: ["{league} · {when}"], c_matchday: "{home} v {away} · {league} · {when}。",
+    h_poll: ["{home} v {away} · {when}"], c_poll2: "{home} v {away} 谁会赢？{home} 评论 1，{away} 评论 2。{when}。",
+    c_poll3: "{home} v {away} 谁会赢？{home} 评论 1，平局评论 X，{away} 评论 2。{when}。",
+    q_matchday: "谁会赢？👇", q_poll2: "评论 1 或 2 👇", q_poll3: "评论 1、X 或 2 👇",
+    h_spot1: ["{player} 在 {mins} 为{team}进球。"], h_spotN: ["{player}：为{team}打进 {n} 球（{mins}）。"],
+    c_spot: "{player}（{team}）：在 {home} v {away} 中打进 {n} 球，时间 {mins}。{when}：{line}。", q_spot: "给这场表现打分 1–10 👇",
+    h_brace: ["{player} 再次进球：为{team}打进 2 球。"], h_hat: ["帽子戏法：{player} 为{team}打进 3 球。"],
     lsFollowingFootball: "正在实时跟踪。每次比分变化都会自动生成帖子。",
     lsFollowingBasketball: "正在实时跟踪。比分每 20 秒更新一次；点击即可发布。",
     tabCreator: "LIVE 工作室",
@@ -172,6 +209,18 @@ const I18N_LIVE = {
     r_story_comeback: "逆转", r_story_late: "绝杀", r_story_blowout: "大胜", r_story_draw: "平局", r_story_win: "胜利"
   },
   ar: {
+    lsCreate: "أنشئ", lsStyle: "النمط",
+    stHype: "حماسي", stBreaking: "عاجل", stClean: "بسيط", stTeam: "ألوان الفريق",
+    cMatchday: "يوم المباراة", cPoll: "استطلاع الفائز", cScore: "النتيجة الآن", cSpot: "نجم المباراة", cRecap: "ملخص نهاية المباراة",
+    lsDrawOpt: "تعادل", lsNoScorers: "لا مسجلين بعد.",
+    m_matchday: "يوم المباراة", m_poll: "من سيفوز؟", m_spot: "نجم", m_brace: "ثنائية", m_hat: "هاتريك",
+    h_matchday: ["{league} · {when}"], c_matchday: "{home} ضد {away} · {league} · {when}.",
+    h_poll: ["{home} ضد {away} · {when}"], c_poll2: "من سيفوز {home} ضد {away}؟ اكتب 1 لـ{home} أو 2 لـ{away}. {when}.",
+    c_poll3: "من سيفوز {home} ضد {away}؟ اكتب 1 لـ{home} أو X للتعادل أو 2 لـ{away}. {when}.",
+    q_matchday: "من سيفوز؟ 👇", q_poll2: "اكتب 1 أو 2 👇", q_poll3: "اكتب 1 أو X أو 2 👇",
+    h_spot1: ["{player} يسجل لـ{team} في {mins}."], h_spotN: ["{player}: {n} أهداف لـ{team} ({mins})."],
+    c_spot: "{player} ({team}): {n} هدف/أهداف في {home} ضد {away} في {mins}. {when}: {line}.", q_spot: "قيّم أداءه من 1 إلى 10 👇",
+    h_brace: ["{player} يسجل مجددًا: هدفان لـ{team}."], h_hat: ["هاتريك: {player} يسجل 3 لـ{team}."],
     lsFollowingFootball: "متابعة مباشرة. كل تغيير في النتيجة يتحول إلى منشور تلقائيًا.",
     lsFollowingBasketball: "متابعة مباشرة. تتحدث النتيجة كل 20 ثانية؛ اضغط لنشرها.",
     tabCreator: "LIVE Studio",
@@ -291,16 +340,42 @@ function lsScoreOf(m, mo) {
   return mo.scoreKnown === false ? null : { hs: mo.hs, as: mo.as };
 }
 
+function lsWhen(m) {
+  if (m.state === "pre" && m.start) return new Date(m.start).toLocaleString(currentLang, { weekday: "short", hour: "numeric", minute: "2-digit" });
+  return m.detail || "";
+}
+
+// Goals by one player up to (and including) a given moment, from the feed only. Own goals don't count.
+function lsPlayerGoals(m, player, upTo) {
+  const goals = [];
+  for (const mo of m.moments) {
+    if ((mo.type === "goal" || mo.type === "pen") && mo.player === player) goals.push(mo);
+    if (upTo && mo.id === upTo) break;
+  }
+  return goals;
+}
+
 // Hook and caption for one moment, from feed facts only.
 function lsMomentText(m, mo) {
   const team = mo.team === "h" ? m.home : mo.team === "a" ? m.away : "";
   const sc = lsScoreOf(m, mo);
   const line = sc ? lsLine(m, sc.hs, sc.as) : `${m.home} v ${m.away}`;
-  const vars = { team, player: mo.player || team, min: mo.clock, line, status: mo.status || m.detail, note: mo.note || "" };
-  const hooks = lsArr(`h_${mo.type}`);
+  const goals = mo.player ? lsPlayerGoals(m, mo.player, mo.type === "spot" ? null : mo.id) : [];
+  const vars = {
+    team, player: mo.player || team, min: mo.clock, line, status: mo.status || m.detail, note: mo.note || "",
+    league: m.leagueName || "", when: lsWhen(m), home: m.home, away: m.away, n: goals.length, mins: goals.map((g) => g.clock).join(", ")
+  };
+  let hookKey = `h_${mo.type}`, capKey = `c_${mo.type}`;
+  if (mo.type === "goal" || mo.type === "pen") {
+    if (goals.length === 2) hookKey = "h_brace";
+    if (goals.length >= 3) hookKey = "h_hat";
+  }
+  if (mo.type === "spot") hookKey = goals.length > 1 ? "h_spotN" : "h_spot1";
+  if (mo.type === "poll") capKey = m.sport === "soccer" ? "c_poll3" : "c_poll2";
+  const hooks = lsArr(hookKey);
   const hook = lsFill(hooks[(mo.variant || 0) % hooks.length], vars);
-  const caption = `${lsFill(lsArr(`c_${mo.type}`)[0], vars)}\n\n${lsHashtags(m)}\n${t("creditText")}`;
-  return { hook, caption };
+  const caption = `${lsFill(lsArr(capKey)[0], vars)}\n\n${lsHashtags(m)}\n${t("creditText")}`;
+  return { hook, caption, goals };
 }
 
 // The story of the result, only from what the feed shows: draw, comeback, late winner, big win or win.
@@ -360,8 +435,30 @@ function lsFit(ctx, text, maxWidth, size, weight, family) {
   } while (ctx.measureText(text).width > maxWidth && s > 40);
 }
 
-// One frame of the moment graphic. p is time in seconds since the clip started; Infinity draws the
-// finished still. Everything is laid out on a 1080x1920 grid and scaled to the canvas.
+// Visual styles. Every style shows the same facts; only the look changes.
+function lsTheme(name, opts) {
+  const hex = (h, fb) => (/^[0-9a-f]{6}$/i.test(h || "") ? `#${h}` : fb);
+  const rgb = (h) => {
+    const n = parseInt(h.slice(1), 16);
+    return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+  };
+  if (name === "breaking") {
+    return { bg: ["#0b0b0d", "#0b0b0d"], glow: "229, 56, 59", head: ["#ffffff", "#ffffff"], text: "#ffffff", sub: "#d6d6da", accent: "#e5383b", onAccent: "#ffffff", lines: "rgba(255, 255, 255, 0.05)", board: "rgba(255, 255, 255, 0.06)", stroke: "rgba(229, 56, 59, 0.7)", band: true, ticker: true };
+  }
+  if (name === "clean") {
+    return { bg: ["#f6f4ef", "#ebe7de"], glow: null, head: ["#0b0b0d", "#2a2c33"], text: "#0b0b0d", sub: "#3a3d46", accent: "#c9974a", onAccent: "#0b0b0d", lines: "rgba(0, 0, 0, 0.05)", board: "rgba(0, 0, 0, 0.04)", stroke: "rgba(0, 0, 0, 0.18)", light: true };
+  }
+  if (name === "team") {
+    const c = hex(opts.color, "#c9974a");
+    const alt = hex(opts.alt, "#ffffff");
+    const altUsable = alt.toLowerCase() !== c.toLowerCase() && alt.toLowerCase() !== "#000000";
+    return { bg: [c, "#050608"], glow: rgb(c), head: ["#ffffff", "#ffffff"], text: "#ffffff", sub: "rgba(255, 255, 255, 0.85)", accent: altUsable ? alt : "#ffffff", onAccent: "#0b0b0d", lines: "rgba(255, 255, 255, 0.07)", board: "rgba(0, 0, 0, 0.35)", stroke: "rgba(255, 255, 255, 0.5)", team: true };
+  }
+  return { bg: ["#050608", "#050608"], glow: "233, 199, 123", head: ["#f6e1a6", "#9c6f2f"], text: "#f3f1ea", sub: "#d8d6cf", accent: "#e9c77b", onAccent: "#0b0b0d", lines: "rgba(233, 199, 123, 0.08)", board: "rgba(255, 255, 255, 0.05)", stroke: "rgba(233, 199, 123, 0.5)" };
+}
+
+// One frame of a post. p is time in seconds since the clip started; Infinity draws the finished still.
+// Everything is laid out on a 1080x1920 grid and scaled to the canvas.
 const LS_W = 1080, LS_H = 1920;
 const lsEase = (x) => 1 - Math.pow(1 - Math.min(Math.max(x, 0), 1), 3);
 const lsBack = (x) => {
@@ -372,28 +469,37 @@ const lsSpan = (p, start, dur) => (p - start) / dur;
 
 function lsDraw(ctx, m, opts, p) {
   const W = LS_W, H = LS_H;
+  const th = lsTheme(opts.theme, opts);
   const display = '"Space Grotesk", "Inter", system-ui, sans-serif';
   const body = '"Inter", system-ui, sans-serif';
-  const goldGrad = (y0, y1) => {
+  const still = p === Infinity;
+  const kind = opts.kind || "moment";
+  const headFill = (y0, y1) => {
     const g = ctx.createLinearGradient(0, y0, W, y1);
-    g.addColorStop(0, "#f6e1a6");
-    g.addColorStop(0.4, "#e9c77b");
-    g.addColorStop(1, "#9c6f2f");
+    g.addColorStop(0, th.head[0]);
+    g.addColorStop(1, th.head[1]);
     return g;
   };
-  const still = p === Infinity;
 
-  // Background: a flash on impact, then a slow breathing glow.
-  ctx.fillStyle = "#050608";
+  // Background, impact flash and slow drift.
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, th.bg[0]);
+  bg.addColorStop(th.team ? 0.55 : 1, th.bg[1]);
+  ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
   const flash = still ? 0 : Math.max(0, 1 - p / 0.6);
-  const breathe = still ? 0 : 0.06 * Math.sin(p * 2.4);
-  const glow = ctx.createRadialGradient(W / 2, 760, 40, W / 2, 760, 900 + flash * 300);
-  glow.addColorStop(0, `rgba(233, 199, 123, ${(opts.hot ? 0.38 : 0.2) + flash * 0.5 + breathe})`);
-  glow.addColorStop(1, "rgba(5, 6, 8, 0)");
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = "rgba(233, 199, 123, 0.08)";
+  if (th.glow) {
+    const breathe = still ? 0 : 0.06 * Math.sin(p * 2.4);
+    const glow = ctx.createRadialGradient(W / 2, 760, 40, W / 2, 760, 900 + flash * 300);
+    glow.addColorStop(0, `rgba(${th.glow}, ${(opts.hot ? 0.38 : 0.22) + flash * 0.5 + breathe})`);
+    glow.addColorStop(1, `rgba(${th.glow}, 0)`);
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+  } else if (flash > 0) {
+    ctx.fillStyle = `rgba(201, 151, 74, ${flash * 0.25})`;
+    ctx.fillRect(0, 0, W, H);
+  }
+  ctx.strokeStyle = th.lines;
   ctx.lineWidth = 2;
   const drift = still ? 0 : (p * 40) % 90;
   for (let x = -H; x < W + 90; x += 90) {
@@ -402,51 +508,62 @@ function lsDraw(ctx, m, opts, p) {
     ctx.lineTo(x - drift + H, 0);
     ctx.stroke();
   }
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
 
-  // Status pill + clock slide in from the top.
+  // Top: status pill + clock, or a news band for the "breaking" style.
   const top = still ? 1 : lsEase(lsSpan(p, 0, 0.5));
   ctx.save();
   ctx.translate(0, (1 - top) * -160);
   ctx.globalAlpha = top;
-  ctx.textBaseline = "middle";
-  ctx.font = `800 40px ${body}`;
-  const pw = ctx.measureText(opts.status).width + 110;
-  ctx.fillStyle = opts.final ? "#e9c77b" : "#e5383b";
-  ctx.beginPath();
-  ctx.roundRect(80, 120, pw, 84, 42);
-  ctx.fill();
-  const blink = still || opts.final ? 1 : 0.55 + 0.45 * Math.cos(p * 6);
-  ctx.globalAlpha = top * blink;
-  ctx.fillStyle = opts.final ? "#0b0b0d" : "#fff";
-  ctx.beginPath();
-  ctx.arc(124, 162, 12, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.globalAlpha = top;
-  ctx.textAlign = "left";
-  ctx.fillText(opts.status, 152, 164);
-  ctx.textAlign = "right";
-  ctx.fillStyle = "#f3f1ea";
-  ctx.font = `700 76px ${display}`;
-  ctx.fillText(opts.clock, W - 80, 166);
+  if (th.band) {
+    ctx.fillStyle = th.accent;
+    ctx.fillRect(0, 70, W, 130);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = `900 72px ${display}`;
+    ctx.textAlign = "left";
+    ctx.fillText(opts.final ? opts.status : "BREAKING", 70, 138);
+    ctx.textAlign = "right";
+    ctx.font = `700 64px ${display}`;
+    ctx.fillText(opts.clock, W - 70, 138);
+  } else {
+    ctx.font = `800 40px ${body}`;
+    const pw = ctx.measureText(opts.status).width + 110;
+    ctx.fillStyle = opts.final || kind === "matchday" ? th.accent : "#e5383b";
+    ctx.beginPath();
+    ctx.roundRect(80, 120, pw, 84, 42);
+    ctx.fill();
+    const blink = still || opts.final ? 1 : 0.55 + 0.45 * Math.cos(p * 6);
+    ctx.globalAlpha = top * blink;
+    ctx.fillStyle = opts.final || kind === "matchday" ? th.onAccent : "#ffffff";
+    ctx.beginPath();
+    ctx.arc(124, 162, 12, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = top;
+    ctx.textAlign = "left";
+    ctx.fillText(opts.status, 152, 164);
+    ctx.textAlign = "right";
+    ctx.fillStyle = th.text;
+    ctx.font = `700 76px ${display}`;
+    ctx.fillText(opts.clock, W - 80, 166);
+  }
   ctx.restore();
   ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
 
   // Hook on screen from the first frame: the first second decides whether people keep watching.
   if (opts.hook) {
     const h = still ? 1 : lsEase(lsSpan(p, 0, 0.25));
     ctx.save();
     ctx.globalAlpha = h;
-    ctx.font = `800 62px ${display}`;
-    const lines = lsWrap(ctx, opts.hook, W - 160).slice(0, 2);
-    lines.forEach((ln, i) => {
-      const y = 290 + i * 74;
+    ctx.font = `800 58px ${display}`;
+    lsWrap(ctx, opts.hook, W - 160).slice(0, 2).forEach((ln, i) => {
+      const y = 300 + i * 72;
       const w = ctx.measureText(ln).width + 36;
-      ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+      ctx.fillStyle = th.light ? "rgba(255, 255, 255, 0.9)" : "rgba(0, 0, 0, 0.55)";
       ctx.beginPath();
-      ctx.roundRect(W / 2 - w / 2, y - 40, w, 80, 14);
+      ctx.roundRect(W / 2 - w / 2, y - 38, w, 76, 14);
       ctx.fill();
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = th.text;
       ctx.fillText(ln, W / 2, y + 2);
     });
     ctx.restore();
@@ -454,11 +571,11 @@ function lsDraw(ctx, m, opts, p) {
 
   // Emoji pops in.
   const pop = still ? 1 : lsBack(lsSpan(p, 0.15, 0.6));
-  if (pop > 0) {
+  if (pop > 0 && opts.emoji) {
     ctx.save();
-    ctx.translate(W / 2, opts.hook ? 560 : 520);
+    ctx.translate(W / 2, 580);
     ctx.scale(pop, pop);
-    ctx.font = `200px system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
+    ctx.font = `190px system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
     ctx.fillText(opts.emoji, 0, 0);
     ctx.restore();
   }
@@ -466,41 +583,104 @@ function lsDraw(ctx, m, opts, p) {
   // Headline slams down with a short shake.
   const slam = still ? 1 : lsEase(lsSpan(p, 0.45, 0.4));
   if (slam > 0) {
-    const shake = still ? 0 : Math.max(0, 1 - lsSpan(p, 0.85, 0.35)) * Math.sin(p * 70) * 12 * (p > 0.85 ? 1 : 0);
+    const shake = still || p < 0.85 ? 0 : Math.max(0, 1 - lsSpan(p, 0.85, 0.35)) * Math.sin(p * 70) * 12;
     ctx.save();
-    ctx.translate(W / 2 + shake, 790);
+    ctx.translate(W / 2 + shake, 820);
     const sc = 1 + (1 - slam) * 1.4;
     ctx.scale(sc, sc);
     ctx.globalAlpha = slam;
-    lsFit(ctx, opts.headline, W - 140, 220, 800, display);
-    ctx.fillStyle = goldGrad(-100, 100);
+    lsFit(ctx, opts.headline, W - 140, 210, 900, display);
+    ctx.fillStyle = headFill(-100, 100);
     ctx.fillText(opts.headline, 0, 0);
     ctx.restore();
   }
+  const sub = still ? 1 : lsEase(lsSpan(p, 1.0, 0.5));
   if (opts.team) {
-    const up = still ? 1 : lsEase(lsSpan(p, 1.0, 0.5));
     ctx.save();
-    ctx.globalAlpha = up;
-    ctx.fillStyle = "#f3f1ea";
-    lsFit(ctx, opts.team.toUpperCase(), W - 160, 84, 700, display);
-    ctx.fillText(opts.team.toUpperCase(), W / 2, 960 + (1 - up) * 40);
+    ctx.globalAlpha = sub;
+    ctx.fillStyle = th.text;
+    lsFit(ctx, opts.team.toUpperCase(), W - 160, 76, 700, display);
+    ctx.fillText(opts.team.toUpperCase(), W / 2, 985 + (1 - sub) * 40);
     ctx.restore();
   }
 
-  // Scoreboard rises; the score pops.
   const rise = still ? 1 : lsEase(lsSpan(p, 1.3, 0.55));
-  if (rise > 0) {
+  const panel = (y, h) => {
+    ctx.fillStyle = th.board;
+    ctx.strokeStyle = th.stroke;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.roundRect(70, y, W - 140, h, 36);
+    ctx.fill();
+    ctx.stroke();
+  };
+
+  if (kind === "matchday") {
+    // The two teams, stacked big.
+    [opts.homeName, "VS", opts.awayName].forEach((txt, i) => {
+      const a = still ? 1 : lsEase(lsSpan(p, 1.1 + i * 0.25, 0.5));
+      if (a <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = a;
+      ctx.translate((1 - a) * (i === 1 ? 0 : i === 0 ? -200 : 200), 0);
+      if (i === 1) {
+        ctx.fillStyle = th.accent;
+        ctx.font = `800 64px ${display}`;
+      } else {
+        ctx.fillStyle = th.text;
+        lsFit(ctx, txt.toUpperCase(), W - 160, 120, 900, display);
+      }
+      ctx.fillText(i === 1 ? txt : txt.toUpperCase(), W / 2, 1110 + i * 130);
+      ctx.restore();
+    });
+  } else if (kind === "poll") {
+    // Comment-to-vote options.
+    (opts.options || []).forEach((o, i, all) => {
+      const a = still ? 1 : lsBack(lsSpan(p, 1.1 + i * 0.25, 0.45));
+      if (a <= 0) return;
+      const y = 1080 + i * 150 - (all.length === 2 ? 0 : 20);
+      ctx.save();
+      ctx.globalAlpha = Math.min(1, a);
+      ctx.translate(W / 2, y);
+      ctx.scale(Math.max(a, 0.01), Math.max(a, 0.01));
+      ctx.fillStyle = th.board;
+      ctx.strokeStyle = th.stroke;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(-(W - 180) / 2, -58, W - 180, 116, 58);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = th.accent;
+      ctx.beginPath();
+      ctx.arc(-(W - 180) / 2 + 66, 0, 44, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = th.onAccent;
+      ctx.font = `900 50px ${display}`;
+      ctx.fillText(o.key, -(W - 180) / 2 + 66, 3);
+      ctx.fillStyle = th.text;
+      ctx.textAlign = "left";
+      lsFit(ctx, o.label, W - 380, 56, 700, body);
+      ctx.fillText(o.label, -(W - 180) / 2 + 140, 3);
+      ctx.restore();
+    });
+  } else if (kind === "spotlight") {
+    if (rise > 0) {
+      ctx.save();
+      ctx.globalAlpha = rise;
+      ctx.translate(0, (1 - rise) * 120);
+      panel(1090, 220);
+      ctx.fillStyle = th.text;
+      lsFit(ctx, opts.detailLine || "", W - 220, 64, 800, display);
+      ctx.fillText(opts.detailLine || "", W / 2, 1200);
+      ctx.restore();
+    }
+  } else if (rise > 0) {
+    // Scoreboard rises; the score pops.
     const by = 1090 + (1 - rise) * 120, bh = 220;
     ctx.save();
     ctx.globalAlpha = rise;
-    ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
-    ctx.strokeStyle = "rgba(233, 199, 123, 0.5)";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.roundRect(70, by, W - 140, bh, 36);
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = "#f3f1ea";
+    panel(by, bh);
+    ctx.fillStyle = th.text;
     lsFit(ctx, m.home, 300, 54, 700, body);
     ctx.textAlign = "left";
     ctx.fillText(m.home, 110, by + bh / 2);
@@ -512,13 +692,13 @@ function lsDraw(ctx, m, opts, p) {
     ctx.translate(W / 2, by + bh / 2 + 6);
     ctx.scale(Math.max(sp, 0.01), Math.max(sp, 0.01));
     ctx.font = `800 120px ${display}`;
-    ctx.fillStyle = goldGrad(-60, 60);
+    ctx.fillStyle = headFill(-60, 60);
     ctx.fillText(opts.hs === null || opts.hs === undefined ? "v" : `${opts.hs}–${opts.as}`, 0, 0);
     ctx.restore();
   }
 
-  // Hook types in, or the recap's moments appear one by one.
-  ctx.fillStyle = "#d8d6cf";
+  // Bottom: the recap's moments one by one, or a comment prompt.
+  ctx.fillStyle = th.sub;
   if (opts.list) {
     ctx.font = `600 46px ${body}`;
     ctx.textAlign = "left";
@@ -531,41 +711,52 @@ function lsDraw(ctx, m, opts, p) {
     ctx.globalAlpha = 1;
     ctx.textAlign = "center";
   } else if (opts.prompt) {
-    // Comment bait: a question people answer in the replies.
     const q = still ? 1 : lsBack(lsSpan(p, 2.2, 0.5));
     if (q > 0) {
       const pulse = still ? 1 : 1 + 0.04 * Math.sin(Math.max(0, p - 2.7) * 5);
+      const y = kind === "poll" ? 1560 : kind === "matchday" ? 1480 : 1500;
       ctx.save();
-      ctx.translate(W / 2, 1500);
+      ctx.translate(W / 2, y);
       ctx.scale(Math.max(q, 0.01) * pulse, Math.max(q, 0.01) * pulse);
-      lsFit(ctx, opts.prompt, W - 180, 72, 800, display);
+      lsFit(ctx, opts.prompt, W - 180, 68, 800, display);
       const w = ctx.measureText(opts.prompt).width + 80;
-      ctx.fillStyle = "#e9c77b";
+      ctx.fillStyle = th.accent;
       ctx.beginPath();
-      ctx.roundRect(-w / 2, -64, w, 128, 64);
+      ctx.roundRect(-w / 2, -60, w, 120, 60);
       ctx.fill();
-      ctx.fillStyle = "#0b0b0d";
+      ctx.fillStyle = th.onAccent;
       ctx.fillText(opts.prompt, 0, 4);
       ctx.restore();
     }
-  } else if (opts.text) {
-    ctx.font = `600 54px ${body}`;
-    const shown = still ? opts.text.length : Math.floor(Math.max(0, p - 2.0) * 38);
-    let left = shown;
-    lsWrap(ctx, opts.text, W - 200).slice(0, 4).forEach((ln, i) => {
-      if (left <= 0) return;
-      ctx.fillText(ln.slice(0, left), W / 2, 1420 + i * 72);
-      left -= ln.length + 1;
-    });
+  }
+
+  // News ticker for the "breaking" style.
+  if (th.ticker && opts.ticker) {
+    const ty = H - 290;
+    ctx.fillStyle = th.accent;
+    ctx.fillRect(0, ty - 40, W, 80);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, ty - 40, W, 80);
+    ctx.clip();
+    ctx.fillStyle = "#ffffff";
+    ctx.font = `700 42px ${body}`;
+    ctx.textAlign = "left";
+    const text = `${opts.ticker}   •   `;
+    const tw = ctx.measureText(text).width;
+    const off = still ? 0 : (p * 220) % tw;
+    for (let x = 40 - off; x < W; x += tw) ctx.fillText(text, x, ty + 2);
+    ctx.restore();
+    ctx.textAlign = "center";
   }
 
   // Credit
   const cr = still ? 1 : lsEase(lsSpan(p, 2.6, 0.6));
   ctx.globalAlpha = cr;
-  ctx.fillStyle = "#e9c77b";
+  ctx.fillStyle = th.light ? "#9c6f2f" : th.team ? "#ffffff" : "#e9c77b";
   ctx.font = `700 44px ${display}`;
   ctx.fillText("@ljsoccer01", W / 2, H - 150);
-  ctx.fillStyle = "#9da1ab";
+  ctx.fillStyle = th.light ? "#5b5e66" : "#9da1ab";
   ctx.font = `500 34px ${body}`;
   ctx.fillText("Made with LJSportMind", W / 2, H - 96);
   ctx.globalAlpha = 1;
@@ -636,6 +827,13 @@ function lsRecord(m, opts) {
   let feedError = false;
   let shown = null; // moment id, or "ft"
   let poll = 0;
+  const STYLES = ["hype", "breaking", "clean", "team"];
+  let style = "hype";
+  try {
+    style = STYLES.includes(localStorage.getItem("ljsportmind_live_style")) ? localStorage.getItem("ljsportmind_live_style") : "hype";
+  } catch {
+    // keep the default style
+  }
 
   function save() {
     lsSave(match);
@@ -713,7 +911,10 @@ function lsRecord(m, opts) {
       });
     }
     const wasLive = match.state !== "post";
-    Object.assign(match, { hs: g.home.score, as: g.away.score, state: g.state, detail: g.detail, updatedAt: new Date().toISOString() });
+    Object.assign(match, {
+      hs: g.home.score, as: g.away.score, state: g.state, detail: g.detail, updatedAt: new Date().toISOString(),
+      leagueName: g.leagueName, start: g.start, colors: { h: [g.home.color, g.home.alt], a: [g.away.color, g.away.alt] }
+    });
     save();
     const fresh = match.moments.filter((mo) => !before.has(mo.id));
     if (announce && wasLive && g.state === "post") {
@@ -746,7 +947,7 @@ function lsRecord(m, opts) {
   }
 
   async function follow(g) {
-    match = { id: g.id, league: g.league, sport: g.sport, home: g.home.name, away: g.away.name, hs: 0, as: 0, state: g.state, detail: g.detail, moments: [] };
+    match = { id: g.id, league: g.league, leagueName: g.leagueName, start: g.start, sport: g.sport, home: g.home.name, away: g.away.name, hs: 0, as: 0, state: g.state, detail: g.detail, moments: [] };
     shown = null;
     save();
     render();
@@ -772,8 +973,9 @@ function lsRecord(m, opts) {
     const followKey = match.sport === "football" ? "lsFollowingFootball" : match.sport === "basketball" ? "lsFollowingBasketball" : "lsFollowing";
     document.getElementById("lsStatusNote").textContent = t(match.state === "in" ? followKey : match.state === "post" ? "lsFinalNote" : "lsPreNote");
     document.getElementById("lsUpdated").textContent = match.updatedAt ? tf("lsUpdated", { time: new Date(match.updatedAt).toLocaleTimeString(currentLang, { hour: "numeric", minute: "2-digit", second: "2-digit" }) }) : "";
-    document.getElementById("lsPostScoreBtn").hidden = match.state === "pre";
     document.getElementById("lsTakeForm").hidden = match.state === "pre";
+    renderCreate();
+    renderStyles();
   }
 
   function teamOf(mo) {
@@ -797,7 +999,7 @@ function lsRecord(m, opts) {
       const sc = lsScoreOf(match, mo);
       const li = el("li", mo.id === shown ? "active" : "");
       const b = btn("", "ls-tl-btn", () => showDrop(mo.id));
-      const text = mo.type === "take" ? mo.note : mo.type === "update" ? t("m_update") : `${t(`m_${mo.type}`)} · ${mo.player || teamOf(mo)}`;
+      const text = mo.type === "take" ? mo.note : ["update", "matchday", "poll"].includes(mo.type) ? t(`m_${mo.type}`) : `${t(`m_${mo.type}`)} · ${mo.player || teamOf(mo)}`;
       b.append(el("span", "ls-tl-min", mo.clock), el("span", "ls-emoji", lsEmoji(mo.type, match.sport)), el("span", "ls-tl-text", text), el("span", "ls-tl-score", sc ? `${sc.hs}–${sc.as}` : ""));
       li.append(b);
       timeline.append(li);
@@ -898,15 +1100,8 @@ function lsRecord(m, opts) {
     const mo = match.moments.find((x) => x.id === shown);
     if (!mo) return;
     const text = lsMomentText(match, mo);
-    const sc = lsScoreOf(match, mo);
-    const label = t(`m_${mo.type}`);
-    const opts = {
-      status: t(match.state === "post" ? "lsFT" : "lsLive"), clock: mo.clock, emoji: lsEmoji(mo.type, match.sport),
-      headline: `${label.toUpperCase()}${["goal", "pen"].includes(mo.type) ? "!" : ""}`,
-      team: mo.type === "update" || mo.type === "take" ? "" : mo.player ? `${mo.player} · ${teamOf(mo)}` : teamOf(mo),
-      hs: sc ? sc.hs : null, as: sc ? sc.as : null, hook: text.hook, prompt: t(`q_${mo.type}`), hot: ["goal", "pen", "og"].includes(mo.type)
-    };
-    const { wrap, actions } = mediaBlock(`${match.id}|${mo.id}|${currentLang}`, opts, `${fileBase()}-${tag(mo.clock)}-${mo.type}`);
+    const opts = momentOpts(mo, text);
+    const { wrap, actions } = mediaBlock(`${match.id}|${mo.id}|${style}|${currentLang}`, opts, `${fileBase()}-${tag(mo.clock)}-${mo.type}`);
     const body = el("div", "ls-drop-body");
     body.append(el("p", "ls-hook", text.hook), el("p", "ls-caption", text.caption));
     actions.append(copyBtn("lsCopy", text.caption));
@@ -916,14 +1111,119 @@ function lsRecord(m, opts) {
     drop.append(card);
   }
 
+  function colorsFor(team) {
+    const c = (match.colors && match.colors[team || "h"]) || [];
+    return { color: c[0] || "", alt: c[1] || "" };
+  }
+
+  function statusLabel() {
+    return t(match.state === "post" ? "lsFT" : match.state === "pre" ? "lsUpcoming" : "lsLive");
+  }
+
+  // What to draw for each kind of post. Every value comes from the feed or from what the user typed as a take.
+  function momentOpts(mo, text) {
+    const sc = lsScoreOf(match, mo);
+    const base = { theme: style, ...colorsFor(mo.team), status: statusLabel(), clock: mo.clock, emoji: lsEmoji(mo.type, match.sport), hook: text.hook, ticker: text.hook };
+    if (mo.type === "matchday") {
+      return { ...base, kind: "matchday", status: statusLabel(), clock: mo.clock, headline: t("m_matchday").toUpperCase(), homeName: match.home, awayName: match.away, prompt: t("q_matchday") };
+    }
+    if (mo.type === "poll") {
+      const opts3 = [{ key: "1", label: match.home }, { key: "X", label: t("lsDrawOpt") }, { key: "2", label: match.away }];
+      const options = match.sport === "soccer" ? opts3 : [opts3[0], opts3[2]];
+      return { ...base, kind: "poll", headline: t("m_poll").toUpperCase(), options, prompt: t(match.sport === "soccer" ? "q_poll3" : "q_poll2") };
+    }
+    if (mo.type === "spot") {
+      const n = text.goals.length;
+      const headline = (n >= 3 ? t("m_hat") : n === 2 ? t("m_brace") : t("m_goal")).toUpperCase() + "!";
+      return { ...base, kind: "spotlight", headline, team: `${mo.player} · ${teamOf(mo)}`, detailLine: `⚽ ${text.goals.map((g) => g.clock).join(" · ")}`, prompt: t("q_spot"), hot: true };
+    }
+    let label = t(`m_${mo.type}`);
+    if (mo.type === "goal" || mo.type === "pen") {
+      if (text.goals.length === 2) label = t("m_brace");
+      if (text.goals.length >= 3) label = t("m_hat");
+    }
+    return {
+      ...base, kind: "moment",
+      headline: `${label.toUpperCase()}${["goal", "pen"].includes(mo.type) ? "!" : ""}`,
+      team: mo.type === "update" || mo.type === "take" ? "" : mo.player ? `${mo.player} · ${teamOf(mo)}` : teamOf(mo),
+      hs: sc ? sc.hs : null, as: sc ? sc.as : null, prompt: t(`q_${mo.type}`), hot: ["goal", "pen", "og"].includes(mo.type)
+    };
+  }
+
+  function scorers() {
+    const seen = new Map();
+    match.moments.forEach((mo) => {
+      if ((mo.type === "goal" || mo.type === "pen") && mo.player && !seen.has(mo.player)) seen.set(mo.player, mo.team);
+    });
+    return [...seen.entries()];
+  }
+
+  // The "Create" options: post types beyond the automatic event posts.
+  function renderCreate() {
+    const box = document.getElementById("lsCreateTiles");
+    box.innerHTML = "";
+    const tile = (emoji, key, onClick, hidden) => {
+      if (hidden) return;
+      const b = btn("", "ls-tile", onClick);
+      b.append(el("span", "ls-tile-emoji", emoji), el("span", "", t(key)));
+      box.append(b);
+    };
+    tile("🗓️", "cMatchday", () => addOwnMoment("matchday"));
+    tile("🗳️", "cPoll", () => addOwnMoment("poll"), match.state === "post");
+    tile("📊", "cScore", async () => {
+      await refreshGame(false);
+      addOwnMoment("update");
+    }, match.state === "pre");
+    tile("⭐", "cSpot", () => {
+      const row = document.getElementById("lsSpotRow");
+      row.hidden = !row.hidden;
+      renderSpotRow();
+    }, match.sport !== "soccer" || match.state === "pre");
+    tile("🏁", "cRecap", () => showDrop("ft"), match.state !== "post");
+  }
+
+  function renderSpotRow() {
+    const row = document.getElementById("lsSpotRow");
+    row.innerHTML = "";
+    const list = scorers();
+    if (!list.length) return row.append(el("p", "ls-empty", t("lsNoScorers")));
+    list.forEach(([player, team]) => {
+      const n = lsPlayerGoals(match, player).length;
+      row.append(btn(`⭐ ${player}${n > 1 ? ` ×${n}` : ""}`, "ls-chip", () => {
+        row.hidden = true;
+        addOwnMoment("spot", "", { player, team });
+      }));
+    });
+  }
+
+  function renderStyles() {
+    const box = document.getElementById("lsStyles");
+    box.innerHTML = "";
+    STYLES.forEach((st) => {
+      const b = btn(t(`st${st[0].toUpperCase()}${st.slice(1)}`), `ls-chip ${st === style ? "active" : ""}`, () => {
+        style = st;
+        try {
+          localStorage.setItem("ljsportmind_live_style", st);
+        } catch {
+          // style won't persist
+        }
+        renderStyles();
+        renderDrop();
+      });
+      b.dataset.style = st;
+      box.append(b);
+    });
+  }
+
   function renderRecap() {
     const r = lsRecap(match);
     const rows = r.key.map((mo) => `${mo.clock} ${t(`m_${mo.type}`)} · ${mo.player || teamOf(mo)}`);
     const opts = {
+      theme: style, ...colorsFor(match.hs >= match.as ? "h" : "a"), ticker: r.hook,
       status: t("lsFT"), clock: "FT", emoji: LS_EMOJI.ft, headline: t(`r_story_${r.story}`).toUpperCase(),
       team: "", hs: match.hs, as: match.as, hook: r.hook, list: rows.length ? rows : null, prompt: rows.length ? "" : t("r_question"), final: true, hot: true
     };
-    const { wrap, actions } = mediaBlock(`${match.id}|ft|${match.moments.length}|${currentLang}`, opts, `${fileBase()}-full-time`);
+    const { wrap, actions } = mediaBlock(`${match.id}|ft|${match.moments.length}|${style}|${currentLang}`, opts, `${fileBase()}-full-time`);
     const body = el("div", "ls-drop-body");
     body.append(el("p", "ls-hook", r.hook), el("p", "ls-caption", r.caption));
     actions.append(copyBtn("lsCopy", r.caption));
@@ -986,13 +1286,14 @@ function lsRecord(m, opts) {
     renderDrop();
   }
 
-  function addOwnMoment(type, note) {
-    if (!match || match.state === "pre") return;
+  function addOwnMoment(type, note, extra) {
+    if (!match || (match.state === "pre" && !["matchday", "poll"].includes(type))) return;
     const mo = {
-      id: `u${Date.now().toString(36)}`, type, note: note || "", team: null, player: "",
+      id: `u${Date.now().toString(36)}`, type, note: note || "", team: null, player: "", ...(extra || {}),
       clock: match.sport === "soccer" ? (match.detail.match(/\d+'(\+\d+')?/) || [match.detail])[0] : match.detail,
       status: match.detail, hs: match.hs, as: match.as, scoreKnown: true, minute: 0, variant: 0
     };
+    if (type === "matchday" || type === "poll") mo.clock = lsWhen(match);
     match.moments.push(mo);
     save();
     showDrop(mo.id);
@@ -1003,10 +1304,6 @@ function lsRecord(m, opts) {
     loadGames();
   }));
   document.getElementById("lsRefreshBtn").addEventListener("click", loadGames);
-  document.getElementById("lsPostScoreBtn").addEventListener("click", async () => {
-    await refreshGame(false);
-    addOwnMoment("update");
-  });
   document.getElementById("lsTakeForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const input = document.getElementById("lsTakeInput");

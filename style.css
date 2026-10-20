@@ -1503,3 +1503,20 @@ body.jobs-on .openings-btn { display: inline-flex; }
 .ls-take { margin: 10px 0 20px; }
 .ls-drop-actions a.secondary { display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); color: var(--text); font-weight: 600; text-decoration: none; }
 .ls-drop-actions a.btn-gold { display: inline-flex; align-items: center; }
+.bid-tips { margin: 18px 0 0 !important; padding: 12px 14px; border-radius: 12px; border: 1px dashed rgba(233, 199, 123, 0.35); color: var(--text); font-size: 14px; line-height: 1.5; }
+.bid-missing { margin-bottom: 16px; border-color: rgba(240, 195, 107, 0.5); background: rgba(240, 195, 107, 0.06); }
+.bid-missing p { margin: 0 0 6px !important; font-size: 14px; }
+.mv-prompt { font-size: 17px !important; line-height: 1.45 !important; }
+.ls-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.ls-tile { display: grid; justify-items: center; gap: 8px; min-height: 104px; padding: 16px 10px; border-radius: 18px; border: 1px solid rgba(233, 199, 123, 0.3); background: radial-gradient(160px 90px at 50% 0%, rgba(233, 199, 123, 0.14), transparent 70%), rgba(255, 255, 255, 0.03); color: var(--text); font-size: 15px; font-weight: 800; box-shadow: none; transition: transform 0.12s, border-color 0.2s; }
+.ls-tile:hover { border-color: rgba(233, 199, 123, 0.7); transform: translateY(-2px); }
+.ls-tile:active { transform: scale(0.97); }
+.ls-tile-emoji { font-size: 34px; line-height: 1; }
+.ls-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.ls-chip { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border-soft); background: rgba(255, 255, 255, 0.04); color: var(--text); font-size: 14px; font-weight: 700; box-shadow: none; }
+.ls-chip.active { background: var(--gold); color: #0b0b0d; border-color: transparent; }
+.ls-chip[data-style="breaking"].active { background: #e5383b; color: #fff; }
+.ls-chip[data-style="clean"].active { background: #f6f4ef; color: #0b0b0d; }
+.ls-style-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 18px 0 12px; }
+.ls-style-row .ls-chips { margin: 0; }
+.ls-style-row .ls-sub { margin: 0 !important; }

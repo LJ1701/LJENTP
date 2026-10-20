@@ -38,8 +38,15 @@ function seen(lm, indices) {
   return !!lm && indices.every((i) => lm[i] && (lm[i].visibility === undefined || lm[i].visibility > 0.5));
 }
 
+const CORE_POINTS = [LM.nose, LM.lShoulder, LM.rShoulder, LM.lHip, LM.rHip];
+const LEG_POINTS = [LM.lKnee, LM.rKnee, LM.lAnkle, LM.rAnkle];
+
 function bodyVisible(lm) {
   return seen(lm, BODY_POINTS);
+}
+
+function coreVisible(lm) {
+  return seen(lm, CORE_POINTS);
 }
 
 function tiltDeg(left, right, aspect) {
@@ -57,15 +64,16 @@ function frontFeatures(lm, aspect) {
   const hip = mid(P(LM.lHip), P(LM.rHip));
   const shoulderWidth = dist(P(LM.lShoulder), P(LM.rShoulder)) || 1e-6;
   const torso = dist(sh, hip) || 1e-6;
-  const leg = (dist(P(LM.lHip), P(LM.lKnee)) + dist(P(LM.lKnee), P(LM.lAnkle)) + dist(P(LM.rHip), P(LM.rKnee)) + dist(P(LM.rKnee), P(LM.rAnkle))) / 2;
+  const legsSeen = seen(lm, LEG_POINTS);
+  const leg = legsSeen ? (dist(P(LM.lHip), P(LM.lKnee)) + dist(P(LM.lKnee), P(LM.lAnkle)) + dist(P(LM.rHip), P(LM.rKnee)) + dist(P(LM.rKnee), P(LM.rAnkle))) / 2 : 0;
   return {
     shoulderTilt: tiltDeg(lm[LM.lShoulder], lm[LM.rShoulder], aspect),
     hipTilt: tiltDeg(lm[LM.lHip], lm[LM.rHip], aspect),
     headOffset: (P(LM.nose).x - sh.x) / shoulderWidth,
-    weightShift: (hip.x - (P(LM.lAnkle).x + P(LM.rAnkle).x) / 2) / shoulderWidth,
-    standingKnee: Math.abs(lm[LM.lKnee].x - lm[LM.rKnee].x) / (Math.abs(lm[LM.lAnkle].x - lm[LM.rAnkle].x) || 1e-6),
+    weightShift: legsSeen ? (hip.x - (P(LM.lAnkle).x + P(LM.rAnkle).x) / 2) / shoulderWidth : null,
+    standingKnee: legsSeen ? Math.abs(lm[LM.lKnee].x - lm[LM.rKnee].x) / (Math.abs(lm[LM.lAnkle].x - lm[LM.rAnkle].x) || 1e-6) : null,
     frame: shoulderWidth / (dist(P(LM.lHip), P(LM.rHip)) || 1e-6),
-    legs: leg / torso,
+    legs: legsSeen ? leg / torso : null,
     hipX: hip.x / shoulderWidth
   };
 }
@@ -108,14 +116,18 @@ function analyzeFront(frames) {
   const mean = hips.reduce((a, b) => a + b, 0) / hips.length;
   const drift = Math.sqrt(hips.reduce((a, b) => a + (b - mean) ** 2, 0) / hips.length);
   const m = (k) => median(frames.map((f) => f[k]));
+  // Leg measurements only count when the legs were in view for a good share of the frames.
+  const legFrames = frames.filter((f) => f.legs !== null);
+  const ml = (k) => (legFrames.length >= Math.max(5, frames.length / 3) ? median(legFrames.map((f) => f[k])) : null);
+  const opt = (v, fn) => (v === null ? null : fn(v));
   return {
     shoulderTilt: round1(m("shoulderTilt")),
     hipTilt: round1(m("hipTilt")),
     headOffset: Math.round(100 * m("headOffset")),
-    weightShift: Math.round(100 * m("weightShift")),
-    standingKnee: round2(m("standingKnee")),
+    weightShift: opt(ml("weightShift"), (v) => Math.round(100 * v)),
+    standingKnee: opt(ml("standingKnee"), round2),
     frame: round2(m("frame")),
-    legs: round2(m("legs")),
+    legs: opt(ml("legs"), round2),
     steadiness: round1(drift * 100)
   };
 }
@@ -284,6 +296,15 @@ function loadBodyScans() {
 if (typeof document !== "undefined") {
   const I18N_MOVE = {
     en: {
+      bidStepOf: "Step {i} of {n} · {name}",
+      bidFrontName: "Front", bidSideName: "Side",
+      bidInView: "✓ Whole body in view. Hold still…",
+      bidInViewLegs: "✓ Got you. Step back a little so your feet fit too.",
+      bidHold: "Hold still…",
+      bidTips: "Before you start: prop your phone up at waist height, step back 2–3 m so head to feet fit in the frame, and use good light. The scan waits until it can see you.",
+      bidMissFront: "The front view wasn't captured, so posture wasn't measured. Scan again with your whole upper body facing the camera.",
+      bidMissLegs: "Your legs weren't fully in view, so knees, weight and leg length weren't measured. Step back until your feet fit, then scan again.",
+      bidMissSide: "The side view wasn't captured, so head position wasn't measured. Turn fully sideways when asked.",
       heroCta: "Start with my Body ID",
       bidTitle: "Your LJ Body ID",
       bidSub: "Stand still for 20 seconds. Your body becomes your ID.",
@@ -343,6 +364,15 @@ if (typeof document !== "undefined") {
       mvAskQuestion: "Read my LJ Body ID: my health watch-list and what changed since my first scan. Is anything worth a professional check, and what simple habits help?"
     },
     es: {
+      bidStepOf: "Paso {i} de {n} · {name}",
+      bidFrontName: "De frente", bidSideName: "De lado",
+      bidInView: "✓ Cuerpo completo a la vista. Quédate quieto…",
+      bidInViewLegs: "✓ Te veo. Aléjate un poco para que también se vean tus pies.",
+      bidHold: "Quédate quieto…",
+      bidTips: "Antes de empezar: apoya el teléfono a la altura de la cintura, aléjate 2–3 m para que se vea de la cabeza a los pies y busca buena luz. El escaneo espera hasta verte.",
+      bidMissFront: "No se captó la vista de frente, así que no se midió la postura. Escanea de nuevo con todo el torso de frente a la cámara.",
+      bidMissLegs: "Tus piernas no se veían completas, así que no se midieron rodillas, peso ni piernas. Aléjate hasta que se vean tus pies y escanea de nuevo.",
+      bidMissSide: "No se captó la vista de lado, así que no se midió la posición de la cabeza. Gírate completamente de lado cuando te lo pida.",
       heroCta: "Empezar con mi Body ID",
       bidTitle: "Tu LJ Body ID",
       bidSub: "Quédate quieto 20 segundos. Tu cuerpo se convierte en tu ID.",
@@ -402,6 +432,15 @@ if (typeof document !== "undefined") {
       mvAskQuestion: "Lee mi LJ Body ID: mi lista de vigilancia de salud y qué cambió desde mi primer escaneo. ¿Hay algo que valga la pena revisar con un profesional y qué hábitos sencillos ayudan?"
     },
     zh: {
+      bidStepOf: "第 {i} 步，共 {n} 步 · {name}",
+      bidFrontName: "正面", bidSideName: "侧面",
+      bidInView: "✓ 全身已在画面中。保持静止…",
+      bidInViewLegs: "✓ 已识别。请再后退一点，让双脚也进入画面。",
+      bidHold: "保持静止…",
+      bidTips: "开始前：把手机放在齐腰高度，后退 2–3 米让头到脚都在画面中，并保证光线充足。扫描会等到看见你再开始。",
+      bidMissFront: "未拍到正面，因此没有测量姿态。请让上半身完全面向摄像头后再扫描。",
+      bidMissLegs: "双腿没有完整入镜，因此没有测量膝盖、重心和腿长。请后退到双脚入镜后再扫描。",
+      bidMissSide: "未拍到侧面，因此没有测量头部位置。提示时请完全侧身。",
       heroCta: "从我的 Body ID 开始",
       bidTitle: "你的 LJ Body ID",
       bidSub: "静止站立 20 秒，你的身体就是你的 ID。",
@@ -461,6 +500,15 @@ if (typeof document !== "undefined") {
       mvAskQuestion: "请解读我的 LJ Body ID：我的健康关注清单，以及与第一次扫描相比的变化。有没有值得找专业人士检查的地方？有哪些简单习惯有帮助？"
     },
     ar: {
+      bidStepOf: "الخطوة {i} من {n} · {name}",
+      bidFrontName: "من الأمام", bidSideName: "من الجانب",
+      bidInView: "✓ جسمك كاملًا ظاهر. اثبت…",
+      bidInViewLegs: "✓ رأيتك. تراجع قليلًا لتظهر قدماك أيضًا.",
+      bidHold: "اثبت…",
+      bidTips: "قبل البدء: ضع هاتفك على ارتفاع الخصر، وتراجع 2–3 م حتى يظهر جسمك من الرأس إلى القدمين، واختر إضاءة جيدة. ينتظر المسح حتى يراك.",
+      bidMissFront: "لم تُلتقط الصورة الأمامية، لذا لم تُقس الوضعية. امسح مرة أخرى بحيث يواجه الجزء العلوي من جسمك الكاميرا.",
+      bidMissLegs: "لم تظهر ساقاك كاملتين، لذا لم تُقس الركبتان والوزن وطول الساقين. تراجع حتى تظهر قدماك ثم امسح مرة أخرى.",
+      bidMissSide: "لم تُلتقط الصورة الجانبية، لذا لم يُقس موضع الرأس. استدر جانبيًا بالكامل عند الطلب.",
       heroCta: "ابدأ بهويتي Body ID",
       bidTitle: "هويتك LJ Body ID",
       bidSub: "قف ثابتًا 20 ثانية. يصبح جسمك هويتك.",
@@ -624,9 +672,10 @@ if (typeof document !== "undefined") {
       const frames = { front: [], side: [] };
       let stepIndex = 0;
       let phaseStart = performance.now();
-      let phase = "countdown";
+      let phase = "frame";
       let stopped = false;
       let raf = 0;
+      let lastTick = 0, seenFor = 0, recorded = 0;
 
       running = {
         stop() {
@@ -646,29 +695,47 @@ if (typeof document !== "undefined") {
           lm = result.landmarks && result.landmarks[0];
         }
         const aspect = mvVideo.videoWidth / (mvVideo.videoHeight || 1);
-        const visible = step.kind === "side" ? sideVisible(lm) : bodyVisible(lm);
+        const visible = step.kind === "side" ? sideVisible(lm) : coreVisible(lm);
+        const full = step.kind === "side" ? visible : bodyVisible(lm);
         drawPose(lm, visible);
         const back = t(step.kind === "side" ? "bidStepBackSide" : "mvStepBack");
+        const header = tf("bidStepOf", { i: stepIndex + 1, n: MOVE_STEPS.length, name: t(step.kind === "side" ? "bidSideName" : "bidFrontName") });
+        const dt = now - (lastTick || now);
+        lastTick = now;
 
-        if (phase === "countdown") {
+        if (phase === "frame") {
+          // Wait until the body is in view for a full second before counting down.
+          seenFor = visible ? seenFor + dt : 0;
+          mvPrompt.textContent = `${header}\n${t(step.key)}\n${visible ? t(full ? "bidInView" : "bidInViewLegs") : back}`;
+          if (seenFor >= 1000 || now - phaseStart > 30000) {
+            phase = "countdown";
+            phaseStart = now;
+          }
+        } else if (phase === "countdown") {
           const left = 3 - Math.floor((now - phaseStart) / 1000);
-          mvPrompt.textContent = `${t(step.key)}\n${tf("mvGetReady", { n: Math.max(left, 1) })}`;
+          mvPrompt.textContent = `${header}\n${t(step.key)}\n${tf("mvGetReady", { n: Math.max(left, 1) })}`;
           if (left <= 0) {
             phase = "record";
             phaseStart = now;
+            recorded = 0;
           }
         } else {
-          if (visible) frames[step.kind].push(step.kind === "side" ? sideFeatures(lm, aspect) : frontFeatures(lm, aspect));
-          const secsLeft = Math.ceil(step.secs - (now - phaseStart) / 1000);
-          mvPrompt.textContent = `${visible ? t(step.key) : back}\n${tf("mvSecondsLeft", { n: Math.max(secsLeft, 0) })}`;
-          if (secsLeft <= 0) {
+          // Only time spent in view counts, so stepping out of frame pauses the scan instead of wasting it.
+          if (visible) {
+            frames[step.kind].push(step.kind === "side" ? sideFeatures(lm, aspect) : frontFeatures(lm, aspect));
+            recorded += dt;
+          }
+          const secsLeft = Math.ceil(step.secs - recorded / 1000);
+          mvPrompt.textContent = `${header}\n${visible ? t("bidHold") : back}\n${tf("mvSecondsLeft", { n: Math.max(secsLeft, 0) })}`;
+          if (secsLeft <= 0 || now - phaseStart > 25000) {
             stepIndex += 1;
             if (stepIndex >= MOVE_STEPS.length) {
               running = null;
               return resolve({ front: analyzeFront(frames.front), side: analyzeSide(frames.side) });
             }
-            phase = "countdown";
+            phase = "frame";
             phaseStart = now;
+            seenFor = 0;
           }
         }
         raf = requestAnimationFrame(loop);
@@ -875,6 +942,16 @@ if (typeof document !== "undefined") {
     if (!running && !chipValues("bidPain").length && !chipValues("bidInjury").length) {
       setChipValues("bidPain", now.pain || []);
       setChipValues("bidInjury", now.injury || []);
+    }
+    const missing = [
+      !has(now.shoulderTilt) && "bidMissFront",
+      has(now.shoulderTilt) && !has(now.standingKnee) && "bidMissLegs",
+      !has(now.headAngle) && "bidMissSide"
+    ].filter(Boolean);
+    if (missing.length) {
+      const note = el("div", "card bid-missing");
+      missing.forEach((k) => note.append(el("p", "", t(k))));
+      mvResults.append(note);
     }
     mvResults.append(renderWatch(now));
     if (list.length > 1) mvResults.append(renderMemory(list));

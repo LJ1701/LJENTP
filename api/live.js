@@ -24,7 +24,11 @@ async function scoreboard(sport, league) {
 
 function side(c) {
   const team = c.team || {};
-  return { id: String(team.id || ""), name: team.shortDisplayName || team.displayName || "", abbr: team.abbreviation || "", score: Number(c.score) || 0 };
+  const hex = (v) => (/^[0-9a-f]{6}$/i.test(String(v || "")) ? String(v).toLowerCase() : "");
+  return {
+    id: String(team.id || ""), name: team.shortDisplayName || team.displayName || "", abbr: team.abbreviation || "",
+    score: Number(c.score) || 0, color: hex(team.color), alt: hex(team.alternateColor)
+  };
 }
 
 // Soccer key events: goals (including penalties and own goals) and red cards, in match order.

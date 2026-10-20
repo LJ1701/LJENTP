@@ -94,6 +94,7 @@
           <div id="bidPain" class="checkbox-grid"></div>
           <p class="bid-label" data-i18n="bidInjuryLabel">Past injury?</p>
           <div id="bidInjury" class="checkbox-grid"></div>
+          <p class="bid-tips" data-i18n="bidTips">Before you start: prop your phone up at waist height and step back 2–3 m.</p>
           <div class="actions bid-actions">
             <button type="button" id="mvStartBtn" data-i18n="mvStart">Scan my Body ID</button>
             <a href="#passportStart" id="bidSkip" class="text-link" data-i18n="bidSkip">Skip for now</a>
@@ -375,14 +376,18 @@
         </div>
         <p class="ls-status-note"><span id="lsStatusNote"></span> <span id="lsUpdated" class="ls-updated"></span></p>
 
-        <div class="ls-actions-row">
-          <button type="button" id="lsPostScoreBtn" class="ls-score-btn" data-i18n="lsPostScore">Post the current score</button>
-        </div>
+        <p class="ls-sub" data-i18n="lsCreate">Create</p>
+        <div id="lsCreateTiles" class="ls-tiles"></div>
+        <div id="lsSpotRow" class="ls-chips" hidden></div>
         <form id="lsTakeForm" class="ls-take">
           <input type="text" id="lsTakeInput" data-i18n-placeholder="lsTakePh" placeholder="Your hot take…" maxlength="120">
           <button type="submit" class="secondary" data-i18n="lsTakeBtn">Add my take</button>
         </form>
 
+        <div class="ls-style-row">
+          <span class="ls-sub" data-i18n="lsStyle">Style</span>
+          <div id="lsStyles" class="ls-chips"></div>
+        </div>
         <div id="lsDrop"></div>
         <div class="ls-tl-head">
           <h3 class="ls-tl-title" data-i18n="lsTimeline">Timeline</h3>
