@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LJSportMind Overview</title>
+<meta name="description" content="A plain-text overview of LJSportMind by LJSOCCER: LJ Body ID, sports career discovery and LIVE Studio, with how each part works, real examples and honest limits.">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<style>
+  :root { --bg: #050608; --text: #f3f1ea; --muted: #9da1ab; --accent: #e9c77b; --line: rgba(255, 255, 255, 0.08); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; }
+  main { max-width: 780px; margin: 0 auto; padding: 32px 16px 72px; }
+  h1, h2, h3 { line-height: 1.2; }
+  h1 { font-size: clamp(30px, 5vw, 42px); margin: 0 0 8px; }
+  h2 { font-size: 24px; margin: 44px 0 10px; padding-top: 18px; border-top: 1px solid var(--line); }
+  h3 { font-size: 17px; margin: 22px 0 6px; color: var(--accent); }
+  p, li { color: #dcdad3; }
+  .muted { color: var(--muted); font-size: 14px; }
+  a { color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 8px 0; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--accent); }
+  blockquote { margin: 10px 0; padding: 10px 14px; border-left: 3px solid var(--accent); background: rgba(255, 255, 255, 0.03); }
+</style>
+</head>
+<body>
+<main>
+
+<h1>LJSportMind: product overview</h1>
+<p>LJSportMind is a web app by LJSOCCER (TikTok: @ljsoccer01). The live app is at <a href="https://ljentp.vercel.app">https://ljentp.vercel.app</a>. This page describes what the app does in plain text, so it can be read without running the app. Last updated: 20 October 2026.</p>
+
+<p><strong>In one sentence:</strong> LJSportMind gives a sports person one identity (their LJ Body ID and Sports Passport), uses it to match them to sports careers with a step-by-step plan, and turns real live games into ready-to-post videos for social media.</p>
+
+<p><strong>Who it is for:</strong> college students and early-career people who want to work in sports, athletes and former athletes, and sports content creators.</p>
+
+<h2>1. How the app is organised</h2>
+<table>
+  <tr><th>Part</th><th>What it does</th><th>Where</th></tr>
+  <tr><td>LJ Body ID</td><td>A 20-second standing-still camera scan that becomes the user's identity in the app, with a health watch-list.</td><td>First section of the home page</td></tr>
+  <tr><td>Career Discovery</td><td>Sports Passport → career matches → development plan → job-posting check, plus an AI Coach.</td><td>Home page, after Body ID</td></tr>
+  <tr><td>LIVE Studio</td><td>Follow a real game from a live score feed; every goal or score change becomes a 9:16 video and caption automatically.</td><td>"● LIVE Studio" in the top menu</td></tr>
+</table>
+<p>The home page opens with a large headline ("Find your place in the sports industry."), a "Live &amp; latest" strip of real scores from the live feed, two buttons ("Start with my Body ID" and "Open LIVE Studio") and three feature cards.</p>
+
+<h2>2. LJ Body ID</h2>
+<p>The Body ID is the user's identity in LJSportMind. It is shown on their Sports Passport card instead of a generic avatar.</p>
+<h3>How the scan works</h3>
+<ol>
+  <li>The user props their phone up at waist height and steps back 2–3 metres so they are visible from head to feet.</li>
+  <li>Step 1 (front): "Face the camera. Feet hip-width apart, arms relaxed. Stand still." The scan waits until the body is in view, counts down 3-2-1, then records 7 seconds.</li>
+  <li>Step 2 (side): "Turn sideways to the camera. Stand still." Another 7 seconds.</li>
+  <li>Only time spent in view counts. If the person steps out of frame, the scan pauses instead of wasting time. If the feet are out of frame, it still measures the upper body and says which measurements were missed.</li>
+</ol>
+<p>There are no exercises; the person only stands still. The pose AI (Google MediaPipe) runs on the phone. The video never leaves the device; only the numbers are saved, on the device.</p>
+<h3>What the user gets</h3>
+<ul>
+  <li><strong>A Body ID code</strong> such as LJ-GZNU-UPV9, and a gold "signature" shape drawn from 8 measurements: shoulder level, hip level, head position, knees, weight balance, stillness, frame (shoulder-to-hip width) and leg-to-torso length.</li>
+  <li><strong>Traits</strong> such as "Broad frame", "Level stance" or "Rock-steady".</li>
+  <li><strong>A health watch-list</strong> covering spine and posture, neck and head, knees, hips and weight, and balance. Each area is marked "Looks typical", "Worth watching" or "Worth a professional check", with what the scan saw, why it can matter, and who can help (a doctor, physiotherapist or athletic trainer). Reported pain in an area always raises it to "Worth a professional check".</li>
+  <li><strong>Memory:</strong> every later scan is compared with the first one, e.g. "Head forward: 19° → 9°".</li>
+</ul>
+<p class="muted">The Body ID is a screening guide, not a diagnosis. A phone camera can be a few degrees off, so the app talks about patterns and refers people to professionals. It never diagnoses a condition or clears anyone to play.</p>
+
+<h2>3. Career Discovery</h2>
+<h3>Step 1: Sports Passport</h3>
+<p>The user writes what they have actually done, one item per line (for example "Ran the club soccer team's Instagram account"). The app detects skills and interests from that text automatically and shows which line each came from. The user can remove wrong ones or add missed ones. They also choose a role, career goal and education level. A resume (PDF or text) can be imported; it is read on the device and not uploaded.</p>
+<h3>Step 2: Career matches</h3>
+<p>The Passport is compared with 8 sports career paths, each with the skills it typically uses: Sports Content Creator, Team Video / Media Analyst, Sports Journalist / Broadcaster, Youth or Club Coach, Scouting / Analytics, Marketing &amp; Sponsorship, Event Operations, and Front Office / Team Operations. The top 3 are shown as "Strong match", "Good match" or "Possible match", with "Covers X of Y skills this role typically uses", the evidence behind each skill, what is missing, next steps, and job-search links (Indeed, LinkedIn, Glassdoor, TeamWork Online, WorkInSports). There are no fake percentages.</p>
+<h3>Step 3: Development plan</h3>
+<p>"Make this my target role" turns a match's gaps into a saved checklist. Steps tick themselves when the matching skill appears in the Passport, and returning users see "Welcome back, [name]. Your plan: X of Y steps done."</p>
+<h3>Step 4: Job-posting check</h3>
+<p>The user pastes a real job posting. The app lists the requirements it recognises next to the user's evidence and can add the missing skills to the plan.</p>
+<h3>AI Coach</h3>
+<p>A rule-based "quick read" and next steps are always shown. The AI chat and analysis (Claude by Anthropic) appear only when the AI service is connected; they use only the user's Passport, matches and plan, and are told never to invent jobs, companies or statistics.</p>
+
+<h2>4. LIVE Studio</h2>
+<p>LIVE Studio turns real games into social media posts while they happen. It never uses typed-in or made-up results.</p>
+<h3>Sports and leagues</h3>
+<ul>
+  <li>Soccer (20 leagues): Premier League, LaLiga, Bundesliga, Serie A, Ligue 1, Champions League, Europa League, Conference League, MLS, Liga MX, Brasileirão, Argentina's Liga Profesional, Primeira Liga, Eredivisie, Süper Lig, Saudi Pro League, J1 League, Indian Super League, Championship, NWSL.</li>
+  <li>Basketball: NBA, WNBA, NCAA men's and women's.</li>
+  <li>American football: NFL, college football.</li>
+  <li>Baseball: MLB. Hockey: NHL.</li>
+</ul>
+<p>Data comes from ESPN's public live scoreboard through the app's own server. The game list refreshes every 30 seconds and a followed game every 15 seconds.</p>
+<h3>What happens automatically</h3>
+<ul>
+  <li>Soccer: each goal (including penalties and own goals) and each red card becomes a post with the real player and minute. A player's second goal is labelled BRACE! and a third HAT-TRICK!, counted from the feed.</li>
+  <li>American football, baseball and hockey: each change in the official score becomes a post.</li>
+  <li>At full time: a recap with the result story (comeback, late winner, big win, draw or win, only when the events prove it), the key moments, a numbered thread and a voiceover.</li>
+</ul>
+<h3>Options the user can create</h3>
+<p>Matchday card, "Who wins?" prediction poll (comment 1, X or 2), current score, player spotlight, full-time recap, and the user's own hot take (always labelled as their opinion).</p>
+<h3>Each post includes</h3>
+<ul>
+  <li>A 6-second animated 9:16 video, made on the phone: the hook is on screen from the first frame, then the emoji and headline animate in, the score rises, and a comment prompt such as "Who wins this? 👇" appears. It saves as MP4 where the phone supports it.</li>
+  <li>A still image and a caption with hashtags and the credit "Made by @ljsoccer01".</li>
+  <li>Four styles: Hype (black and gold), Breaking (red news band with a scrolling ticker), Clean (white) and Team colours (each club's colours from the feed).</li>
+  <li>The layout measures every element and scales it to fit, so long team names, translations and scores stay readable.</li>
+</ul>
+<h3>Example from a real game</h3>
+<p>Angers 2–5 Marseille (Ligue 1). The feed reported seven goals; the app produced posts such as:</p>
+<blockquote>Igor Paixão scores for Marseille at 85'. Angers 2–5 Marseille.<br>#AngersvMarseille #football #soccer #LJSportMind<br>Made by @ljsoccer01</blockquote>
+<p>Because Angers led 1–0 first, the full-time recap correctly called it a comeback: "Marseille come back from behind to win. Angers 2–5 Marseille."</p>
+
+<h2>5. Languages</h2>
+<p>The whole app, including Body ID, LIVE Studio posts and captions, works in 10 languages: English, Spanish, French, Portuguese, German, Italian, Chinese, Japanese, Hindi and Arabic (right-to-left). Extra languages load only when chosen.</p>
+
+<h2>6. Pricing</h2>
+<p>Everything above is free. A Pro plan at $4.99/month for the full AI Coach is a hypothesis being tested, not a proven model; payments are not live yet. Brands can sponsor LJSOCCER via @ljsoccer01 on TikTok.</p>
+
+<h2>7. Privacy</h2>
+<ul>
+  <li>The Passport, plan and Body ID are saved on the user's device.</li>
+  <li>Camera video and resumes are processed on the device and never uploaded.</li>
+  <li>AI requests (when enabled) send only the fields needed to answer and are not stored.</li>
+</ul>
+
+<h2>8. Honest limits</h2>
+<ul>
+  <li>Career matching uses keywords and 8 career paths; it is guidance, not a hiring prediction. Automatic skill detection reads English text best.</li>
+  <li>The Body ID is a screening guide from a phone camera, not a medical assessment.</li>
+  <li>LIVE Studio only covers games in the live feed. Local and youth games, tennis, golf, F1, cricket and rugby are not covered. ESPN's scoreboard is public but unofficial; a licensed data provider would be needed for a commercial launch.</li>
+  <li>Videos use official scores and names on branded graphics, not match footage.</li>
+  <li>AI features are switched off until a valid AI key is connected.</li>
+  <li>Translations beyond English were written with AI and should be reviewed by native speakers.</li>
+</ul>
+
+<p class="muted">LJSportMind by LJSOCCER · <a href="https://ljentp.vercel.app">ljentp.vercel.app</a> · TikTok @ljsoccer01</p>
+</main>
+</body>
+</html>
