@@ -4,9 +4,24 @@
     {
       "name": "static",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["-y", "serve", "."],
+      "runtimeArgs": [
+        "-y",
+        "serve",
+        "."
+      ],
       "port": 4173,
       "autoPort": true
+    },
+    {
+      "name": "vercel-dev",
+      "runtimeExecutable": "vercel",
+      "runtimeArgs": [
+        "dev",
+        "--listen",
+        "3000",
+        "--yes"
+      ],
+      "port": 3000
     }
   ]
 }

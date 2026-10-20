@@ -21,6 +21,7 @@
       </a>
       <nav class="tabs" aria-label="Main">
         <button type="button" class="tab active" data-tab="passport" data-i18n="navDiscover">Career Discovery</button>
+        <button type="button" class="tab tab-live" data-tab="creator"><span class="ls-dot"></span><span data-i18n="tabCreator">LIVE Studio</span></button>
         <a class="nav-link" href="tour.html" data-i18n="heroTour">How it works</a>
       </nav>
       <div class="topbar-actions">
@@ -66,10 +67,8 @@
           <p class="eyebrow" data-i18n="heroEyebrow">AI sports career discovery · by LJSOCCER</p>
           <h1 id="heroTitle" data-i18n="heroTitle">Find your place in the sports industry.</h1>
           <p class="hero-sub" data-i18n="heroSub">Discover careers that fit your experience, identify your skill gaps, and build your path forward.</p>
-          <p class="hero-audience" data-i18n="heroAudience">Built for college students and early-career professionals entering the sports industry.</p>
           <div class="hero-ctas">
-            <a href="#passportStart" class="btn-gold" data-i18n="heroCta">Build my Sports Passport</a>
-            <a href="#exampleSection" class="text-link" data-i18n="heroSeeExample">See an example first</a>
+            <a href="#bodyIdStart" class="btn-gold" data-i18n="heroCta">Start with my Body ID</a>
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
@@ -86,45 +85,36 @@
         </div>
       </section>
 
-      <section class="landing problem" aria-labelledby="problemTitle">
-        <p class="eyebrow" data-i18n="problemEyebrow">The problem</p>
-        <h2 id="problemTitle" data-i18n="problemTitle">Loving sports doesn't tell you which sports job fits you.</h2>
-        <p data-i18n="problemBody">Most students who want to work in sports don't know which roles exist beyond playing, which ones match what they've already done, or what they're missing. Job boards list openings. They don't tell you whether you fit or how to get there.</p>
+      <section id="bodyIdStart" class="bid" aria-labelledby="bidHeading">
+        <h2 class="section-title" id="bidHeading"><span class="step-num">ID</span> <span data-i18n="bidTitle">Your LJ Body ID</span></h2>
+        <p class="section-sub" data-i18n="bidSub">Stand still for 20 seconds. Your body becomes your ID.</p>
+        <div id="bidCard"></div>
+        <div class="card bid-setup">
+          <p class="bid-label" data-i18n="bidPainLabel">Pain right now?</p>
+          <div id="bidPain" class="checkbox-grid"></div>
+          <p class="bid-label" data-i18n="bidInjuryLabel">Past injury?</p>
+          <div id="bidInjury" class="checkbox-grid"></div>
+          <div class="actions bid-actions">
+            <button type="button" id="mvStartBtn" data-i18n="mvStart">Scan my Body ID</button>
+            <a href="#passportStart" id="bidSkip" class="text-link" data-i18n="bidSkip">Skip for now</a>
+          </div>
+          <p class="bid-fine" data-i18n="bidFine">Video stays on this device. A screening guide, not a diagnosis.</p>
+          <p id="mvMsg" class="acc-msg" hidden></p>
+          <div id="mvStage" class="mv-stage" hidden>
+            <div class="mv-video-wrap">
+              <video id="mvVideo" playsinline muted></video>
+              <canvas id="mvCanvas"></canvas>
+              <p id="mvPrompt" class="mv-prompt"></p>
+            </div>
+            <div class="actions">
+              <button type="button" id="mvCancelBtn" class="secondary" data-i18n="mvCancel">Stop</button>
+            </div>
+          </div>
+        </div>
+        <div id="mvResults"></div>
       </section>
-
-      <section class="landing" aria-labelledby="howTitle">
-        <p class="eyebrow" data-i18n="howEyebrow">How LJSportMind helps</p>
-        <h2 id="howTitle" class="visually-hidden" data-i18n="howEyebrow">How LJSportMind helps</h2>
-      <ol class="flow-steps">
-        <li><span class="flow-num">1</span><strong data-i18n="step1T">Build your Passport</strong><span data-i18n="step1D">Your experience, skills and the evidence behind them.</span></li>
-        <li><span class="flow-num">2</span><strong data-i18n="step2T">Discover roles</strong><span data-i18n="step2D">Sports careers matched to you, each explained.</span></li>
-        <li><span class="flow-num">3</span><strong data-i18n="step3T">Close your gaps</strong><span data-i18n="step3D">Missing skills, next steps and an AI coach.</span></li>
-        <li><span class="flow-num">4</span><strong data-i18n="step4T">Check opportunities</strong><span data-i18n="step4D">Test a real job posting against your Passport.</span></li>
-      </ol>
-      </section>
-
-      <section class="landing example" id="exampleSection" aria-labelledby="exampleTitle">
-        <p class="eyebrow" data-i18n="exampleEyebrow">Example</p>
-        <h2 id="exampleTitle" data-i18n="exampleTitle">What you get, on a sample profile</h2>
-        <p class="section-sub" data-i18n="exampleNote">This sample profile runs through the same matching you'll use. It isn't a real person.</p>
-        <div id="exampleBody" class="example-grid"></div>
-      </section>
-
-      <section class="landing why" aria-labelledby="whyTitle">
-        <p class="eyebrow" data-i18n="whyEyebrow">Why not just ask a chatbot?</p>
-        <h2 id="whyTitle" data-i18n="whyTitle">A chatbot starts from a blank page every time. Your Passport doesn't.</h2>
-        <ul class="why-list">
-          <li><strong data-i18n="why1T">Structured career paths</strong><span data-i18n="why1D">Eight sports career paths, each with the typical skills it uses, so every recommendation is checked against the same list.</span></li>
-          <li><strong data-i18n="why2T">Evidence, not guesses</strong><span data-i18n="why2D">Each match shows which of your skills and achievements back it up, and exactly what's missing.</span></li>
-          <li><strong data-i18n="why3T">A plan you keep</strong><span data-i18n="why3D">Pick a target role and get a checklist that's saved with your Passport. Steps tick off as you add skills.</span></li>
-          <li><strong data-i18n="why4T">AI that explains, not decides</strong><span data-i18n="why4D">Matching follows rules you can see. The AI Coach explains them and helps you act, using only your Passport.</span></li>
-        </ul>
-        <p class="section-sub" data-i18n="whyLimits">Honest limits: 8 career paths today, matched by keywords. It's guidance, not a hiring prediction.</p>
-      </section>
-
 
       <h2 class="section-title" id="passportStart"><span class="step-num">1</span> <span data-i18n="secPassport">Your Sports Passport</span></h2>
-      <p class="section-sub" data-i18n="secPassportSub">Your profile and the evidence behind it. Saved on this device.</p>
       <details class="passport-editor" id="passportEditor" open>
         <summary data-i18n="editorSummary">Edit my profile and evidence</summary>
       <div class="profile-intro">
@@ -274,6 +264,7 @@
             <button type="button" id="lockOfferBtn" class="link-btn" hidden data-i18n="lockOffer">Lock this Passport</button>
           </div>
           <div class="fp-row">
+            <div id="passportBodyId" class="passport-bid"></div>
             <div id="fpSvg" class="fp-svg" aria-hidden="true"></div>
             <div>
               <p id="passportSummary"></p>
@@ -285,17 +276,11 @@
         </div>
 
         <h2 class="section-title"><span class="step-num">2</span> <span data-i18n="secRoles">Your career matches</span></h2>
-        <p class="section-sub" data-i18n="secRolesNote">Matches compare what you listed with the skills each role typically uses. They're guidance, not a validated assessment.</p>
         <div id="matchList"></div>
 
         <h2 class="section-title" id="planSection"><span class="step-num">3</span> <span data-i18n="secPlan">Your development plan</span></h2>
         <div class="card plan-card" id="planCard">
           <div id="planBody"></div>
-        </div>
-
-        <div class="card gap-card">
-          <h3 data-i18n="gapTitle">Skills that open the most doors</h3>
-          <div id="readyBody"></div>
         </div>
 
         <div class="card coach-card" id="coachCard">
@@ -340,9 +325,8 @@
           </div>
         </div>
 
-        <h2 class="section-title"><span class="step-num">4</span> <span data-i18n="secPosting">Compare against a real job posting</span></h2>
-        <p class="section-sub" data-i18n="secPostingSub">Paste a posting you found. See its requirements next to your evidence, then add what's missing to your plan.</p>
-        <div class="card opp-card" id="oppSection">
+        <details class="card opp-card opp-details" id="oppSection">
+          <summary><span class="step-num">4</span> <span data-i18n="secPosting">Compare against a real job posting</span></summary>
           <div class="field">
             <textarea id="oppText" rows="6" data-i18n-placeholder="oppPlaceholder" placeholder="Paste the job or opportunity description here…"></textarea>
           </div>
@@ -350,218 +334,63 @@
             <button type="button" id="oppCheckBtn" data-i18n="oppButton">Check My Fit</button>
           </div>
           <div id="oppResult" hidden></div>
-                  </div>
-      </section>
-    </section>
-
-    <section id="playPanel" class="tab-panel">
-      <div class="studio-hero play-hero">
-        <p class="studio-kicker" data-i18n="playKicker">Sports Lab</p>
-        <h2 data-i18n="playTitle">Train your body. Beat the keeper.</h2>
-        <p class="lab-note" data-i18n="labNote">Experimental extras: body-tracking games and movement checks. They're separate from career discovery.</p>
-        <div class="play-modes">
-          <button type="button" class="play-mode secondary" data-mode="body" data-i18n="playModeBody">Body (camera)</button>
-          <button type="button" class="play-mode secondary" data-mode="touch" data-i18n="playModeTouch">Touch</button>
-        </div>
-        <p id="playNote" class="play-note"></p>
-      </div>
-
-      <div id="playMenu">
-        <div id="gameGrid" class="game-grid"></div>
-        <div class="card play-body-card">
-          <h3 data-i18n="playBodyTitle">Your body in play</h3>
-          <ul id="playBody" class="mem-list"></ul>
-        </div>
-      </div>
-
-      <div id="playStage" hidden>
-        <div class="play-top">
-          <strong id="playGameName"></strong>
-          <span id="playHud"></span>
-        </div>
-        <div class="play-canvas-wrap">
-          <canvas id="playCanvas" width="800" height="500"></canvas>
-          <div id="playCam" class="play-cam" hidden>
-            <video id="playVideo" playsinline muted></video>
-            <canvas id="playCamCanvas"></canvas>
-          </div>
-          <p id="playPrompt" class="play-prompt"></p>
-          <div id="playResult" class="play-result" hidden></div>
-        </div>
-        <p id="playHowTo" class="play-howto"></p>
-        <div class="actions">
-          <button type="button" id="playQuitBtn" class="secondary" data-i18n="playQuit">Back to games</button>
-        </div>
-      </div>
-
-      <h2 class="section-title lab-title" data-i18n="mvTitle">Movement Memory</h2>
-      <details class="tool lab-move" id="moveSection">
-          <summary>
-            <span class="tool-name" data-i18n="mvTitle">Movement Memory</span>
-            <span class="tool-sub" data-i18n="toolMoveSub">AI body scan + 2 quick exercises · 1 minute</span>
-          </summary>
-          <div class="tool-body">
-          <div class="field">
-            <label for="mvGoal" data-i18n="mvGoalLabel">What are you getting ready for?</label>
-            <select id="mvGoal">
-              <option value="soccer" data-i18n="mvGoalSoccer">Playing soccer</option>
-              <option value="running" data-i18n="mvGoalRunning">Running</option>
-              <option value="strength" data-i18n="mvGoalStrength">Gym and strength training</option>
-              <option value="everyday" data-i18n="mvGoalEveryday">Everyday activity and work</option>
-            </select>
-          </div>
-          <label class="checkbox-pill mv-consent">
-            <input type="checkbox" id="mvConsent">
-            <span data-i18n="mvConsent">I understand this is not a medical assessment, and I'll stop if anything hurts.</span>
-          </label>
-          <p class="section-blurb" data-i18n="mvPrivacy">Video never leaves your device.</p>
-          <div class="actions">
-            <button type="button" id="mvStartBtn" data-i18n="mvStart">Start movement check</button>
-          </div>
-          <p id="mvMsg" class="acc-msg" hidden></p>
-          <div id="mvStage" class="mv-stage" hidden>
-            <div class="mv-video-wrap">
-              <video id="mvVideo" playsinline muted></video>
-              <canvas id="mvCanvas"></canvas>
-              <p id="mvPrompt" class="mv-prompt"></p>
-            </div>
-            <div class="actions">
-              <button type="button" id="mvCancelBtn" class="secondary" data-i18n="mvCancel">Stop</button>
-            </div>
-          </div>
-          <div id="mvResults"></div>
-          </div>
         </details>
+      </section>
     </section>
 
     <section id="creatorPanel" class="tab-panel">
-    <div class="studio-hero">
-      <p class="studio-kicker" data-i18n="studioKicker">Creator Studio</p>
-      <p class="lab-note" data-i18n="studioNote">A separate tool for content creators: turn a game moment into a ready-to-post package.</p>
-      <h2 data-i18n="studioTitle">Last night's game. Today's post.</h2>
-      <ul class="studio-gets">
-        <li><strong data-i18n="get1">Hook</strong><span data-i18n="get1Sub">first 2 seconds that stop the scroll</span></li>
-        <li><strong data-i18n="get2">Video plan</strong><span data-i18n="get2Sub">what to film and show</span></li>
-        <li><strong data-i18n="get3">Caption</strong><span data-i18n="get3Sub">with hashtags, ready to paste</span></li>
-        <li><strong data-i18n="get4">Comment starter</strong><span data-i18n="get4Sub">a question fans can't ignore</span></li>
-        <li><strong data-i18n="get5">Voiceover</strong><span data-i18n="get5Sub">a timed script you can play</span></li>
-      </ul>
-      <button type="button" id="studioExampleBtn" class="secondary studio-example" data-i18n="studioTry">See an example</button>
-    </div>
-    <p id="creatorProfileNote" class="profile-note" hidden></p>
-    <form id="gameForm">
-      <h3 class="step-label"><span>1</span> <span data-i18n="stepGame">The game</span></h3>
-      <div class="row">
-        <div class="field">
-          <label for="teamA" data-i18n="teamALabel">Team A</label>
-          <input type="text" id="teamA" data-i18n-placeholder="teamAPlaceholder" placeholder="e.g. Arsenal" required>
-        </div>
-        <div class="field">
-          <label for="teamB" data-i18n="teamBLabel">Team B</label>
-          <input type="text" id="teamB" data-i18n-placeholder="teamBPlaceholder" placeholder="e.g. Chelsea" required>
-        </div>
+      <div class="ls-hero">
+        <p class="ls-kicker"><span class="ls-dot"></span><span data-i18n="lsKicker">LIVE Studio</span></p>
+        <h2 data-i18n="lsTitle">Post the moment while it's still happening.</h2>
       </div>
 
-      <div class="row">
-        <div class="field small">
-          <label for="scoreA" data-i18n="scoreALabel">Score A</label>
-          <input type="number" id="scoreA" min="0" required>
+      <div id="lsSetup" class="card ls-setup">
+        <div class="ls-pick-head">
+          <h3 data-i18n="lsPick">Pick a real game</h3>
+          <button type="button" id="lsRefreshBtn" class="link-btn" data-i18n="lsRefresh">Refresh</button>
         </div>
-        <div class="field small">
-          <label for="scoreB" data-i18n="scoreBLabel">Score B</label>
-          <input type="number" id="scoreB" min="0" required>
+        <div class="ls-sports" role="tablist">
+          <button type="button" class="ls-sport active" data-sport="soccer" data-i18n="lsSoccer">Soccer</button>
+          <button type="button" class="ls-sport" data-sport="basketball" data-i18n="lsBasketball">Basketball</button>
+          <button type="button" class="ls-sport" data-sport="football" data-i18n="lsFootball">Football</button>
         </div>
-        <div class="field">
-          <label for="sport" data-i18n="sportLabel">Sport</label>
-          <select id="sport">
-            <option value="goal" data-i18n="sportSoccer">Soccer</option>
-            <option value="point" data-i18n="sportBasketball">Basketball</option>
-            <option value="point" data-i18n="sportFootball">Football</option>
-            <option value="run" data-i18n="sportBaseball">Baseball</option>
-            <option value="point" data-i18n="sportOther">Other</option>
-          </select>
-        </div>
+        <div id="lsGames" class="ls-games"></div>
+        <p class="ls-source" data-i18n="lsSourceNote">Scores and events come from ESPN's public live scoreboard.</p>
       </div>
 
-      <h3 class="step-label"><span>2</span> <span data-i18n="stepMoment">The moment</span></h3>
-      <div class="field">
-        <label for="momentType" data-i18n="momentTypeLabel">What kind of moment was it?</label>
-        <select id="momentType">
-          <option value="comeback" data-i18n="momentComeback">Comeback</option>
-          <option value="blowout" data-i18n="momentBlowout">Blowout</option>
-          <option value="buzzer" data-i18n="momentBuzzer">Last-Minute / Buzzer-Beater Winner</option>
-          <option value="upset" data-i18n="momentUpset">Upset</option>
-          <option value="controversial" data-i18n="momentControversial">Controversial Call</option>
-          <option value="milestone" data-i18n="momentMilestone">Milestone / Record</option>
-          <option value="close" data-i18n="momentClose">Close, Back-and-Forth Game</option>
-          <option value="other" data-i18n="momentOther">Other</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="keyMoment" data-i18n="keyMomentLabel">Key moment</label>
-        <textarea id="keyMoment" rows="2" data-i18n-placeholder="keyMomentPlaceholder" placeholder="e.g. 89th-minute equalizer off a corner kick" required></textarea>
-      </div>
-
-      <div class="field">
-        <label for="observation" data-i18n="observationLabel">Your take / observation (optional)</label>
-        <textarea id="observation" rows="2" data-i18n-placeholder="observationPlaceholder" placeholder="e.g. Their defense fell apart after the red card"></textarea>
-      </div>
-
-      <div class="actions studio-actions">
-        <button type="submit" data-i18n="createPost">Create my post</button>
-      </div>
-    </form>
-
-    <section id="results" hidden>
-      <h3 class="step-label"><span>3</span> <span data-i18n="resultsReady">Your post is ready</span></h3>
-
-      <div class="post-preview">
-        <p class="preview-label" data-i18n="previewLabel">Post preview</p>
-        <div class="card card-hook">
-          <h3 data-i18n="contentHook">Content Hook</h3>
-          <p id="outHook"></p>
-        </div>
-        <div class="card">
-          <h3 data-i18n="captionLabel">Caption</h3>
-          <p id="outCaption"></p>
-          <p id="outCredit" class="credit-stamp"></p>
-          <div class="actions">
-            <button type="button" id="copyCaptionBtn" data-i18n="copyCaption">Copy Caption</button>
+      <div id="lsLive" hidden>
+        <div class="ls-board">
+          <div class="ls-team">
+            <span id="lsHomeName" class="ls-team-name"></span>
+            <strong id="lsHomeScore" class="ls-score">0</strong>
+          </div>
+          <div class="ls-mid">
+            <span class="ls-pill"><span class="ls-dot"></span><span id="lsStatus">LIVE</span></span>
+            <span id="lsClock" class="ls-clock"></span>
+          </div>
+          <div class="ls-team">
+            <span id="lsAwayName" class="ls-team-name"></span>
+            <strong id="lsAwayScore" class="ls-score">0</strong>
           </div>
         </div>
-      </div>
+        <p class="ls-status-note"><span id="lsStatusNote"></span> <span id="lsUpdated" class="ls-updated"></span></p>
 
-      <div class="actions studio-actions">
-        <button type="button" id="regenBtn" class="secondary" hidden data-i18n="regenerate">Regenerate</button>
-        <button type="button" id="aiWriteBtn" class="secondary" data-i18n="sharpenAi">Sharpen with AI</button>
-      </div>
-
-      <section id="aiDraft" class="card" hidden>
-        <h3 data-i18n="aiWriteTitle">AI-written draft</h3>
-        <p id="aiDraftText" class="ai-text" dir="auto"></p>
-      </section>
-
-      <p class="preview-label" data-i18n="behindPost">How to make it</p>
-      <div class="card">
-        <h3 data-i18n="videoIdea">Short-Form Video Idea</h3>
-        <p id="outVideo"></p>
-      </div>
-      <div class="card">
-        <h3 data-i18n="engagementQuestion">Engagement Question</h3>
-        <p id="outQuestion"></p>
-      </div>
-      <div class="card">
-        <h3 data-i18n="voiceoverScript">Voiceover Script</h3>
-        <ol id="outScript" class="script-list"></ol>
-        <div class="actions">
-          <button type="button" id="playBtn" class="secondary" data-i18n="playVoiceover">▶ Play Voiceover</button>
-          <button type="button" id="stopBtn" class="secondary" hidden data-i18n="stopVoiceover">■ Stop</button>
-          <button type="button" id="copyScriptBtn" class="secondary" data-i18n="copyScript">Copy Script</button>
+        <div class="ls-actions-row">
+          <button type="button" id="lsPostScoreBtn" class="ls-score-btn" data-i18n="lsPostScore">Post the current score</button>
         </div>
-        <p id="ttsWarning" class="warning" hidden data-i18n="ttsWarning">Your browser doesn't support built-in text-to-speech playback. You can still read/copy the script above.</p>
+        <form id="lsTakeForm" class="ls-take">
+          <input type="text" id="lsTakeInput" data-i18n-placeholder="lsTakePh" placeholder="Your hot take…" maxlength="120">
+          <button type="submit" class="secondary" data-i18n="lsTakeBtn">Add my take</button>
+        </form>
+
+        <div id="lsDrop"></div>
+        <div class="ls-tl-head">
+          <h3 class="ls-tl-title" data-i18n="lsTimeline">Timeline</h3>
+          <button type="button" id="lsNewBtn" class="link-btn" data-i18n="lsNewMatch">Pick another game</button>
+        </div>
+        <ol id="lsTimeline" class="ls-timeline"></ol>
+        <p class="ls-source" data-i18n="lsSourceNote">Scores and events come from ESPN's public live scoreboard.</p>
       </div>
-    </section>
     </section>
 
     <section id="proPanel" class="tab-panel">
@@ -583,8 +412,8 @@
           <tr><td data-i18n="prRowOpp">Opportunity checker</td><td>✓</td><td>✓</td></tr>
           <tr><td data-i18n="prRowQuick">AI Coach quick read</td><td>✓</td><td>✓</td></tr>
           <tr><td data-i18n="prRowAi">Full AI Coach analysis and chat</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowSharpen">Sharpen with AI in Creator Studio</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowExtras">Creator Studio templates and Sports Lab</td><td>✓</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowSharpen">Sharpen full-time recaps with AI in LIVE Studio</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowExtras">LIVE Studio moment posts and LJ Body ID scan</td><td>✓</td><td>✓</td></tr>
         </tbody>
       </table>
       <p class="section-sub pricing-note" data-i18n="pricingNote">The $4.99/month Pro price is a hypothesis we're testing. Everything marked Free stays free.</p>
@@ -623,8 +452,7 @@
 
     <footer class="brand-footer">
       <p class="more-tools"><span data-i18n="moreTools">More from LJSportMind:</span>
-        <button type="button" class="tab footer-tab" data-tab="creator" data-i18n="tabCreator">Creator Studio</button>
-        <button type="button" class="tab footer-tab" data-tab="play" data-i18n="tabPlay">Sports Lab</button>
+        <button type="button" class="tab footer-tab" data-tab="creator" data-i18n="tabCreator">LIVE Studio</button>
       </p>
       <a href="https://www.tiktok.com/@ljsoccer01" target="_blank" rel="noopener noreferrer" data-i18n="footerFollow">Follow @ljsoccer01 on TikTok</a>
       <span aria-hidden="true">·</span>
@@ -659,7 +487,7 @@
 
   <script src="script.js"></script>
   <script src="movement.js"></script>
-  <script src="games.js"></script>
+  <script src="studio.js"></script>
   <script src="lock.js"></script>
 </body>
 </html>
