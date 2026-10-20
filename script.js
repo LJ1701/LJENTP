@@ -1338,8 +1338,8 @@ const I18N_REDESIGN = {
     "prRowOpp": "Opportunity checker",
     "prRowQuick": "AI Coach quick read",
     "prRowAi": "Full AI Coach analysis and chat",
-    "prRowSharpen": "Sharpen with AI in Creator Studio",
-    "prRowExtras": "Creator Studio templates and Sports Lab",
+    "prRowSharpen": "Sharpen full-time recaps with AI in LIVE Studio",
+    "prRowExtras": "LIVE Studio moment posts and LJ Body ID scan",
     "proIntro": "Everything you need to discover and pursue a sports career is free. Pro adds the full AI Coach for $4.99/month, free during early access.",
     "proIntroLive": "Everything you need to discover and pursue a sports career is free. Pro adds the full AI Coach for $4.99/month.",
     "tagline": "Find your place in the sports industry."
@@ -1407,8 +1407,8 @@ const I18N_REDESIGN = {
     "prRowOpp": "Revisión de oportunidades",
     "prRowQuick": "Lectura rápida del Coach IA",
     "prRowAi": "Análisis completo y chat del Coach IA",
-    "prRowSharpen": "Mejorar con IA en el Estudio de Creadores",
-    "prRowExtras": "Plantillas del Estudio de Creadores y Sports Lab",
+    "prRowSharpen": "Mejorar resúmenes finales con IA en LIVE Studio",
+    "prRowExtras": "Publicaciones en vivo de LIVE Studio y escaneo LJ Body ID",
     "proIntro": "Todo lo que necesitas para descubrir y perseguir una carrera deportiva es gratis. Pro añade el Coach IA completo por $4.99/mes, gratis durante el acceso anticipado.",
     "proIntroLive": "Todo lo que necesitas para descubrir y perseguir una carrera deportiva es gratis. Pro añade el Coach IA completo por $4.99/mes.",
     "tagline": "Encuentra tu lugar en la industria del deporte."
@@ -1476,8 +1476,8 @@ const I18N_REDESIGN = {
     "prRowOpp": "机会检查",
     "prRowQuick": "AI 教练快速解读",
     "prRowAi": "完整的 AI 教练分析和对话",
-    "prRowSharpen": "创作工作室的 AI 润色",
-    "prRowExtras": "创作工作室模板和 Sports Lab",
+    "prRowSharpen": "LIVE 工作室全场回顾的 AI 润色",
+    "prRowExtras": "LIVE 工作室实时帖子和 LJ Body ID 扫描",
     "proIntro": "探索和追求体育职业所需的一切都是免费的。Pro 每月 $4.99，增加完整的 AI 教练，抢先体验期间免费。",
     "proIntroLive": "探索和追求体育职业所需的一切都是免费的。Pro 每月 $4.99，增加完整的 AI 教练。",
     "tagline": "在体育行业找到你的位置。"
@@ -1545,8 +1545,8 @@ const I18N_REDESIGN = {
     "prRowOpp": "فاحص الفرص",
     "prRowQuick": "القراءة السريعة لمدرب الذكاء الاصطناعي",
     "prRowAi": "التحليل الكامل والدردشة مع مدرب الذكاء الاصطناعي",
-    "prRowSharpen": "التحسين بالذكاء الاصطناعي في استوديو المبدعين",
-    "prRowExtras": "قوالب استوديو المبدعين وSports Lab",
+    "prRowSharpen": "تحسين ملخصات نهاية المباراة بالذكاء الاصطناعي في LIVE Studio",
+    "prRowExtras": "منشورات LIVE Studio المباشرة ومسح LJ Body ID",
     "proIntro": "كل ما تحتاجه لاكتشاف مهنة رياضية والسعي إليها مجاني. يضيف Pro مدرب الذكاء الاصطناعي الكامل مقابل ‎$4.99 شهريًا، مجانًا خلال الوصول المبكر.",
     "proIntroLive": "كل ما تحتاجه لاكتشاف مهنة رياضية والسعي إليها مجاني. يضيف Pro مدرب الذكاء الاصطناعي الكامل مقابل ‎$4.99 شهريًا.",
     "tagline": "اعثر على مكانك في صناعة الرياضة."
@@ -2525,148 +2525,6 @@ function generateScript(data, out) {
   ];
 }
 
-const form = document.getElementById("gameForm");
-const results = document.getElementById("results");
-const regenBtn = document.getElementById("regenBtn");
-const scriptList = document.getElementById("outScript");
-const playBtn = document.getElementById("playBtn");
-const stopBtn = document.getElementById("stopBtn");
-const copyScriptBtn = document.getElementById("copyScriptBtn");
-const ttsWarning = document.getElementById("ttsWarning");
-
-const speechSupported = "speechSynthesis" in window;
-if (!speechSupported) {
-  playBtn.hidden = true;
-  ttsWarning.hidden = false;
-}
-
-let lastData = null;
-let lastScript = null;
-
-function renderScript(beats) {
-  scriptList.innerHTML = "";
-  beats.forEach((beat) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<span class="beat-label">${beat.label} <span class="beat-time">${beat.time}</span></span>${beat.text}`;
-    scriptList.appendChild(li);
-  });
-}
-
-function scriptToText(beats) {
-  return beats.map((b) => b.text).join(" ");
-}
-
-// Every caption carries the LJSOCCER credit; it's kept apart from the variant so it always reads the same.
-let lastCaption = "";
-const copyCaptionBtn = document.getElementById("copyCaptionBtn");
-
-function captionWithCredit() {
-  return lastCaption + "\n\n" + t("creditText");
-}
-
-function renderCaption() {
-  document.getElementById("outCaption").textContent = lastCaption;
-  document.getElementById("outCredit").textContent = t("creditText");
-}
-
-copyCaptionBtn.addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(captionWithCredit());
-    copyCaptionBtn.textContent = t("copiedLabel");
-    setTimeout(() => (copyCaptionBtn.textContent = t("copyCaption")), 1500);
-  } catch {
-    // clipboard access denied; the caption and credit are still on screen to copy by hand
-  }
-});
-
-function render() {
-  const out = generate(lastData);
-  document.getElementById("outHook").textContent = out.hook;
-  document.getElementById("outVideo").textContent = out.video;
-  document.getElementById("outQuestion").textContent = out.question;
-  lastCaption = out.caption;
-  renderCaption();
-
-  lastScript = generateScript(lastData, out);
-  renderScript(lastScript);
-
-  results.hidden = false;
-  regenBtn.hidden = false;
-}
-
-if (speechSupported) {
-  playBtn.addEventListener("click", () => {
-    if (!lastScript) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(scriptToText(lastScript));
-    utterance.lang = currentLang === "es" ? "es-ES" : currentLang === "zh" ? "zh-CN" : currentLang === "ar" ? "ar-SA" : "en-US";
-    utterance.rate = 1;
-    utterance.onend = () => {
-      playBtn.hidden = false;
-      stopBtn.hidden = true;
-    };
-    window.speechSynthesis.speak(utterance);
-    playBtn.hidden = true;
-    stopBtn.hidden = false;
-  });
-
-  stopBtn.addEventListener("click", () => {
-    window.speechSynthesis.cancel();
-    playBtn.hidden = false;
-    stopBtn.hidden = true;
-  });
-}
-
-copyScriptBtn.addEventListener("click", async () => {
-  if (!lastScript) return;
-  const text = lastScript.map((b) => `[${b.time}] ${b.label}: ${b.text}`).join("\n");
-  try {
-    await navigator.clipboard.writeText(text);
-    copyScriptBtn.textContent = t("copiedLabel");
-    setTimeout(() => (copyScriptBtn.textContent = t("copyScript")), 1500);
-  } catch {
-    // clipboard access denied; nothing to fall back to in this MVP
-  }
-});
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const teamA = document.getElementById("teamA").value.trim();
-  const teamB = document.getElementById("teamB").value.trim();
-  const scoreA = document.getElementById("scoreA").value;
-  const scoreB = document.getElementById("scoreB").value;
-  const sportTerm = document.getElementById("sport").value;
-  const momentType = document.getElementById("momentType").value;
-  const keyMoment = document.getElementById("keyMoment").value.trim();
-  const observation = document.getElementById("observation").value.trim();
-
-  lastData = {
-    teamA, teamB, scoreA, scoreB, sportTerm, momentType, keyMoment, observation,
-    teamATag: tag(teamA),
-    teamBTag: tag(teamB)
-  };
-
-  render();
-  results.scrollIntoView({ behavior: "smooth" });
-});
-
-document.getElementById("studioExampleBtn").addEventListener("click", () => {
-  document.getElementById("teamA").value = "Arsenal";
-  document.getElementById("teamB").value = "Chelsea";
-  document.getElementById("scoreA").value = "2";
-  document.getElementById("scoreB").value = "1";
-  document.getElementById("sport").selectedIndex = 0;
-  document.getElementById("momentType").value = "comeback";
-  document.getElementById("keyMoment").value = t("exampleMoment");
-  document.getElementById("observation").value = t("exampleTake");
-  form.requestSubmit();
-});
-
-regenBtn.addEventListener("click", () => {
-  if (lastData) render();
-});
-
 // ---- Tab switching ----
 
 function activateTab(name) {
@@ -2691,7 +2549,7 @@ const CAREER_PATHS = {
     {
       name: "Sports Content Creator",
       blurb: "Building an audience by turning games, players, and takes into short-form content.",
-      nextStep: "Post one piece of content a week using the Creator Studio tab.",
+      nextStep: "Post one live moment a week using LIVE Studio.",
       tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"]
     },
     {
@@ -2791,7 +2649,7 @@ const CAREER_PATHS = {
     {
       name: "体育内容创作者",
       blurb: "把比赛、球员和观点转化为短视频内容，从而积累观众。",
-      nextStep: "每周使用创作工作室标签发布一条内容。",
+      nextStep: "每周用 LIVE 工作室发布一条实时内容。",
       tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"]
     },
     {
@@ -3122,7 +2980,7 @@ function renderMatches(matches, location, data, eff) {
     return;
   }
   const goalLabels = GOAL_LABELS[currentLang] || GOAL_LABELS.en;
-  matches.forEach((m, index) => {
+  matches.slice(0, 3).forEach((m, index) => {
     const gaps = m.tags.filter((v) => SKILL_KEYWORDS[v] && !eff.skills.includes(v));
     const why = [tf("whyBase", { have: m.matched.map(tagLabel).join(", ") })];
     if ((GOAL_TAGS[data.goal] || []).some((g) => m.tags.includes(g))) why.push(tf("whyGoal", { goal: goalLabels[data.goal] }));
@@ -3261,6 +3119,7 @@ const CONTENT_ANGLE_SKILLS = ["playing experience", "broadcasting / on-camera", 
 
 function renderCreatorNote() {
   const note = document.getElementById("creatorProfileNote");
+  if (!note) return;
   const saved = loadPassport();
   if (!saved) { note.hidden = true; return; }
   const goalLabels = GOAL_LABELS[currentLang] || GOAL_LABELS.en;
@@ -3818,6 +3677,7 @@ function gapFrequency(data) {
 
 function renderGapOverview(data) {
   const box = document.getElementById("readyBody");
+  if (!box) return;
   box.innerHTML = "";
   const { total, gaps } = gapFrequency(data);
   if (!total || !gaps.length) {
@@ -3981,7 +3841,8 @@ passportForm.addEventListener("submit", (e) => {
   const previous = loadPassport();
   data.fingerprint = (previous && previous.fingerprint) || mintFingerprint(data);
   // Movement checks and their goal live with the profile but aren't part of the form.
-  if (previous && previous.movement) data.movement = previous.movement;
+  const bodyScans = previous && previous.movement ? previous.movement : typeof loadBodyScans === "function" ? loadBodyScans() : [];
+  if (bodyScans && bodyScans.length) data.movement = bodyScans;
   if (previous && previous.movementGoal) data.movementGoal = previous.movementGoal;
   if (previous && previous.plan) data.plan = previous.plan;
   data.history = nextHistory(previous, data);
@@ -4314,9 +4175,6 @@ const aiForm = document.getElementById("aiForm");
 const aiQuestion = document.getElementById("aiQuestion");
 const aiAskBtn = document.getElementById("aiAskBtn");
 const aiClearBtn = document.getElementById("aiClearBtn");
-const aiWriteBtn = document.getElementById("aiWriteBtn");
-const aiDraft = document.getElementById("aiDraft");
-const aiDraftText = document.getElementById("aiDraftText");
 let aiHistory = [];
 let aiPending = false;
 
@@ -4346,7 +4204,6 @@ function aiContext() {
       readiness: aiReadinessText(data),
       sinceBaseline: aiBaselineText(data),
       movement: typeof moveSummaryText === "function" ? moveSummaryText(data.movement) : "",
-      games: typeof playSummaryText === "function" ? playSummaryText() : "",
       plan: planSummaryText(data)
     },
     matches
@@ -4498,37 +4355,6 @@ document.querySelectorAll(".ai-suggest").forEach((btn) => {
 aiClearBtn.addEventListener("click", () => {
   aiHistory = [];
   renderAiLog();
-});
-
-aiWriteBtn.addEventListener("click", async () => {
-  const val = (id) => document.getElementById(id).value.trim();
-  const selected = (id) => {
-    const el = document.getElementById(id);
-    return el.options[el.selectedIndex].textContent;
-  };
-  aiDraft.hidden = false;
-  if (!val("teamA") || !val("teamB") || val("scoreA") === "" || val("scoreB") === "" || !val("keyMoment")) {
-    aiDraftText.textContent = t("aiWriteNeedsGame");
-    return;
-  }
-  aiWriteBtn.disabled = true;
-  aiDraftText.textContent = t("aiThinking");
-  const reply = await callAssistant({
-    mode: "content",
-    credit: t("creditText"),
-    game: {
-      teamA: val("teamA"),
-      teamB: val("teamB"),
-      scoreA: val("scoreA"),
-      scoreB: val("scoreB"),
-      sport: selected("sport"),
-      momentType: selected("momentType"),
-      keyMoment: val("keyMoment"),
-      observation: val("observation")
-    }
-  });
-  aiWriteBtn.disabled = false;
-  aiDraftText.textContent = reply.text || reply.error;
 });
 
 // ---- Accounts and cloud profile ----
@@ -4956,7 +4782,6 @@ function applyLanguage(lang) {
   const passport = loadPassport();
   renderPassportBanner(passport);
   if (passport && !passportResults.hidden) renderPassportSummaryAndMatches(passport);
-  if (lastData && !results.hidden) render();
   renderResume();
   renderStrength();
   renderCreatorNote();
@@ -4969,7 +4794,6 @@ function applyLanguage(lang) {
   syncDetectedSkills();
   showProMsg(proMsgKey);
   renderPro();
-  if (lastCaption) renderCaption();
   if (!document.getElementById("oppResult").hidden) checkOpportunity();
 }
 
