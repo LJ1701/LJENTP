@@ -21,7 +21,6 @@
       </a>
       <nav class="tabs" aria-label="Main">
         <button type="button" class="tab active" data-tab="passport" data-i18n="navDiscover">Career Discovery</button>
-        <button type="button" class="tab tab-live" data-tab="creator"><span class="ls-dot"></span><span data-i18n="tabCreator">LIVE Studio</span></button>
       </nav>
       <div class="topbar-actions">
         <select id="langSelect" class="lang-select" aria-label="Language">
@@ -59,10 +58,6 @@
       </div>
 
       <section class="hero-x landing" aria-labelledby="heroTitle">
-        <div class="hero-ticker" id="heroTicker" hidden>
-          <span class="hero-ticker-label"><span class="ls-dot"></span><span data-i18n="heroLiveNow">Live &amp; latest</span></span>
-          <div class="hero-ticker-track"><div class="hero-ticker-run" id="heroTickerRun"></div></div>
-        </div>
         <div class="hero">
           <div class="hero-copy">
             <p class="eyebrow" data-i18n="heroEyebrow">AI sports career discovery · by LJSOCCER</p>
@@ -70,7 +65,7 @@
             <p class="hero-sub" data-i18n="heroSub">Discover careers that fit your experience, identify your skill gaps, and build your path forward.</p>
             <div class="hero-ctas">
               <a href="#bodyIdStart" class="btn-gold btn-big" data-i18n="heroCta">Start with my Body ID</a>
-              <button type="button" id="heroLiveBtn" class="btn-ghost btn-big hero-live-btn"><span class="ls-dot"></span><span data-i18n="heroCta2">Open LIVE Studio</span></button>
+              <a href="#passportStart" class="btn-ghost btn-big" data-i18n="heroCta2">See my career matches</a>
             </div>
           </div>
           <div class="hero-visual" aria-hidden="true">
@@ -96,11 +91,11 @@
             <strong data-i18n="hfCareerT">Career match</strong>
             <span data-i18n="hfCareerD">Sports roles that fit you, with a plan.</span>
           </a>
-          <button type="button" class="hero-feature" id="heroLiveCard">
-            <span class="hero-feature-icon">🔴</span>
-            <strong data-i18n="hfLiveT">LIVE Studio</strong>
-            <span data-i18n="hfLiveD">Real games turned into posts and videos.</span>
-          </button>
+          <a href="#planSection" class="hero-feature">
+            <span class="hero-feature-icon">🗺️</span>
+            <strong data-i18n="hfPlanT">Your plan</strong>
+            <span data-i18n="hfPlanD">A saved, step-by-step path to your target role.</span>
+          </a>
         </div>
       </section>
 
@@ -358,67 +353,6 @@
       </section>
     </section>
 
-    <section id="creatorPanel" class="tab-panel">
-      <div class="ls-hero">
-        <p class="ls-kicker"><span class="ls-dot"></span><span data-i18n="lsKicker">LIVE Studio</span></p>
-        <h2 data-i18n="lsTitle">Post the moment while it's still happening.</h2>
-      </div>
-
-      <div id="lsSetup" class="card ls-setup">
-        <div class="ls-pick-head">
-          <h3 data-i18n="lsPick">Pick a real game</h3>
-          <span class="ls-list-meta"><span id="lsListUpdated" class="ls-updated"></span> <button type="button" id="lsRefreshBtn" class="link-btn" data-i18n="lsRefresh">Refresh</button></span>
-        </div>
-        <div class="ls-sports" role="tablist">
-          <button type="button" class="ls-sport active" data-sport="soccer" data-i18n="lsSoccer">Soccer</button>
-          <button type="button" class="ls-sport" data-sport="basketball" data-i18n="lsBasketball">Basketball</button>
-          <button type="button" class="ls-sport" data-sport="football" data-i18n="lsFootball">Football</button>
-          <button type="button" class="ls-sport" data-sport="baseball" data-i18n="lsBaseball">Baseball</button>
-          <button type="button" class="ls-sport" data-sport="hockey" data-i18n="lsHockey">Hockey</button>
-        </div>
-        <div id="lsGames" class="ls-games"></div>
-        <p class="ls-source" data-i18n="lsSourceNote">Scores and events come from ESPN's public live scoreboard.</p>
-      </div>
-
-      <div id="lsLive" hidden>
-        <div class="ls-board">
-          <div class="ls-team">
-            <span id="lsHomeName" class="ls-team-name"></span>
-            <strong id="lsHomeScore" class="ls-score">0</strong>
-          </div>
-          <div class="ls-mid">
-            <span class="ls-pill"><span class="ls-dot"></span><span id="lsStatus">LIVE</span></span>
-            <span id="lsClock" class="ls-clock"></span>
-          </div>
-          <div class="ls-team">
-            <span id="lsAwayName" class="ls-team-name"></span>
-            <strong id="lsAwayScore" class="ls-score">0</strong>
-          </div>
-        </div>
-        <p class="ls-status-note"><span id="lsStatusNote"></span> <span id="lsUpdated" class="ls-updated"></span></p>
-
-        <p class="ls-sub" data-i18n="lsCreate">Create</p>
-        <div id="lsCreateTiles" class="ls-tiles"></div>
-        <div id="lsSpotRow" class="ls-chips" hidden></div>
-        <form id="lsTakeForm" class="ls-take">
-          <input type="text" id="lsTakeInput" data-i18n-placeholder="lsTakePh" placeholder="Your hot take…" maxlength="120">
-          <button type="submit" class="secondary" data-i18n="lsTakeBtn">Add my take</button>
-        </form>
-
-        <div class="ls-style-row">
-          <span class="ls-sub" data-i18n="lsStyle">Style</span>
-          <div id="lsStyles" class="ls-chips"></div>
-        </div>
-        <div id="lsDrop"></div>
-        <div class="ls-tl-head">
-          <h3 class="ls-tl-title" data-i18n="lsTimeline">Timeline</h3>
-          <button type="button" id="lsNewBtn" class="link-btn" data-i18n="lsNewMatch">Pick another game</button>
-        </div>
-        <ol id="lsTimeline" class="ls-timeline"></ol>
-        <p class="ls-source" data-i18n="lsSourceNote">Scores and events come from ESPN's public live scoreboard.</p>
-      </div>
-    </section>
-
     <section id="proPanel" class="tab-panel">
       <div class="profile-intro">
         <h2 data-i18n="pricingTitle">Pricing</h2>
@@ -438,8 +372,7 @@
           <tr><td data-i18n="prRowOpp">Opportunity checker</td><td>✓</td><td>✓</td></tr>
           <tr><td data-i18n="prRowQuick">AI Coach quick read</td><td>✓</td><td>✓</td></tr>
           <tr><td data-i18n="prRowAi">Full AI Coach analysis and chat</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowSharpen">Sharpen full-time recaps with AI in LIVE Studio</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowExtras">LIVE Studio moment posts and LJ Body ID scan</td><td>✓</td><td>✓</td></tr>
+          <tr><td data-i18n="prRowExtras">LJ Body ID scan and health watch-list</td><td>✓</td><td>✓</td></tr>
         </tbody>
       </table>
       <p class="section-sub pricing-note" data-i18n="pricingNote">The $4.99/month Pro price is a hypothesis we're testing. Everything marked Free stays free.</p>
@@ -477,9 +410,6 @@
     </section>
 
     <footer class="brand-footer">
-      <p class="more-tools"><span data-i18n="moreTools">More from LJSportMind:</span>
-        <button type="button" class="tab footer-tab" data-tab="creator" data-i18n="tabCreator">LIVE Studio</button>
-      </p>
       <a href="https://www.tiktok.com/@ljsoccer01" target="_blank" rel="noopener noreferrer" data-i18n="footerFollow">Follow @ljsoccer01 on TikTok</a>
       <span aria-hidden="true">·</span>
       <span data-i18n="footerBy">LJSportMind by LJSOCCER</span>
@@ -511,7 +441,6 @@
 
   <script src="script.js"></script>
   <script src="movement.js"></script>
-  <script src="studio.js"></script>
   <script src="lock.js"></script>
 </body>
 </html>

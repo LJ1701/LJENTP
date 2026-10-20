@@ -1,6 +1,6 @@
 registerLocale("de", {
   ui: {
-    heroLiveNow: "Live & aktuell", heroCta2: "LIVE Studio öffnen", hfBodyT: "Body ID", hfBodyD: "20-Sekunden-Scan. Dein Körper wird zu deiner ID.", hfCareerT: "Dein Beruf", hfCareerD: "Sportberufe, die zu dir passen, mit Plan.", hfLiveT: "LIVE Studio", hfLiveD: "Echte Spiele werden zu Posts und Videos.",
+    heroCta2: "Meine passenden Berufe ansehen", hfBodyT: "Body ID", hfBodyD: "20-Sekunden-Scan. Dein Körper wird zu deiner ID.", hfCareerT: "Dein Beruf", hfCareerD: "Sportberufe, die zu dir passen, mit Plan.", hfPlanT: "Dein Plan", hfPlanD: "Ein gespeicherter Schritt-für-Schritt-Weg zu deinem Zielberuf.",
     lsAiOff: "KI-Texte werden aktiv, sobald der KI-Schlüssel der Seite verbunden ist.", lsAiHooks: "Hooks", lsAiCaptions: "Texte", lsAiPrompts: "Kommentar-Fragen", lsUse: "Verwenden", lsInUse: "In Verwendung ✓", lsAiAgain: "Mehr Optionen",
     lsBaseball: "Baseball", lsHockey: "Eishockey",
     summaryLine: "{name}{loc} ist {role} mit dem Ziel: {goal}.",
@@ -133,7 +133,7 @@ registerLocale("de", {
     prRowGaps: "Lückenanalyse und nächste Schritte", prRowOpp: "Stellen-Check",
     prRowQuick: "Kurzeinschätzung des KI-Coachs", prRowAi: "Volle KI-Coach-Analyse und Chat",
     prRowSharpen: "Spielberichte mit KI verbessern im LIVE Studio",
-    prRowExtras: "LIVE-Studio-Posts und LJ Body ID Scan",
+    prRowExtras: "LJ Body ID Scan und Gesundheits-Beobachtungsliste",
     welcomeGo: "Zu meinem Plan", welcomeText: "Willkommen zurück, {name}. Dein Plan: {done} von {total} Schritten erledigt.",
     welcomeNoPlan: "Willkommen zurück, {name}. Wähle einen Zielberuf, um deinen Plan zu starten.",
     exSample: "Beispiel-Sportpass", exTopMatch: "Bester Treffer", exGaps: "Lücken in den Top-Berufen",
@@ -270,7 +270,7 @@ registerLocale("de", {
     lkResetConfirm: "Das entfernt das Profil von diesem Gerät. Wenn du angemeldet bist, kommt es bei der nächsten Anmeldung zurück. Fortfahren?"
   },
   careers: [
-    { name: "Sport-Content-Creator", blurb: "Eine Community aufbauen, indem du Spiele, Spieler und Meinungen in Kurzvideos verwandelst.", nextStep: "Poste jede Woche einen Live-Moment mit dem LIVE Studio." },
+    { name: "Sport-Content-Creator", blurb: "Eine Community aufbauen, indem du Spiele, Spieler und Meinungen in Kurzvideos verwandelst.", nextStep: "Poste jede Woche einen Beitrag zu einem Spiel und füge ihn deinen Erfolgen hinzu." },
     { name: "Video- / Medienanalyst im Team", blurb: "Spielszenen für Trainerteam und Spielerentwicklung analysieren.", nextStep: "Biete einem lokalen Verein oder Uni-Team an, Videos zu schneiden, und bau dir ein Showreel auf." },
     { name: "Sportjournalist / Moderator", blurb: "Über Spiele und Geschichten schreiben oder vor der Kamera berichten.", nextStep: "Starte eine Reihe von Spielberichten mit deiner eigenen Stimme." },
     { name: "Jugend- oder Vereinstrainer", blurb: "Spieler direkt fördern und dabei deine eigene Spielerfahrung nutzen.", nextStep: "Werde ehrenamtlicher Co-Trainer in einem lokalen Jugend- oder Vereinsteam." },

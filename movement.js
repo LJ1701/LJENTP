@@ -296,6 +296,7 @@ function loadBodyScans() {
 if (typeof document !== "undefined") {
   const I18N_MOVE = {
     en: {
+      heroCta2: "See my career matches", hfBodyT: "Body ID", hfBodyD: "20-second scan. Your body becomes your ID.", hfCareerT: "Career match", hfCareerD: "Sports roles that fit you, with a plan.", hfPlanT: "Your plan", hfPlanD: "A saved, step-by-step path to your target role.",
       bidStepOf: "Step {i} of {n} · {name}",
       bidFrontName: "Front", bidSideName: "Side",
       bidInView: "✓ Whole body in view. Hold still…",
@@ -364,6 +365,7 @@ if (typeof document !== "undefined") {
       mvAskQuestion: "Read my LJ Body ID: my health watch-list and what changed since my first scan. Is anything worth a professional check, and what simple habits help?"
     },
     es: {
+      heroCta2: "Ver mis carreras compatibles", hfBodyT: "Body ID", hfBodyD: "Escaneo de 20 segundos. Tu cuerpo es tu ID.", hfCareerT: "Tu carrera", hfCareerD: "Puestos del deporte para ti, con un plan.", hfPlanT: "Tu plan", hfPlanD: "Un camino guardado, paso a paso, hacia tu puesto objetivo.",
       bidStepOf: "Paso {i} de {n} · {name}",
       bidFrontName: "De frente", bidSideName: "De lado",
       bidInView: "✓ Cuerpo completo a la vista. Quédate quieto…",
@@ -432,6 +434,7 @@ if (typeof document !== "undefined") {
       mvAskQuestion: "Lee mi LJ Body ID: mi lista de vigilancia de salud y qué cambió desde mi primer escaneo. ¿Hay algo que valga la pena revisar con un profesional y qué hábitos sencillos ayudan?"
     },
     zh: {
+      heroCta2: "查看适合我的职业", hfBodyT: "Body ID", hfBodyD: "20 秒扫描，你的身体就是你的 ID。", hfCareerT: "职业匹配", hfCareerD: "适合你的体育岗位，附带计划。", hfPlanT: "你的计划", hfPlanD: "保存好的、通往目标岗位的分步路线。",
       bidStepOf: "第 {i} 步，共 {n} 步 · {name}",
       bidFrontName: "正面", bidSideName: "侧面",
       bidInView: "✓ 全身已在画面中。保持静止…",
@@ -500,6 +503,7 @@ if (typeof document !== "undefined") {
       mvAskQuestion: "请解读我的 LJ Body ID：我的健康关注清单，以及与第一次扫描相比的变化。有没有值得找专业人士检查的地方？有哪些简单习惯有帮助？"
     },
     ar: {
+      heroCta2: "اعرض المهن المناسبة لي", hfBodyT: "Body ID", hfBodyD: "مسح لمدة 20 ثانية. جسمك هو هويتك.", hfCareerT: "مسارك المهني", hfCareerD: "وظائف رياضية تناسبك مع خطة.", hfPlanT: "خطتك", hfPlanD: "مسار محفوظ خطوة بخطوة نحو وظيفتك المستهدفة.",
       bidStepOf: "الخطوة {i} من {n} · {name}",
       bidFrontName: "من الأمام", bidSideName: "من الجانب",
       bidInView: "✓ جسمك كاملًا ظاهر. اثبت…",
@@ -969,7 +973,7 @@ if (typeof document !== "undefined") {
   }
 
   function translateMovement() {
-    document.querySelectorAll('#bodyIdStart [data-i18n], [data-i18n="heroCta"]').forEach((node) => (node.textContent = t(node.dataset.i18n)));
+    document.querySelectorAll('#bodyIdStart [data-i18n], .hero-x [data-i18n]').forEach((node) => (node.textContent = t(node.dataset.i18n)));
     chipGroup("bidPain");
     chipGroup("bidInjury");
     showMvMsg(mvMsgKey);

@@ -1339,7 +1339,7 @@ const I18N_REDESIGN = {
     "prRowQuick": "AI Coach quick read",
     "prRowAi": "Full AI Coach analysis and chat",
     "prRowSharpen": "Sharpen full-time recaps with AI in LIVE Studio",
-    "prRowExtras": "LIVE Studio moment posts and LJ Body ID scan",
+    "prRowExtras": "LJ Body ID scan and health watch-list",
     "proIntro": "Everything you need to discover and pursue a sports career is free. Pro adds the full AI Coach for $4.99/month, free during early access.",
     "proIntroLive": "Everything you need to discover and pursue a sports career is free. Pro adds the full AI Coach for $4.99/month.",
     "tagline": "Find your place in the sports industry."
@@ -1408,7 +1408,7 @@ const I18N_REDESIGN = {
     "prRowQuick": "Lectura rápida del Coach IA",
     "prRowAi": "Análisis completo y chat del Coach IA",
     "prRowSharpen": "Mejorar resúmenes finales con IA en LIVE Studio",
-    "prRowExtras": "Publicaciones en vivo de LIVE Studio y escaneo LJ Body ID",
+    "prRowExtras": "Escaneo LJ Body ID y lista de vigilancia de salud",
     "proIntro": "Todo lo que necesitas para descubrir y perseguir una carrera deportiva es gratis. Pro añade el Coach IA completo por $4.99/mes, gratis durante el acceso anticipado.",
     "proIntroLive": "Todo lo que necesitas para descubrir y perseguir una carrera deportiva es gratis. Pro añade el Coach IA completo por $4.99/mes.",
     "tagline": "Encuentra tu lugar en la industria del deporte."
@@ -1477,7 +1477,7 @@ const I18N_REDESIGN = {
     "prRowQuick": "AI 教练快速解读",
     "prRowAi": "完整的 AI 教练分析和对话",
     "prRowSharpen": "LIVE 工作室全场回顾的 AI 润色",
-    "prRowExtras": "LIVE 工作室实时帖子和 LJ Body ID 扫描",
+    "prRowExtras": "LJ Body ID 扫描和健康关注清单",
     "proIntro": "探索和追求体育职业所需的一切都是免费的。Pro 每月 $4.99，增加完整的 AI 教练，抢先体验期间免费。",
     "proIntroLive": "探索和追求体育职业所需的一切都是免费的。Pro 每月 $4.99，增加完整的 AI 教练。",
     "tagline": "在体育行业找到你的位置。"
@@ -1546,7 +1546,7 @@ const I18N_REDESIGN = {
     "prRowQuick": "القراءة السريعة لمدرب الذكاء الاصطناعي",
     "prRowAi": "التحليل الكامل والدردشة مع مدرب الذكاء الاصطناعي",
     "prRowSharpen": "تحسين ملخصات نهاية المباراة بالذكاء الاصطناعي في LIVE Studio",
-    "prRowExtras": "منشورات LIVE Studio المباشرة ومسح LJ Body ID",
+    "prRowExtras": "مسح LJ Body ID وقائمة المتابعة الصحية",
     "proIntro": "كل ما تحتاجه لاكتشاف مهنة رياضية والسعي إليها مجاني. يضيف Pro مدرب الذكاء الاصطناعي الكامل مقابل ‎$4.99 شهريًا، مجانًا خلال الوصول المبكر.",
     "proIntroLive": "كل ما تحتاجه لاكتشاف مهنة رياضية والسعي إليها مجاني. يضيف Pro مدرب الذكاء الاصطناعي الكامل مقابل ‎$4.99 شهريًا.",
     "tagline": "اعثر على مكانك في صناعة الرياضة."
@@ -2549,7 +2549,7 @@ const CAREER_PATHS = {
     {
       name: "Sports Content Creator",
       blurb: "Building an audience by turning games, players, and takes into short-form content.",
-      nextStep: "Post one live moment a week using LIVE Studio.",
+      nextStep: "Post one piece of game content a week and add it to your achievements.",
       tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"]
     },
     {
@@ -2599,7 +2599,7 @@ const CAREER_PATHS = {
     {
       name: "Creador de Contenido Deportivo",
       blurb: "Construir una audiencia convirtiendo partidos, jugadores y opiniones en contenido de formato corto.",
-      nextStep: "Publica una pieza de contenido a la semana usando la pestaña Estudio Creativo.",
+      nextStep: "Publica un contenido sobre un partido cada semana y añádelo a tus logros.",
       tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"]
     },
     {
@@ -2649,7 +2649,7 @@ const CAREER_PATHS = {
     {
       name: "体育内容创作者",
       blurb: "把比赛、球员和观点转化为短视频内容，从而积累观众。",
-      nextStep: "每周用 LIVE 工作室发布一条实时内容。",
+      nextStep: "每周发布一条比赛内容，并把它加到你的成就里。",
       tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"]
     },
     {
@@ -2699,7 +2699,7 @@ const CAREER_PATHS = {
     {
       name: "صانع محتوى رياضي",
       blurb: "بناء جمهور من خلال تحويل المباريات واللاعبين والآراء إلى محتوى قصير.",
-      nextStep: "انشر قطعة محتوى واحدة أسبوعيًا باستخدام تبويب استوديو الإبداع.",
+      nextStep: "انشر محتوى واحدًا عن مباراة كل أسبوع وأضفه إلى إنجازاتك.",
       tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"]
     },
     {

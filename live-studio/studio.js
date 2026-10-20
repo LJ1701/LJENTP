@@ -1525,7 +1525,6 @@ function lsRecord(m, opts) {
     if (match && match.state !== "post") refreshGame(true);
     else if (!match) loadGames(!!(games && games.length));
   };
-  document.querySelectorAll('.tab[data-tab="creator"]').forEach((tab) => tab.addEventListener("click", refreshNow));
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden && panel.classList.contains("active")) refreshNow();
   });
@@ -1544,8 +1543,12 @@ function lsRecord(m, opts) {
     const feed = match.moments.filter((mo) => mo.type !== "take" && mo.type !== "update");
     shown = match.state === "post" ? "ft" : feed.length ? feed[feed.length - 1].id : null;
     startPolling();
+    refreshGame(true);
+  } else {
+    // This app opens straight onto LIVE Studio, so load today's games right away.
+    loadGames();
   }
-  // ---- Intro: live-scores strip and LIVE Studio shortcuts ----
+  // ---- Live-scores strip at the top ----
   const heroTicker = document.getElementById("heroTicker");
   const heroRun = document.getElementById("heroTickerRun");
   let heroGames = [];
@@ -1586,12 +1589,6 @@ function lsRecord(m, opts) {
     }
     renderHeroTicker();
   }
-  const openLive = () => {
-    document.querySelector('.tab[data-tab="creator"]').click();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-  document.getElementById("heroLiveBtn").addEventListener("click", openLive);
-  document.getElementById("heroLiveCard").addEventListener("click", openLive);
   loadHeroTicker();
   setInterval(() => !document.hidden && loadHeroTicker(), 60000);
 
