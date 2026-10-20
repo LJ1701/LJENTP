@@ -227,7 +227,7 @@ registerLocale("fr", {
     h_brace: ["{player} marque encore : 2 buts pour {team}."], h_hat: ["TRIPLÉ : {player} en est à 3 pour {team}."],
     lsFollowingFootball: "Suivi en direct. Chaque changement de score devient un post automatiquement.",
     lsFollowingBasketball: "Suivi en direct. Le score se met à jour toutes les 20 secondes ; touche pour le publier.",
-    lsKicker: "LIVE Studio", lsTitle: "Publie le moment pendant qu'il se passe.", lsPick: "Choisis un vrai match",
+    lsKicker: "LJ LIVE", lsTitle: "Publie le moment pendant qu'il se passe.", lsPick: "Choisis un vrai match",
     lsSoccer: "Football", lsBasketball: "Basket", lsFootball: "Football américain", lsRefresh: "Actualiser",
     lsLoading: "Chargement des matchs du jour…", lsFeedError: "Le flux des scores en direct ne répond pas. Réessaie dans une minute.",
     lsNoGames: "Aucun match de ce sport dans le flux aujourd'hui.",

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LJ LIVE Studio</title>
+<title>LJ LIVE</title>
 <meta name="description" content="Follow a real game and post it as it happens. Goals, red cards and score changes from a live score feed become ready-to-post 9:16 videos and captions automatically. By LJSOCCER.">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,12 +11,35 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="live-app">
+<body class="live-app entrance-on">
+  <div id="entrance" class="entrance" role="dialog" aria-modal="true" aria-labelledby="entTitle">
+    <div class="ent-sky"></div>
+    <div class="ent-beam ent-beam-l"></div>
+    <div class="ent-beam ent-beam-r"></div>
+    <svg class="ent-pitch" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect x="40" y="40" width="320" height="520" rx="8"/>
+      <line x1="40" y1="300" x2="360" y2="300"/>
+      <circle cx="200" cy="300" r="60"/>
+      <rect x="120" y="40" width="160" height="80"/>
+      <rect x="120" y="480" width="160" height="80"/>
+      <rect x="160" y="40" width="80" height="30"/>
+      <rect x="160" y="530" width="80" height="30"/>
+    </svg>
+    <div class="ent-scores" id="entScores" aria-hidden="true"></div>
+    <div class="ent-center">
+      <div class="ent-logo-wrap"><img src="logo.svg" alt="" class="ent-logo"><span class="ent-ring"></span><span class="ent-ring ent-ring-2"></span></div>
+      <h1 id="entTitle" class="ent-title"><span class="ent-lj">LJ</span> <span class="ent-live"><span class="ent-dot"></span>LIVE</span></h1>
+      <p class="ent-tagline" data-i18n="entTagline">Real games. Real moments. Posted in seconds.</p>
+      <p class="ent-count" id="entCount" aria-live="polite"></p>
+      <button type="button" id="entGo" class="ent-go"><span data-i18n="entGo">Go live</span> <span aria-hidden="true">→</span></button>
+      <p class="ent-by">by LJSOCCER · @ljsoccer01</p>
+    </div>
+  </div>
   <header class="topbar app-chrome">
     <div class="topbar-inner">
-      <a class="brand" href="./" aria-label="LJ LIVE Studio">
+      <a class="brand" href="./" aria-label="LJ LIVE">
         <img src="logo.svg" alt="" class="brand-logo" width="40" height="40">
-        <span class="brand-word">LJ <span>LIVE</span> Studio</span>
+        <span class="brand-word">LJ <span>LIVE</span></span>
       </a>
       <span class="live-app-tag" data-i18n="appTag">by LJSOCCER · @ljsoccer01</span>
       <div class="topbar-actions">
@@ -35,7 +58,7 @@
 
     <section id="creatorPanel" class="tab-panel active">
       <div class="ls-hero">
-        <p class="ls-kicker"><span class="ls-dot"></span><span data-i18n="lsKicker">LIVE Studio</span></p>
+        <p class="ls-kicker"><span class="ls-dot"></span><span data-i18n="lsKicker">LJ LIVE</span></p>
         <h2 data-i18n="lsTitle">Post the moment while it's still happening.</h2>
       </div>
 
@@ -104,5 +127,6 @@
 
   <script src="core.js"></script>
   <script src="studio.js"></script>
+  <script src="entrance.js"></script>
 </body>
 </html>

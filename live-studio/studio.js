@@ -1,4 +1,4 @@
-// LJSportMind LIVE Studio: follow a real game and post it as it happens. Scores, the match clock and
+// LJ LIVE: follow a real game and post it as it happens. Scores, the match clock and
 // key events (goals and red cards, with the player and minute) come from a live score feed via
 // /api/live; nothing is typed in or made up. Each new event automatically becomes a 9:16 video,
 // a still and a factual caption. When the game ends, a recap is built from the same events.
@@ -34,7 +34,7 @@ const I18N_LIVE = {
     lsFollowingFootball: "Following live. Every score change turns into a post automatically.",
     lsFollowingBasketball: "Following live. The score updates every 20 seconds; tap to post it.",
     tabCreator: "LIVE Studio",
-    lsKicker: "LIVE Studio",
+    lsKicker: "LJ LIVE",
     lsTitle: "Post the moment while it's still happening.",
     lsPick: "Pick a real game",
     lsSoccer: "Soccer", lsBasketball: "Basketball", lsFootball: "Football",
@@ -103,7 +103,7 @@ const I18N_LIVE = {
     lsFollowingFootball: "Siguiendo en vivo. Cada cambio en el marcador se convierte en publicación automáticamente.",
     lsFollowingBasketball: "Siguiendo en vivo. El marcador se actualiza cada 20 segundos; toca para publicarlo.",
     tabCreator: "LIVE Studio",
-    lsKicker: "LIVE Studio",
+    lsKicker: "LJ LIVE",
     lsTitle: "Publica el momento mientras todavía está pasando.",
     lsPick: "Elige un partido real",
     lsSoccer: "Fútbol", lsBasketball: "Baloncesto", lsFootball: "Fútbol americano",
@@ -172,7 +172,7 @@ const I18N_LIVE = {
     lsFollowingFootball: "正在实时跟踪。每次比分变化都会自动生成帖子。",
     lsFollowingBasketball: "正在实时跟踪。比分每 20 秒更新一次；点击即可发布。",
     tabCreator: "LIVE 工作室",
-    lsKicker: "LIVE 工作室",
+    lsKicker: "LJ LIVE",
     lsTitle: "在比赛进行时就发布精彩瞬间。",
     lsPick: "选择一场真实比赛",
     lsSoccer: "足球", lsBasketball: "篮球", lsFootball: "美式橄榄球",
@@ -241,7 +241,7 @@ const I18N_LIVE = {
     lsFollowingFootball: "متابعة مباشرة. كل تغيير في النتيجة يتحول إلى منشور تلقائيًا.",
     lsFollowingBasketball: "متابعة مباشرة. تتحدث النتيجة كل 20 ثانية؛ اضغط لنشرها.",
     tabCreator: "LIVE Studio",
-    lsKicker: "LIVE Studio",
+    lsKicker: "LJ LIVE",
     lsTitle: "انشر اللحظة وهي ما زالت تحدث.",
     lsPick: "اختر مباراة حقيقية",
     lsSoccer: "كرة القدم", lsBasketball: "كرة السلة", lsFootball: "كرة القدم الأمريكية",
@@ -333,7 +333,7 @@ function lsLine(m, hs, as) {
 }
 
 function lsHashtags(m) {
-  return `#${tag(m.home)}v${tag(m.away)} ${m.state === "in" ? "#LIVE " : ""}${LS_HASH[m.sport] || ""} #LJSportMind`.replace(/\s+/g, " ").trim();
+  return `#${tag(m.home)}v${tag(m.away)} ${m.state === "in" ? "#LIVE " : ""}${LS_HASH[m.sport] || ""} #LJLIVE`.replace(/\s+/g, " ").trim();
 }
 
 // Turns the feed's events into moments with the score after each one. If the goals don't add up
@@ -1545,7 +1545,7 @@ function lsRecord(m, opts) {
     startPolling();
     refreshGame(true);
   } else {
-    // This app opens straight onto LIVE Studio, so load today's games right away.
+    // This app opens straight onto LJ LIVE, so load today's games right away.
     loadGames();
   }
   // ---- Live-scores strip at the top ----

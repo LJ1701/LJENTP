@@ -226,7 +226,7 @@ registerLocale("it", {
     h_brace: ["{player} segna ancora: 2 gol per {team}."], h_hat: ["TRIPLETTA: {player} è a quota 3 per {team}."],
     lsFollowingFootball: "In diretta. Ogni cambio di punteggio diventa un post in automatico.",
     lsFollowingBasketball: "In diretta. Il punteggio si aggiorna ogni 20 secondi; tocca per pubblicarlo.",
-    lsKicker: "LIVE Studio", lsTitle: "Pubblica il momento mentre sta succedendo.", lsPick: "Scegli una partita vera",
+    lsKicker: "LJ LIVE", lsTitle: "Pubblica il momento mentre sta succedendo.", lsPick: "Scegli una partita vera",
     lsSoccer: "Calcio", lsBasketball: "Basket", lsFootball: "Football americano", lsRefresh: "Aggiorna",
     lsLoading: "Caricamento delle partite di oggi…", lsFeedError: "Il feed dei risultati in diretta non risponde. Riprova tra un minuto.",
     lsNoGames: "Nessuna partita di questo sport nel feed oggi.",
