@@ -226,7 +226,7 @@ registerLocale("ja", {
     h_brace: ["{player}がまた決めた：{team}で2ゴール。"], h_hat: ["ハットトリック：{player}が{team}で3ゴール。"],
     lsFollowingFootball: "ライブで追跡中。スコアが動くたびに自動で投稿になります。",
     lsFollowingBasketball: "ライブで追跡中。スコアは20秒ごとに更新。タップして投稿できます。",
-    lsKicker: "LIVE Studio", lsTitle: "その瞬間を、起きているうちに投稿しよう。", lsPick: "実際の試合を選ぶ",
+    lsKicker: "LJ LIVE", lsTitle: "その瞬間を、起きているうちに投稿しよう。", lsPick: "実際の試合を選ぶ",
     lsSoccer: "サッカー", lsBasketball: "バスケットボール", lsFootball: "アメフト", lsRefresh: "更新",
     lsLoading: "今日の試合を読み込み中…", lsFeedError: "ライブスコアが応答していません。1分後にお試しください。",
     lsNoGames: "今日この競技の試合はありません。",

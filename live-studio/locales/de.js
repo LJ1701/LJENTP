@@ -226,7 +226,7 @@ registerLocale("de", {
     h_brace: ["{player} trifft erneut: 2 Tore für {team}."], h_hat: ["HATTRICK: {player} hat 3 für {team}."],
     lsFollowingFootball: "Live verfolgt. Jede Spielstandsänderung wird automatisch zum Post.",
     lsFollowingBasketball: "Live verfolgt. Der Stand aktualisiert sich alle 20 Sekunden; tippe zum Posten.",
-    lsKicker: "LIVE Studio", lsTitle: "Poste den Moment, während er passiert.", lsPick: "Wähle ein echtes Spiel",
+    lsKicker: "LJ LIVE", lsTitle: "Poste den Moment, während er passiert.", lsPick: "Wähle ein echtes Spiel",
     lsSoccer: "Fußball", lsBasketball: "Basketball", lsFootball: "American Football", lsRefresh: "Aktualisieren",
     lsLoading: "Heutige Spiele werden geladen…", lsFeedError: "Der Live-Ticker antwortet nicht. Versuch es in einer Minute erneut.",
     lsNoGames: "Heute keine Spiele dieser Sportart im Ticker.",

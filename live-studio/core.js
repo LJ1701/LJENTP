@@ -1,4 +1,4 @@
-// LJ LIVE Studio core: languages, small DOM helpers and the AI call. studio.js holds the app itself.
+// LJ LIVE core: languages, small DOM helpers and the AI call. studio.js holds the app itself.
 
 const LANG_KEY = "ljlive_lang";
 const LANGS = {

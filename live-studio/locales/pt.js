@@ -226,7 +226,7 @@ registerLocale("pt", {
     h_brace: ["{player} marca de novo: 2 gols pelo {team}."], h_hat: ["HAT-TRICK: {player} já tem 3 pelo {team}."],
     lsFollowingFootball: "Acompanhando ao vivo. Cada mudança no placar vira post automaticamente.",
     lsFollowingBasketball: "Acompanhando ao vivo. O placar atualiza a cada 20 segundos; toque para postar.",
-    lsKicker: "LIVE Studio", lsTitle: "Poste o momento enquanto ele acontece.", lsPick: "Escolha um jogo real",
+    lsKicker: "LJ LIVE", lsTitle: "Poste o momento enquanto ele acontece.", lsPick: "Escolha um jogo real",
     lsSoccer: "Futebol", lsBasketball: "Basquete", lsFootball: "Futebol americano", lsRefresh: "Atualizar",
     lsLoading: "Carregando os jogos de hoje…", lsFeedError: "O placar ao vivo não está respondendo. Tente em um minuto.",
     lsNoGames: "Nenhum jogo deste esporte no placar hoje.",
