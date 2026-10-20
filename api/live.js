@@ -7,19 +7,33 @@
 const LEAGUES = {
   soccer: [
     ["eng.1", "Premier League"], ["esp.1", "LaLiga"], ["ger.1", "Bundesliga"], ["ita.1", "Serie A"],
-    ["fra.1", "Ligue 1"], ["usa.1", "MLS"], ["mex.1", "Liga MX"], ["uefa.champions", "Champions League"],
-    ["uefa.europa", "Europa League"], ["usa.nwsl", "NWSL"]
+    ["fra.1", "Ligue 1"], ["uefa.champions", "Champions League"], ["uefa.europa", "Europa League"],
+    ["uefa.europa.conf", "Conference League"], ["usa.1", "MLS"], ["mex.1", "Liga MX"], ["bra.1", "Brasileirão"],
+    ["arg.1", "Liga Profesional"], ["por.1", "Primeira Liga"], ["ned.1", "Eredivisie"], ["tur.1", "Süper Lig"],
+    ["ksa.1", "Saudi Pro League"], ["jpn.1", "J1 League"], ["ind.1", "Indian Super League"], ["eng.2", "Championship"],
+    ["usa.nwsl", "NWSL"]
   ],
-  basketball: [["nba", "NBA"], ["wnba", "WNBA"]],
-  football: [["nfl", "NFL"], ["college-football", "College Football"]]
+  basketball: [["nba", "NBA"], ["wnba", "WNBA"], ["mens-college-basketball", "NCAA Men's"], ["womens-college-basketball", "NCAA Women's"]],
+  football: [["nfl", "NFL"], ["college-football", "College Football"]],
+  baseball: [["mlb", "MLB"]],
+  hockey: [["nhl", "NHL"]]
 };
 
 const BASE = "https://site.api.espn.com/apis/site/v2/sports";
 
-async function scoreboard(sport, league) {
-  const res = await fetch(`${BASE}/${sport}/${encodeURIComponent(league)}/scoreboard`, { headers: { "User-Agent": "LJSportMind/1.0" } });
-  if (!res.ok) throw new Error(`feed ${res.status}`);
-  return res.json();
+// One retry and a time limit per league, so a single slow or flaky league can't take the whole list down.
+async function scoreboard(sport, league, tries = 2) {
+  try {
+    const res = await fetch(`${BASE}/${sport}/${encodeURIComponent(league)}/scoreboard`, {
+      headers: { "User-Agent": "LJSportMind/1.0" },
+      signal: AbortSignal.timeout(6000)
+    });
+    if (!res.ok) throw new Error(`feed ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    if (tries > 1) return scoreboard(sport, league, tries - 1);
+    throw err;
+  }
 }
 
 function side(c) {
@@ -102,11 +116,12 @@ module.exports = async (req, res) => {
     }
 
     const lists = await Promise.allSettled(leagues.map(([key]) => scoreboard(sport, key)));
+    if (lists.every((r) => r.status === "rejected")) throw new Error("feed down");
     const order = { in: 0, pre: 1, post: 2 };
     const games = lists
       .flatMap((r, i) => (r.status === "fulfilled" ? (r.value.events || []).map((e) => normalize(sport, leagues[i][0], leagues[i][1], e)) : []))
       .sort((a, b) => order[a.state] - order[b.state] || String(a.start).localeCompare(String(b.start)))
-      .slice(0, 60)
+      .slice(0, 120)
       .map(({ events, ...g }) => ({ ...g, events: events.length }));
     res.setHeader("Cache-Control", "s-maxage=20, stale-while-revalidate=20");
     return res.end(JSON.stringify({ games, source: "ESPN" }));

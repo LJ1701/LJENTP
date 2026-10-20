@@ -3030,7 +3030,7 @@ function renderMatches(matches, location, data, eff) {
     target.type = "button";
     target.disabled = isTarget;
     target.addEventListener("click", () => setTargetRole(m.idx));
-    const explain = el("button", "secondary", t("explainMatch"));
+    const explain = el("button", "secondary needs-ai", t("explainMatch"));
     explain.type = "button";
     explain.addEventListener("click", () => coachAsk(tf("askExplainMatch", { role: m.name })));
     acts.append(target, explain);
@@ -3188,7 +3188,7 @@ function checkOpportunity() {
     });
     acts.append(add);
   }
-  const ask = el("button", "secondary", t("oppAskCoach"));
+  const ask = el("button", "secondary needs-ai", t("oppAskCoach"));
   ask.type = "button";
   ask.addEventListener("click", () => coachAsk(tf("oppAskQuestion", { n: pct, asks: asks.map(tagLabel).join(", "), gaps: gaps.map(tagLabel).join(", ") || "-" })));
   acts.append(ask);
@@ -3228,6 +3228,10 @@ function applyPassportToForm(data) {
 }
 
 function buildSummary(name, location, roleLabel, goalLabel) {
+  if (I18N[currentLang] && I18N[currentLang].summaryLine) {
+    const loc = location ? tf("summaryFrom", { place: location }) : "";
+    return tf("summaryLine", { name, loc, role: roleLabel, goal: goalLabel });
+  }
   if (currentLang === "es") {
     const loc = location ? ` de ${location}` : "";
     return `${name}${loc} es ${roleLabel}, con el objetivo de ${goalLabel}.`;
@@ -3537,7 +3541,7 @@ function renderPlan(data) {
     li.append(label);
     if (state.auto) li.append(el("span", "plan-auto", t("planAuto")));
     if (!state.done) {
-      const ask = el("button", "link-btn plan-ask", t("planAskCoach"));
+      const ask = el("button", "link-btn plan-ask needs-ai", t("planAskCoach"));
       ask.type = "button";
       ask.addEventListener("click", () => coachAsk(tf("askHelpStep", { step: text })));
       li.append(ask);
@@ -3568,6 +3572,7 @@ function coachAsk(question) {
 }
 
 let aiUnavailable = false;
+let aiEnabled = false;
 function setAiUnavailable() {
   aiUnavailable = true;
   document.getElementById("aiForm").hidden = true;
@@ -3797,7 +3802,7 @@ function renderCoach(data, force = false) {
 
 // Ask the AI for the full analysis once per profile state; back off for 10 minutes after a failure.
 async function requestAnalysis(hash, cached, force) {
-  if (coachPending) return;
+  if (coachPending || !aiEnabled) return;
   if (!force && cached && cached.hash === hash && cached.failedAt && Date.now() - cached.failedAt < 10 * 60 * 1000) return;
   coachPending = true;
   document.getElementById("coachLabel").textContent = t("coachAnalyzing");
@@ -4506,6 +4511,13 @@ async function initAccounts() {
   proRequiredForAi = !!cfg.proRequiredForAi;
   accountsMode = !!cfg.accountsEnabled;
   document.body.classList.toggle("jobs-on", !!cfg.jobsEnabled);
+  // AI buttons stay hidden (body without "ai-on") unless the server confirms the AI key works.
+  aiEnabled = !!cfg.aiEnabled;
+  document.body.classList.toggle("ai-on", aiEnabled);
+  if (aiEnabled) {
+    const saved = loadPassport();
+    if (saved && !passportResults.hidden) renderCoach(saved);
+  }
   if (!accountsMode) {
     // No accounts: profiles stay on the device and Pro runs on a Stripe pass.
     renderPro();
@@ -4759,9 +4771,61 @@ handleProReturn();
 // ---- Language switching ----
 
 const langSelect = document.getElementById("langSelect");
+
+// English, Spanish, Chinese and Arabic are built in. The other languages live in locales/<code>.js,
+// load the first time someone picks them, and register themselves with registerLocale().
+const LANGS = {
+  en: "English", es: "Español", fr: "Français", pt: "Português", de: "Deutsch", it: "Italiano",
+  zh: "中文", ja: "日本語", hi: "हिन्दी", ar: "العربية"
+};
+const SPEECH_LANGS = { en: "en-US", es: "es-ES", fr: "fr-FR", pt: "pt-BR", de: "de-DE", it: "it-IT", zh: "zh-CN", ja: "ja-JP", hi: "hi-IN", ar: "ar-SA" };
+const RTL_LANGS = ["ar"];
+const loadedLocales = new Set(["en", "es", "zh", "ar"]);
+const localeLoads = {};
+
+function registerLocale(code, pack) {
+  I18N[code] = Object.assign(I18N[code] || {}, pack.ui);
+  if (pack.careers) CAREER_PATHS[code] = CAREER_PATHS.en.map((path, i) => ({ ...path, ...pack.careers[i] }));
+  if (pack.goalLabels) GOAL_LABELS[code] = pack.goalLabels;
+  if (pack.roleLabels) ROLE_LABELS[code] = pack.roleLabels;
+  if (pack.tags) Object.keys(pack.tags).forEach((tag) => TAG_LABELS[tag] && (TAG_LABELS[tag][code] = pack.tags[tag]));
+  loadedLocales.add(code);
+}
+
+function loadLocale(code) {
+  if (!localeLoads[code]) {
+    localeLoads[code] = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = `locales/${code}.js`;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.append(script);
+    });
+  }
+  return localeLoads[code];
+}
+
+langSelect.innerHTML = "";
+Object.entries(LANGS).forEach(([code, name]) => {
+  const option = document.createElement("option");
+  option.value = code;
+  option.textContent = name;
+  langSelect.append(option);
+});
+if (!LANGS[currentLang]) currentLang = "en";
 langSelect.value = currentLang;
 
 function applyLanguage(lang) {
+  if (!LANGS[lang]) lang = "en";
+  if (!loadedLocales.has(lang)) {
+    // Load the language first, then switch everything over in one go.
+    langSelect.value = lang;
+    loadLocale(lang).then(() => {
+      langSelect.value = lang;
+      langSelect.dispatchEvent(new Event("change"));
+    }).catch(() => applyLanguage("en"));
+    return;
+  }
   currentLang = lang;
   try {
     localStorage.setItem(LANG_KEY, lang);
@@ -4769,7 +4833,7 @@ function applyLanguage(lang) {
     // localStorage unavailable; language choice won't persist
   }
   document.documentElement.lang = lang;
-  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.documentElement.dir = RTL_LANGS.includes(lang) ? "rtl" : "ltr";
   langSelect.value = lang;
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {

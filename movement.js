@@ -956,7 +956,7 @@ if (typeof document !== "undefined") {
     mvResults.append(renderWatch(now));
     if (list.length > 1) mvResults.append(renderMemory(list));
     if (loadPassport()) {
-      const ask = el("button", "secondary", t("mvAskAi"));
+      const ask = el("button", "secondary needs-ai", t("mvAskAi"));
       ask.type = "button";
       ask.addEventListener("click", () => {
         openCoach();
