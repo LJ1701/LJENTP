@@ -116,6 +116,8 @@ module.exports = async (req, res) => {
     }
 
     const lists = await Promise.allSettled(leagues.map(([key]) => scoreboard(sport, key)));
+    const failed = lists.filter((r) => r.status === "rejected");
+    if (failed.length) console.error(`live feed: ${failed.length}/${lists.length} ${sport} leagues failed:`, failed[0].reason && failed[0].reason.message);
     if (lists.every((r) => r.status === "rejected")) throw new Error("feed down");
     const order = { in: 0, pre: 1, post: 2 };
     const games = lists

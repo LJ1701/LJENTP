@@ -64,8 +64,7 @@
             <h1 id="heroTitle" class="hero-title" data-i18n="heroTitle">Find your place in the sports industry.</h1>
             <p class="hero-sub" data-i18n="heroSub">Discover careers that fit your experience, identify your skill gaps, and build your path forward.</p>
             <div class="hero-ctas">
-              <a href="#bodyIdStart" class="btn-gold btn-big" data-i18n="heroCta">Start with my Body ID</a>
-              <a href="#passportStart" class="btn-ghost btn-big" data-i18n="heroCta2">See my career matches</a>
+              <a href="#passportStart" class="btn-gold btn-big" data-i18n="heroCta2">See my career matches</a>
             </div>
           </div>
           <div class="hero-visual" aria-hidden="true">
@@ -81,15 +80,15 @@
           </div>
         </div>
         <div class="hero-features">
-          <a href="#bodyIdStart" class="hero-feature">
-            <span class="hero-feature-icon">🧬</span>
-            <strong data-i18n="hfBodyT">Body ID</strong>
-            <span data-i18n="hfBodyD">20-second scan. Your body becomes your ID.</span>
-          </a>
           <a href="#passportStart" class="hero-feature">
             <span class="hero-feature-icon">🧭</span>
             <strong data-i18n="hfCareerT">Career match</strong>
             <span data-i18n="hfCareerD">Sports roles that fit you, with a plan.</span>
+          </a>
+          <a href="#passportStart" class="hero-feature">
+            <span class="hero-feature-icon">🏅</span>
+            <strong data-i18n="hfProofT">Proof</strong>
+            <span data-i18n="hfProofD">Skill checks and a certificate that show what you can do.</span>
           </a>
           <a href="#planSection" class="hero-feature">
             <span class="hero-feature-icon">🗺️</span>
@@ -97,36 +96,6 @@
             <span data-i18n="hfPlanD">A saved, step-by-step path to your target role.</span>
           </a>
         </div>
-      </section>
-
-      <section id="bodyIdStart" class="bid" aria-labelledby="bidHeading">
-        <h2 class="section-title" id="bidHeading"><span class="step-num">ID</span> <span data-i18n="bidTitle">Your LJ Body ID</span></h2>
-        <p class="section-sub" data-i18n="bidSub">Stand still for 20 seconds. Your body becomes your ID.</p>
-        <div id="bidCard"></div>
-        <div class="card bid-setup">
-          <p class="bid-label" data-i18n="bidPainLabel">Pain right now?</p>
-          <div id="bidPain" class="checkbox-grid"></div>
-          <p class="bid-label" data-i18n="bidInjuryLabel">Past injury?</p>
-          <div id="bidInjury" class="checkbox-grid"></div>
-          <p class="bid-tips" data-i18n="bidTips">Before you start: prop your phone up at waist height and step back 2–3 m.</p>
-          <div class="actions bid-actions">
-            <button type="button" id="mvStartBtn" data-i18n="mvStart">Scan my Body ID</button>
-            <a href="#passportStart" id="bidSkip" class="text-link" data-i18n="bidSkip">Skip for now</a>
-          </div>
-          <p class="bid-fine" data-i18n="bidFine">Video stays on this device. A screening guide, not a diagnosis.</p>
-          <p id="mvMsg" class="acc-msg" hidden></p>
-          <div id="mvStage" class="mv-stage" hidden>
-            <div class="mv-video-wrap">
-              <video id="mvVideo" playsinline muted></video>
-              <canvas id="mvCanvas"></canvas>
-              <p id="mvPrompt" class="mv-prompt"></p>
-            </div>
-            <div class="actions">
-              <button type="button" id="mvCancelBtn" class="secondary" data-i18n="mvCancel">Stop</button>
-            </div>
-          </div>
-        </div>
-        <div id="mvResults"></div>
       </section>
 
       <h2 class="section-title" id="passportStart"><span class="step-num">1</span> <span data-i18n="secPassport">Your Sports Passport</span></h2>
@@ -227,14 +196,14 @@
         <div class="field">
           <label data-i18n="interestsLabel">Interests (select all that apply)</label>
           <div class="checkbox-grid" id="pInterests">
-            <label class="checkbox-pill"><input type="checkbox" value="content creation"> <span data-i18n="interestContentCreation">Content Creation</span></label>
-            <label class="checkbox-pill"><input type="checkbox" value="coaching & player development"> <span data-i18n="interestCoachingDev">Coaching & Player Development</span></label>
-            <label class="checkbox-pill"><input type="checkbox" value="scouting & analytics"> <span data-i18n="interestScouting">Scouting & Analytics</span></label>
-            <label class="checkbox-pill"><input type="checkbox" value="journalism & broadcasting"> <span data-i18n="interestJournalism">Journalism & Broadcasting</span></label>
-            <label class="checkbox-pill"><input type="checkbox" value="marketing & sponsorship"> <span data-i18n="interestMarketing">Marketing & Sponsorship</span></label>
-            <label class="checkbox-pill"><input type="checkbox" value="event operations"> <span data-i18n="interestEventOps">Event Operations</span></label>
-            <label class="checkbox-pill"><input type="checkbox" value="front office / team ops"> <span data-i18n="interestFrontOffice">Front Office / Team Ops</span></label>
-            <label class="checkbox-pill"><input type="checkbox" value="personal brand building"> <span data-i18n="interestPersonalBrand">Personal Brand Building</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="content creation"> <span data-i18n="interestContentCreation">Digital Content</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="coaching & player development"> <span data-i18n="interestCoachingDev">Player Development</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="scouting & analytics"> <span data-i18n="interestScouting">Scouting & Performance Insight</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="journalism & broadcasting"> <span data-i18n="interestJournalism">Sports Journalism</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="marketing & sponsorship"> <span data-i18n="interestMarketing">Sponsorship & Partnerships</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="event operations"> <span data-i18n="interestEventOps">Game-Day Operations</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="front office / team ops"> <span data-i18n="interestFrontOffice">Front Office</span></label>
+            <label class="checkbox-pill"><input type="checkbox" value="personal brand building"> <span data-i18n="interestPersonalBrand">Personal Brand</span></label>
           </div>
         </div>
 
@@ -298,6 +267,8 @@
           <div id="planBody"></div>
         </div>
 
+        <div class="card cert-card" id="certCard"></div>
+
         <div class="card coach-card" id="coachCard">
           <div class="coach-head">
             <h3 data-i18n="coachTitle">Your AI Coach</h3>
@@ -350,6 +321,35 @@
           </div>
           <div id="oppResult" hidden></div>
         </details>
+      </section>
+
+      <section id="bodyIdStart" class="bid" aria-labelledby="bidHeading">
+        <h2 class="section-title" id="bidHeading"><span class="step-num">ID</span> <span data-i18n="bidTitle">Your LJ Body ID</span></h2>
+        <p class="section-sub" data-i18n="bidSub">Optional. For coaching and game-day roles: a 20-second standing scan checks whether the role suits your body.</p>
+        <div id="bidCard"></div>
+        <div class="card bid-setup">
+          <p class="bid-label" data-i18n="bidPainLabel">Pain right now?</p>
+          <div id="bidPain" class="checkbox-grid"></div>
+          <p class="bid-label" data-i18n="bidInjuryLabel">Past injury?</p>
+          <div id="bidInjury" class="checkbox-grid"></div>
+          <p class="bid-tips" data-i18n="bidTips">Before you start: prop your phone up at waist height and step back 2–3 m.</p>
+          <div class="actions bid-actions">
+            <button type="button" id="mvStartBtn" data-i18n="mvStart">Scan my Body ID</button>
+          </div>
+          <p class="bid-fine" data-i18n="bidFine">Video stays on this device. A screening guide, not a diagnosis.</p>
+          <p id="mvMsg" class="acc-msg" hidden></p>
+          <div id="mvStage" class="mv-stage" hidden>
+            <div class="mv-video-wrap">
+              <video id="mvVideo" playsinline muted></video>
+              <canvas id="mvCanvas"></canvas>
+              <p id="mvPrompt" class="mv-prompt"></p>
+            </div>
+            <div class="actions">
+              <button type="button" id="mvCancelBtn" class="secondary" data-i18n="mvCancel">Stop</button>
+            </div>
+          </div>
+        </div>
+        <div id="mvResults"></div>
       </section>
     </section>
 
@@ -441,6 +441,7 @@
 
   <script src="script.js"></script>
   <script src="movement.js"></script>
+  <script src="certify.js"></script>
   <script src="lock.js"></script>
 </body>
 </html>

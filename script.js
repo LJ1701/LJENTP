@@ -33,14 +33,14 @@ const I18N = {
     skillPhotographyDesign: "Photography / Design",
     skillBroadcasting: "Broadcasting / On-Camera",
     interestsLabel: "Interests (select all that apply)",
-    interestContentCreation: "Content Creation",
-    interestCoachingDev: "Coaching & Player Development",
-    interestScouting: "Scouting & Analytics",
-    interestJournalism: "Journalism & Broadcasting",
-    interestMarketing: "Marketing & Sponsorship",
-    interestEventOps: "Event Operations",
-    interestFrontOffice: "Front Office / Team Ops",
-    interestPersonalBrand: "Personal Brand Building",
+    interestContentCreation: "Digital Content",
+    interestCoachingDev: "Player Development",
+    interestScouting: "Scouting & Performance Insight",
+    interestJournalism: "Sports Journalism",
+    interestMarketing: "Sponsorship & Partnerships",
+    interestEventOps: "Game-Day Operations",
+    interestFrontOffice: "Front Office",
+    interestPersonalBrand: "Personal Brand",
     pGoalLabel: "Career goal",
     goalMedia: "Break into sports media / content",
     goalCoach: "Become a coach",
@@ -154,14 +154,14 @@ const I18N = {
     skillPhotographyDesign: "Fotografía / Diseño",
     skillBroadcasting: "Locución / Frente a Cámara",
     interestsLabel: "Intereses (selecciona todos los que apliquen)",
-    interestContentCreation: "Creación de Contenido",
-    interestCoachingDev: "Entrenamiento y Desarrollo de Jugadores",
-    interestScouting: "Scouting y Análisis",
-    interestJournalism: "Periodismo y Locución",
-    interestMarketing: "Marketing y Patrocinios",
-    interestEventOps: "Operaciones de Eventos",
-    interestFrontOffice: "Front Office / Operaciones de Equipo",
-    interestPersonalBrand: "Construcción de Marca Personal",
+    interestContentCreation: "Contenido Digital",
+    interestCoachingDev: "Formación de Deportistas",
+    interestScouting: "Captación de Talento",
+    interestJournalism: "Periodismo Deportivo",
+    interestMarketing: "Patrocinios y Alianzas",
+    interestEventOps: "Logística de Partidos",
+    interestFrontOffice: "Dirección de Club",
+    interestPersonalBrand: "Marca Personal",
     pGoalLabel: "Objetivo profesional",
     goalMedia: "Entrar en medios deportivos / contenido",
     goalCoach: "Convertirme en entrenador",
@@ -275,14 +275,14 @@ const I18N = {
     skillPhotographyDesign: "摄影/设计",
     skillBroadcasting: "解说/镜头表现",
     interestsLabel: "兴趣（可多选）",
-    interestContentCreation: "内容创作",
-    interestCoachingDev: "教练与球员发展",
-    interestScouting: "球探与数据分析",
-    interestJournalism: "新闻与解说",
-    interestMarketing: "市场与赞助",
-    interestEventOps: "赛事运营",
-    interestFrontOffice: "球队管理层/运营",
-    interestPersonalBrand: "打造个人品牌",
+    interestContentCreation: "数字内容",
+    interestCoachingDev: "人才培养",
+    interestScouting: "球探选材",
+    interestJournalism: "体育新闻",
+    interestMarketing: "赞助与合作",
+    interestEventOps: "比赛日运营",
+    interestFrontOffice: "俱乐部决策层",
+    interestPersonalBrand: "个人品牌",
     pGoalLabel: "职业目标",
     goalMedia: "进入体育媒体/内容行业",
     goalCoach: "成为教练",
@@ -396,14 +396,14 @@ const I18N = {
     skillPhotographyDesign: "التصوير / التصميم",
     skillBroadcasting: "الإذاعة / الظهور أمام الكاميرا",
     interestsLabel: "الاهتمامات (اختر كل ما ينطبق)",
-    interestContentCreation: "صناعة المحتوى",
-    interestCoachingDev: "التدريب وتطوير اللاعبين",
-    interestScouting: "الكشف عن المواهب والتحليل",
-    interestJournalism: "الصحافة والإذاعة",
-    interestMarketing: "التسويق والرعاية",
-    interestEventOps: "تنظيم الفعاليات",
-    interestFrontOffice: "الإدارة التنفيذية / عمليات الفريق",
-    interestPersonalBrand: "بناء العلامة الشخصية",
+    interestContentCreation: "المحتوى الرقمي",
+    interestCoachingDev: "تطوير الرياضيين",
+    interestScouting: "اكتشاف المواهب",
+    interestJournalism: "الصحافة الرياضية",
+    interestMarketing: "الرعايات والشراكات",
+    interestEventOps: "عمليات يوم المباراة",
+    interestFrontOffice: "قيادة النادي",
+    interestPersonalBrand: "العلامة الشخصية",
     pGoalLabel: "الهدف المهني",
     goalMedia: "الدخول إلى الإعلام الرياضي / المحتوى",
     goalCoach: "أن أصبح مدربًا",
@@ -2809,14 +2809,14 @@ const TAG_LABELS = {
   "marketing & sales": { en: "Marketing & Sales", es: "Marketing y Ventas", zh: "市场与销售", ar: "التسويق والمبيعات" },
   "photography / design": { en: "Photography / Design", es: "Fotografía / Diseño", zh: "摄影/设计", ar: "التصوير / التصميم" },
   "broadcasting / on-camera": { en: "Broadcasting / On-Camera", es: "Locución / Frente a Cámara", zh: "解说/镜头表现", ar: "الإذاعة / الظهور أمام الكاميرا" },
-  "content creation": { en: "Content Creation", es: "Creación de Contenido", zh: "内容创作", ar: "صناعة المحتوى" },
-  "coaching & player development": { en: "Coaching & Player Development", es: "Entrenamiento y Desarrollo de Jugadores", zh: "教练与球员发展", ar: "التدريب وتطوير اللاعبين" },
-  "scouting & analytics": { en: "Scouting & Analytics", es: "Scouting y Análisis", zh: "球探与数据分析", ar: "الكشف عن المواهب والتحليل" },
-  "journalism & broadcasting": { en: "Journalism & Broadcasting", es: "Periodismo y Locución", zh: "新闻与解说", ar: "الصحافة والإذاعة" },
-  "marketing & sponsorship": { en: "Marketing & Sponsorship", es: "Marketing y Patrocinios", zh: "市场与赞助", ar: "التسويق والرعاية" },
-  "event operations": { en: "Event Operations", es: "Operaciones de Eventos", zh: "赛事运营", ar: "تنظيم الفعاليات" },
-  "front office / team ops": { en: "Front Office / Team Ops", es: "Front Office / Operaciones de Equipo", zh: "球队管理层/运营", ar: "الإدارة التنفيذية / عمليات الفريق" },
-  "personal brand building": { en: "Personal Brand Building", es: "Construcción de Marca Personal", zh: "打造个人品牌", ar: "بناء العلامة الشخصية" }
+  "content creation": { en: "Digital Content", es: "Contenido Digital", zh: "数字内容", ar: "المحتوى الرقمي" },
+  "coaching & player development": { en: "Player Development", es: "Formación de Deportistas", zh: "人才培养", ar: "تطوير الرياضيين" },
+  "scouting & analytics": { en: "Scouting & Performance Insight", es: "Captación de Talento", zh: "球探选材", ar: "اكتشاف المواهب" },
+  "journalism & broadcasting": { en: "Sports Journalism", es: "Periodismo Deportivo", zh: "体育新闻", ar: "الصحافة الرياضية" },
+  "marketing & sponsorship": { en: "Sponsorship & Partnerships", es: "Patrocinios y Alianzas", zh: "赞助与合作", ar: "الرعايات والشراكات" },
+  "event operations": { en: "Game-Day Operations", es: "Logística de Partidos", zh: "比赛日运营", ar: "عمليات يوم المباراة" },
+  "front office / team ops": { en: "Front Office", es: "Dirección de Club", zh: "俱乐部决策层", ar: "قيادة النادي" },
+  "personal brand building": { en: "Personal Brand", es: "Marca Personal", zh: "个人品牌", ar: "العلامة الشخصية" }
 };
 
 function tagLabel(value) {
@@ -2861,16 +2861,24 @@ function linksToHTML(pairs) {
     .join(" · ");
 }
 
+const STRENGTH_ORDER = ["matchStrong", "matchGood", "matchPossible"];
+
 function matchCareerPaths(userTags) {
   const paths = CAREER_PATHS[currentLang] || CAREER_PATHS.en;
+  const scans = typeof loadBodyScans === "function" ? loadBodyScans() : [];
+  const band = (m) => STRENGTH_ORDER.indexOf(matchStrengthKey(m));
+  const checkFirst = (m) => (m.body && m.body.level === 2 ? 1 : 0);
   return paths.map((path, idx) => {
     const matched = path.tags.filter((t) => userTags.includes(t));
-    return { ...path, idx, score: matched.length, matched, fit: Math.round((100 * matched.length) / path.tags.length) };
+    const body = typeof bodyFit === "function" ? bodyFit(idx, scans) : null;
+    return { ...path, idx, score: matched.length, matched, fit: Math.round((100 * matched.length) / path.tags.length), body };
   })
     .filter((p) => p.score > 0)
     // Rank by how much of each role's typical skill set is covered, then by count, so short
-    // skill lists aren't penalised and long ones aren't favoured.
-    .sort((a, b) => b.score / b.tags.length - a.score / a.tags.length || b.score - a.score)
+    // skill lists aren't penalised and long ones aren't favoured. Within the same match strength, a role
+    // whose physical demands hit an area the Body ID says is worth a professional check moves down.
+    .sort((a, b) => band(a) - band(b) || checkFirst(a) - checkFirst(b) ||
+      b.score / b.tags.length - a.score / a.tags.length || b.score - a.score)
     .slice(0, 4);
 }
 
@@ -2962,6 +2970,8 @@ function evidenceFor(value, data) {
   const line = (data.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean)
     .find((l) => findKeywordMatches(l, { [value]: table[value] || [] }).length);
   if (line) return tf("evAch", { line: line.length > 90 ? line.slice(0, 87) + "…" : line });
+  const cert = typeof certEvidence === "function" ? certEvidence(value, data) : "";
+  if (cert) return cert;
   if ((data.skills || []).includes(value) || (data.interests || []).includes(value)) return t("evListed");
   if ((GOAL_TAGS[data.goal] || []).includes(value)) return t("evGoal");
   return t("evListed");
@@ -2986,6 +2996,7 @@ function renderMatches(matches, location, data, eff) {
     if ((GOAL_TAGS[data.goal] || []).some((g) => m.tags.includes(g))) why.push(tf("whyGoal", { goal: goalLabels[data.goal] }));
     const covers = tf("matchCovers", { have: m.matched.length, total: m.tags.length });
     const key = matchStrengthKey(m);
+    const bodyStep = m.body && m.body.level ? `<li>${esc(t(BODY_STEP_KEYS[m.body.areas[0]]))}</li>` : "";
     const div = document.createElement("article");
     div.className = "match-card";
     div.innerHTML = `
@@ -2998,6 +3009,8 @@ function renderMatches(matches, location, data, eff) {
         ${m.tags.map((tag) => `<span class="cov${m.matched.includes(tag) ? " on" : ""}">${tagLabel(tag)}</span>`).join("")}
       </div>
       <p class="match-covers">${covers}</p>
+      ${typeof bodyFitLine === "function" ? bodyFitLine(m.body, m.idx) : ""}
+      ${typeof certProofLine === "function" ? certProofLine(m.idx, data) : ""}
       <details class="match-detail"${index === 0 ? " open" : ""}>
         <summary>${t("matchWhy")}</summary>
         <div class="explain">
@@ -3008,7 +3021,7 @@ function renderMatches(matches, location, data, eff) {
           <p class="gap">${gaps.length ? gaps.map(tagLabel).join(", ") : t("noGaps")}</p>
           ${EDU_KEYS[data.education] ? `<p class="have">${tf("haveEdu", { edu: t(EDU_KEYS[data.education]) })}</p>` : ""}
           <p class="detail-label">${t("nextStepsLabel")}</p>
-          <ol class="next-steps"><li>${m.nextStep}</li>${gaps.slice(0, 2).map((g) => `<li>${tf("stepBuild", { skill: tagLabel(g) })}</li>`).join("")}</ol>
+          <ol class="next-steps"><li>${m.nextStep}</li>${bodyStep}${gaps.slice(0, 2).map((g) => `<li>${tf("stepBuild", { skill: tagLabel(g) })}</li>`).join("")}</ol>
         </div>
       </details>
       <p class="job-links">${t("jobSearchLabel")} ${linksToHTML(jobSearchLinks(JOB_QUERIES[m.idx], location))}</p>
@@ -3070,8 +3083,8 @@ function effectiveProfile(data) {
   const skills = [...(data.skills || [])];
   const interests = [...(data.interests || [])];
   const fromAch = new Set();
+  const removed = data.excluded || [];
   if (data.achievements) {
-    const removed = data.excluded || [];
     findKeywordMatches(data.achievements, SKILL_KEYWORDS).forEach(({ value }) => {
       if (!skills.includes(value) && !removed.includes(value)) { skills.push(value); fromAch.add(value); }
     });
@@ -3079,7 +3092,11 @@ function effectiveProfile(data) {
       if (!interests.includes(value) && !removed.includes(value)) { interests.push(value); fromAch.add(value); }
     });
   }
-  return { skills, interests, fromAch };
+  // Passed LJ Coach Certification levels prove skills the same way achievements do.
+  const proven = typeof certSkills === "function" ? certSkills(data) : { skills: [], interests: [], certs: [] };
+  proven.skills.forEach((v) => { if (!skills.includes(v) && !removed.includes(v)) skills.push(v); });
+  proven.interests.forEach((v) => { if (!interests.includes(v) && !removed.includes(v)) interests.push(v); });
+  return { skills, interests, fromAch, certs: proven.certs };
 }
 
 function achievementCount(data) {
@@ -3447,7 +3464,12 @@ function pathByIdx(idx) {
 function buildPlan(idx, data) {
   const eff = effectiveProfile(data);
   const gaps = pathByIdx(idx).tags.filter((v) => SKILL_KEYWORDS[v] && !eff.skills.includes(v));
-  const items = [...gaps.map((skill) => ({ id: "skill:" + skill, kind: "skill", skill })),
+  // If the Body ID flags an area this role leans on, the plan gets a body step for it.
+  const fit = typeof bodyFit === "function" ? bodyFit(idx, loadBodyScans()) : null;
+  const body = fit && fit.level ? [{ id: "body:" + fit.areas[0], kind: "body", area: fit.areas[0] }] : [];
+  const level = typeof certNextLevel === "function" && CERT_ROLES.includes(idx) ? certNextLevel(data) : null;
+  const cert = level ? [{ id: "cert:" + level, kind: "cert", level }] : [];
+  const items = [...gaps.map((skill) => ({ id: "skill:" + skill, kind: "skill", skill })), ...cert, ...body,
     { id: "next", kind: "next" }, { id: "evidence", kind: "evidence" }, { id: "posting", kind: "posting" }, { id: "apply", kind: "apply" }];
   return { roleIdx: idx, createdAt: new Date().toISOString(), items: items.map((i) => ({ ...i, done: false })) };
 }
@@ -3455,14 +3477,19 @@ function buildPlan(idx, data) {
 function planItemText(item, path) {
   if (item.kind === "skill") return tf("stepBuild", { skill: tagLabel(item.skill) });
   if (item.kind === "next") return path.nextStep;
+  if (item.kind === "body") return t(BODY_STEP_KEYS[item.area]);
+  // certify.js loads after this file; until then the step has no label, and it redraws once it loads.
+  if (item.kind === "cert") return typeof CERT_LEVELS === "undefined" ? "" : tf("planCert", { name: t(CERT_LEVELS[item.level - 1].name) });
   if (item.kind === "evidence") return t("planEvidence");
   if (item.kind === "posting") return t("planPosting");
   return tf("planApply", { role: path.name });
 }
 
-// A skill step counts as done once that skill is in the Passport (listed or found in achievements).
+// A skill step counts as done once that skill is in the Passport (listed, found in achievements or
+// proven by a passed check); a check step once that level is passed.
 function planItemState(item, eff) {
-  const auto = item.kind === "skill" && eff.skills.includes(item.skill);
+  const auto = (item.kind === "skill" && eff.skills.includes(item.skill)) ||
+    (item.kind === "cert" && (eff.certs || []).some((c) => c.level >= item.level));
   return { done: !!item.done || auto, auto };
 }
 
@@ -3517,6 +3544,7 @@ function renderPlan(data) {
     el("p", "plan-role", path.name),
     el("p", "match-covers", tf("matchCovers", { have: path.tags.filter((tg) => have.has(tg)).length, total: path.tags.length }))
   );
+  if (typeof bodyFit === "function") box.insertAdjacentHTML("beforeend", bodyFitLine(bodyFit(data.plan.roleIdx, loadBodyScans()), data.plan.roleIdx));
   const progress = el("div", "plan-progress");
   progress.setAttribute("role", "img");
   progress.setAttribute("aria-label", tf("planProgress", counts));
@@ -3850,6 +3878,8 @@ passportForm.addEventListener("submit", (e) => {
   if (bodyScans && bodyScans.length) data.movement = bodyScans;
   if (previous && previous.movementGoal) data.movementGoal = previous.movementGoal;
   if (previous && previous.plan) data.plan = previous.plan;
+  if (previous && previous.certs) data.certs = previous.certs;
+  if (previous && previous.certAttempts) data.certAttempts = previous.certAttempts;
   data.history = nextHistory(previous, data);
 
   savePassport(data);
