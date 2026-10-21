@@ -31,6 +31,15 @@ const WATCH_AREAS = [
 ];
 
 const MOVE_HISTORY_MAX = 20;
+const WATCH_LABEL_KEYS = { posture: "wPosture", neck: "wNeck", knees: "wKnees", weight: "wWeight", balance: "wBalance" };
+
+// Career paths whose daily work is physical (CAREER_PATHS index), the watch-list areas that load touches,
+// and a lighter path with similar skills. Desk roles have no entry: a posture scan says nothing about them.
+const ROLE_BODY = {
+  3: { demand: "dFeet", areas: ["knees", "balance", "weight", "posture"], lighter: 4 },
+  6: { demand: "dCarry", areas: ["posture", "knees", "weight"], lighter: 7 }
+};
+const BODY_STEP_KEYS = { posture: "bsPosture", knees: "bsKnees", weight: "bsWeight", balance: "bsBalance" };
 
 // ---- Measurement (pure functions) ----
 
@@ -189,6 +198,28 @@ function bodyFlags(snap) {
   });
 }
 
+// How the latest Body ID scan bears on one career path: level 0 = nothing on the watch-list touches the
+// role's physical demands, 1 = worth watching, 2 = check with a professional first. null = no scan yet.
+function bodyFit(idx, scans) {
+  const body = ROLE_BODY[idx];
+  if (!body || !Array.isArray(scans) || !scans.length) return null;
+  const hits = bodyFlags(scans[scans.length - 1]).filter((f) => body.areas.includes(f.id) && f.level > 0)
+    .sort((a, b) => b.level - a.level);
+  const level = hits.length ? hits[0].level : 0;
+  return { level, demand: body.demand, areas: hits.map((f) => f.id), lighter: level === 2 ? body.lighter : undefined };
+}
+
+// The "Body fit" line on a match card or plan, as HTML; empty for roles without physical demands.
+// Uses the app's t/tf/esc/pathByIdx.
+function bodyFitLine(fit, idx) {
+  if (!ROLE_BODY[idx]) return "";
+  if (!fit) return `<p class="body-fit lv-none"><a href="#bodyIdStart">${esc(t("fitNone"))}</a></p>`;
+  const vars = { demand: t(fit.demand), areas: fit.areas.map((a) => t(WATCH_LABEL_KEYS[a])).join(", ") };
+  let text = tf(["fitOk", "fitWatch", "fitCheck"][fit.level], vars);
+  if (fit.lighter !== undefined) text += " " + tf("fitLighter", { role: pathByIdx(fit.lighter).name });
+  return `<p class="body-fit lv-${fit.level}"><strong>${esc(t("fitLabel"))}</strong> ${esc(text)}</p>`;
+}
+
 // Changes since the baseline that are big enough to notice. dir: +1 = higher is better, -1 = lower is better.
 const MEMORY_METRICS = [
   ["shoulderTiltAbs", -1, 3], ["hipTiltAbs", -1, 3], ["headAngle", -1, 8],
@@ -296,7 +327,19 @@ function loadBodyScans() {
 if (typeof document !== "undefined") {
   const I18N_MOVE = {
     en: {
-      heroCta2: "See my career matches", hfBodyT: "Body ID", hfBodyD: "20-second scan. Your body becomes your ID.", hfCareerT: "Career match", hfCareerD: "Sports roles that fit you, with a plan.", hfPlanT: "Your plan", hfPlanD: "A saved, step-by-step path to your target role.",
+      fitLabel: "Body fit:",
+      fitNone: "Body fit: scan your Body ID to see how this role fits your body →",
+      fitOk: "this role means {demand}. Nothing on your watch-list conflicts with it.",
+      fitWatch: "this role means {demand}. Worth watching: {areas}.",
+      fitCheck: "this role means {demand}. Get these checked by a professional before you commit: {areas}.",
+      fitLighter: "A lighter path with similar skills: {role}.",
+      dFeet: "long days on your feet, demonstrating drills",
+      dCarry: "long days on your feet, setting up and carrying equipment",
+      bsPosture: "Body step: alternate sitting and standing, and train your core and back twice a week.",
+      bsKnees: "Body step: ask an athletic trainer or physio for a knee-strength and landing plan before daily drills.",
+      bsWeight: "Body step: have a physio check why you favour one side, and train both sides evenly.",
+      bsBalance: "Body step: add single-leg balance work twice a week, and get it checked if the sway stays.",
+      heroCta2: "See my career matches", hfBodyT: "Body ID", hfBodyD: "20-second scan. Your body becomes your ID.", hfCareerT: "Career match", hfCareerD: "Sports roles that fit you, with a plan.", hfPlanT: "Your plan", hfPlanD: "A saved, step-by-step path to your target role.", hfProofT: "Proof", hfProofD: "Skill checks and a certificate that show what you can do.",
       bidStepOf: "Step {i} of {n} · {name}",
       bidFrontName: "Front", bidSideName: "Side",
       bidInView: "✓ Whole body in view. Hold still…",
@@ -308,7 +351,7 @@ if (typeof document !== "undefined") {
       bidMissSide: "The side view wasn't captured, so head position wasn't measured. Turn fully sideways when asked.",
       heroCta: "Start with my Body ID",
       bidTitle: "Your LJ Body ID",
-      bidSub: "Stand still for 20 seconds. Your body becomes your ID.",
+      bidSub: "Optional. For coaching and game-day roles: a 20-second standing scan checks whether the role suits your body.",
       bidPainLabel: "Pain right now?",
       bidInjuryLabel: "Past injury?",
       aNeck: "Neck", aShoulder: "Shoulder", aBack: "Back", aHip: "Hip", aKnee: "Knee", aAnkle: "Ankle / foot",
@@ -365,7 +408,19 @@ if (typeof document !== "undefined") {
       mvAskQuestion: "Read my LJ Body ID: my health watch-list and what changed since my first scan. Is anything worth a professional check, and what simple habits help?"
     },
     es: {
-      heroCta2: "Ver mis carreras compatibles", hfBodyT: "Body ID", hfBodyD: "Escaneo de 20 segundos. Tu cuerpo es tu ID.", hfCareerT: "Tu carrera", hfCareerD: "Puestos del deporte para ti, con un plan.", hfPlanT: "Tu plan", hfPlanD: "Un camino guardado, paso a paso, hacia tu puesto objetivo.",
+      fitLabel: "Encaje físico:",
+      fitNone: "Encaje físico: escanea tu Body ID para ver cómo encaja este puesto con tu cuerpo →",
+      fitOk: "este puesto implica {demand}. Nada en tu lista de vigilancia choca con ello.",
+      fitWatch: "este puesto implica {demand}. Vale la pena vigilar: {areas}.",
+      fitCheck: "este puesto implica {demand}. Haz que un profesional revise esto antes de comprometerte: {areas}.",
+      fitLighter: "Un camino más ligero con habilidades parecidas: {role}.",
+      dFeet: "jornadas largas de pie, demostrando ejercicios",
+      dCarry: "jornadas largas de pie, montando y cargando material",
+      bsPosture: "Paso físico: alterna estar sentado y de pie, y entrena core y espalda dos veces por semana.",
+      bsKnees: "Paso físico: pide a un preparador o fisioterapeuta un plan de fuerza de rodilla y aterrizaje antes de entrenar a diario.",
+      bsWeight: "Paso físico: que un fisioterapeuta revise por qué cargas más un lado, y entrena ambos lados por igual.",
+      bsBalance: "Paso físico: añade equilibrio sobre una pierna dos veces por semana y revísalo si el balanceo continúa.",
+      heroCta2: "Ver mis carreras compatibles", hfBodyT: "Body ID", hfBodyD: "Escaneo de 20 segundos. Tu cuerpo es tu ID.", hfCareerT: "Tu carrera", hfCareerD: "Puestos del deporte para ti, con un plan.", hfPlanT: "Tu plan", hfPlanD: "Un camino guardado, paso a paso, hacia tu puesto objetivo.", hfProofT: "Pruebas", hfProofD: "Pruebas de habilidades y un certificado que muestran lo que sabes hacer.",
       bidStepOf: "Paso {i} de {n} · {name}",
       bidFrontName: "De frente", bidSideName: "De lado",
       bidInView: "✓ Cuerpo completo a la vista. Quédate quieto…",
@@ -377,7 +432,7 @@ if (typeof document !== "undefined") {
       bidMissSide: "No se captó la vista de lado, así que no se midió la posición de la cabeza. Gírate completamente de lado cuando te lo pida.",
       heroCta: "Empezar con mi Body ID",
       bidTitle: "Tu LJ Body ID",
-      bidSub: "Quédate quieto 20 segundos. Tu cuerpo se convierte en tu ID.",
+      bidSub: "Opcional. Para puestos de entrenador y de día de partido: un escaneo de 20 segundos de pie comprueba si el puesto se adapta a tu cuerpo.",
       bidPainLabel: "¿Dolor ahora?",
       bidInjuryLabel: "¿Lesión pasada?",
       aNeck: "Cuello", aShoulder: "Hombro", aBack: "Espalda", aHip: "Cadera", aKnee: "Rodilla", aAnkle: "Tobillo / pie",
@@ -434,7 +489,19 @@ if (typeof document !== "undefined") {
       mvAskQuestion: "Lee mi LJ Body ID: mi lista de vigilancia de salud y qué cambió desde mi primer escaneo. ¿Hay algo que valga la pena revisar con un profesional y qué hábitos sencillos ayudan?"
     },
     zh: {
-      heroCta2: "查看适合我的职业", hfBodyT: "Body ID", hfBodyD: "20 秒扫描，你的身体就是你的 ID。", hfCareerT: "职业匹配", hfCareerD: "适合你的体育岗位，附带计划。", hfPlanT: "你的计划", hfPlanD: "保存好的、通往目标岗位的分步路线。",
+      fitLabel: "身体匹配：",
+      fitNone: "身体匹配：扫描你的 Body ID，看看这个职位是否适合你的身体 →",
+      fitOk: "这个职位意味着{demand}。你的关注清单中没有与之冲突的项目。",
+      fitWatch: "这个职位意味着{demand}。值得关注：{areas}。",
+      fitCheck: "这个职位意味着{demand}。决定之前，请先让专业人士检查：{areas}。",
+      fitLighter: "技能相近、身体负担更轻的方向：{role}。",
+      dFeet: "整天站立并示范训练动作",
+      dCarry: "整天站立，布置场地并搬运器材",
+      bsPosture: "身体步骤：坐站交替，每周两次锻炼核心和背部。",
+      bsKnees: "身体步骤：在每天带训练之前，请运动防护师或理疗师制定膝关节力量和落地计划。",
+      bsWeight: "身体步骤：请理疗师检查你为何偏向一侧，并均衡训练两侧。",
+      bsBalance: "身体步骤：每周两次单腿平衡练习；如果摇晃持续，请去检查。",
+      heroCta2: "查看适合我的职业", hfBodyT: "Body ID", hfBodyD: "20 秒扫描，你的身体就是你的 ID。", hfCareerT: "职业匹配", hfCareerD: "适合你的体育岗位，附带计划。", hfPlanT: "你的计划", hfPlanD: "保存好的、通往目标岗位的分步路线。", hfProofT: "证明", hfProofD: "技能测试和证书，展示你的真实能力。",
       bidStepOf: "第 {i} 步，共 {n} 步 · {name}",
       bidFrontName: "正面", bidSideName: "侧面",
       bidInView: "✓ 全身已在画面中。保持静止…",
@@ -446,7 +513,7 @@ if (typeof document !== "undefined") {
       bidMissSide: "未拍到侧面，因此没有测量头部位置。提示时请完全侧身。",
       heroCta: "从我的 Body ID 开始",
       bidTitle: "你的 LJ Body ID",
-      bidSub: "静止站立 20 秒，你的身体就是你的 ID。",
+      bidSub: "可选。适用于教练和比赛日岗位：20 秒站立扫描，检查该岗位是否适合你的身体。",
       bidPainLabel: "现在有疼痛吗？",
       bidInjuryLabel: "以前受过伤吗？",
       aNeck: "颈部", aShoulder: "肩部", aBack: "背部", aHip: "髋部", aKnee: "膝盖", aAnkle: "脚踝 / 脚",
@@ -503,7 +570,19 @@ if (typeof document !== "undefined") {
       mvAskQuestion: "请解读我的 LJ Body ID：我的健康关注清单，以及与第一次扫描相比的变化。有没有值得找专业人士检查的地方？有哪些简单习惯有帮助？"
     },
     ar: {
-      heroCta2: "اعرض المهن المناسبة لي", hfBodyT: "Body ID", hfBodyD: "مسح لمدة 20 ثانية. جسمك هو هويتك.", hfCareerT: "مسارك المهني", hfCareerD: "وظائف رياضية تناسبك مع خطة.", hfPlanT: "خطتك", hfPlanD: "مسار محفوظ خطوة بخطوة نحو وظيفتك المستهدفة.",
+      fitLabel: "الملاءمة البدنية:",
+      fitNone: "الملاءمة البدنية: امسح Body ID لترى مدى ملاءمة هذا الدور لجسمك ←",
+      fitOk: "هذا الدور يعني {demand}. لا شيء في قائمة المتابعة يتعارض معه.",
+      fitWatch: "هذا الدور يعني {demand}. يستحق المتابعة: {areas}.",
+      fitCheck: "هذا الدور يعني {demand}. اطلب فحصًا لدى مختص قبل الالتزام: {areas}.",
+      fitLighter: "مسار أخف بمهارات مشابهة: {role}.",
+      dFeet: "أيامًا طويلة على قدميك وأنت تشرح التمارين",
+      dCarry: "أيامًا طويلة على قدميك في التجهيز وحمل المعدات",
+      bsPosture: "خطوة بدنية: بدّل بين الجلوس والوقوف، ودرّب الجذع والظهر مرتين أسبوعيًا.",
+      bsKnees: "خطوة بدنية: اطلب من مدرب رياضي أو معالج طبيعي خطة لقوة الركبة والهبوط قبل التمارين اليومية.",
+      bsWeight: "خطوة بدنية: اطلب من معالج طبيعي معرفة سبب ميلك إلى جانب واحد، ودرّب الجانبين بالتساوي.",
+      bsBalance: "خطوة بدنية: أضف تمارين التوازن على قدم واحدة مرتين أسبوعيًا، وافحصه إن استمر التمايل.",
+      heroCta2: "اعرض المهن المناسبة لي", hfBodyT: "Body ID", hfBodyD: "مسح لمدة 20 ثانية. جسمك هو هويتك.", hfCareerT: "مسارك المهني", hfCareerD: "وظائف رياضية تناسبك مع خطة.", hfPlanT: "خطتك", hfPlanD: "مسار محفوظ خطوة بخطوة نحو وظيفتك المستهدفة.", hfProofT: "الإثبات", hfProofD: "اختبارات مهارات وشهادة تُظهر ما تستطيع فعله.",
       bidStepOf: "الخطوة {i} من {n} · {name}",
       bidFrontName: "من الأمام", bidSideName: "من الجانب",
       bidInView: "✓ جسمك كاملًا ظاهر. اثبت…",
@@ -515,7 +594,7 @@ if (typeof document !== "undefined") {
       bidMissSide: "لم تُلتقط الصورة الجانبية، لذا لم يُقس موضع الرأس. استدر جانبيًا بالكامل عند الطلب.",
       heroCta: "ابدأ بهويتي Body ID",
       bidTitle: "هويتك LJ Body ID",
-      bidSub: "قف ثابتًا 20 ثانية. يصبح جسمك هويتك.",
+      bidSub: "اختياري. لأدوار التدريب ويوم المباراة: مسح لمدة 20 ثانية وأنت واقف يتحقق مما إذا كان الدور يناسب جسمك.",
       bidPainLabel: "ألم الآن؟",
       bidInjuryLabel: "إصابة سابقة؟",
       aNeck: "الرقبة", aShoulder: "الكتف", aBack: "الظهر", aHip: "الورك", aKnee: "الركبة", aAnkle: "الكاحل / القدم",
@@ -575,7 +654,7 @@ if (typeof document !== "undefined") {
   Object.keys(I18N_MOVE).forEach((lang) => Object.assign(I18N[lang], I18N_MOVE[lang]));
 
   const AREA_KEYS = { neck: "aNeck", shoulder: "aShoulder", back: "aBack", hip: "aHip", knee: "aKnee", ankle: "aAnkle" };
-  const WATCH_KEYS = { posture: "wPosture", neck: "wNeck", knees: "wKnees", weight: "wWeight", balance: "wBalance" };
+  const WATCH_KEYS = WATCH_LABEL_KEYS;
   const WHY_KEYS = { posture: "whyPosture", neck: "whyNeck", knees: "whyKnees", weight: "whyWeight", balance: "whyBalance" };
   const LEVEL_KEYS = ["lvOk", "lvWatch", "lvCheck"];
   const METRIC_FMT = {
@@ -798,6 +877,7 @@ if (typeof document !== "undefined") {
       // storage unavailable; the scan still shows until the page closes
     }
     renderMovement();
+    if (data && !passportResults.hidden) renderPassportSummaryAndMatches(data);
     bidCard.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -940,7 +1020,6 @@ if (typeof document !== "undefined") {
     renderPassportBodyId(list);
     mvResults.innerHTML = "";
     mvStartBtn.textContent = t(list.length ? "bidRescan" : "mvStart");
-    document.getElementById("bidSkip").hidden = list.length > 0;
     if (!list.length) return;
     const now = list[list.length - 1];
     if (!running && !chipValues("bidPain").length && !chipValues("bidInjury").length) {
@@ -1006,4 +1085,7 @@ if (typeof document !== "undefined") {
   document.getElementById("passportForm").addEventListener("submit", () => setTimeout(renderMovement));
   document.getElementById("langSelect").addEventListener("change", translateMovement);
   translateMovement();
+  // Matches drawn before this file loaded had no Body ID to check against.
+  const openPassport = loadPassport();
+  if (openPassport && !passportResults.hidden) renderPassportSummaryAndMatches(openPassport);
 }
