@@ -1,2 +1,11 @@
 .vercel
 .env*
+
+# Private working files: never commit (research notes, interviews with real people, drafts)
+research/
+strategy/
+interviews/
+prd.md
+build-log.md
+pricing simulator/
+.DS_Store
