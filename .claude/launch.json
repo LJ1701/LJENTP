@@ -22,6 +22,19 @@
         "--yes"
       ],
       "port": 3000
+    },
+    {
+      "name": "lj-live-dev",
+      "runtimeExecutable": "vercel",
+      "runtimeArgs": [
+        "dev",
+        "--cwd",
+        "live-studio",
+        "--listen",
+        "3001",
+        "--yes"
+      ],
+      "port": 3001
     }
   ]
 }
