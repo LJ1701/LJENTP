@@ -60,23 +60,23 @@
       <section class="hero-x landing" aria-labelledby="heroTitle">
         <div class="hero">
           <div class="hero-copy">
-            <p class="eyebrow" data-i18n="heroEyebrow">AI sports career discovery · by LJSOCCER</p>
-            <h1 id="heroTitle" class="hero-title" data-i18n="heroTitle">Find your place in the sports industry.</h1>
-            <p class="hero-sub" data-i18n="heroSub">Discover careers that fit your experience, identify your skill gaps, and build your path forward.</p>
+            <p class="eyebrow" data-i18n="hmEyebrow">Sports careers · by LJSOCCER</p>
+            <h1 id="heroTitle" class="hero-title"><span class="hm-title-a" data-i18n="hmTitleA">Advice is everywhere.</span> <span class="hm-title-b" data-i18n="hmTitleB">Proof isn't.</span></h1>
+            <p class="hero-sub" data-i18n="hmSub">Find the sports career that fits you, prove you can do it with LJ Coach Certification, and show employers a certificate they can see.</p>
             <div class="hero-ctas">
               <a href="#passportStart" class="btn-gold btn-big" data-i18n="heroCta2">See my career matches</a>
+              <a href="#passportStart" class="btn-ghost btn-big" data-i18n="hmCtaProof">Get certified</a>
             </div>
           </div>
-          <div class="hero-visual" aria-hidden="true">
-            <div class="orbit orbit-1"></div>
-            <div class="orbit orbit-2"></div>
-            <svg class="hero-sig" viewBox="0 0 200 200">
-              <polygon class="hero-sig-grid" points="100,30 150,50 170,100 150,150 100,170 50,150 30,100 50,50"/>
-              <polygon class="hero-sig-grid" points="100,65 125,75 135,100 125,125 100,135 75,125 65,100 75,75"/>
-              <polygon class="hero-sig-shape" points="100,42 142,58 158,100 136,138 100,152 62,140 48,100 66,62"/>
-            </svg>
-            <img src="logo.svg" alt="" class="hero-logo">
-            <div class="hero-scan"></div>
+          <div class="hero-visual hm-cred-wrap" aria-hidden="true">
+            <div class="hm-cred">
+              <div class="hm-cred-top"><img src="logo.svg" alt="" class="hm-cred-logo"><span class="hm-cred-issuer">LJSPORTMIND</span><span class="hm-cred-seal">✓</span></div>
+              <p class="hm-cred-kicker" data-i18n="hmCredKicker">Certification</p>
+              <p class="hm-cred-name">LJ Coach</p>
+              <p class="hm-cred-level" data-i18n="ccL2">Level 2 · Tactical analysis</p>
+              <div class="hm-cred-skills"><span data-i18n="skillCoaching">Coaching</span><span data-i18n="interestScouting">Scouting &amp; Performance Insight</span></div>
+              <p class="hm-cred-id" data-i18n="hmCredId">Example credential</p>
+            </div>
           </div>
         </div>
         <div class="hero-features">
@@ -95,6 +95,21 @@
             <strong data-i18n="hfPlanT">Your plan</strong>
             <span data-i18n="hfPlanD">A saved, step-by-step path to your target role.</span>
           </a>
+        </div>
+        <div class="hm-compare" aria-labelledby="hmCmpTitle">
+          <h2 id="hmCmpTitle" data-i18n="hmCmpTitle">Why not just ask an AI chatbot?</h2>
+          <table class="hm-cmp-table">
+            <thead><tr><th scope="col"><span class="visually-hidden">Feature</span></th><th scope="col" data-i18n="hmCmpBot">AI chatbot</th><th scope="col" class="hm-us" data-i18n="hmCmpUs">LJSportMind</th></tr></thead>
+            <tbody>
+              <tr><td data-i18n="hmCmpR1">Career ideas from what you tell it</td><td class="yes">✓</td><td class="hm-us yes">✓</td></tr>
+              <tr><td data-i18n="hmCmpR2">Saves your Passport, matches and plan</td><td class="part" data-i18n="hmPartly">Partly</td><td class="hm-us yes">✓</td></tr>
+              <tr><td data-i18n="hmCmpR3">Graded certification levels, the same for everyone</td><td class="no">✕</td><td class="hm-us yes">✓</td></tr>
+              <tr><td data-i18n="hmCmpR4">Certificate with a credential ID for LinkedIn</td><td class="no">✕</td><td class="hm-us yes">✓</td></tr>
+              <tr><td data-i18n="hmCmpR5">Passing a level updates your matches and plan</td><td class="no">✕</td><td class="hm-us yes">✓</td></tr>
+              <tr><td data-i18n="hmCmpR6">Physical-fit check for coaching and game-day roles</td><td class="no">✕</td><td class="hm-us yes">✓</td></tr>
+            </tbody>
+          </table>
+          <p class="hm-cmp-line" data-i18n="hmCmpLine">A chatbot repeats what you tell it. LJSportMind proves it.</p>
         </div>
       </section>
 
@@ -269,7 +284,7 @@
 
         <div class="card cert-card" id="certCard"></div>
 
-        <div class="card coach-card" id="coachCard">
+        <div class="card coach-card" id="coachCard" hidden>
           <div class="coach-head">
             <h3 data-i18n="coachTitle">Your AI Coach</h3>
             <p class="coach-role" data-i18n="coachRole">Explains your matches and helps you work through your plan.</p>
@@ -311,7 +326,7 @@
           </div>
         </div>
 
-        <details class="card opp-card opp-details" id="oppSection">
+        <details class="card opp-card opp-details" id="oppSection" hidden>
           <summary><span class="step-num">4</span> <span data-i18n="secPosting">Compare against a real job posting</span></summary>
           <div class="field">
             <textarea id="oppText" rows="6" data-i18n-placeholder="oppPlaceholder" placeholder="Paste the job or opportunity description here…"></textarea>
@@ -356,26 +371,22 @@
     <section id="proPanel" class="tab-panel">
       <div class="profile-intro">
         <h2 data-i18n="pricingTitle">Pricing</h2>
-        <p id="proIntroText" data-i18n="proIntro">Unlock the AI Coach and AI-written posts for $4.99 a month. Free while in early access — join the waitlist.</p>
+        <p id="proIntroText" data-i18n="proIntro">Free for athletes. Schools and clubs license it for their teams.</p>
       </div>
 
-      <table class="pro-table">
-        <caption class="visually-hidden" data-i18n="pricingTitle">Pricing</caption>
-        <thead>
-          <tr><th scope="col" data-i18n="proColFeature">Feature</th><th scope="col" data-i18n="proColFree">Free</th><th scope="col" data-i18n="proColPro">Pro · $4.99/mo</th></tr>
-        </thead>
-        <tbody>
-          <tr><td data-i18n="prRowPassport">Sports Passport and evidence record</td><td>✓</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowRoles">Role discovery with explanations</td><td>✓</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowGaps">Skill-gap analysis and next steps</td><td>✓</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowPlan">Development plan and saved progress</td><td>✓</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowOpp">Opportunity checker</td><td>✓</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowQuick">AI Coach quick read</td><td>✓</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowAi">Full AI Coach analysis and chat</td><td data-i18n="proEarly">Free in early access</td><td>✓</td></tr>
-          <tr><td data-i18n="prRowExtras">LJ Body ID scan and health watch-list</td><td>✓</td><td>✓</td></tr>
-        </tbody>
-      </table>
-      <p class="section-sub pricing-note" data-i18n="pricingNote">The $4.99/month Pro price is a hypothesis we're testing. Everything marked Free stays free.</p>
+      <div class="hm-plans">
+        <div class="hm-plan">
+          <p class="hm-plan-name" data-i18n="hmAthT">Athletes</p>
+          <p class="hm-plan-price" data-i18n="hmAthPrice">Free</p>
+          <p class="hm-plan-desc" data-i18n="hmAthD">Passport, career matches, plan, LJ Coach Certification and Body ID.</p>
+        </div>
+        <div class="hm-plan hm-plan-gold">
+          <p class="hm-plan-name" data-i18n="hmSchT">Schools &amp; clubs</p>
+          <p class="hm-plan-price" data-i18n="hmSchPrice">Team license</p>
+          <p class="hm-plan-desc" data-i18n="hmSchD">Every athlete gets it free. Coming next: a staff view of anonymous progress and certified skills across the team.</p>
+        </div>
+      </div>
+      <p class="section-sub pricing-note" data-i18n="pricingNote">School pricing is being tested with athletic departments.</p>
 
       <div id="proBuy" class="card" hidden>
         <h3 id="proBuyTitle" data-i18n="proBuyTitle">Upgrade to Pro</h3>
@@ -388,13 +399,13 @@
       </div>
 
       <form id="proForm" class="card">
-        <h3 data-i18n="proJoin">Join the Pro waitlist</h3>
+        <h3 data-i18n="proJoin">Get it for my school or club</h3>
         <div class="field">
           <label for="proEmail" class="visually-hidden" data-i18n="accEmailLabel">Email</label>
           <input type="email" id="proEmail" autocomplete="email" required data-i18n-placeholder="accEmailPlaceholder" placeholder="you@example.com">
         </div>
         <div class="actions">
-          <button type="submit" id="proJoinBtn" data-i18n="proJoin">Join the Pro waitlist</button>
+          <button type="submit" id="proJoinBtn" data-i18n="proJoin">Get it for my school or club</button>
         </div>
         <p id="proMsg" class="acc-msg" hidden></p>
       </form>
@@ -442,6 +453,7 @@
   <script src="script.js"></script>
   <script src="movement.js"></script>
   <script src="certify.js"></script>
+  <script src="home.js"></script>
   <script src="lock.js"></script>
 </body>
 </html>

@@ -1490,3 +1490,71 @@ body:not(.ai-on) .needs-ai { display: none !important; }
 .cert-career { padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-soft); background: rgba(255, 255, 255, 0.025); display: grid; gap: 6px; justify-items: start; }
 .cert-career .match-top { width: 100%; }
 .cert-career p { margin: 0 !important; }
+
+/* ---- Proof, not advice: bolder and more golden ---- */
+body { background-image: radial-gradient(1200px 600px at 50% -200px, rgba(233, 199, 123, 0.10), transparent 70%); background-repeat: no-repeat; }
+.hero-x .eyebrow { color: var(--accent-light); letter-spacing: 0.16em; font-weight: 800; }
+.hero-x .hero h1.hero-title { background: none; -webkit-text-fill-color: initial; color: var(--text); animation: none; font-size: clamp(46px, 8vw, 96px); line-height: 0.95; }
+.hero-title .hm-title-a { display: block; color: #ffffff; }
+.hero-title .hm-title-b { display: block; padding-bottom: 0.06em;
+  background-image: linear-gradient(100deg, #f6e1a6 0%, #e9c77b 30%, #fff4d6 50%, #c9974a 75%, #f6e1a6 100%);
+  background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+  animation: heroShine 6s ease-in-out infinite; filter: drop-shadow(0 6px 28px rgba(233, 199, 123, 0.35)); }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* Example credential in the hero. */
+.hm-cred-wrap { aspect-ratio: auto; padding: 18px 0; perspective: 900px; }
+.hm-cred { width: min(340px, 100%); padding: 22px 22px 18px; border-radius: 22px; position: relative; overflow: hidden;
+  background: linear-gradient(160deg, #1b1710 0%, #0d0c0a 55%, #18130b 100%);
+  border: 1px solid rgba(233, 199, 123, 0.55);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), 0 0 60px rgba(233, 199, 123, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transform: rotateY(-12deg) rotateX(6deg); animation: hmFloat 6s ease-in-out infinite; }
+.hm-cred::after { content: ""; position: absolute; inset: -40% -60%; background: linear-gradient(115deg, transparent 40%, rgba(255, 244, 214, 0.18) 50%, transparent 60%); animation: hmGloss 5s ease-in-out infinite; pointer-events: none; }
+@keyframes hmFloat { 0%, 100% { transform: rotateY(-12deg) rotateX(6deg) translateY(0); } 50% { transform: rotateY(-6deg) rotateX(3deg) translateY(-10px); } }
+@keyframes hmGloss { 0%, 100% { transform: translateX(-30%); } 50% { transform: translateX(30%); } }
+.hm-cred p { margin: 0; }
+.hm-cred-top { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.hm-cred-logo { width: 34px; height: 34px; }
+.hm-cred-issuer { font-size: 12px; font-weight: 800; letter-spacing: 0.18em; color: var(--accent-light); flex: 1; }
+.hm-cred-seal { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; color: #14110a; background: var(--gold); box-shadow: 0 0 22px rgba(233, 199, 123, 0.6); }
+.hm-cred-kicker { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.hm-cred-name { font-family: "Space Grotesk", Inter, sans-serif; font-size: 40px; font-weight: 700; line-height: 1.05; background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.hm-cred-level { font-size: 15px; font-weight: 700; color: var(--text); margin-top: 4px !important; }
+.hm-cred-skills { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
+.hm-cred-skills span { font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; color: #8fd19e; border: 1px solid rgba(143, 209, 158, 0.45); }
+.hm-cred-id { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border-top: 1px dashed rgba(233, 199, 123, 0.3); padding-top: 12px !important; }
+
+/* Comparison with an AI chatbot. */
+.hm-compare { margin-top: 26px; padding: 22px; border-radius: 22px; border: 1px solid rgba(233, 199, 123, 0.35); background: linear-gradient(180deg, rgba(233, 199, 123, 0.08), rgba(233, 199, 123, 0.015)); }
+.hm-compare h2 { margin: 0 0 14px; font-size: clamp(22px, 3.4vw, 32px); letter-spacing: -0.02em; }
+.hm-cmp-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.hm-cmp-table th { font-size: 13px; color: var(--muted); font-weight: 700; padding: 0 8px 10px; text-align: center; }
+.hm-cmp-table th.hm-us { color: var(--accent-light); }
+.hm-cmp-table td { padding: 11px 8px; border-top: 1px solid var(--border-soft); text-align: center; }
+.hm-cmp-table td:first-child { text-align: start; color: var(--text); }
+.hm-cmp-table td.hm-us { background: rgba(233, 199, 123, 0.07); }
+.hm-cmp-table .yes { color: var(--muted); font-weight: 900; font-size: 18px; }
+.hm-cmp-table .no { color: #6f737c; font-weight: 700; }
+.hm-cmp-table .part { color: var(--muted); font-size: 13px; }
+.hm-cmp-line { margin: 16px 0 0; font-family: "Space Grotesk", Inter, sans-serif; font-size: clamp(18px, 2.6vw, 24px); font-weight: 700; background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+
+/* Bolder section titles and gold step numbers. */
+.section-title { font-size: clamp(24px, 3.4vw, 32px); }
+.section-title .step-num { background: var(--gold); color: #14110a; border: 0; box-shadow: 0 0 18px rgba(233, 199, 123, 0.45); }
+
+/* Pricing: athletes free, schools and clubs pay. */
+.hm-plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 8px 0 10px; }
+.hm-plan { padding: 20px; border-radius: 18px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.03); display: grid; gap: 6px; align-content: start; }
+.hm-plan p { margin: 0; }
+.hm-plan-gold { border-color: rgba(233, 199, 123, 0.6); background: linear-gradient(180deg, rgba(233, 199, 123, 0.12), rgba(233, 199, 123, 0.02)); }
+.hm-plan-name { font-weight: 800; font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.hm-plan-price { font-family: "Space Grotesk", Inter, sans-serif; font-size: 34px; font-weight: 700; background: var(--gold); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.hm-plan-desc { color: #c9cbd1; font-size: 14px; line-height: 1.5; }
+@media (prefers-reduced-motion: reduce) {
+  .hm-cred, .hm-cred::after, .hero-title .hm-title-b { animation: none; }
+}
+@media (max-width: 820px) {
+  .hero-x .hero-visual.hm-cred-wrap { order: 0; width: 100%; margin: 0; padding: 6px 0 0; }
+  .hm-cred { width: min(360px, 100%); }
+}
+.hm-cmp-table td.hm-us.yes { color: var(--accent-light); }

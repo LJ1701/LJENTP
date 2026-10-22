@@ -162,7 +162,7 @@ registerLocale("de", {
     planEmpty: "Wähle aus deinen Treffern einen Zielberuf, um seine Lücken in eine Checkliste zu verwandeln.",
     planStartTop: "{role} als Ziel wählen", planProgress: "{done} von {total} Schritten erledigt", planAuto: "jetzt in deinem Sportpass",
     planEvidence: "Füge einen Erfolg hinzu, der eine deiner Fähigkeiten belegt.",
-    planPosting: "Vergleiche in Schritt 4 eine echte Anzeige für diesen Beruf.",
+    planPosting: "Lies eine echte Anzeige für diesen Beruf und notiere, was verlangt wird.",
     planApply: "Bewirb dich über die Joblinks auf eine Stelle als {role}.",
     planAskCoach: "Coach fragen", planChange: "Zielberuf ändern", planStarted: "Gestartet am {date}",
     strengthCount: "{n} von {total} Bereichen ausgefüllt", oppClosest: "Dein nächster Beruf: {role}",

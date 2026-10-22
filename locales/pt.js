@@ -162,7 +162,7 @@ registerLocale("pt", {
     planEmpty: "Escolha uma carreira alvo nas suas combinações para transformar as lacunas numa lista de tarefas.",
     planStartTop: "Tornar {role} meu alvo", planProgress: "{done} de {total} passos feitos", planAuto: "já no seu Passaporte",
     planEvidence: "Adicione uma conquista que prove uma das suas habilidades.",
-    planPosting: "Compare uma vaga real desta carreira no passo 4.",
+    planPosting: "Leia uma vaga real desta carreira e anote o que ela pede.",
     planApply: "Candidate-se a uma vaga de {role} pelos links de vagas.",
     planAskCoach: "Perguntar ao coach", planChange: "Trocar carreira alvo", planStarted: "Iniciado em {date}",
     strengthCount: "{n} de {total} seções preenchidas", oppClosest: "Sua carreira mais próxima: {role}",

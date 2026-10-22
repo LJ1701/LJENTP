@@ -162,7 +162,7 @@ registerLocale("it", {
     planEmpty: "Scegli una carriera obiettivo tra i tuoi abbinamenti per trasformare le lacune in una checklist.",
     planStartTop: "Scegli {role} come obiettivo", planProgress: "{done} passi su {total} completati", planAuto: "ora nel tuo Passaporto",
     planEvidence: "Aggiungi un risultato che dimostri una delle tue competenze.",
-    planPosting: "Confronta un'offerta reale per questo ruolo al passo 4.",
+    planPosting: "Leggi un'offerta reale per questo ruolo e annota cosa richiede.",
     planApply: "Candidati a un'offerta da {role} con i link di lavoro.",
     planAskCoach: "Chiedi al coach", planChange: "Cambia carriera obiettivo", planStarted: "Iniziato il {date}",
     strengthCount: "{n} sezioni su {total} compilate", oppClosest: "La tua carriera più vicina: {role}",

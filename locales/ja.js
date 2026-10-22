@@ -162,7 +162,7 @@ registerLocale("ja", {
     planEmpty: "マッチから目標の職種を選ぶと、不足がチェックリストになります。",
     planStartTop: "{role}を目標にする", planProgress: "{total}ステップ中{done}完了", planAuto: "パスポートに追加済み",
     planEvidence: "マッチしたスキルを証明する実績を1つ追加する。",
-    planPosting: "ステップ4でこの職種の実際の求人を1つ比べる。",
+    planPosting: "この職種の実際の求人を1つ読み、求められていることをメモする。",
     planApply: "求人リンクから{role}の募集に1つ応募する。",
     planAskCoach: "コーチに聞く", planChange: "目標の職種を変える", planStarted: "{date}に開始",
     strengthCount: "{total}項目中{n}項目入力済み", oppClosest: "一番近いキャリア：{role}",

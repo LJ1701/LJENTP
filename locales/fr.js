@@ -163,7 +163,7 @@ registerLocale("fr", {
     planEmpty: "Choisis un métier cible parmi tes correspondances pour transformer ses manques en liste à cocher.",
     planStartTop: "Faire de {role} ma cible", planProgress: "{done} étapes sur {total} faites", planAuto: "désormais dans ton Passeport",
     planEvidence: "Ajoute une réalisation qui prouve l'une de tes compétences.",
-    planPosting: "Compare une vraie offre pour ce métier à l'étape 4.",
+    planPosting: "Lis une vraie offre pour ce métier et note ce qu'elle demande.",
     planApply: "Postule à une offre de {role} avec les liens d'emploi.",
     planAskCoach: "Demander au coach", planChange: "Changer de métier cible", planStarted: "Commencé le {date}",
     strengthCount: "{n} sections remplies sur {total}", oppClosest: "Ton métier le plus proche : {role}",
