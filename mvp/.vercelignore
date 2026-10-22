@@ -1,0 +1,4 @@
+# The MVP project builds from mvp/. Keep secrets and local build output out of uploads.
+.env*
+.next/
+node_modules/
