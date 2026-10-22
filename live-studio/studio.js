@@ -1163,13 +1163,15 @@ function lsRecord(m, opts) {
     const share = (file) => {
       if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file] }).catch(() => {});
     };
+    // Previews are free; saving or sharing uses one of today's posts.
     const imgLink = el("a", "secondary ls-dl", t("lsSave"));
     imgLink.href = img.src;
     imgLink.download = `${name}.png`;
+    imgLink.addEventListener("click", lsUsePost);
     actions.append(imgLink);
     if (!lsVideoType()) {
       wrap.append(el("p", "ls-note", t("lsNoVideo")));
-      if (navigator.canShare) actions.append(btn(t("lsShare"), "secondary", () => canvas.toBlob((b) => share(new File([b], `${name}.png`, { type: "image/png" })))));
+      if (navigator.canShare) actions.append(btn(t("lsShare"), "secondary", () => lsUsePost() && canvas.toBlob((b) => share(new File([b], `${name}.png`, { type: "image/png" })))));
       return { wrap, actions };
     }
     const badge = el("span", "ls-making", t("lsMakingVideo"));
@@ -1189,8 +1191,9 @@ function lsRecord(m, opts) {
       const vLink = el("a", "btn-gold ls-dl", t("lsSaveVideo"));
       vLink.href = url;
       vLink.download = file.name;
+      vLink.addEventListener("click", lsUsePost);
       actions.prepend(vLink);
-      if (navigator.canShare && navigator.canShare({ files: [file] })) actions.insertBefore(btn(t("lsShareVideo"), "secondary", () => share(file)), vLink.nextSibling);
+      if (navigator.canShare && navigator.canShare({ files: [file] })) actions.insertBefore(btn(t("lsShareVideo"), "secondary", () => lsUsePost() && share(file)), vLink.nextSibling);
     }).catch(() => {
       badge.textContent = t("lsNoVideo");
     });
@@ -1224,6 +1227,7 @@ function lsRecord(m, opts) {
   function renderDrop() {
     drop.innerHTML = "";
     if (!shown) return;
+    drop.append(lsMeter());
     if (shown === "ft") return renderRecap();
     const mo = match.moments.find((x) => x.id === shown);
     if (!mo) return;
