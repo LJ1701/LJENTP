@@ -7,7 +7,7 @@ Sports career discovery with proof: a Sports Profile, career matches, a developm
 | Folder | What | Live URL | How it deploys |
 |---|---|---|---|
 | repo root | Current live LJSportMind (plain HTML/CSS/JS + `api/` functions) | https://ljentp.vercel.app | Vercel, from GitHub `main` |
-| `mvp/` | Walking-skeleton MVP rebuild: sign in → profile → match → certification → verify link | https://ljsportmind-mvp.vercel.app | `vercel --prod` from `mvp/` |
+| `mvp/` | Walking-skeleton MVP rebuild: sign in → profile → match → plan | https://ljsportmind-mvp.vercel.app | Vercel, from GitHub `main` (project `ljsportmind-mvp`, root directory `mvp/`, own `mvp/.vercelignore`) |
 | `live-studio/` | LJ LIVE, a separate app (live scores → posts) | https://lj-live.vercel.app | `vercel --prod` from `live-studio/` (not Git-connected) |
 
 ## Stack
