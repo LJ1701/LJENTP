@@ -3,7 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, ROLES, CAREER_PATHS, topMatches, label, jobLinks } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
 import { gameDayWeather } from "@/lib/weather";
-import { saveProfile, setTarget, toggleStep } from "./actions";
+import { saveProfile, setTarget, toggleStep, setPublic } from "./actions";
+import ResumeBullets from "./resume-bullets";
 
 export const dynamic = "force-dynamic";
 
@@ -89,6 +90,8 @@ export default async function ProfilePage({ searchParams }) {
         </section>
       )}
 
+      {profile && <ResumeBullets />}
+
       <h2>My career matches</h2>
       {!profile && <p>Save your profile to see matches.</p>}
       {profile && !matches.length && <p>Tick a few skills or interests to see matches.</p>}
@@ -114,6 +117,22 @@ export default async function ProfilePage({ searchParams }) {
           </form>
         </div>
       ))}
+
+      <h2 id="proof">Public proof link</h2>
+      {!profile ? (
+        <p>Save your profile first.</p>
+      ) : p.is_public && p.public_code ? (
+        <>
+          <p className="ok">On. Anyone with this link can see your profile, evidence and plan progress (not your email):</p>
+          <p><a href={`/p/${p.public_code}`}>{`https://ljsportmind-mvp.vercel.app/p/${p.public_code}`}</a></p>
+          <form action={setPublic}><input type="hidden" name="on" value="0" /><button type="submit">Turn the link off</button></form>
+        </>
+      ) : (
+        <>
+          <p>Off. Turn it on to get a link you can paste into a job application. You can turn it off any time.</p>
+          <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">Turn on my public proof link</button></form>
+        </>
+      )}
 
       <h2 id="plan">My plan</h2>
       {!plan ? (
