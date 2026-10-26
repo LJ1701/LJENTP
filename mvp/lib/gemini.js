@@ -35,7 +35,9 @@ export async function honestBullets(achievements) {
     const res = await ai.models.generateContent({
       model: MODEL,
       contents: `Achievements:\n${text.slice(0, 4000)}`,
-      config: { systemInstruction: INSTRUCTIONS, temperature: 0.3, maxOutputTokens: 400, abortSignal: AbortSignal.timeout(TIMEOUT_MS) }
+      // Minimal thinking: tested at ~1.5 s with complete answers. Default thinking took 35 s, and its
+      // thinking also used up a small output limit, cutting answers off mid-sentence.
+      config: { systemInstruction: INSTRUCTIONS, temperature: 0.3, maxOutputTokens: 1500, thinkingConfig: { thinkingLevel: "minimal" }, abortSignal: AbortSignal.timeout(TIMEOUT_MS) }
     });
     const lines = String(res.text || "")
       .split("\n")
