@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, buildPlanSteps } from "@/lib/careers";
+import { effectiveProfile } from "@/lib/detect";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -38,8 +39,9 @@ export async function setTarget(formData) {
   const { supabase, user } = await currentUser();
   const idx = Number(formData.get("role_idx"));
   if (!Number.isInteger(idx) || idx < 0 || idx > 7) return;
-  const { data: profile } = await supabase.from("sports_profiles").select("skills").eq("user_id", user.id).maybeSingle();
-  await supabase.from("plans").upsert({ user_id: user.id, role_idx: idx, steps: buildPlanSteps(idx, profile), updated_at: new Date().toISOString() });
+  const { data: profile } = await supabase.from("sports_profiles").select("skills, interests, achievements").eq("user_id", user.id).maybeSingle();
+  // Skills found in achievements count as "have", so the plan doesn't ask the user to build them again.
+  await supabase.from("plans").upsert({ user_id: user.id, role_idx: idx, steps: buildPlanSteps(idx, effectiveProfile(profile)), updated_at: new Date().toISOString() });
   revalidatePath("/profile");
   redirect("/profile#plan");
 }
