@@ -41,6 +41,20 @@ export const CAREER_PATHS = [
 
 export const label = (tag) => SKILLS[tag] || INTERESTS[tag] || tag;
 
+// Job-search links for a path, same searches as the live site (Indeed, LinkedIn) plus the two sports boards.
+const JOB_QUERIES = ["sports content creator", "sports video analyst", "sports journalist", "youth sports coach", "sports scout analyst", "sports marketing sponsorship", "sports event coordinator", "sports operations coordinator"];
+
+export function jobLinks(idx, location) {
+  const q = encodeURIComponent(JOB_QUERIES[idx]);
+  const l = encodeURIComponent(location || "");
+  return [
+    ["Indeed", `https://www.indeed.com/jobs?q=${q}${l ? `&l=${l}` : ""}`],
+    ["LinkedIn", `https://www.linkedin.com/jobs/search/?keywords=${q}${l ? `&location=${l}` : ""}`],
+    ["TeamWork Online", "https://www.teamworkonline.com/"],
+    ["WorkInSports", "https://www.workinsports.com/"]
+  ];
+}
+
 // Top 3 paths by how much of each role's typical skill set the profile covers.
 export function topMatches(profile) {
   const have = new Set([...(profile?.skills || []), ...(profile?.interests || [])]);

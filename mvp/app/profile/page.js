@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { SKILLS, INTERESTS, SPORTS, ROLES, CAREER_PATHS, topMatches, label } from "@/lib/careers";
+import { SKILLS, INTERESTS, SPORTS, ROLES, CAREER_PATHS, topMatches, label, jobLinks } from "@/lib/careers";
+import { effectiveProfile } from "@/lib/detect";
 import { gameDayWeather } from "@/lib/weather";
 import { saveProfile, setTarget, toggleStep } from "./actions";
 
@@ -17,7 +18,9 @@ export default async function ProfilePage({ searchParams }) {
     supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle()
   ]);
   const p = profile || {};
-  const matches = profile ? topMatches(profile) : [];
+  // Matches use ticked skills plus those found in the achievements text.
+  const eff = effectiveProfile(profile);
+  const matches = profile ? topMatches(eff) : [];
   const weather = await gameDayWeather(p.location);
   const done = plan ? plan.steps.filter((s) => s.done).length : 0;
 
@@ -76,6 +79,16 @@ export default async function ProfilePage({ searchParams }) {
         <button type="submit">Save my profile</button>
       </form>
 
+      {eff.auto.size > 0 && (
+        <section aria-label="Found in your achievements">
+          <h2>Found in your achievements</h2>
+          <p>These count toward your matches even though you didn&apos;t tick them:</p>
+          <ul>
+            {[...eff.auto].map((t) => <li key={t}><strong>{label(t)}</strong> · from &ldquo;{eff.evidence[t]}&rdquo;</li>)}
+          </ul>
+        </section>
+      )}
+
       <h2>My career matches</h2>
       {!profile && <p>Save your profile to see matches.</p>}
       {profile && !matches.length && <p>Tick a few skills or interests to see matches.</p>}
@@ -83,7 +96,18 @@ export default async function ProfilePage({ searchParams }) {
         <div key={m.idx} style={{ border: "1px solid #ccc", padding: 12, marginTop: 12 }}>
           <strong>{m.name}</strong> · {m.strength}
           <p>You have: {m.matched.map(label).join(", ")}</p>
+          {m.matched.some((t) => eff.evidence[t]) && (
+            <ul>
+              {m.matched.filter((t) => eff.evidence[t]).map((t) => <li key={t}><small>{label(t)}: &ldquo;{eff.evidence[t]}&rdquo;</small></li>)}
+            </ul>
+          )}
           <p>Missing: {m.gaps.length ? m.gaps.map(label).join(", ") : "nothing from the core skills"}</p>
+          <p>
+            Find openings:{" "}
+            {jobLinks(m.idx, p.location).map(([name, url], i) => (
+              <span key={name}>{i > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{name}</a></span>
+            ))}
+          </p>
           <form action={setTarget}>
             <input type="hidden" name="role_idx" value={m.idx} />
             <button type="submit" disabled={plan?.role_idx === m.idx}>{plan?.role_idx === m.idx ? "My target role" : "Make this my target role"}</button>
