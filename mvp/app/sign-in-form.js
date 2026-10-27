@@ -38,7 +38,7 @@ export default function SignInForm() {
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="card auth-card">
       <h2>{mode === "signup" ? "Create account" : "Sign in"}</h2>
       <label htmlFor="email">Email</label>
       <input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -57,7 +57,7 @@ export default function SignInForm() {
       {error && <p className="error">{error}</p>}
       <p>
         {mode === "signup" ? "Already have an account? " : "New here? "}
-        <button type="button" onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setMessage(""); setError(""); }}>
+        <button type="button" className="link-button" onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setMessage(""); setError(""); }}>
           {mode === "signup" ? "Sign in instead" : "Create an account"}
         </button>
       </p>
