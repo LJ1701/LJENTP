@@ -8,3 +8,16 @@ button { margin-top: 12px; padding: 8px 14px; cursor: pointer; }
 .ok { color: #0a7a2f; }
 fieldset { margin-top: 12px; }
 fieldset label { display: inline-block; margin: 4px 12px 4px 0; }
+.coach { border: 2px solid #c9a227; border-radius: 8px; padding: 12px 16px; margin-top: 24px; }
+.coach-modes button[aria-pressed="true"] { background: #c9a227; color: #111; border: 1px solid #8a6d00; }
+.coach-log { max-height: 480px; overflow-y: auto; }
+.msg { padding: 8px 12px; border-radius: 8px; margin: 8px 0; }
+.msg-user { background: #eef2f7; margin-left: 15%; }
+.msg-coach { background: #fbf6e6; margin-right: 5%; }
+.msg-coach p { margin: 6px 0; }
+.proof { border-left: 3px solid #0a7a2f; padding-left: 8px; }
+.proof ul { margin: 4px 0; padding-left: 18px; }
+.coach-action { border-top: 1px dashed #c9a227; padding-top: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { margin-top: 6px; padding: 4px 10px; border-radius: 999px; border: 1px solid #c9a227; background: #fff; }
+.warn { color: #8a5a00; }

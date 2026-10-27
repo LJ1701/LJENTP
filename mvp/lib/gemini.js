@@ -54,3 +54,92 @@ export async function honestBullets(achievements) {
     return { error: FALLBACK.error };
   }
 }
+
+// ---------- Career Coach chat ----------
+// Unlike a general chatbot, the coach is given the user's saved profile, matches and plan (read on the
+// server, never from the browser), must quote evidence from their own achievements, and can suggest one
+// of the app's career paths, which the page turns into a real "Make this my target role" button.
+const COACH_RULES = `You are the LJSportMind Career Coach for one person looking for a career in the sports industry.
+You are given their saved Sports Profile, their top career matches and their plan. Use them in every answer.
+Rules:
+- Only talk about sports careers, their profile, matches, plan, applications and interviews. Politely decline anything else in one sentence.
+- Never invent facts: no salaries, no specific job openings, no statistics, no names of employers, no achievements they did not write. If you do not know, say so and tell them to use the "Find openings" links.
+- Only use numbers that appear in their profile or plan.
+- When you refer to their experience, copy the exact achievement line(s) into "evidence" (word for word, from the ACHIEVEMENTS list only).
+- Keep "reply" under 120 words, warm and direct, plain text, no markdown.
+- "next_step" is one concrete action they can do this week.
+- "suggest_role" is the number of ONE career path from the CAREER PATHS list if recommending a path fits the question, otherwise -1.
+- "follow_ups" are 3 short questions (under 10 words) they might ask you next, written in their voice.`;
+
+const INTERVIEW_RULES = `
+INTERVIEW PRACTICE MODE: act as a hiring manager for their target role.
+- If the last message is not an answer yet, ask ONE realistic interview question for that role in "reply".
+- If they just answered, give short honest feedback in "reply": one thing that worked, one thing to fix, and which of their achievement lines would make the answer stronger (put those in "evidence"). Then ask the next question.
+- Coach them to use the STAR method (situation, task, action, result) without inventing results for them.`;
+
+const COACH_SCHEMA = {
+  type: "object",
+  properties: {
+    reply: { type: "string" },
+    evidence: { type: "array", items: { type: "string" } },
+    next_step: { type: "string" },
+    suggest_role: { type: "integer" },
+    follow_ups: { type: "array", items: { type: "string" } }
+  },
+  required: ["reply", "evidence", "next_step", "suggest_role", "follow_ups"]
+};
+
+const COACH_FALLBACK = { ...FALLBACK, error: "The coach isn't available right now. Try again in a minute; your profile and matches still work." };
+
+// context: { profileText, achievements (array of lines), contextText (everything the coach may cite) }
+export async function coachReply(context, history, mode) {
+  if (!process.env.GEMINI_API_KEY) return { error: FALLBACK.noKey };
+  try {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const res = await ai.models.generateContent({
+      model: MODEL,
+      contents: history.map((m) => ({ role: m.role === "coach" ? "model" : "user", parts: [{ text: m.text }] })),
+      config: {
+        systemInstruction: COACH_RULES + (mode === "interview" ? INTERVIEW_RULES : "") + "\n\n" + context.profileText,
+        temperature: 0.5,
+        maxOutputTokens: 2000,
+        thinkingConfig: { thinkingLevel: "minimal" },
+        responseMimeType: "application/json",
+        responseJsonSchema: COACH_SCHEMA,
+        abortSignal: AbortSignal.timeout(TIMEOUT_MS)
+      }
+    });
+    const out = JSON.parse(String(res.text || "{}"));
+    const reply = String(out.reply || "").trim();
+    if (!reply) return { error: COACH_FALLBACK.error };
+
+    // Proof check: evidence must be one of the user's own achievement lines (case and spacing ignored).
+    const norm = (s) => String(s).toLowerCase().replace(/\s+/g, " ").trim();
+    const lines = new Map(context.achievements.map((l) => [norm(l), l]));
+    const quoted = (Array.isArray(out.evidence) ? out.evidence : []).map(norm);
+    const evidence = [...new Set(quoted.filter((q) => lines.has(q)).map((q) => lines.get(q)))].slice(0, 3);
+    const droppedEvidence = quoted.filter((q) => !lines.has(q)).length;
+
+    // Number guard: numbers in the answer that appear nowhere in the profile, plan or the user's messages.
+    const source = (context.contextText + " " + history.filter((m) => m.role === "user").map((m) => m.text).join(" ")).replace(/,/g, "");
+    const unverified = [...new Set(((reply + " " + (out.next_step || "")).replace(/,/g, "").match(/\d+(\.\d+)?/g) || []))].filter((n) => !source.includes(n));
+
+    // No role button during interview practice: the target role is already chosen.
+    const role = mode !== "interview" && Number.isInteger(out.suggest_role) && out.suggest_role >= 0 && out.suggest_role <= 7 ? out.suggest_role : -1;
+    return {
+      reply,
+      evidence,
+      droppedEvidence,
+      unverified,
+      nextStep: String(out.next_step || "").trim().slice(0, 300),
+      suggestRole: role,
+      followUps: (Array.isArray(out.follow_ups) ? out.follow_ups : []).map((f) => String(f).trim().slice(0, 80)).filter(Boolean).slice(0, 3)
+    };
+  } catch (err) {
+    const msg = String((err && (err.status || err.message)) || "");
+    if (/429|quota|exhaust|rate/i.test(msg)) return { error: COACH_FALLBACK.limit };
+    if (/abort|timeout/i.test(msg) || (err && err.name === "AbortError")) return { error: COACH_FALLBACK.slow };
+    console.error("Coach call failed:", msg.slice(0, 200));
+    return { error: COACH_FALLBACK.error };
+  }
+}

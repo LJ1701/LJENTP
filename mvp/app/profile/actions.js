@@ -3,9 +3,9 @@ import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { SKILLS, INTERESTS, SPORTS, buildPlanSteps } from "@/lib/careers";
+import { SKILLS, INTERESTS, SPORTS, CAREER_PATHS, buildPlanSteps, topMatches, label } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
-import { honestBullets } from "@/lib/gemini";
+import { honestBullets, coachReply } from "@/lib/gemini";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -53,6 +53,48 @@ export async function writeBullets() {
   const { supabase, user } = await currentUser();
   const { data: profile } = await supabase.from("sports_profiles").select("achievements").eq("user_id", user.id).maybeSingle();
   return honestBullets(profile && profile.achievements);
+}
+
+// Career Coach: the profile, matches and plan are read here from the database (never sent by the browser),
+// so the coach only ever knows this user's own saved data. Limits keep one visitor from using up the free quota.
+const MAX_TURNS = 10;
+const MAX_CHARS = 500;
+
+export async function askCoach(history, mode) {
+  const { supabase, user } = await currentUser();
+  const turns = (Array.isArray(history) ? history : [])
+    .filter((m) => m && (m.role === "user" || m.role === "coach") && typeof m.text === "string")
+    .map((m) => ({ role: m.role, text: m.text.slice(0, m.role === "user" ? MAX_CHARS : 2000) }))
+    .slice(-16);
+  if (!turns.length || turns[turns.length - 1].role !== "user" || !turns[turns.length - 1].text.trim()) return { error: "Type a question first." };
+  if (turns.filter((m) => m.role === "user").length > MAX_TURNS) return { error: `That's the ${MAX_TURNS}-message limit for this visit. Refresh the page to start a new chat.` };
+
+  const [{ data: profile }, { data: plan }] = await Promise.all([
+    supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle(),
+    supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle()
+  ]);
+  if (!profile) return { error: "Save your profile first, so the coach has something to work with." };
+
+  const eff = effectiveProfile(profile);
+  const achievements = String(profile.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  const matches = topMatches(eff);
+  const target = plan ? CAREER_PATHS[plan.role_idx] : null;
+  if (mode === "interview" && !target) return { error: "Pick a target role under your matches first; interview practice uses it." };
+
+  const contextText = [
+    `NAME: ${profile.full_name || "(not given)"}`,
+    `ROLE: ${profile.role || "(not given)"} | SPORT: ${profile.sport || "(not given)"} | CITY: ${profile.location || "(not given)"}`,
+    `GOAL: ${profile.goal || "(not given)"}`,
+    `SKILLS: ${eff.skills.map(label).join(", ") || "(none)"}`,
+    `INTERESTS: ${eff.interests.map(label).join(", ") || "(none)"}`,
+    `ACHIEVEMENTS (quote these exactly as evidence):\n${achievements.map((l) => `- ${l}`).join("\n") || "(none yet)"}`,
+    `TOP MATCHES: ${matches.map((m) => `${m.name} (${m.strength}; has ${m.matched.map(label).join(", ")}; missing ${m.gaps.map(label).join(", ") || "nothing"})`).join(" | ") || "(none yet)"}`,
+    `TARGET ROLE: ${target ? target.name : "(not chosen)"}`,
+    `PLAN: ${plan ? plan.steps.map((s, i) => `${i + 1}. [${s.done ? "done" : "to do"}] ${s.text}`).join(" ") : "(no plan yet)"}`,
+    `CAREER PATHS (use the number for suggest_role): ${CAREER_PATHS.map((c, i) => `${i}=${c.name}`).join(", ")}`
+  ].join("\n");
+
+  return coachReply({ profileText: "USER DATA:\n" + contextText, achievements, contextText }, turns, mode === "interview" ? "interview" : "ask");
 }
 
 // Switches the public proof link on or off. The first time it goes on, a random 10-character code is made.
