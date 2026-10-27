@@ -53,7 +53,6 @@ export default async function Home({ searchParams }) {
         <div className="who-grid">
           {["Students", "Athletes, any sport", "Former players", "Coaches", "Creators", "Career changers", "Fans with a plan"].map((w) => <span key={w} className="pill">{w}</span>)}
         </div>
-        <p className="muted">Marketing, media, analytics, coaching, events, front office: eight career paths, matched from your real experience. Free for athletes and students.</p>
       </section>
 
       <div id="start" />
