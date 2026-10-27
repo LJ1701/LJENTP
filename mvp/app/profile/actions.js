@@ -5,7 +5,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, CAREER_PATHS, buildPlanSteps, topMatches, label } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
-import { honestBullets, coachReply } from "@/lib/gemini";
+import { honestBullets, coachReply, jobQuery } from "@/lib/gemini";
+import { searchJobs, searchLinks, jobsEnabled } from "@/lib/jobs";
+import { fitCheck } from "@/lib/fit";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -120,4 +122,45 @@ export async function toggleStep(formData) {
   await supabase.from("plans").update({ steps, updated_at: new Date().toISOString() }).eq("user_id", user.id);
   revalidatePath("/profile");
   redirect("/profile#plan");
+}
+
+// Live job search: Gemini reads the request, Adzuna supplies the real postings, and each posting gets a
+// fit check against the user's own saved evidence.
+export async function findJobs(text) {
+  const { supabase, user } = await currentUser();
+  const request = String(text || "").trim().slice(0, 200) || "sports jobs that fit me";
+  const { data: profile } = await supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle();
+  const matches = profile ? topMatches(effectiveProfile(profile)) : [];
+  const q = await jobQuery(request, { city: profile && profile.location, matches: matches.map((m) => m.name).join(", ") });
+  const links = searchLinks(q.keywords, q.location);
+  const res = await searchJobs(q);
+  if (res.error) return { query: q, links, error: res.error, enabled: jobsEnabled() };
+  const jobs = res.jobs.map((j) => ({ ...j, fit: fitCheck(`${j.title}. ${j.snippet}`, profile) }));
+  return { query: q, links, jobs, total: res.total };
+}
+
+// Fit check for a pasted job posting.
+export async function checkFit(text) {
+  const { supabase, user } = await currentUser();
+  const posting = String(text || "").trim().slice(0, 8000);
+  if (posting.length < 40) return { error: "Paste the full job posting (at least a few sentences)." };
+  const { data: profile } = await supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle();
+  if (!profile) return { error: "Save your Sports Passport first." };
+  const fit = fitCheck(posting, profile);
+  if (!fit.total) return { error: "No skills from our list were found in that posting. Try pasting the requirements section." };
+  return { fit };
+}
+
+// Adds "Build <skill>" to the saved plan, from a gap found by the fit check.
+export async function addGapToPlan(tag) {
+  const { supabase, user } = await currentUser();
+  if (!SKILLS[tag]) return { error: "Unknown skill." };
+  const { data: plan } = await supabase.from("plans").select("steps").eq("user_id", user.id).maybeSingle();
+  if (!plan) return { error: "Pick a target role first; then gaps can go into your plan." };
+  const text = `Build ${label(tag)}: get one project or experience that shows it.`;
+  if (plan.steps.some((s) => s.text === text)) return { ok: true, already: true };
+  const { error } = await supabase.from("plans").update({ steps: [...plan.steps.slice(0, -1), { text, done: false }, plan.steps[plan.steps.length - 1]], updated_at: new Date().toISOString() }).eq("user_id", user.id);
+  if (error) return { error: "Couldn't update your plan. Try again." };
+  revalidatePath("/profile");
+  return { ok: true };
 }

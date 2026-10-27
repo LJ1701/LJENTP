@@ -9,7 +9,7 @@ export default function ResumeBullets() {
 
   return (
     <section aria-label="AI résumé bullets">
-      <h2>Honest résumé bullets (AI)</h2>
+      <h3>Honest résumé bullets</h3>
       <p>Turns your saved achievements into 3 résumé bullets. It only uses what you wrote; any bullet with a number you didn&apos;t write is thrown away.</p>
       <button type="button" disabled={pending} onClick={() => start(async () => setResult(await writeBullets()))}>
         {pending ? "Writing…" : "Write my résumé bullets"}

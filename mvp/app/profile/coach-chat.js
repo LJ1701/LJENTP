@@ -40,7 +40,7 @@ export default function CoachChat({ paths, targetIdx, starters }) {
 
   return (
     <section aria-label="Career Coach" className="coach">
-      <h2 id="coach">Ask your Career Coach (AI)</h2>
+      <h3>Ask your Career Coach</h3>
       <p><small>It reads your saved profile, matches and plan. Every quote it uses is checked against your own achievements.</small></p>
 
       <div role="group" aria-label="Coach mode" className="coach-modes">
