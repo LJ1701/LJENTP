@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, ROLES, CAREER_PATHS, topMatches, label, jobLinks } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
-import { gameDayWeather } from "@/lib/weather";
 import { saveProfile, setTarget, toggleStep, setPublic } from "./actions";
 import ResumeBullets from "./resume-bullets";
 import CoachChat from "./coach-chat";
@@ -23,31 +22,18 @@ export default async function ProfilePage({ searchParams }) {
   // Matches use ticked skills plus those found in the achievements text.
   const eff = effectiveProfile(profile);
   const matches = profile ? topMatches(eff) : [];
-  const weather = await gameDayWeather(p.location);
   const done = plan ? plan.steps.filter((s) => s.done).length : 0;
 
   return (
     <>
-      <p><a href="/">← Home</a> · Signed in as {user.email}</p>
-      <h1>My Sports Profile</h1>
+      <p><small><a href="/">← Home</a> · Signed in as {user.email}</small></p>
+      <h1>My Sports <span className="gold-text">Profile</span></h1>
       {profileError && <p className="error">The database isn&apos;t set up yet (run the SQL in mvp/supabase/schema.sql).</p>}
       {saved && <p className="ok">Saved.</p>}
       {error && <p className="error">{error}</p>}
 
-      <section aria-label="Game-day weather">
-        <h2>Game-day weather</h2>
-        {weather.error ? (
-          <p>{weather.error}</p>
-        ) : (
-          <p>
-            {weather.place}: <strong>{weather.tempF}°F</strong> now
-            {weather.rainChance !== null && <> · {weather.rainChance}% chance of rain today</>}
-          </p>
-        )}
-        <p><small>Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo.com</a></small></p>
-      </section>
-
-      <form action={saveProfile}>
+      <form action={saveProfile} className="card">
+        <h2>Your details</h2>
         <label htmlFor="full_name">Name</label>
         <input id="full_name" name="full_name" type="text" defaultValue={p.full_name} />
         <label htmlFor="location">City</label>
@@ -93,12 +79,13 @@ export default async function ProfilePage({ searchParams }) {
 
       {profile && <ResumeBullets />}
 
+      <section aria-label="Career matches">
       <h2>My career matches</h2>
       {!profile && <p>Save your profile to see matches.</p>}
       {profile && !matches.length && <p>Tick a few skills or interests to see matches.</p>}
       {matches.map((m) => (
-        <div key={m.idx} style={{ border: "1px solid #ccc", padding: 12, marginTop: 12 }}>
-          <strong>{m.name}</strong> · {m.strength}
+        <div key={m.idx} className="match">
+          <div className="match-head"><strong>{m.name}</strong><span className="badge">{m.strength}</span></div>
           <p>You have: {m.matched.map(label).join(", ")}</p>
           {m.matched.some((t) => eff.evidence[t]) && (
             <ul>
@@ -118,6 +105,7 @@ export default async function ProfilePage({ searchParams }) {
           </form>
         </div>
       ))}
+      </section>
 
       {profile && (
         <CoachChat
@@ -131,14 +119,15 @@ export default async function ProfilePage({ searchParams }) {
         />
       )}
 
+      <section aria-label="Public proof link">
       <h2 id="proof">Public proof link</h2>
       {!profile ? (
         <p>Save your profile first.</p>
       ) : p.is_public && p.public_code ? (
         <>
           <p className="ok">On. Anyone with this link can see your profile, evidence and plan progress (not your email):</p>
-          <p><a href={`/p/${p.public_code}`}>{`https://ljsportmind-mvp.vercel.app/p/${p.public_code}`}</a></p>
-          <form action={setPublic}><input type="hidden" name="on" value="0" /><button type="submit">Turn the link off</button></form>
+          <p className="proof-url"><a href={`/p/${p.public_code}`}>{`https://ljsportmind-mvp.vercel.app/p/${p.public_code}`}</a></p>
+          <form action={setPublic}><input type="hidden" name="on" value="0" /><button type="submit" className="ghost">Turn the link off</button></form>
         </>
       ) : (
         <>
@@ -146,26 +135,30 @@ export default async function ProfilePage({ searchParams }) {
           <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">Turn on my public proof link</button></form>
         </>
       )}
+      </section>
 
+      <section aria-label="My plan">
       <h2 id="plan">My plan</h2>
       {!plan ? (
         <p>Pick a target role above to get a saved plan.</p>
       ) : (
         <>
           <p><strong>{CAREER_PATHS[plan.role_idx].name}</strong> · {done} of {plan.steps.length} steps done</p>
-          <ul style={{ listStyle: "none", padding: 0 }}>
+          <div className="progress" aria-hidden="true"><span style={{ width: `${Math.round((done / plan.steps.length) * 100)}%` }} /></div>
+          <ul className="plan-list">
             {plan.steps.map((s, i) => (
               <li key={i}>
-                <form action={toggleStep} style={{ display: "inline" }}>
+                <form action={toggleStep}>
                   <input type="hidden" name="step" value={i} />
-                  <button type="submit" aria-label={s.done ? "Mark not done" : "Mark done"}>{s.done ? "☑" : "☐"}</button>
-                </form>{" "}
-                <span style={{ textDecoration: s.done ? "line-through" : "none" }}>{s.text}</span>
+                  <button type="submit" className={s.done ? "check done" : "check"} aria-label={s.done ? "Mark not done" : "Mark done"}>{s.done ? "✓" : ""}</button>
+                </form>
+                <span className={s.done ? "done-text" : ""}>{s.text}</span>
               </li>
             ))}
           </ul>
         </>
       )}
+      </section>
     </>
   );
 }

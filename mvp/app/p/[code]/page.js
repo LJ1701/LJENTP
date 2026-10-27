@@ -21,11 +21,14 @@ export default async function PublicProfile({ params }) {
 
   return (
     <>
-      <p><small>LJSportMind · Sports Profile</small></p>
-      <h1>{p.full_name || "Sports Profile"}</h1>
-      <p>{[p.role, p.sport].filter(Boolean).join(" · ")}</p>
-      {p.goal && <p><strong>Goal:</strong> {p.goal}</p>}
+      <div className="proof-hero">
+        <span className="verified">LJSportMind Sports Profile</span>
+        <h1>{p.full_name || "Sports Profile"}</h1>
+        <p className="muted">{[p.role, p.sport].filter(Boolean).join(" · ")}</p>
+        {p.goal && <p><strong>Goal:</strong> {p.goal}</p>}
+      </div>
 
+      <section>
       <h2>Skills and interests</h2>
       <ul>
         {[...eff.skills, ...eff.interests].map((t) => (
@@ -35,22 +38,24 @@ export default async function PublicProfile({ params }) {
           </li>
         ))}
       </ul>
+      </section>
 
       {p.achievements && (
-        <>
+        <section>
           <h2>Achievements</h2>
           <ul>{p.achievements.split("\n").filter((l) => l.trim()).map((l, i) => <li key={i}>{l}</li>)}</ul>
-        </>
+        </section>
       )}
 
       {p.role_idx !== null && p.role_idx !== undefined && p.steps && (
-        <>
-          <h2>Working toward: {CAREER_PATHS[p.role_idx].name}</h2>
+        <section>
+          <h2>Working toward: <span className="gold-text">{CAREER_PATHS[p.role_idx].name}</span></h2>
           <p>{done} of {p.steps.length} plan steps done</p>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            {p.steps.map((s, i) => <li key={i}>{s.done ? "☑" : "☐"} {s.text}</li>)}
+          <div className="progress" aria-hidden="true"><span style={{ width: `${Math.round((done / p.steps.length) * 100)}%` }} /></div>
+          <ul className="plan-list">
+            {p.steps.map((s, i) => <li key={i}><span className={s.done ? "check done" : "check"} style={{ display: "inline-grid", placeItems: "center" }}>{s.done ? "✓" : ""}</span> <span className={s.done ? "done-text" : ""}>{s.text}</span></li>)}
           </ul>
-        </>
+        </section>
       )}
 
       <p><small>Self-reported by the profile owner; achievements are in their own words. Last updated {new Date(p.updated_at).toLocaleDateString("en-US")}.</small></p>
