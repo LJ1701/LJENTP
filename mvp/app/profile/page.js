@@ -5,6 +5,7 @@ import { effectiveProfile } from "@/lib/detect";
 import { gameDayWeather } from "@/lib/weather";
 import { saveProfile, setTarget, toggleStep, setPublic } from "./actions";
 import ResumeBullets from "./resume-bullets";
+import CoachChat from "./coach-chat";
 
 export const dynamic = "force-dynamic";
 
@@ -117,6 +118,18 @@ export default async function ProfilePage({ searchParams }) {
           </form>
         </div>
       ))}
+
+      {profile && (
+        <CoachChat
+          paths={CAREER_PATHS.map((c, i) => ({ name: c.name, links: jobLinks(i, p.location) }))}
+          targetIdx={plan ? plan.role_idx : null}
+          starters={[
+            matches[0] ? `Why is ${matches[0].name} my best match?` : "Which sports career fits me best?",
+            plan ? "What should I do first on my plan?" : "Which match should I pick as my target?",
+            "Which of my achievements would impress an employer most?"
+          ]}
+        />
+      )}
 
       <h2 id="proof">Public proof link</h2>
       {!profile ? (
