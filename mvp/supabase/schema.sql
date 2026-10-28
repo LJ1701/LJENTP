@@ -8,7 +8,7 @@ create table if not exists public.sports_profiles (
   full_name    text not null default '' check (char_length(full_name) <= 100),
   location     text not null default '' check (char_length(location) <= 100),
   role         text not null default '' check (char_length(role) <= 40),
-  sport        text not null default '' check (sport in ('', 'American football', 'Basketball', 'Baseball', 'Soccer', 'Hockey', 'Volleyball', 'Other')),
+  sport        text not null default '' check (sport in ('', 'American football', 'Basketball', 'Baseball', 'Soccer', 'Hockey', 'Volleyball', 'Several sports', 'Other')),
   skills       text[] not null default '{}',
   interests    text[] not null default '{}',
   goal         text not null default '' check (char_length(goal) <= 200),

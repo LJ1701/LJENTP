@@ -1,7 +1,9 @@
 import "server-only";
 
-// Live job postings from Adzuna (https://developer.adzuna.com). Every job, employer and link shown in the app
-// comes from this API; nothing is written by AI. Results are cached for an hour to stay inside the free limit.
+// Real job postings from two kinds of source; nothing is written by AI and every link is the employer's own posting.
+// 1. Adzuna (https://developer.adzuna.com): thousands of US job boards, filtered to sports.
+// 2. Public career boards of sports employers (Greenhouse, Lever and Ashby publish them as open JSON, no key needed).
+// Results are cached for an hour, so repeated searches don't hit the sources again.
 const SPORTS_WORDS = ["sport", "sports", "athletic", "athletics", "athlete", "team", "league", "stadium", "arena", "esports", "recreation", "fitness", "club", "coach", "coaching", "tournament", "ballpark", "nfl", "nba", "mlb", "nhl", "mls", "ncaa", "wnba", "nwsl", "fifa", "olympic"];
 const sportsRe = new RegExp(`\\b(${SPORTS_WORDS.join("|")})`, "i");
 
@@ -9,7 +11,7 @@ const stripTags = (s) => String(s || "").replace(/<[^>]*>/g, "").replace(/\s+/g,
 
 export const jobsEnabled = () => !!(process.env.ADZUNA_APP_ID && process.env.ADZUNA_APP_KEY);
 
-// Search-page links for when live jobs aren't switched on (or as "see more").
+// Search-page links for when job listings aren't switched on (or as "see more").
 export function searchLinks(keywords, location) {
   const q = encodeURIComponent(`sports ${keywords || ""}`.trim());
   const l = encodeURIComponent(location || "");
@@ -21,18 +23,84 @@ export function searchLinks(keywords, location) {
   ];
 }
 
-// keywords: the role words ("video analyst"), may be empty for "any sports job". location: "Dallas, TX" or "".
-export async function searchJobs({ keywords, location }) {
+// Sports employers whose public career boards were checked on 28 Oct 2026 (all returned open jobs).
+const EMPLOYERS = [
+  ["greenhouse", "hudl", "Hudl"], ["greenhouse", "fanduel", "FanDuel"], ["greenhouse", "prizepicks", "PrizePicks"],
+  ["greenhouse", "geniussports", "Genius Sports"], ["greenhouse", "seatgeek", "SeatGeek"], ["greenhouse", "fubotv", "Fubo"],
+  ["greenhouse", "barstoolsports", "Barstool Sports"], ["greenhouse", "zwift", "Zwift"], ["greenhouse", "peloton", "Peloton"],
+  ["greenhouse", "future", "Future (fitness coaching)"], ["lever", "theathletic", "The Athletic"], ["lever", "teamsnap", "TeamSnap"],
+  ["lever", "veo", "Veo"], ["ashby", "whoop", "WHOOP"], ["ashby", "sleeper", "Sleeper"], ["ashby", "strava", "Strava"],
+  ["ashby", "sorare", "Sorare"], ["ashby", "tonal", "Tonal"], ["ashby", "teamworks", "Teamworks"]
+];
+
+const BOARD_URL = {
+  greenhouse: (t) => `https://boards-api.greenhouse.io/v1/boards/${t}/jobs`,
+  lever: (t) => `https://api.lever.co/v0/postings/${t}?mode=json`,
+  ashby: (t) => `https://api.ashbyhq.com/posting-api/job-board/${t}`
+};
+
+// One employer's open jobs in the app's shape. A board that fails or times out just adds nothing.
+async function boardJobs([kind, token, name]) {
+  try {
+    const res = await fetch(BOARD_URL[kind](token), { next: { revalidate: 3600 }, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return [];
+    const data = await res.json();
+    if (kind === "greenhouse") return (data.jobs || []).map((j) => ({
+      id: `gh-${j.id}`, title: stripTags(j.title), company: name, location: stripTags(j.location && j.location.name),
+      created: j.first_published || j.updated_at, url: j.absolute_url, snippet: "", team: "", type: "", source: `${name} careers`
+    }));
+    if (kind === "lever") return (Array.isArray(data) ? data : []).map((j) => ({
+      id: `lv-${j.id}`, title: stripTags(j.text), company: name, location: stripTags(j.categories && j.categories.location),
+      created: new Date(Number(j.createdAt)).toISOString(), url: j.hostedUrl, snippet: stripTags(j.descriptionPlain || j.openingPlain).slice(0, 600),
+      team: stripTags(j.categories && j.categories.team), type: stripTags(j.categories && j.categories.commitment), source: `${name} careers`
+    }));
+    return (data.jobs || []).filter((j) => j.isListed !== false).map((j) => ({
+      id: `ab-${j.id}`, title: stripTags(j.title), company: name, location: stripTags(j.location) + (j.isRemote ? " (remote)" : ""),
+      created: j.publishedAt, url: j.jobUrl, snippet: stripTags(j.descriptionPlain).slice(0, 600),
+      team: stripTags(j.department || j.team), type: stripTags(j.employmentType), source: `${name} careers`
+    }));
+  } catch {
+    return [];
+  }
+}
+
+const INTERN = /\bintern(ship)?s?\b|\bco-?op\b|\bapprentice/i;
+const wantsIntern = (keywords) => /\bintern/i.test(keywords || "");
+// The search words without "intern(ship)", each shortened a little so "analyst" also matches "analytics".
+const terms = (keywords) => String(keywords || "").toLowerCase().replace(/\bintern(ship)?s?\b/g, " ").split(/[^a-z0-9&+]+/)
+  .filter((w) => w.length > 2 && !["and", "the", "for", "with", "remote"].includes(w))
+  .map((w) => (w.length > 6 ? w.slice(0, w.length - 2) : w));
+
+async function searchBoards({ keywords, location }) {
+  const all = (await Promise.all(EMPLOYERS.map(boardJobs))).flat();
+  const words = terms(keywords);
+  const intern = wantsIntern(keywords);
+  const place = String(location || "").split(",")[0].trim().toLowerCase();
+  return all.filter((j) => {
+    const text = `${j.title} ${j.team}`.toLowerCase();
+    if (intern && !INTERN.test(`${j.title} ${j.type}`)) return false;
+    if (words.length && !words.every((w) => text.includes(w))) return false;
+    if (place && !`${j.location}`.toLowerCase().includes(place) && !/remote/i.test(j.location)) return false;
+    return j.url;
+  });
+}
+
+// keywords: the role words ("video analyst", "marketing internship"); may be empty for "any sports job".
+// location: "Dallas, TX", or "" for anywhere (the default: results don't have to be near the user).
+async function searchAdzuna({ keywords, location }) {
   if (!jobsEnabled()) return { error: "off" };
   const params = new URLSearchParams({
     app_id: process.env.ADZUNA_APP_ID,
     app_key: process.env.ADZUNA_APP_KEY,
-    results_per_page: "30",
-    max_days_old: "45",
+    results_per_page: "50",
+    max_days_old: "60",
     sort_by: "date",
     "content-type": "application/json"
   });
-  if (keywords) params.set("what", keywords);
+  const words = String(keywords || "").replace(/\bintern(ship)?s?\b/gi, " ").replace(/\s+/g, " ").trim();
+  // Internships: Adzuna matches the word "internship", which nearly every intern posting contains.
+  const what = [words, wantsIntern(keywords) ? "internship" : ""].filter(Boolean).join(" ");
+  if (what) params.set("what", what);
   // At least one sports word must appear, so "marketing coordinator" means sports marketing, not any marketing.
   params.set("what_or", "sports athletic athletics athlete stadium arena league esports recreation");
   if (location) {
@@ -48,7 +116,6 @@ export async function searchJobs({ keywords, location }) {
     if (res.status === 429) return { error: "limit" };
     if (!res.ok) return { error: "down" };
     const data = await res.json();
-    const seen = new Set();
     const jobs = (data.results || [])
       .map((j) => ({
         id: String(j.id),
@@ -60,14 +127,25 @@ export async function searchJobs({ keywords, location }) {
         snippet: stripTags(j.description).slice(0, 600),
         salary: j.salary_min && j.salary_is_predicted !== "1"
           ? `$${Math.round(j.salary_min).toLocaleString("en-US")}${j.salary_max && j.salary_max !== j.salary_min ? `–$${Math.round(j.salary_max).toLocaleString("en-US")}` : ""} (as listed)`
-          : ""
+          : "",
+        source: "Adzuna"
       }))
-      // Keep postings that are really about sports, and drop exact duplicates (same title at the same employer).
-      .filter((j) => j.url && sportsRe.test(`${j.title} ${j.company} ${j.snippet}`))
-      .filter((j) => { const k = `${j.title}|${j.company}`.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; })
-      .slice(0, 12);
+      // Keep postings that are really about sports.
+      .filter((j) => j.url && sportsRe.test(`${j.title} ${j.company} ${j.snippet}`));
     return { jobs, total: data.count || 0 };
   } catch {
     return { error: "down" };
   }
+}
+
+// Both sources at once, newest first, duplicates (same title at the same employer) removed. Up to 40 postings.
+export async function searchJobs(query) {
+  const [adzuna, boards] = await Promise.all([searchAdzuna(query), searchBoards(query)]);
+  const seen = new Set();
+  const found = [...(adzuna.jobs || []), ...boards]
+    .filter((j) => { const k = `${j.title}|${j.company}`.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; })
+    .sort((a, b) => new Date(b.created || 0) - new Date(a.created || 0));
+  // An Adzuna problem only matters when the employer boards found nothing either.
+  if (!found.length && adzuna.error) return { error: adzuna.error };
+  return { jobs: found.slice(0, 40), total: found.length };
 }

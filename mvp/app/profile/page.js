@@ -4,7 +4,8 @@ import { SKILLS, INTERESTS, SPORTS, ROLES, CAREER_PATHS, topMatches, label, jobL
 import { effectiveProfile } from "@/lib/detect";
 import { saveProfile, setTarget, toggleStep, setPublic } from "./actions";
 import ResumeBullets from "./resume-bullets";
-import CoachChat from "./coach-chat";
+import Goldie, { GoldieButtons, GoldieBall } from "../goldie";
+import SaveAccount from "./save-account";
 import JobSearch from "./job-search";
 import CopyButton from "./copy-button";
 
@@ -29,6 +30,8 @@ export default async function ProfilePage({ searchParams }) {
   const done = plan ? plan.steps.filter((s) => s.done).length : 0;
   const proofUrl = p.public_code ? `https://ljsportmind-mvp.vercel.app/p/${p.public_code}` : "";
   const firstName = (p.full_name || "").split(" ")[0];
+  // Guest accounts: no email yet, link sent (new_email), or email confirmed but no password chosen yet.
+  const saveStage = user.is_anonymous ? (user.new_email ? "pending" : "guest") : user.user_metadata?.needs_password ? "password" : null;
 
   return (
     <>
@@ -36,9 +39,10 @@ export default async function ProfilePage({ searchParams }) {
         <p className="eyebrow">Your sports career workspace</p>
         <h1>{firstName ? <>Welcome back, <span className="gold-text">{firstName}</span></> : <>Build your <span className="gold-text">Sports Passport</span></>}</h1>
         <nav className="step-nav" aria-label="Sections">
-          <a href="#passport">1 Passport</a><a href="#matches">2 Matches</a><a href="#jobs">3 Live jobs</a><a href="#plan">4 Plan</a><a href="#coach">5 AI coach</a><a href="#proof">6 Proof link</a>
+          <a href="#passport">1 Passport</a><a href="#matches">2 Matches</a><a href="#jobs">3 Jobs &amp; internships</a><a href="#plan">4 Plan</a><a href="#coach">5 Goldie</a><a href="#proof">6 Proof link</a>
         </nav>
       </div>
+      {saveStage && <SaveAccount stage={saveStage} pendingEmail={user.new_email} />}
       {profileError && <p className="error">The database isn&apos;t set up yet (run the SQL in mvp/supabase/schema.sql).</p>}
       {saved && <p className="ok">Saved. Your matches below are updated.</p>}
       {error && <p className="error">{error}</p>}
@@ -123,14 +127,14 @@ export default async function ProfilePage({ searchParams }) {
         ))}
       </div>
 
-      <Step n="3" id="jobs">Live sports jobs</Step>
+      <Step n="3" id="jobs">Sports jobs &amp; internships</Step>
       <div className="card">
-        <p className="muted">Ask in your own words. AI turns it into a search, real listings come back, and each one shows how much of it you can already prove.</p>
+        <p className="muted">Ask in your own words. Real postings come back from Adzuna and the career pages of sports employers, from anywhere in the US and beyond, and each one shows how much of it you can already prove.</p>
         {profile ? (
           <JobSearch starters={[
+            "Sports internships",
             "Sports jobs near me",
             matches[0] ? `${matches[0].name} jobs` : "Entry-level sports jobs",
-            "Athletic department jobs",
             "Remote sports marketing jobs"
           ]} />
         ) : <p>Save your Passport first so results can be checked against your proof.</p>}
@@ -159,21 +163,15 @@ export default async function ProfilePage({ searchParams }) {
         )}
       </div>
 
-      {profile && (
-        <>
-          <Step n="5" id="coach">Your AI coach</Step>
-          <CoachChat
-            paths={CAREER_PATHS.map((c, i) => ({ name: c.name, links: jobLinks(i, p.location) }))}
-            targetIdx={plan ? plan.role_idx : null}
-            starters={[
-              matches[0] ? `Why is ${matches[0].name} my best match?` : "Which sports career fits me best?",
-              plan ? "What should I do first on my plan?" : "Which match should I pick as my target?",
-              "Which of my achievements would impress an employer most?"
-            ]}
-          />
-          <ResumeBullets />
-        </>
-      )}
+      <Step n="5" id="coach">Goldie, your AI coach</Step>
+      <div className="card goldie-intro">
+        <GoldieBall size={72} />
+        <div>
+          <p>Goldie knows your Passport, matches and plan. Ask anything, practise an interview, or say &ldquo;find me sports internships&rdquo; and she&apos;ll show real postings right in the chat. Every quote is checked against your own achievements.</p>
+          <GoldieButtons canInterview={!!plan} />
+        </div>
+      </div>
+      {profile && <ResumeBullets />}
 
       <Step n="6" id="proof">Your public proof link</Step>
       <div className="card">
@@ -195,6 +193,16 @@ export default async function ProfilePage({ searchParams }) {
           </>
         )}
       </div>
+      <Goldie coach={{
+        firstName,
+        paths: CAREER_PATHS.map((c, i) => ({ name: c.name, links: jobLinks(i, p.location) })),
+        targetIdx: plan ? plan.role_idx : null,
+        starters: [
+          !profile ? "How do I fill in my Passport?" : matches[0] ? `Why is ${matches[0].name} my best match?` : "Which sports career fits me best?",
+          "Find me sports internships",
+          plan ? "What should I do first on my plan?" : "Which match should I pick as my target?"
+        ]
+      }} />
     </>
   );
 }

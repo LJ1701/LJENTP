@@ -1,9 +1,9 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { findJobs, checkFit, addGapToPlan } from "./actions";
 
 const ERRORS = {
-  off: "Live job listings aren't switched on yet. These searches open real listings for the same request:",
+  off: "Job listings aren't switched on yet. These searches open real listings for the same request:",
   keys: "The job service rejected our keys, so live listings are paused. These searches open real listings:",
   limit: "The job service's free daily limit is used up. Try again tomorrow, or use these searches:",
   down: "The job service isn't answering right now. Try again in a minute, or use these searches:"
@@ -18,7 +18,7 @@ const ago = (iso) => {
 function FitRows({ fit }) {
   const [added, setAdded] = useState({});
   const [pending, start] = useTransition();
-  if (!fit.total) return <p><small>This listing&apos;s summary doesn&apos;t name skills we can check. Open it to read the full requirements.</small></p>;
+  if (!fit.total) return <p><small>This posting&apos;s summary doesn&apos;t name skills we can check. Open it to read the full requirements.</small></p>;
   return (
     <ul className="fit-list">
       {fit.rows.map((r) => (
@@ -43,10 +43,62 @@ function FitRows({ fit }) {
   );
 }
 
+// The postings for one search, each with a fit check. In Goldie's chat (compact) the first 5 show, then "Show more".
+export function JobResults({ result, compact = false }) {
+  const [open, setOpen] = useState(null);
+  const [shown, setShown] = useState(compact ? 5 : 15);
+  const links = (list) => list.map(([site, url], i) => <span key={site}>{i > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{site}</a></span>);
+  return (
+    <div className={compact ? "job-results compact" : "job-results"} aria-live="polite">
+      <p className="job-summary"><span className="live-dot" aria-hidden="true" /> {result.query.summary}{result.jobs && result.jobs.length ? ` · ${result.total} found` : ""}</p>
+      {result.error ? (
+        <>
+          <p className="warn">{ERRORS[result.error] || ERRORS.down}</p>
+          <p>{links(result.links)}</p>
+        </>
+      ) : !result.jobs.length ? (
+        <>
+          <p>No sports postings matched that right now. Try fewer words, or search these sites:</p>
+          <p>{links(result.links)}</p>
+        </>
+      ) : (
+        <>
+          {result.jobs.slice(0, shown).map((j) => (
+            <article key={j.id} className="job">
+              <div className="job-head">
+                <div>
+                  <h3>{j.title}</h3>
+                  <p className="muted">{j.company}{j.location && ` · ${j.location}`}{j.created && ` · posted ${ago(j.created)}`}</p>
+                  {j.salary && <p><small>{j.salary}</small></p>}
+                </div>
+                {j.fit.total > 0 && <span className={`badge ${j.fit.proven === j.fit.total ? "badge-full" : ""}`}>Proof {j.fit.proven}/{j.fit.total}</span>}
+              </div>
+              <div className="job-actions">
+                <a className="cta small" href={j.url} target="_blank" rel="noopener noreferrer">Apply ↗</a>
+                <button type="button" className="ghost" aria-expanded={open === j.id} onClick={() => setOpen(open === j.id ? null : j.id)}>{open === j.id ? "Hide fit check" : "Fit check"}</button>
+                <small className="job-source">via {j.source}</small>
+              </div>
+              {open === j.id && (
+                <div className="fit-box">
+                  {j.snippet && <p><small>From the listing: &ldquo;{j.snippet}&rdquo;</small></p>}
+                  <FitRows fit={j.fit} />
+                </div>
+              )}
+            </article>
+          ))}
+          {result.jobs.length > shown && (
+            <button type="button" className="ghost" onClick={() => setShown(shown + (compact ? 10 : 15))}>Show {Math.min(compact ? 10 : 15, result.jobs.length - shown)} more</button>
+          )}
+          <p><small>Real postings from <a href="https://www.adzuna.com" target="_blank" rel="noopener noreferrer">Adzuna</a> and the career pages of sports employers; each link opens the original. More: {links(result.links.slice(2))}</small></p>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function JobSearch({ starters }) {
   const [text, setText] = useState("");
   const [result, setResult] = useState(null);
-  const [open, setOpen] = useState(null);
   const [posting, setPosting] = useState("");
   const [pasted, setPasted] = useState(null);
   const [pending, start] = useTransition();
@@ -54,65 +106,30 @@ export default function JobSearch({ starters }) {
 
   const search = (q) => {
     setText(q);
-    setOpen(null);
     start(async () => setResult(await findJobs(q)));
   };
+
+  // Goldie can run a search for the user ("find me NBA jobs").
+  useEffect(() => {
+    const onSearch = (e) => search(String((e.detail && e.detail.query) || "").slice(0, 200));
+    window.addEventListener("goldie:search", onSearch);
+    return () => window.removeEventListener("goldie:search", onSearch);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
       <form className="job-form" onSubmit={(e) => { e.preventDefault(); search(text); }}>
         <label htmlFor="job-q" className="visually-hidden">What jobs are you looking for?</label>
-        <input id="job-q" type="text" maxLength={200} value={text} onChange={(e) => setText(e.target.value)} placeholder='Try "sports jobs" or "ticket sales jobs in Chicago"' />
+        <input id="job-q" type="text" maxLength={200} value={text} onChange={(e) => setText(e.target.value)} placeholder='Try "sports internships" or "ticket sales jobs in Chicago"' />
         <button type="submit" disabled={pending}>{pending ? "Searching…" : "Search"}</button>
       </form>
       <div className="chips">
         {starters.map((s) => <button type="button" key={s} disabled={pending} onClick={() => search(s)}>{s}</button>)}
       </div>
 
-      {pending && <div className="job-skeleton" aria-label="Searching live jobs"><span /><span /><span /></div>}
+      {pending && <div className="job-skeleton" aria-label="Searching jobs"><span /><span /><span /></div>}
 
-      {result && !pending && (
-        <div className="job-results" aria-live="polite">
-          <p className="job-summary"><span className="live-dot" aria-hidden="true" /> {result.query.summary}</p>
-          {result.error ? (
-            <>
-              <p className="warn">{ERRORS[result.error] || ERRORS.down}</p>
-              <p>{result.links.map(([site, url], i) => <span key={site}>{i > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{site}</a></span>)}</p>
-            </>
-          ) : !result.jobs.length ? (
-            <>
-              <p>No sports listings matched that in the last 45 days. Try fewer words or a bigger city, or search these sites:</p>
-              <p>{result.links.map(([site, url], i) => <span key={site}>{i > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{site}</a></span>)}</p>
-            </>
-          ) : (
-            <>
-              {result.jobs.map((j) => (
-                <article key={j.id} className="job">
-                  <div className="job-head">
-                    <div>
-                      <h3>{j.title}</h3>
-                      <p className="muted">{j.company}{j.location && ` · ${j.location}`} · posted {ago(j.created)}</p>
-                      {j.salary && <p><small>{j.salary}</small></p>}
-                    </div>
-                    {j.fit.total > 0 && <span className={`badge ${j.fit.proven === j.fit.total ? "badge-full" : ""}`}>Proof {j.fit.proven}/{j.fit.total}</span>}
-                  </div>
-                  <div className="job-actions">
-                    <a className="cta small" href={j.url} target="_blank" rel="noopener noreferrer">Apply on the listing ↗</a>
-                    <button type="button" className="ghost" aria-expanded={open === j.id} onClick={() => setOpen(open === j.id ? null : j.id)}>{open === j.id ? "Hide fit check" : "Fit check"}</button>
-                  </div>
-                  {open === j.id && (
-                    <div className="fit-box">
-                      <p><small>From the listing: &ldquo;{j.snippet}&rdquo;</small></p>
-                      <FitRows fit={j.fit} />
-                    </div>
-                  )}
-                </article>
-              ))}
-              <p><small>{result.total > result.jobs.length ? `Showing ${result.jobs.length} sports listings of ${result.total.toLocaleString("en-US")} matches. ` : ""}Listings are real and link to the original posting. <a href="https://www.adzuna.com" target="_blank" rel="noopener noreferrer">Jobs by Adzuna</a>. More: {result.links.slice(2).map(([site, url], i) => <span key={site}>{i > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{site}</a></span>)}</small></p>
-            </>
-          )}
-        </div>
-      )}
+      {result && !pending && <JobResults result={result} />}
 
       <details className="paste-fit">
         <summary>Have a job posting already? Check your fit</summary>

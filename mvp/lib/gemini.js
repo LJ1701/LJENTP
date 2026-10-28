@@ -10,14 +10,15 @@ const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash";
 const LITE_MODEL = "gemini-3.5-flash-lite";
 const TIMEOUT_MS = 15000;
 
-const isLimit = (err) => /429|quota|exhaust|rate/i.test(String((err && (err.status || err.message)) || ""));
+// Worth trying the other model: daily limit used up (429) or Google's servers briefly overloaded (503).
+const tryOther = (err) => /429|503|quota|exhaust|rate|overload|unavailable/i.test(String((err && (err.status || err.message)) || ""));
 
 async function generate(ai, request, models = [MODEL, LITE_MODEL]) {
   for (let i = 0; i < models.length; i++) {
     try {
       return await ai.models.generateContent({ ...request, model: models[i] });
     } catch (err) {
-      if (i === models.length - 1 || !isLimit(err)) throw err;
+      if (i === models.length - 1 || !tryOther(err)) throw err;
     }
   }
 }
@@ -73,23 +74,40 @@ export async function honestBullets(achievements) {
 // Unlike a general chatbot, the coach is given the user's saved profile, matches and plan (read on the
 // server, never from the browser), must quote evidence from their own achievements, and can suggest one
 // of the app's career paths, which the page turns into a real "Make this my target role" button.
-const COACH_RULES = `You are the LJSportMind Career Coach for one person looking for a career in the sports industry.
+const COACH_RULES = `You are Goldie, the LJSportMind guide and career coach: a friendly gold ball with the LJSportMind logo.
+You help one person find a career in the sports industry (any sport, any background) and use the app.
+Personality: upbeat, warm, short sentences, a light sports touch. Never cheesy, never more than one sports pun.
 You are given their saved Sports Profile, their top career matches and their plan. Use them in every answer.
+HOW THE APP WORKS (use this to guide them):
+1 Passport: name, city, where they are now, skills, interests, goal, and achievements one per line (their proof). Saving updates everything.
+2 Matches: 8 sports career paths, with the skills they have and what is missing. "Make this my target role" creates a plan.
+3 Jobs & internships: type a request like "marketing internships"; real postings come back from anywhere, each with a Fit check that shows proof, ticked-only skills and gaps; gaps can be added to the plan.
+4 Plan: steps for the target role, ticked off as they go.
+5 Coach (you): questions, interview practice for the target role, honest résumé bullets.
+6 Proof link: a public page to paste into applications; it can be turned off.
+Guests can save their Passport with an email at the top of the page.
 Rules:
-- Only talk about sports careers, their profile, matches, plan, applications and interviews. Politely decline anything else in one sentence.
-- Never invent facts: no salaries, no specific job openings, no statistics, no names of employers, no achievements they did not write. If you do not know, say so and tell them to use the "Find openings" links.
+- Only talk about sports careers, their profile, matches, plan, applications, interviews and how to use this app. Politely decline anything else in one sentence.
+- Never invent facts: no salaries, no statistics, no achievements they did not write. Never write job postings or employer names yourself.
+- JOBS AND INTERNSHIPS: whenever they ask for jobs, internships, openings or where to apply, ALWAYS set action "search_jobs". The app then searches real postings (Adzuna plus the career boards of sports employers) and shows them directly under your reply. Never tell them to go search somewhere else, never say you can't show listings. In "reply" just introduce the results in one or two sentences without saying how many or which ones you found, because you cannot see them (e.g. "Here's what's open for sports marketing internships right now. Your social media work is a strong fit for this kind of role.").
 - Only use numbers that appear in their profile or plan.
 - When you refer to their experience, copy the exact achievement line(s) into "evidence" (word for word, from the ACHIEVEMENTS list only).
 - Keep "reply" under 120 words, warm and direct, plain text, no markdown.
 - "next_step" is one concrete action they can do this week.
 - "suggest_role" is the number of ONE career path from the CAREER PATHS list if recommending a path fits the question, otherwise -1.
-- "follow_ups" are 3 short questions (under 10 words) they might ask you next, written in their voice.`;
+- "follow_ups" are 3 short questions (under 10 words) they might ask you next, written in their voice.
+- "action" moves the page for them. Use it ONLY when they ask to see, go to, open or find something, otherwise "none":
+  go_passport, go_matches, go_jobs, go_plan, go_coach, go_proof (scroll to that step); search_jobs (see JOBS AND INTERNSHIPS); start_tour (they want a tour or don't know where to start).
+- For search_jobs fill: "job_keywords" = 0 to 4 words for the kind of role, plus "internship" if they want internships (e.g. "marketing internship", "video analyst", "NBA social media"); never the words sports, job or jobs; empty for any sports job. "job_location" = a place ONLY if they named one, their profile CITY only if they said near me / nearby / local, otherwise "" (anywhere). "action_query" = a short label like "Sports marketing internships, anywhere in the US".`;
 
 const INTERVIEW_RULES = `
 INTERVIEW PRACTICE MODE: act as a hiring manager for their target role.
 - If the last message is not an answer yet, ask ONE realistic interview question for that role in "reply".
 - If they just answered, give short honest feedback in "reply": one thing that worked, one thing to fix, and which of their achievement lines would make the answer stronger (put those in "evidence"). Then ask the next question.
 - Coach them to use the STAR method (situation, task, action, result) without inventing results for them.`;
+
+// Things Goldie can do on the page. The browser only acts on these names, so the AI can't trigger anything else.
+const ACTIONS = ["none", "go_passport", "go_matches", "go_jobs", "go_plan", "go_coach", "go_proof", "search_jobs", "start_tour"];
 
 const COACH_SCHEMA = {
   type: "object",
@@ -98,12 +116,21 @@ const COACH_SCHEMA = {
     evidence: { type: "array", items: { type: "string" } },
     next_step: { type: "string" },
     suggest_role: { type: "integer" },
-    follow_ups: { type: "array", items: { type: "string" } }
+    follow_ups: { type: "array", items: { type: "string" } },
+    action: { type: "string", enum: ACTIONS },
+    action_query: { type: "string" },
+    job_keywords: { type: "string" },
+    job_location: { type: "string" }
   },
-  required: ["reply", "evidence", "next_step", "suggest_role", "follow_ups"]
+  required: ["reply", "evidence", "next_step", "suggest_role", "follow_ups", "action"]
 };
 
-const COACH_FALLBACK = { ...FALLBACK, error: "The coach isn't available right now. Try again in a minute; your profile and matches still work." };
+const COACH_FALLBACK = {
+  ...FALLBACK,
+  limit: "Goldie has used up today's free AI answers. Try again tomorrow; your Passport, matches and jobs still work.",
+  slow: "Goldie's AI is busy right now. Try again in a few seconds.",
+  error: "Goldie isn't available right now. Try again in a minute; your profile and matches still work."
+};
 
 // context: { profileText, achievements (array of lines), contextText (everything the coach may cite) }
 export async function coachReply(context, history, mode) {
@@ -146,12 +173,17 @@ export async function coachReply(context, history, mode) {
       unverified,
       nextStep: String(out.next_step || "").trim().slice(0, 300),
       suggestRole: role,
-      followUps: (Array.isArray(out.follow_ups) ? out.follow_ups : []).map((f) => String(f).trim().slice(0, 80)).filter(Boolean).slice(0, 3)
+      followUps: (Array.isArray(out.follow_ups) ? out.follow_ups : []).map((f) => String(f).trim().slice(0, 80)).filter(Boolean).slice(0, 3),
+      // No page actions in interview practice: the user is answering questions, not navigating.
+      action: mode !== "interview" && ACTIONS.includes(out.action) ? out.action : "none",
+      actionQuery: String(out.action_query || "").trim().slice(0, 200),
+      jobKeywords: clip(out.job_keywords, 40).replace(/\b(sports?|jobs?)\b/gi, "").replace(/\s+/g, " ").trim(),
+      jobLocation: clip(out.job_location, 60)
     };
   } catch (err) {
     const msg = String((err && (err.status || err.message)) || "");
     if (/429|quota|exhaust|rate/i.test(msg)) return { error: COACH_FALLBACK.limit };
-    if (/abort|timeout/i.test(msg) || (err && err.name === "AbortError")) return { error: COACH_FALLBACK.slow };
+    if (/abort|timeout|503|overload|unavailable/i.test(msg) || (err && err.name === "AbortError")) return { error: COACH_FALLBACK.slow };
     console.error("Coach call failed:", msg.slice(0, 200));
     return { error: COACH_FALLBACK.error };
   }
@@ -165,8 +197,9 @@ Return "keywords": 0 to 4 words naming the kind of role (e.g. "video analyst", "
 Do NOT include the words "sports", "sport", "job" or "jobs" in keywords (a sports filter is added separately).
 Keep league, team or employer names they mention (e.g. "NBA social media", "Dallas Cowboys marketing").
 Leave keywords EMPTY if they just ask for sports jobs in general. Only use their top match when they ask for jobs that fit them, match them, or are "for me".
-Return "location": a US city and state if they named one; "" if they said anywhere, nationwide or remote; otherwise their profile city.
-Return "summary": one short sentence saying what you searched, e.g. "Video analyst jobs near Plano, TX".`;
+If they want internships, include "internship" in keywords (e.g. "marketing internship").
+Return "location": a place if they named one; their profile city ONLY if they said near me, nearby or local; otherwise "" (anywhere: results do not have to be near them).
+Return "summary": one short sentence saying what you searched, e.g. "Video analyst jobs anywhere in the US" or "Marketing internships near Plano, TX".`;
 
 const JOB_QUERY_SCHEMA = {
   type: "object",
@@ -179,19 +212,23 @@ const clip = (s, n) => String(s || "").replace(/\s+/g, " ").trim().slice(0, n);
 // Used when Gemini is off or fails: strip filler words and look for "in/near <place>".
 function plainJobQuery(text, profileCity) {
   const m = text.match(/\b(?:in|near|around)\s+([a-z .,'-]{2,40})$/i);
-  const location = m ? m[1].trim() : /\b(anywhere|nationwide|remote)\b/i.test(text) ? "" : profileCity || "";
+  const location = m ? m[1].trim() : NEAR.test(text) ? profileCity || "" : "";
   const keywords = (m ? text.slice(0, m.index) : text)
-    .replace(/\b(sports?|jobs?|careers?|openings?|positions?|find|show|me|any|for|a|an|the|in|near|remote|anywhere|nationwide)\b/gi, " ")
+    .replace(/\b(sports?|jobs?|careers?|openings?|positions?|find|show|me|any|for|a|an|the|in|near|nearby|local|remote|anywhere|nationwide)\b/gi, " ")
     .replace(/\s+/g, " ").trim().slice(0, 40);
-  return { keywords, location, summary: `${keywords || "Sports"} jobs${location ? ` near ${location}` : " across the US"}` };
+  return { keywords, location, summary: `${keywords || "Sports"} ${/intern/i.test(keywords) ? "" : "jobs "}${location ? `near ${location}` : "anywhere in the US"}` };
 }
 
 const GENERAL = /^\s*(any\s+|all\s+)?(sports?\s+)?(jobs?|careers?|openings?|positions?)(\s+(near me|nearby|around me))?\s*$/i;
+const NEAR = /\b(near me|nearby|around me|local)\b/i;
 
 export async function jobQuery(text, profile) {
   const request = clip(text, 200);
-  // "sports jobs" / "sports jobs near me" means every sports job near them; no AI call needed.
-  if (GENERAL.test(request)) return { keywords: "", location: profile.city || "", summary: `Sports jobs ${profile.city ? `near ${profile.city}` : "across the US"}` };
+  // "sports jobs" means every sports job anywhere; "sports jobs near me" adds their city. No AI call needed.
+  if (GENERAL.test(request)) {
+    const near = NEAR.test(request) && profile.city;
+    return { keywords: "", location: near ? profile.city : "", summary: `Sports jobs ${near ? `near ${profile.city}` : "anywhere in the US"}` };
+  }
   if (!process.env.GEMINI_API_KEY) return plainJobQuery(request, profile.city);
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });

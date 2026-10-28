@@ -33,6 +33,7 @@ body {
     var(--bg);
 }
 main { max-width: 960px; margin: 0 auto; padding: 8px 16px 40px; }
+.site-footer { padding-bottom: 100px; } /* room for Goldie */
 main > *:not(.hero-x) { max-width: 760px; margin-left: auto; margin-right: auto; }
 
 h1, h2, h3 { font-family: var(--font-display), var(--font-body), sans-serif; line-height: 1.2; letter-spacing: -0.01em; }
@@ -202,14 +203,14 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .step-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
 .step-nav a { font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-soft); text-decoration: none; color: var(--muted); }
 .step-nav a:hover { color: var(--accent-light); border-color: var(--accent); }
-.step-title { display: flex; align-items: center; gap: 10px; margin: 34px 0 0; scroll-margin-top: 70px; }
+.step-title { display: flex; align-items: center; gap: 10px; margin: 34px 0 0; scroll-margin-top: 96px; }
 .step-num { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--gold); color: #1a1206; font-size: 16px; font-weight: 700; flex: none; box-shadow: 0 0 0 4px rgba(201, 151, 74, 0.15); }
 .card { animation: rise 0.5s ease-out both; }
 .found { border-color: rgba(111, 211, 154, 0.35); }
 .found h3 { color: var(--ok); margin: 0 0 4px; }
 .evidence { margin: 4px 0; }
 
-/* Live jobs */
+/* Jobs & internships */
 .job-form { display: flex; gap: 8px; align-items: stretch; }
 .job-form input { flex: 1; }
 .job-form button { margin: 0; white-space: nowrap; }
@@ -223,6 +224,12 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .job-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
 .job-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
 .job-actions button, .job-actions form button { margin: 0; }
+.job-source { color: var(--muted); font-size: 12px; }
+.job-results.compact .job { padding: 12px; }
+.job-results.compact .job h3 { font-size: 15px; }
+.job-results.compact .job-actions { gap: 8px; }
+.job-results.compact .job-actions button { padding: 7px 14px; font-size: 13px; }
+.job-results.compact > button.ghost { width: 100%; }
 .badge-full { background: var(--gold); color: #1a1206; border-color: transparent; }
 .job-skeleton span { display: block; height: 74px; margin: 10px 0; border-radius: 14px; background: linear-gradient(90deg, var(--card-2), #1d212c, var(--card-2)); background-size: 200% 100%; animation: shimmer 1.2s linear infinite; }
 @keyframes shimmer { to { background-position: -200% 0; } }
@@ -236,6 +243,61 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .paste-fit { margin-top: 18px; border-top: 1px solid var(--border-soft); padding-top: 12px; }
 .paste-fit summary { cursor: pointer; color: var(--accent-light); font-weight: 600; }
 
+/* Guest mode */
+.hero-note { margin: 10px 0 0; }
+.guest-btn { width: 100%; padding: 13px 18px; font-size: 16px; }
+.divider { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; margin: 18px 0 4px; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--border-soft); }
+.auth-card h3 { margin: 6px 0 0; font-size: 17px; }
+.save-account { border-color: var(--accent); background: linear-gradient(135deg, rgba(201, 151, 74, 0.16), rgba(201, 151, 74, 0.03)), var(--card); }
+.save-account p { margin: 6px 0; }
+.save-row { display: flex; gap: 8px; align-items: stretch; }
+.save-row input { flex: 1; }
+.save-row button { margin: 0; white-space: nowrap; }
+
+/* Goldie, the guide */
+.goldie { position: fixed; right: 18px; bottom: 18px; z-index: 50; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.goldie-launch { margin: 0; padding: 0; background: none; box-shadow: none; border-radius: 50%; filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 16px rgba(233, 199, 123, 0.35)); }
+.goldie-launch:hover:not(:disabled) { filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 26px rgba(233, 199, 123, 0.6)); }
+.goldie-launch:focus-visible { outline: 3px solid var(--accent-light); outline-offset: 3px; }
+.goldie-ball { display: block; animation: goldieBob 3.2s ease-in-out infinite; }
+.goldie-launch:hover .goldie-ball { animation: goldieHop 0.6s ease-out; }
+.goldie-ball.talking { animation: goldieTalk 0.45s ease-in-out infinite alternate; transform-origin: 50% 90%; }
+.goldie-eyes { transform-box: fill-box; transform-origin: center; animation: goldieBlink 4.5s infinite; }
+.goldie-mouth { transform-box: fill-box; transform-origin: center; animation: goldieMouth 0.25s ease-in-out infinite alternate; }
+@keyframes goldieBob { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(-4deg); } }
+@keyframes goldieHop { 0% { transform: translateY(0) scale(1, 1); } 30% { transform: translateY(-14px) scale(0.95, 1.05); } 60% { transform: translateY(0) scale(1.08, 0.92); } 100% { transform: translateY(0) scale(1, 1); } }
+@keyframes goldieTalk { from { transform: scale(1.05, 0.95); } to { transform: scale(0.97, 1.03) translateY(-3px); } }
+@keyframes goldieBlink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes goldieMouth { from { transform: scaleY(0.4); } to { transform: scaleY(1.1); } }
+.goldie-panel { width: min(400px, calc(100vw - 36px)); max-height: min(74vh, 660px); overflow-y: auto; padding: 14px 16px 16px; border-radius: 20px; border: 1px solid var(--accent); background: linear-gradient(180deg, rgba(201, 151, 74, 0.1), rgba(201, 151, 74, 0) 120px), #0d0f14; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65); animation: goldiePop 0.25s ease-out both; transform-origin: bottom right; }
+.goldie-panel[hidden] { display: none; }
+@keyframes goldiePop { from { opacity: 0; transform: translateY(12px) scale(0.96); } }
+.goldie-panel-head { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border-soft); }
+.goldie-panel-head strong { font-family: var(--font-display), sans-serif; font-size: 18px; }
+.goldie-panel-head > div { flex: 1; line-height: 1.25; }
+.goldie-sub { display: block; font-size: 13px; }
+.goldie-close { margin: 0; padding: 0; width: 32px; height: 32px; font-size: 22px; line-height: 1; color: var(--muted); background: transparent; box-shadow: none; border: 1px solid var(--border-soft); }
+.goldie-panel section.coach { margin: 0; padding: 0; border: 0; background: none; box-shadow: none; }
+.goldie-panel .coach-log { max-height: none; }
+.goldie-panel textarea { min-height: 64px; }
+.goldie-quick { margin-top: 4px; }
+.goldie-script p { margin: 10px 0; }
+.goldie-script .guest-btn { margin-top: 4px; }
+.goldie-script .ghost { width: 100%; margin-top: 8px; }
+.goldie-how { margin: 10px 0 0; padding-left: 20px; color: var(--muted); font-size: 14px; }
+.goldie-how li { margin: 6px 0; }
+.goldie-bubble { width: min(300px, calc(100vw - 36px)); padding: 12px 14px; border-radius: 16px 16px 4px 16px; border: 1px solid var(--accent); background: #12141b; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6); animation: goldiePop 0.3s ease-out both; font-size: 15px; }
+.goldie-bubble p { margin: 0; }
+.goldie-bubble-actions { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; margin-top: 10px; }
+.goldie-bubble-actions button.mini { margin: 0; padding: 6px 12px; font-size: 13px; }
+.goldie-spot { border-color: var(--accent-light) !important; animation: goldieSpot 1.6s ease-in-out 2; }
+@keyframes goldieSpot { 0%, 100% { box-shadow: var(--shadow); } 50% { box-shadow: 0 0 0 4px rgba(233, 199, 123, 0.35), 0 0 40px rgba(233, 199, 123, 0.35); } }
+.goldie-intro { display: flex; gap: 16px; align-items: center; }
+.goldie-intro p { margin: 0; }
+.did { margin: 0; }
+.did small { color: var(--accent-light); }
+
 @media (max-width: 760px) {
   .hero-grid { grid-template-columns: 1fr; text-align: center; }
   .hero-visual { max-width: 260px; order: -1; }
@@ -243,6 +305,11 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
   .hero-features { grid-template-columns: 1fr; }
   .row { grid-template-columns: 1fr; }
   .job-form { flex-direction: column; }
+  .save-row { flex-direction: column; }
+  .goldie { right: 12px; bottom: 12px; }
+  .goldie-launch svg { width: 56px; height: 56px; }
+  .goldie-intro { flex-direction: column; text-align: center; }
+  .goldie-intro .job-actions { justify-content: center; }
 }
 
 /* People who ask their device for less motion get a still page. */

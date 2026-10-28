@@ -75,18 +75,19 @@ export async function askCoach(history, mode) {
     supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle(),
     supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle()
   ]);
-  if (!profile) return { error: "Save your profile first, so the coach has something to work with." };
-
+  // No Passport yet (a new guest): Goldie can still answer and help them fill in step 1.
+  const p = profile || {};
   const eff = effectiveProfile(profile);
-  const achievements = String(profile.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean);
-  const matches = topMatches(eff);
+  const achievements = String(p.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  const matches = profile ? topMatches(eff) : [];
   const target = plan ? CAREER_PATHS[plan.role_idx] : null;
   if (mode === "interview" && !target) return { error: "Pick a target role under your matches first; interview practice uses it." };
 
   const contextText = [
-    `NAME: ${profile.full_name || "(not given)"}`,
-    `ROLE: ${profile.role || "(not given)"} | SPORT: ${profile.sport || "(not given)"} | CITY: ${profile.location || "(not given)"}`,
-    `GOAL: ${profile.goal || "(not given)"}`,
+    profile ? "" : "NO PASSPORT SAVED YET: help them fill in step 1 first.",
+    `NAME: ${p.full_name || "(not given)"}`,
+    `ROLE: ${p.role || "(not given)"} | SPORT: ${p.sport || "(not given)"} | CITY: ${p.location || "(not given)"}`,
+    `GOAL: ${p.goal || "(not given)"}`,
     `SKILLS: ${eff.skills.map(label).join(", ") || "(none)"}`,
     `INTERESTS: ${eff.interests.map(label).join(", ") || "(none)"}`,
     `ACHIEVEMENTS (quote these exactly as evidence):\n${achievements.map((l) => `- ${l}`).join("\n") || "(none yet)"}`,
@@ -94,9 +95,17 @@ export async function askCoach(history, mode) {
     `TARGET ROLE: ${target ? target.name : "(not chosen)"}`,
     `PLAN: ${plan ? plan.steps.map((s, i) => `${i + 1}. [${s.done ? "done" : "to do"}] ${s.text}`).join(" ") : "(no plan yet)"}`,
     `CAREER PATHS (use the number for suggest_role): ${CAREER_PATHS.map((c, i) => `${i}=${c.name}`).join(", ")}`
-  ].join("\n");
+  ].filter(Boolean).join("\n");
 
-  return coachReply({ profileText: "USER DATA:\n" + contextText, achievements, contextText }, turns, mode === "interview" ? "interview" : "ask");
+  const res = await coachReply({ profileText: "USER DATA:\n" + contextText, achievements, contextText }, turns, mode === "interview" ? "interview" : "ask");
+  // Asked for jobs or internships: Goldie's reply already says what to search, so the real postings are
+  // fetched right here and shown in the chat (no second AI call).
+  if (res.action === "search_jobs") {
+    const where = res.jobLocation;
+    const summary = res.actionQuery || `${res.jobKeywords || "Sports"} ${/intern/i.test(res.jobKeywords) ? "" : "jobs "}${where ? `near ${where}` : "anywhere in the US"}`;
+    res.jobs = await jobResults({ keywords: res.jobKeywords, location: where, summary }, profile);
+  }
+  return res;
 }
 
 // Switches the public proof link on or off. The first time it goes on, a random 10-character code is made.
@@ -124,19 +133,33 @@ export async function toggleStep(formData) {
   redirect("/profile#plan");
 }
 
-// Live job search: Gemini reads the request, Adzuna supplies the real postings, and each posting gets a
-// fit check against the user's own saved evidence.
+// Job search: Gemini reads the request, Adzuna and sports employers' career boards supply the real postings,
+// and each posting gets a fit check against the user's own saved evidence.
+async function jobResults(q, profile) {
+  const links = searchLinks(q.keywords, q.location);
+  let res = await searchJobs(q);
+  // Nothing for the exact words ("video internships")? Widen to every sports internship (or job) anywhere,
+  // and say so, rather than coming back empty.
+  const wide = /intern/i.test(q.keywords) ? "internship" : "";
+  if ((res.error || !res.jobs.length) && (q.keywords !== wide || q.location)) {
+    const wider = await searchJobs({ keywords: wide, location: "" });
+    if (!wider.error && wider.jobs.length) {
+      res = wider;
+      q = { ...q, summary: `No exact matches for "${q.summary}", so here are all sports ${wide ? "internships" : "jobs"} anywhere` };
+    }
+  }
+  if (res.error) return { query: q, links, error: res.error, enabled: jobsEnabled() };
+  const jobs = res.jobs.map((j) => ({ ...j, fit: fitCheck(`${j.title}. ${j.team || ""}. ${j.snippet}`, profile) }));
+  return { query: q, links, jobs, total: res.total };
+}
+
 export async function findJobs(text) {
   const { supabase, user } = await currentUser();
   const request = String(text || "").trim().slice(0, 200) || "sports jobs that fit me";
   const { data: profile } = await supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle();
   const matches = profile ? topMatches(effectiveProfile(profile)) : [];
   const q = await jobQuery(request, { city: profile && profile.location, matches: matches.map((m) => m.name).join(", ") });
-  const links = searchLinks(q.keywords, q.location);
-  const res = await searchJobs(q);
-  if (res.error) return { query: q, links, error: res.error, enabled: jobsEnabled() };
-  const jobs = res.jobs.map((j) => ({ ...j, fit: fitCheck(`${j.title}. ${j.snippet}`, profile) }));
-  return { query: q, links, jobs, total: res.total };
+  return jobResults(q, profile);
 }
 
 // Fit check for a pasted job posting.
