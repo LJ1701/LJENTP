@@ -15,6 +15,7 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
+  const [offline, setOffline] = useState(false);
   const [pending, start] = useTransition();
   const endRef = useRef(null);
   const lastRef = useRef(null);
@@ -43,7 +44,8 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
     setError("");
     start(async () => {
       const res = await askCoach(next.map(({ role, text }) => ({ role, text })), chatMode);
-      if (res.error) setError(res.error);
+      setOffline(!!res.offline);
+      if (res.error) setError(res.offline ? "My AI brain is busy right now, but these still work instantly:" : res.error);
       else {
         setMessages((m) => [...m, { role: "coach", text: res.reply, ...res }]);
         if (res.action && res.action !== "none") onAction?.(res.action, res.actionQuery);
@@ -83,6 +85,7 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
         ) : (
           <div key={i} className="msg msg-coach" ref={i === messages.length - 1 ? lastRef : null}>
             <p>{m.reply}</p>
+            {m.instant && <p className="did"><small>⚡ Instant answer: no AI needed</small></p>}
             {m.action && m.action !== "none" && m.action !== "search_jobs" && DID[m.action] && <p className="did"><small>↳ {DID[m.action]}</small></p>}
             {m.jobs && <JobResults result={m.jobs} compact />}
             {m.evidence?.length > 0 && (
@@ -120,7 +123,15 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
           </div>
         )))}
         {pending && <p className="msg msg-coach"><em>Goldie is thinking…</em></p>}
-        {error && <p className="error">{error}</p>}
+        {error && <p className={offline ? "warn" : "error"}>{error}</p>}
+        {error && offline && (
+          <div className="chips">
+            <button type="button" onClick={() => send("Find sports internships")} disabled={pending}>Find internships</button>
+            <button type="button" onClick={() => send("Find sports jobs anywhere")} disabled={pending}>Find jobs</button>
+            {onAction && <button type="button" onClick={() => onAction("start_tour")}>Take the tour</button>}
+            {onAction && <button type="button" onClick={() => onAction("go_plan")}>Go to my plan</button>}
+          </div>
+        )}
         <div ref={endRef} />
       </div>
 
