@@ -1,8 +1,8 @@
 // Career data and matching for the MVP, taken from the live LJSportMind site (script.js), English only.
 
-export const SPORTS = ["American football", "Basketball", "Baseball", "Soccer", "Hockey", "Volleyball", "Other"];
+export const SPORTS = ["American football", "Basketball", "Baseball", "Soccer", "Hockey", "Volleyball", "Several sports", "Other"];
 
-export const ROLES = ["Player", "Former player", "Coach", "Student", "Content creator", "Fan", "Other"];
+export const ROLES = ["Student", "Player", "Former player", "Coach", "Content creator", "Fan", "Career changer", "Already work in sports", "Other"];
 
 export const SKILLS = {
   "video editing": "Video Editing",

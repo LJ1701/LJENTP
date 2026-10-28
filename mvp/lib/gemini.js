@@ -5,7 +5,22 @@ import { GoogleGenAI } from "@google/genai";
 // (the "server-only" import makes the build fail if browser code ever imports this file), so
 // GEMINI_API_KEY never reaches a visitor's browser.
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash";
+// Free tier allows only about 20 requests a day per model, counted separately for each model. When the main
+// model's daily limit is used up, the lighter model (its own quota) answers instead of showing an error.
+const LITE_MODEL = "gemini-3.5-flash-lite";
 const TIMEOUT_MS = 15000;
+
+const isLimit = (err) => /429|quota|exhaust|rate/i.test(String((err && (err.status || err.message)) || ""));
+
+async function generate(ai, request, models = [MODEL, LITE_MODEL]) {
+  for (let i = 0; i < models.length; i++) {
+    try {
+      return await ai.models.generateContent({ ...request, model: models[i] });
+    } catch (err) {
+      if (i === models.length - 1 || !isLimit(err)) throw err;
+    }
+  }
+}
 
 const INSTRUCTIONS = `You write résumé bullets for someone looking for work in the sports industry.
 Use ONLY facts stated in their achievements. Never invent numbers, results, titles, employers or dates.
@@ -32,8 +47,7 @@ export async function honestBullets(achievements) {
   if (!process.env.GEMINI_API_KEY) return { error: FALLBACK.noKey };
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const res = await ai.models.generateContent({
-      model: MODEL,
+    const res = await generate(ai, {
       contents: `Achievements:\n${text.slice(0, 4000)}`,
       // Minimal thinking: tested at ~1.5 s with complete answers. Default thinking took 35 s, and its
       // thinking also used up a small output limit, cutting answers off mid-sentence.
@@ -96,8 +110,7 @@ export async function coachReply(context, history, mode) {
   if (!process.env.GEMINI_API_KEY) return { error: FALLBACK.noKey };
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const res = await ai.models.generateContent({
-      model: MODEL,
+    const res = await generate(ai, {
       contents: history.map((m) => ({ role: m.role === "coach" ? "model" : "user", parts: [{ text: m.text }] })),
       config: {
         systemInstruction: COACH_RULES + (mode === "interview" ? INTERVIEW_RULES : "") + "\n\n" + context.profileText,
@@ -141,5 +154,63 @@ export async function coachReply(context, history, mode) {
     if (/abort|timeout/i.test(msg) || (err && err.name === "AbortError")) return { error: COACH_FALLBACK.slow };
     console.error("Coach call failed:", msg.slice(0, 200));
     return { error: COACH_FALLBACK.error };
+  }
+}
+
+// ---------- Job search: understanding the request ----------
+// Gemini only turns what the user typed into search words and a place. The jobs themselves come from
+// Adzuna (lib/jobs.js), so the AI cannot invent a posting or a link.
+const JOB_QUERY_RULES = `Turn a request for sports-industry jobs into a job-board search for the United States.
+Return "keywords": 0 to 4 words naming the kind of role (e.g. "video analyst", "ticket sales", "event coordinator").
+Do NOT include the words "sports", "sport", "job" or "jobs" in keywords (a sports filter is added separately).
+Keep league, team or employer names they mention (e.g. "NBA social media", "Dallas Cowboys marketing").
+Leave keywords EMPTY if they just ask for sports jobs in general. Only use their top match when they ask for jobs that fit them, match them, or are "for me".
+Return "location": a US city and state if they named one; "" if they said anywhere, nationwide or remote; otherwise their profile city.
+Return "summary": one short sentence saying what you searched, e.g. "Video analyst jobs near Plano, TX".`;
+
+const JOB_QUERY_SCHEMA = {
+  type: "object",
+  properties: { keywords: { type: "string" }, location: { type: "string" }, summary: { type: "string" } },
+  required: ["keywords", "location", "summary"]
+};
+
+const clip = (s, n) => String(s || "").replace(/\s+/g, " ").trim().slice(0, n);
+
+// Used when Gemini is off or fails: strip filler words and look for "in/near <place>".
+function plainJobQuery(text, profileCity) {
+  const m = text.match(/\b(?:in|near|around)\s+([a-z .,'-]{2,40})$/i);
+  const location = m ? m[1].trim() : /\b(anywhere|nationwide|remote)\b/i.test(text) ? "" : profileCity || "";
+  const keywords = (m ? text.slice(0, m.index) : text)
+    .replace(/\b(sports?|jobs?|careers?|openings?|positions?|find|show|me|any|for|a|an|the|in|near|remote|anywhere|nationwide)\b/gi, " ")
+    .replace(/\s+/g, " ").trim().slice(0, 40);
+  return { keywords, location, summary: `${keywords || "Sports"} jobs${location ? ` near ${location}` : " across the US"}` };
+}
+
+const GENERAL = /^\s*(any\s+|all\s+)?(sports?\s+)?(jobs?|careers?|openings?|positions?)(\s+(near me|nearby|around me))?\s*$/i;
+
+export async function jobQuery(text, profile) {
+  const request = clip(text, 200);
+  // "sports jobs" / "sports jobs near me" means every sports job near them; no AI call needed.
+  if (GENERAL.test(request)) return { keywords: "", location: profile.city || "", summary: `Sports jobs ${profile.city ? `near ${profile.city}` : "across the US"}` };
+  if (!process.env.GEMINI_API_KEY) return plainJobQuery(request, profile.city);
+  try {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const res = await generate(ai, {
+      contents: `Request: ${request}\nProfile city: ${profile.city || "(none)"}\nTop matches: ${profile.matches || "(none)"}`,
+      config: {
+        systemInstruction: JOB_QUERY_RULES,
+        temperature: 0,
+        maxOutputTokens: 300,
+        thinkingConfig: { thinkingLevel: "minimal" },
+        responseMimeType: "application/json",
+        responseJsonSchema: JOB_QUERY_SCHEMA,
+        abortSignal: AbortSignal.timeout(8000)
+      }
+    }, [LITE_MODEL, MODEL]);
+    const out = JSON.parse(String(res.text || "{}"));
+    const keywords = clip(out.keywords, 40).replace(/\b(sports?|jobs?)\b/gi, "").replace(/\s+/g, " ").trim();
+    return { keywords, location: clip(out.location, 60), summary: clip(out.summary, 120) || plainJobQuery(request, profile.city).summary };
+  } catch {
+    return plainJobQuery(request, profile.city);
   }
 }

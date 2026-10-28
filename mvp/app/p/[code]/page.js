@@ -1,19 +1,27 @@
 import { notFound } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { CAREER_PATHS, label } from "@/lib/careers";
+import { getPublicProfile } from "@/lib/public-profile";
+import { CAREER_PATHS, label, topMatches } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Sports Profile · LJSportMind", robots: { index: false } };
+// Title and description for link previews (LinkedIn, iMessage, group chats); the image is opengraph-image.js.
+export async function generateMetadata({ params }) {
+  const { code } = await params;
+  const p = await getPublicProfile(code);
+  if (!p) return { title: "Sports Profile · LJSportMind", robots: { index: false } };
+  const eff = effectiveProfile(p);
+  const proofs = Object.keys(eff.evidence).length;
+  const title = `${p.full_name || "Sports Profile"} · LJSportMind Sports Passport`;
+  const description = `${[p.role, p.sport].filter(Boolean).join(" · ")}${proofs ? ` · ${proofs} skills backed by proof` : ""}. See the evidence.`;
+  return { title, description, robots: { index: false }, openGraph: { title, description, type: "profile" }, twitter: { card: "summary_large_image", title, description } };
+}
 
 // Read-only public proof page. Works signed out: the database function returns this one profile only
 // while its owner has the link switched on.
 export default async function PublicProfile({ params }) {
   const { code } = await params;
   if (!/^[a-z0-9]{10}$/.test(code)) notFound();
-  const supabase = await createClient();
-  const { data } = await supabase.rpc("public_profile", { code });
-  const p = data && data[0];
+  const p = await getPublicProfile(code);
   if (!p) notFound();
 
   const eff = effectiveProfile(p);
