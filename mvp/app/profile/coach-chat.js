@@ -5,7 +5,11 @@ import { askCoach, setTarget } from "./actions";
 // Career Coach chat. The server action reads the user's saved profile, so this component only keeps the
 // conversation (in memory: refreshing the page starts a new chat) and shows what comes back.
 // paths: [{ name, links: [[site, url], ...] }] for the 8 career paths; targetIdx: current target role or null.
-export default function CoachChat({ paths, targetIdx, starters }) {
+// Inside Goldie (compact): onAction runs page actions from a reply, onBusy animates Goldie while she thinks,
+// and modeRequest ({ mode, at }) switches mode when a button elsewhere asks for interview practice.
+const DID = { go_passport: "Took you to your Passport", go_matches: "Took you to your matches", go_jobs: "Took you to live jobs", go_plan: "Took you to your plan", go_coach: "Took you to the coach", go_proof: "Took you to your proof link", search_jobs: "Started a live job search", start_tour: "Started the tour" };
+
+export default function CoachChat({ paths, targetIdx, starters, compact = false, onAction, onBusy, modeRequest }) {
   const [mode, setMode] = useState("ask");
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
@@ -15,6 +19,8 @@ export default function CoachChat({ paths, targetIdx, starters }) {
   const asked = messages.filter((m) => m.role === "user").length;
 
   useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }); }, [messages, pending]);
+  useEffect(() => { onBusy?.(pending); }, [pending, onBusy]);
+  useEffect(() => { if (modeRequest) switchMode(modeRequest.mode); }, [modeRequest]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function send(question, history = messages, chatMode = mode) {
     const q = String(question || "").trim().slice(0, 500);
@@ -26,7 +32,10 @@ export default function CoachChat({ paths, targetIdx, starters }) {
     start(async () => {
       const res = await askCoach(next.map(({ role, text }) => ({ role, text })), chatMode);
       if (res.error) setError(res.error);
-      else setMessages((m) => [...m, { role: "coach", text: res.reply, ...res }]);
+      else {
+        setMessages((m) => [...m, { role: "coach", text: res.reply, ...res }]);
+        if (res.action && res.action !== "none") onAction?.(res.action, res.actionQuery);
+      }
     });
   }
 
@@ -39,9 +48,9 @@ export default function CoachChat({ paths, targetIdx, starters }) {
   }
 
   return (
-    <section aria-label="Career Coach" className="coach">
-      <h3>Ask your Career Coach</h3>
-      <p><small>It reads your saved profile, matches and plan. Every quote it uses is checked against your own achievements.</small></p>
+    <section aria-label="Goldie chat" className={compact ? "coach coach-compact" : "coach"}>
+      {!compact && <h3>Ask your Career Coach</h3>}
+      <p><small>I read your saved Passport, matches and plan. Every quote I use is checked against your own achievements.</small></p>
 
       <div role="group" aria-label="Coach mode" className="coach-modes">
         <button type="button" aria-pressed={mode === "ask"} onClick={() => switchMode("ask")}>Ask questions</button>
@@ -62,6 +71,7 @@ export default function CoachChat({ paths, targetIdx, starters }) {
         ) : (
           <div key={i} className="msg msg-coach">
             <p>{m.reply}</p>
+            {m.action && m.action !== "none" && DID[m.action] && <p className="did"><small>↳ {DID[m.action]}{m.action === "search_jobs" && m.actionQuery ? `: "${m.actionQuery}"` : ""}</small></p>}
             {m.evidence?.length > 0 && (
               <div className="proof">
                 <strong>Proof from your profile</strong>
@@ -96,7 +106,7 @@ export default function CoachChat({ paths, targetIdx, starters }) {
             )}
           </div>
         )))}
-        {pending && <p className="msg msg-coach"><em>Coach is thinking…</em></p>}
+        {pending && <p className="msg msg-coach"><em>Goldie is thinking…</em></p>}
         {error && <p className="error">{error}</p>}
         <div ref={endRef} />
       </div>

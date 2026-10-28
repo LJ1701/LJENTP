@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import Goldie from "./goldie";
 
 // Same fonts and logo as the live LJSportMind site (ljentp.vercel.app).
 const inter = Inter({ subsets: ["latin"], variable: "--font-body" });
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
             <span>LJSportMind by LJSOCCER</span>
           </p>
         </footer>
+        <Goldie />
         <Analytics />
       </body>
     </html>

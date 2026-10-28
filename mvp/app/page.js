@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import SignInForm from "./sign-in-form";
+import GuestButton from "./guest-button";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,8 @@ export default async function Home({ searchParams }) {
             <p className="eyebrow">AI sports career discovery · by LJSOCCER</p>
             <h1 id="heroTitle" className="hero-title">Find your place in the sports industry. <span className="gold-text">Prove it.</span></h1>
             <p className="hero-sub">Whether you played, coached, created, organized or just love the game: see the sports careers you fit, the live jobs hiring now, and exactly what you can prove.</p>
-            <a href={user ? "/profile" : "#start"} className="cta big">{user ? "Open my Sports Passport →" : "Get started free →"}</a>
+            {user ? <a href="/profile" className="cta big">Open my Sports Passport →</a> : <GuestButton />}
+            {!user && <p className="hero-note"><small>Free. Try it as a guest in one click, then add your email to keep it. <a href="#start">Sign in</a></small></p>}
           </div>
           <div className="hero-visual" aria-hidden="true">
             <div className="orbit orbit-1" />
@@ -56,13 +58,13 @@ export default async function Home({ searchParams }) {
       </section>
 
       <div id="start" />
-      {error === "signin" && <p className="error">That confirmation link didn&apos;t work or has expired. Try signing in, or create the account again.</p>}
+      {error === "signin" && <p className="error">That confirmation link didn&apos;t work or has expired. Try signing in, or create the account again. Saving a guest Passport? Open the browser you started it in and refresh: your email may already be confirmed.</p>}
       {user ? (
         <div className="card auth-card" style={{ textAlign: "center" }}>
-          <p className="ok">Signed in as {user.email}</p>
+          <p className="ok">{user.is_anonymous ? "You're using a guest Passport on this browser." : `Signed in as ${user.email}`}</p>
           <a className="cta" href="/profile">Go to my Sports Passport →</a>
           <form action="/auth/signout" method="post">
-            <button type="submit" className="ghost">Sign out</button>
+            <button type="submit" className="ghost">{user.is_anonymous ? "Leave guest mode (you lose this Passport)" : "Sign out"}</button>
           </form>
         </div>
       ) : (

@@ -73,23 +73,39 @@ export async function honestBullets(achievements) {
 // Unlike a general chatbot, the coach is given the user's saved profile, matches and plan (read on the
 // server, never from the browser), must quote evidence from their own achievements, and can suggest one
 // of the app's career paths, which the page turns into a real "Make this my target role" button.
-const COACH_RULES = `You are the LJSportMind Career Coach for one person looking for a career in the sports industry.
+const COACH_RULES = `You are Goldie, the LJSportMind guide and career coach: a friendly gold ball with the LJSportMind logo.
+You help one person find a career in the sports industry (any sport, any background) and use the app.
+Personality: upbeat, warm, short sentences, a light sports touch. Never cheesy, never more than one sports pun.
 You are given their saved Sports Profile, their top career matches and their plan. Use them in every answer.
+HOW THE APP WORKS (use this to guide them):
+1 Passport: name, city, where they are now, skills, interests, goal, and achievements one per line (their proof). Saving updates everything.
+2 Matches: 8 sports career paths, with the skills they have and what is missing. "Make this my target role" creates a plan.
+3 Live jobs: type a request like "NBA jobs"; real listings come back, each with a Fit check that shows proof, ticked-only skills and gaps; gaps can be added to the plan.
+4 Plan: steps for the target role, ticked off as they go.
+5 Coach (you): questions, interview practice for the target role, honest résumé bullets.
+6 Proof link: a public page to paste into applications; it can be turned off.
+Guests can save their Passport with an email at the top of the page.
 Rules:
-- Only talk about sports careers, their profile, matches, plan, applications and interviews. Politely decline anything else in one sentence.
+- Only talk about sports careers, their profile, matches, plan, applications, interviews and how to use this app. Politely decline anything else in one sentence.
 - Never invent facts: no salaries, no specific job openings, no statistics, no names of employers, no achievements they did not write. If you do not know, say so and tell them to use the "Find openings" links.
 - Only use numbers that appear in their profile or plan.
 - When you refer to their experience, copy the exact achievement line(s) into "evidence" (word for word, from the ACHIEVEMENTS list only).
 - Keep "reply" under 120 words, warm and direct, plain text, no markdown.
 - "next_step" is one concrete action they can do this week.
 - "suggest_role" is the number of ONE career path from the CAREER PATHS list if recommending a path fits the question, otherwise -1.
-- "follow_ups" are 3 short questions (under 10 words) they might ask you next, written in their voice.`;
+- "follow_ups" are 3 short questions (under 10 words) they might ask you next, written in their voice.
+- "action" moves the page for them. Use it ONLY when they ask to see, go to, open or find something, otherwise "none":
+  go_passport, go_matches, go_jobs, go_plan, go_coach, go_proof (scroll to that step); search_jobs (run a live job search, put what to search in "action_query", e.g. "NBA social media jobs in Dallas"); start_tour (they want a tour or don't know where to start).
+- When you use an action, say in "reply" what you are doing (e.g. "Searching live NBA jobs for you now.").`;
 
 const INTERVIEW_RULES = `
 INTERVIEW PRACTICE MODE: act as a hiring manager for their target role.
 - If the last message is not an answer yet, ask ONE realistic interview question for that role in "reply".
 - If they just answered, give short honest feedback in "reply": one thing that worked, one thing to fix, and which of their achievement lines would make the answer stronger (put those in "evidence"). Then ask the next question.
 - Coach them to use the STAR method (situation, task, action, result) without inventing results for them.`;
+
+// Things Goldie can do on the page. The browser only acts on these names, so the AI can't trigger anything else.
+const ACTIONS = ["none", "go_passport", "go_matches", "go_jobs", "go_plan", "go_coach", "go_proof", "search_jobs", "start_tour"];
 
 const COACH_SCHEMA = {
   type: "object",
@@ -98,12 +114,14 @@ const COACH_SCHEMA = {
     evidence: { type: "array", items: { type: "string" } },
     next_step: { type: "string" },
     suggest_role: { type: "integer" },
-    follow_ups: { type: "array", items: { type: "string" } }
+    follow_ups: { type: "array", items: { type: "string" } },
+    action: { type: "string", enum: ACTIONS },
+    action_query: { type: "string" }
   },
-  required: ["reply", "evidence", "next_step", "suggest_role", "follow_ups"]
+  required: ["reply", "evidence", "next_step", "suggest_role", "follow_ups", "action"]
 };
 
-const COACH_FALLBACK = { ...FALLBACK, error: "The coach isn't available right now. Try again in a minute; your profile and matches still work." };
+const COACH_FALLBACK = { ...FALLBACK, error: "Goldie isn't available right now. Try again in a minute; your profile and matches still work." };
 
 // context: { profileText, achievements (array of lines), contextText (everything the coach may cite) }
 export async function coachReply(context, history, mode) {
@@ -146,7 +164,10 @@ export async function coachReply(context, history, mode) {
       unverified,
       nextStep: String(out.next_step || "").trim().slice(0, 300),
       suggestRole: role,
-      followUps: (Array.isArray(out.follow_ups) ? out.follow_ups : []).map((f) => String(f).trim().slice(0, 80)).filter(Boolean).slice(0, 3)
+      followUps: (Array.isArray(out.follow_ups) ? out.follow_ups : []).map((f) => String(f).trim().slice(0, 80)).filter(Boolean).slice(0, 3),
+      // No page actions in interview practice: the user is answering questions, not navigating.
+      action: mode !== "interview" && ACTIONS.includes(out.action) ? out.action : "none",
+      actionQuery: String(out.action_query || "").trim().slice(0, 200)
     };
   } catch (err) {
     const msg = String((err && (err.status || err.message)) || "");

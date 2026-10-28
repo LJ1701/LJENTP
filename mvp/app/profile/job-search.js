@@ -1,5 +1,5 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { findJobs, checkFit, addGapToPlan } from "./actions";
 
 const ERRORS = {
@@ -57,6 +57,13 @@ export default function JobSearch({ starters }) {
     setOpen(null);
     start(async () => setResult(await findJobs(q)));
   };
+
+  // Goldie can run a search for the user ("find me NBA jobs").
+  useEffect(() => {
+    const onSearch = (e) => search(String((e.detail && e.detail.query) || "").slice(0, 200));
+    window.addEventListener("goldie:search", onSearch);
+    return () => window.removeEventListener("goldie:search", onSearch);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>

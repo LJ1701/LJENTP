@@ -75,18 +75,19 @@ export async function askCoach(history, mode) {
     supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle(),
     supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle()
   ]);
-  if (!profile) return { error: "Save your profile first, so the coach has something to work with." };
-
+  // No Passport yet (a new guest): Goldie can still answer and help them fill in step 1.
+  const p = profile || {};
   const eff = effectiveProfile(profile);
-  const achievements = String(profile.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean);
-  const matches = topMatches(eff);
+  const achievements = String(p.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  const matches = profile ? topMatches(eff) : [];
   const target = plan ? CAREER_PATHS[plan.role_idx] : null;
   if (mode === "interview" && !target) return { error: "Pick a target role under your matches first; interview practice uses it." };
 
   const contextText = [
-    `NAME: ${profile.full_name || "(not given)"}`,
-    `ROLE: ${profile.role || "(not given)"} | SPORT: ${profile.sport || "(not given)"} | CITY: ${profile.location || "(not given)"}`,
-    `GOAL: ${profile.goal || "(not given)"}`,
+    profile ? "" : "NO PASSPORT SAVED YET: help them fill in step 1 first.",
+    `NAME: ${p.full_name || "(not given)"}`,
+    `ROLE: ${p.role || "(not given)"} | SPORT: ${p.sport || "(not given)"} | CITY: ${p.location || "(not given)"}`,
+    `GOAL: ${p.goal || "(not given)"}`,
     `SKILLS: ${eff.skills.map(label).join(", ") || "(none)"}`,
     `INTERESTS: ${eff.interests.map(label).join(", ") || "(none)"}`,
     `ACHIEVEMENTS (quote these exactly as evidence):\n${achievements.map((l) => `- ${l}`).join("\n") || "(none yet)"}`,
@@ -94,7 +95,7 @@ export async function askCoach(history, mode) {
     `TARGET ROLE: ${target ? target.name : "(not chosen)"}`,
     `PLAN: ${plan ? plan.steps.map((s, i) => `${i + 1}. [${s.done ? "done" : "to do"}] ${s.text}`).join(" ") : "(no plan yet)"}`,
     `CAREER PATHS (use the number for suggest_role): ${CAREER_PATHS.map((c, i) => `${i}=${c.name}`).join(", ")}`
-  ].join("\n");
+  ].filter(Boolean).join("\n");
 
   return coachReply({ profileText: "USER DATA:\n" + contextText, achievements, contextText }, turns, mode === "interview" ? "interview" : "ask");
 }

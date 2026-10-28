@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import GuestButton from "./guest-button";
 
-// Email + password. "Create account" signs up; "Sign in" checks the password with Supabase.
+// Guest mode on top (one click), then email + password. "Create account" signs up; "Sign in" checks the password with Supabase.
 // The password goes straight to Supabase Auth over HTTPS; this app never stores or sees it again.
 export default function SignInForm() {
   const router = useRouter();
@@ -39,7 +40,10 @@ export default function SignInForm() {
 
   return (
     <form onSubmit={onSubmit} className="card auth-card">
-      <h2>{mode === "signup" ? "Create account" : "Sign in"}</h2>
+      <h2>Start your Sports Passport</h2>
+      <GuestButton className="guest-btn">Try it as a guest: no email needed</GuestButton>
+      <p className="divider"><span>or use your email</span></p>
+      <h3>{mode === "signup" ? "Create account" : "Sign in"}</h3>
       <label htmlFor="email">Email</label>
       <input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
       <label htmlFor="password">Password (at least 8 characters)</label>
