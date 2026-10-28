@@ -184,11 +184,6 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .hero-sig-grid { fill: none; stroke: rgba(233, 199, 123, 0.12); stroke-width: 1; }
 .hero-sig-shape { fill: rgba(201, 151, 74, 0.08); stroke: rgba(233, 199, 123, 0.55); stroke-width: 1.2; }
 .hero-scan { position: absolute; left: 14%; right: 14%; height: 2px; top: 20%; background: linear-gradient(90deg, transparent, #e9c77b, transparent); box-shadow: 0 0 18px rgba(233, 199, 123, 0.8); animation: heroScan 3.2s ease-in-out infinite; z-index: 2; }
-.hero-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 26px; }
-.hero-feature { display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); transition: transform 0.2s ease, border-color 0.2s ease; }
-.hero-feature:hover { transform: translateY(-3px); border-color: var(--accent); }
-.hero-feature-icon { font-size: 24px; }
-.hero-feature span:last-child { color: var(--muted); font-size: 14px; }
 .who-grid { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 10px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -296,12 +291,64 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .did { margin: 0; }
 .did small { color: var(--accent-light); }
 
+/* Homepage: live numbers, search before sign-up, how it works */
+.live-stats { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; justify-content: center; margin: 28px 0 12px; color: var(--muted); font-size: 14px; }
+.live-stats strong { color: var(--accent-light); font-family: var(--font-display), sans-serif; font-size: 18px; }
+.home-search { max-width: 760px; margin: 0 auto; }
+.home-search-bar { display: flex; gap: 8px; padding: 8px; border-radius: 999px; border: 1px solid var(--accent); background: #0b0d12; box-shadow: 0 0 0 6px rgba(201, 151, 74, 0.08), 0 18px 40px rgba(0, 0, 0, 0.5); }
+.home-search-bar input { flex: 1; border: 0; background: transparent; font-size: 17px; padding: 10px 14px; box-shadow: none; }
+.home-search-bar input:focus { box-shadow: none; }
+.home-search-bar button { margin: 0; padding: 12px 24px; font-size: 16px; }
+.home-search .chips { justify-content: center; margin-top: 8px; }
+.home-search .job-results { margin-top: 14px; }
+.home-jobs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.home-job { display: flex; flex-direction: column; gap: 3px; padding: 14px; border-radius: 14px; border: 1px solid var(--border-soft); background: var(--card-2); color: var(--text); text-decoration: none; animation: rise 0.4s ease-out both; transition: border-color 0.2s, transform 0.2s; }
+.home-job:hover { border-color: var(--accent); transform: translateY(-2px); color: var(--text); }
+.home-job .muted { font-size: 14px; }
+.fit-cta { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 14px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--accent); background: linear-gradient(135deg, rgba(201, 151, 74, 0.16), rgba(201, 151, 74, 0.03)); }
+.fit-cta button { margin: 0; white-space: nowrap; }
+.just-posted { display: flex; align-items: center; gap: 12px; margin: 18px auto 0; max-width: 960px; overflow: hidden; }
+.just-posted .eyebrow { flex: none; font-size: 11px; }
+.just-posted-track { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding: 2px; }
+.just-posted-track::-webkit-scrollbar { display: none; }
+.just-posted-track a { flex: none; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border-soft); text-decoration: none; color: var(--text); white-space: nowrap; }
+.just-posted-track a:hover { border-color: var(--accent); }
+.how-strip { list-style: none; padding: 0; margin: 30px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.how-strip li { display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); }
+.how-strip li div { display: flex; flex-direction: column; gap: 2px; }
+.how-strip li span:last-child { color: var(--muted); font-size: 14px; }
+.hero-goldie { position: absolute; left: -2%; bottom: 2%; z-index: 3; margin: 0; padding: 0; background: none; box-shadow: none; display: flex; flex-direction: column; align-items: flex-start; filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6)); }
+.hero-goldie:hover:not(:disabled) { filter: drop-shadow(0 0 22px rgba(233, 199, 123, 0.55)); }
+.hero-goldie-bubble { margin: 0 0 6px 30px; padding: 6px 12px; border-radius: 14px 14px 14px 4px; background: #12141b; border: 1px solid var(--accent); color: var(--text); font-size: 13px; font-weight: 600; white-space: nowrap; animation: float 4s ease-in-out infinite; }
+
+/* Your path: target role with its plan inside, plan steps that become proof */
+.match.target { border-color: var(--accent); background: linear-gradient(180deg, rgba(201, 151, 74, 0.1), rgba(201, 151, 74, 0.02)), var(--card-2); }
+.plan-block { margin: 12px 0 4px; padding: 12px 14px; border-radius: 12px; border: 1px dashed var(--border); background: rgba(0, 0, 0, 0.2); }
+.plan-head { margin: 0; }
+.plan-list li { display: block; }
+.plan-row { display: flex; align-items: center; gap: 10px; }
+.proof-ask { margin: 10px 0 4px 40px; }
+.proof-ask label { margin-top: 0; color: var(--accent-light); }
+.proof-ask .job-actions { margin-top: 8px; }
+
+/* Passport: paste a résumé, pending homepage search */
+.resume-fill { margin: 0 0 6px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--accent); background: rgba(201, 151, 74, 0.07); }
+.resume-fill summary { cursor: pointer; font-weight: 600; color: var(--accent-light); }
+.resume-fill textarea { margin-top: 10px; }
+.pending-note { margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; background: rgba(111, 211, 154, 0.1); border: 1px solid rgba(111, 211, 154, 0.35); color: var(--ok); }
+
 @media (max-width: 760px) {
   .hero-grid { grid-template-columns: 1fr; text-align: center; }
   .hero-visual { max-width: 260px; order: -1; }
   .hero-sub { margin: 0 auto; }
-  .hero-features { grid-template-columns: 1fr; }
   .row { grid-template-columns: 1fr; }
+  .home-jobs, .how-strip { grid-template-columns: 1fr; }
+  .fit-cta { flex-direction: column; align-items: stretch; text-align: center; }
+  .home-search-bar { border-radius: 18px; flex-direction: column; }
+  .home-search-bar button { width: 100%; }
+  .hero-goldie { left: 0; bottom: -4%; }
+  .hero-goldie svg { width: 60px; height: 60px; }
+  .proof-ask { margin-left: 0; }
   .job-form { flex-direction: column; }
   .save-row { flex-direction: column; }
   .goldie { right: 12px; bottom: 12px; }

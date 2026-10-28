@@ -149,3 +149,31 @@ export async function searchJobs(query) {
   if (!found.length && adzuna.error) return { error: adzuna.error };
   return { jobs: found.slice(0, 40), total: found.length };
 }
+
+// Homepage numbers, counted from the same sources every hour (never estimated): open postings at the
+// sports employers, Adzuna's count of sports postings from the last 60 days, and the newest employer postings.
+export async function jobStats() {
+  const boards = (await Promise.all(EMPLOYERS.map(boardJobs))).flat().filter((j) => j.url);
+  let adzuna = 0;
+  if (jobsEnabled()) {
+    try {
+      const params = new URLSearchParams({
+        app_id: process.env.ADZUNA_APP_ID, app_key: process.env.ADZUNA_APP_KEY, results_per_page: "1", max_days_old: "60",
+        what_or: "sports athletic athletics athlete stadium arena league esports", "content-type": "application/json"
+      });
+      const res = await fetch(`https://api.adzuna.com/v1/api/jobs/us/search/1?${params}`, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(6000) });
+      if (res.ok) adzuna = (await res.json()).count || 0;
+    } catch {}
+  }
+  // Newest posting from each employer, so the strip shows the range of companies.
+  const seen = new Set();
+  const latest = [...boards].sort((a, b) => new Date(b.created || 0) - new Date(a.created || 0))
+    .filter((j) => !seen.has(j.company) && seen.add(j.company)).slice(0, 8)
+    .map(({ id, title, company, url }) => ({ id, title, company, url }));
+  return {
+    total: boards.length + adzuna,
+    internships: boards.filter((j) => INTERN.test(`${j.title} ${j.type}`)).length,
+    sources: EMPLOYERS.length + (adzuna ? 1 : 0),
+    latest
+  };
+}
