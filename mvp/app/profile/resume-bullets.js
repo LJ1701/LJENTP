@@ -9,8 +9,7 @@ export default function ResumeBullets() {
 
   return (
     <section aria-label="AI résumé bullets">
-      <h3>Honest résumé bullets</h3>
-      <p>Turns your saved achievements into 3 résumé bullets. It only uses what you wrote; any bullet with a number you didn&apos;t write is thrown away.</p>
+      <h3>Résumé bullets</h3>
       <button type="button" disabled={pending} onClick={() => start(async () => setResult(await writeBullets()))}>
         {pending ? "Writing…" : "Write my résumé bullets"}
       </button>
@@ -19,7 +18,7 @@ export default function ResumeBullets() {
         <>
           <ul>{result.bullets.map((b, i) => <li key={i}>{b}</li>)}</ul>
           {result.dropped > 0 && <p><small>{result.dropped} bullet(s) removed because they added numbers you didn&apos;t write.</small></p>}
-          <p><small>Check every word before using it. Written by Google Gemini from your own achievements.</small></p>
+          <p><small>Written by AI from your own achievements only. Check every word before using it.</small></p>
         </>
       )}
     </section>

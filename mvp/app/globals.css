@@ -293,8 +293,6 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .goldie-bubble-actions button.mini { margin: 0; padding: 6px 12px; font-size: 13px; }
 .goldie-spot { border-color: var(--accent-light) !important; animation: goldieSpot 1.6s ease-in-out 2; }
 @keyframes goldieSpot { 0%, 100% { box-shadow: var(--shadow); } 50% { box-shadow: 0 0 0 4px rgba(233, 199, 123, 0.35), 0 0 40px rgba(233, 199, 123, 0.35); } }
-.goldie-intro { display: flex; gap: 16px; align-items: center; }
-.goldie-intro p { margin: 0; }
 .did { margin: 0; }
 .did small { color: var(--accent-light); }
 
@@ -308,8 +306,6 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
   .save-row { flex-direction: column; }
   .goldie { right: 12px; bottom: 12px; }
   .goldie-launch svg { width: 56px; height: 56px; }
-  .goldie-intro { flex-direction: column; text-align: center; }
-  .goldie-intro .job-actions { justify-content: center; }
 }
 
 /* People who ask their device for less motion get a still page. */

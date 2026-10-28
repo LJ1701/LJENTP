@@ -28,15 +28,16 @@ export const INTERESTS = {
   "personal brand building": "Personal Brand"
 };
 
+// search: the one word job titles for this path usually contain, used by "See jobs for this role".
 export const CAREER_PATHS = [
-  { name: "Sports Content Creator", nextStep: "Post one piece of game content a week and add it to your achievements.", tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"] },
-  { name: "Team Video / Media Analyst", nextStep: "Offer to cut film for a local club or college team to build a reel.", tags: ["video editing", "data & analytics", "coaching", "coaching & player development"] },
-  { name: "Sports Journalist / Broadcaster", nextStep: "Start a match-report or postgame recap series in your own voice.", tags: ["writing", "broadcasting / on-camera", "content creation", "journalism & broadcasting"] },
-  { name: "Youth or Club Coach", nextStep: "Volunteer as an assistant coach with a local youth or club team.", tags: ["coaching", "playing experience", "event management", "coaching & player development"] },
-  { name: "Scouting / Analytics", nextStep: "Start logging your own scouting notes or stats on games you watch.", tags: ["data & analytics", "playing experience", "scouting & analytics"] },
-  { name: "Marketing & Sponsorship", nextStep: "Study how a team or athlete you follow runs their sponsor content.", tags: ["marketing & sales", "social media", "content creation", "marketing & sponsorship"] },
-  { name: "Event Operations", nextStep: "Volunteer to help run a local tournament or club event.", tags: ["event management", "event operations"] },
-  { name: "Front Office / Team Operations", nextStep: "Look for internship or part-time roles with local clubs or franchises.", tags: ["data & analytics", "marketing & sales", "event management", "playing experience", "front office / team ops"] }
+  { name: "Sports Content Creator", search: "content", nextStep: "Post one piece of game content a week and add it to your achievements.", tags: ["video editing", "social media", "writing", "photography / design", "content creation", "personal brand building"] },
+  { name: "Team Video / Media Analyst", search: "video", nextStep: "Offer to cut film for a local club or college team to build a reel.", tags: ["video editing", "data & analytics", "coaching", "coaching & player development"] },
+  { name: "Sports Journalist / Broadcaster", search: "writer", nextStep: "Start a match-report or postgame recap series in your own voice.", tags: ["writing", "broadcasting / on-camera", "content creation", "journalism & broadcasting"] },
+  { name: "Youth or Club Coach", search: "coach", nextStep: "Volunteer as an assistant coach with a local youth or club team.", tags: ["coaching", "playing experience", "event management", "coaching & player development"] },
+  { name: "Scouting / Analytics", search: "analyst", nextStep: "Start logging your own scouting notes or stats on games you watch.", tags: ["data & analytics", "playing experience", "scouting & analytics"] },
+  { name: "Marketing & Sponsorship", search: "marketing", nextStep: "Study how a team or athlete you follow runs their sponsor content.", tags: ["marketing & sales", "social media", "content creation", "marketing & sponsorship"] },
+  { name: "Event Operations", search: "event", nextStep: "Volunteer to help run a local tournament or club event.", tags: ["event management", "event operations"] },
+  { name: "Front Office / Team Operations", search: "operations", nextStep: "Look for internship or part-time roles with local clubs or franchises.", tags: ["data & analytics", "marketing & sales", "event management", "playing experience", "front office / team ops"] }
 ];
 
 export const label = (tag) => SKILLS[tag] || INTERESTS[tag] || tag;

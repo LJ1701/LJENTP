@@ -5,9 +5,10 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, CAREER_PATHS, buildPlanSteps, topMatches, label } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
-import { honestBullets, coachReply, jobQuery } from "@/lib/gemini";
+import { honestBullets, coachReply } from "@/lib/gemini";
 import { searchJobs, searchLinks, jobsEnabled } from "@/lib/jobs";
 import { fitCheck } from "@/lib/fit";
+import { quickIntent, parseJobs } from "@/lib/intent";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -97,7 +98,15 @@ export async function askCoach(history, mode) {
     `CAREER PATHS (use the number for suggest_role): ${CAREER_PATHS.map((c, i) => `${i}=${c.name}`).join(", ")}`
   ].filter(Boolean).join("\n");
 
+  // Simple requests (find jobs or internships, go to a step, take the tour) are answered by rules, with no AI call.
+  if (mode !== "interview") {
+    const quick = quickIntent(turns[turns.length - 1].text, p.location);
+    if (quick) return quickAnswer(quick, profile, plan);
+  }
+
   const res = await coachReply({ profileText: "USER DATA:\n" + contextText, achievements, contextText }, turns, mode === "interview" ? "interview" : "ask");
+  // AI busy, slow or out of free answers: the chat offers the things that work without it.
+  if (res.error) return { ...res, offline: true };
   // Asked for jobs or internships: Goldie's reply already says what to search, so the real postings are
   // fetched right here and shown in the chat (no second AI call).
   if (res.action === "search_jobs") {
@@ -106,6 +115,30 @@ export async function askCoach(history, mode) {
     res.jobs = await jobResults({ keywords: res.jobKeywords, location: where, summary }, profile);
   }
   return res;
+}
+
+// An instant answer in the same shape as an AI reply, marked "instant" so the chat can say no AI was used.
+async function quickAnswer(quick, profile, plan) {
+  const base = { evidence: [], droppedEvidence: 0, unverified: [], nextStep: "", suggestRole: -1, instant: true, action: quick.action, actionQuery: "" };
+  if (quick.action === "start_tour") {
+    return { ...base, reply: "Let's go! Follow my bubble through the six steps.", followUps: ["Find sports internships", "Find sports jobs anywhere"] };
+  }
+  if (quick.action !== "search_jobs") {
+    return { ...base, reply: `Here's ${quick.label}.`, followUps: [plan ? "What should I do first on my plan?" : "Which match should I pick as my target?", "Find sports internships"] };
+  }
+  const q = quick.query;
+  const intern = /intern/i.test(q.keywords);
+  const jobs = await jobResults(q, profile);
+  const found = jobs.jobs && jobs.jobs.length;
+  return {
+    ...base,
+    actionQuery: q.summary,
+    reply: !found ? "I couldn't reach the job sources just now. These searches open real postings:"
+      : jobs.query.summary !== q.summary ? `Nothing open for ${q.summary.toLowerCase()} right now, so here's every sports ${intern ? "internship" : "job"} I can find.`
+      : `Here's what's open: ${q.summary.charAt(0).toLowerCase()}${q.summary.slice(1)}. Tap Fit check on any posting to see what you can already prove.`,
+    jobs,
+    followUps: [found ? "Which of these fits me best?" : "Find sports jobs anywhere", intern ? "Find full-time sports jobs" : "Find sports internships", plan ? "Take me to my plan" : "Show my matches"]
+  };
 }
 
 // Switches the public proof link on or off. The first time it goes on, a random 10-character code is made.
@@ -133,7 +166,7 @@ export async function toggleStep(formData) {
   redirect("/profile#plan");
 }
 
-// Job search: Gemini reads the request, Adzuna and sports employers' career boards supply the real postings,
+// Job search: plain rules read the request, Adzuna and sports employers' career boards supply the real postings,
 // and each posting gets a fit check against the user's own saved evidence.
 async function jobResults(q, profile) {
   const links = searchLinks(q.keywords, q.location);
@@ -157,9 +190,8 @@ export async function findJobs(text) {
   const { supabase, user } = await currentUser();
   const request = String(text || "").trim().slice(0, 200) || "sports jobs that fit me";
   const { data: profile } = await supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle();
-  const matches = profile ? topMatches(effectiveProfile(profile)) : [];
-  const q = await jobQuery(request, { city: profile && profile.location, matches: matches.map((m) => m.name).join(", ") });
-  return jobResults(q, profile);
+  // Read with plain rules (no AI call), so searching works even when the AI is busy.
+  return jobResults(parseJobs(request, profile && profile.location), profile);
 }
 
 // Fit check for a pasted job posting.

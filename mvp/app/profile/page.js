@@ -4,9 +4,9 @@ import { SKILLS, INTERESTS, SPORTS, ROLES, CAREER_PATHS, topMatches, label, jobL
 import { effectiveProfile } from "@/lib/detect";
 import { saveProfile, setTarget, toggleStep, setPublic } from "./actions";
 import ResumeBullets from "./resume-bullets";
-import Goldie, { GoldieButtons, GoldieBall } from "../goldie";
+import Goldie from "../goldie";
 import SaveAccount from "./save-account";
-import JobSearch from "./job-search";
+import JobSearch, { SearchFor } from "./job-search";
 import CopyButton from "./copy-button";
 
 export const dynamic = "force-dynamic";
@@ -39,7 +39,7 @@ export default async function ProfilePage({ searchParams }) {
         <p className="eyebrow">Your sports career workspace</p>
         <h1>{firstName ? <>Welcome back, <span className="gold-text">{firstName}</span></> : <>Build your <span className="gold-text">Sports Passport</span></>}</h1>
         <nav className="step-nav" aria-label="Sections">
-          <a href="#passport">1 Passport</a><a href="#matches">2 Matches</a><a href="#jobs">3 Jobs &amp; internships</a><a href="#plan">4 Plan</a><a href="#coach">5 Goldie</a><a href="#proof">6 Proof link</a>
+          <a href="#passport">1 Passport</a><a href="#matches">2 Matches</a><a href="#jobs">3 Jobs &amp; internships</a><a href="#plan">4 Plan</a><a href="#proof">5 Proof</a>
         </nav>
       </div>
       {saveStage && <SaveAccount stage={saveStage} pendingEmail={user.new_email} />}
@@ -49,7 +49,6 @@ export default async function ProfilePage({ searchParams }) {
 
       <Step n="1" id="passport">Your Sports Passport</Step>
       <form action={saveProfile} className="card">
-        <p className="muted">For anyone heading into the sports industry: you don&apos;t need to have played. Coaching, creating, organizing, selling or studying all count.</p>
         <div className="row">
           <div><label htmlFor="full_name">Name</label><input id="full_name" name="full_name" type="text" defaultValue={p.full_name} /></div>
           <div><label htmlFor="location">City</label><input id="location" name="location" type="text" placeholder="Dallas, TX" defaultValue={p.location} /></div>
@@ -92,7 +91,6 @@ export default async function ProfilePage({ searchParams }) {
       {eff.auto.size > 0 && (
         <div className="card found">
           <h3>Found in your achievements</h3>
-          <p className="muted">These count toward your matches even though you didn&apos;t tick them:</p>
           <ul>
             {[...eff.auto].map((t) => <li key={t}><strong>{label(t)}</strong> · from &ldquo;{eff.evidence[t]}&rdquo;</li>)}
           </ul>
@@ -114,27 +112,24 @@ export default async function ProfilePage({ searchParams }) {
               </ul>
             )}
             <p>Missing: {m.gaps.length ? m.gaps.map(label).join(", ") : "nothing from the core skills"}</p>
-            <p><small>Search openings:{" "}
-              {jobLinks(m.idx, p.location).map(([name, url], i) => (
-                <span key={name}>{i > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{name}</a></span>
-              ))}
-            </small></p>
-            <form action={setTarget}>
-              <input type="hidden" name="role_idx" value={m.idx} />
-              <button type="submit" disabled={plan?.role_idx === m.idx}>{plan?.role_idx === m.idx ? "✓ My target role" : "Make this my target role"}</button>
-            </form>
+            <div className="job-actions">
+              <form action={setTarget}>
+                <input type="hidden" name="role_idx" value={m.idx} />
+                <button type="submit" disabled={plan?.role_idx === m.idx}>{plan?.role_idx === m.idx ? "✓ My target role" : "Make this my target role"}</button>
+              </form>
+              <SearchFor query={`${CAREER_PATHS[m.idx].search} jobs`}>See jobs for this role</SearchFor>
+            </div>
           </div>
         ))}
       </div>
 
       <Step n="3" id="jobs">Sports jobs &amp; internships</Step>
       <div className="card">
-        <p className="muted">Ask in your own words. Real postings come back from Adzuna and the career pages of sports employers, from anywhere in the US and beyond, and each one shows how much of it you can already prove.</p>
         {profile ? (
           <JobSearch starters={[
             "Sports internships",
             "Sports jobs near me",
-            matches[0] ? `${matches[0].name} jobs` : "Entry-level sports jobs",
+            matches[0] ? `${CAREER_PATHS[matches[0].idx].search.replace(/^./, (c) => c.toUpperCase())} jobs` : "Entry-level sports jobs",
             "Remote sports marketing jobs"
           ]} />
         ) : <p>Save your Passport first so results can be checked against your proof.</p>}
@@ -163,23 +158,13 @@ export default async function ProfilePage({ searchParams }) {
         )}
       </div>
 
-      <Step n="5" id="coach">Goldie, your AI coach</Step>
-      <div className="card goldie-intro">
-        <GoldieBall size={72} />
-        <div>
-          <p>Goldie knows your Passport, matches and plan. Ask anything, practise an interview, or say &ldquo;find me sports internships&rdquo; and she&apos;ll show real postings right in the chat. Every quote is checked against your own achievements.</p>
-          <GoldieButtons canInterview={!!plan} />
-        </div>
-      </div>
-      {profile && <ResumeBullets />}
-
-      <Step n="6" id="proof">Your public proof link</Step>
+      <Step n="5" id="proof">Your proof</Step>
       <div className="card">
         {!profile ? (
           <p>Save your Passport first.</p>
         ) : p.is_public && p.public_code ? (
           <>
-            <p className="ok">On. Anyone with this link sees your profile, evidence and plan progress (never your email). It shows a gold preview card when pasted into LinkedIn, iMessage or a group chat.</p>
+            <p className="ok">Your proof link is live. Your email is never shown.</p>
             <p className="proof-url"><a href={`/p/${p.public_code}`}>{proofUrl}</a></p>
             <div className="job-actions">
               <CopyButton text={proofUrl} />
@@ -187,12 +172,10 @@ export default async function ProfilePage({ searchParams }) {
             </div>
           </>
         ) : (
-          <>
-            <p>Off. Turn it on to get a link you can paste into a job application or share with a coach. You can turn it off any time.</p>
-            <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">Turn on my public proof link</button></form>
-          </>
+          <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">Create my public proof link</button></form>
         )}
       </div>
+      {profile && <ResumeBullets />}
       <Goldie coach={{
         firstName,
         paths: CAREER_PATHS.map((c, i) => ({ name: c.name, links: jobLinks(i, p.location) })),
