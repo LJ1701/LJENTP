@@ -12,7 +12,7 @@ import GuestButton from "./guest-button";
 const TOUR = [
   ["passport", "This is your Sports Passport. Fill in who you are, then add achievements, one per line. They're your proof."],
   ["matches", "Your career matches land here: the skills you have for each path, and what's still missing."],
-  ["jobs", "Live sports jobs. Type what you want, like \"NBA jobs\", then press Fit check on any listing."],
+  ["jobs", "Sports jobs and internships, from anywhere. Type what you want, like \"marketing internships\", then press Fit check on any posting."],
   ["plan", "Pick a target role and your plan appears here. Tick steps off as you go."],
   ["coach", "That's me! Ask me anything, or practise an interview for your target role."],
   ["proof", "Turn on your proof link and paste it into applications. You can switch it off any time."]
@@ -134,17 +134,13 @@ export default function Goldie({ coach }) {
   const startTour = () => { closeBubble(); setOpen(false); setTour(0); };
 
   // Runs a page action Goldie's answer asked for. Only these known names do anything.
-  function onAction(action, query) {
+  function onAction(action) {
     if (action === "start_tour") return startTour();
-    const small = window.innerWidth < 760;
-    if (action === "search_jobs") {
-      window.dispatchEvent(new CustomEvent("goldie:search", { detail: { query: query || "sports jobs" } }));
-      spotlight("jobs");
-    } else if (SECTIONS[action]) {
-      spotlight(SECTIONS[action]);
-    } else return;
+    // Job searches show their postings inside the chat, so the page stays where it is.
+    if (!SECTIONS[action]) return;
+    spotlight(SECTIONS[action]);
     // On a phone the panel covers the page, so step aside and leave a note.
-    if (small) { setOpen(false); setBubble("moved"); }
+    if (window.innerWidth < 760) { setOpen(false); setBubble("moved"); }
   }
 
   const step = tour !== null ? TOUR[tour] : null;
@@ -169,7 +165,7 @@ export default function Goldie({ coach }) {
             </>
           ) : signedIn ? (
             <div className="goldie-script">
-              <p>Welcome back! Your Passport, matches, live jobs and plan are all on one page, and I can answer questions there.</p>
+              <p>Welcome back! Your Passport, matches, jobs and plan are all on one page, and I can answer questions there.</p>
               <a className="cta" href="/profile">Open my Passport →</a>
             </div>
           ) : (
@@ -180,7 +176,7 @@ export default function Goldie({ coach }) {
               {howOpen && (
                 <ol className="goldie-how">
                   <li>Fill in your Sports Passport: what you&apos;ve done, one achievement per line.</li>
-                  <li>See your sports career matches and real jobs hiring now, each with a fit check.</li>
+                  <li>See your sports career matches and real jobs and internships, each with a fit check.</li>
                   <li>Follow your plan and share one proof link with employers.</li>
                 </ol>
               )}

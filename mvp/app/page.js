@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 const FEATURES = [
   ["🧭", "Career matches", "Sports roles that fit what you've actually done, with the proof behind each one."],
-  ["📡", "Live sports jobs", "Ask in your own words. Real listings come back, each with a fit check."],
+  ["📡", "Jobs & internships", "Ask in your own words. Real postings from across the sports industry, each with a fit check."],
   ["🏅", "Proof link", "One link with your evidence and progress, ready for any application."]
 ];
 
@@ -22,7 +22,7 @@ export default async function Home({ searchParams }) {
           <div className="hero-copy">
             <p className="eyebrow">AI sports career discovery · by LJSOCCER</p>
             <h1 id="heroTitle" className="hero-title">Find your place in the sports industry. <span className="gold-text">Prove it.</span></h1>
-            <p className="hero-sub">Whether you played, coached, created, organized or just love the game: see the sports careers you fit, the live jobs hiring now, and exactly what you can prove.</p>
+            <p className="hero-sub">Whether you played, coached, created, organized or just love the game: see the sports careers you fit, real jobs and internships hiring now, and exactly what you can prove.</p>
             {user ? <a href="/profile" className="cta big">Open my Sports Passport →</a> : <GuestButton />}
             {!user && <p className="hero-note"><small>Free. Try it as a guest in one click, then add your email to keep it. <a href="#start">Sign in</a></small></p>}
           </div>

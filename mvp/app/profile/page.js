@@ -39,7 +39,7 @@ export default async function ProfilePage({ searchParams }) {
         <p className="eyebrow">Your sports career workspace</p>
         <h1>{firstName ? <>Welcome back, <span className="gold-text">{firstName}</span></> : <>Build your <span className="gold-text">Sports Passport</span></>}</h1>
         <nav className="step-nav" aria-label="Sections">
-          <a href="#passport">1 Passport</a><a href="#matches">2 Matches</a><a href="#jobs">3 Live jobs</a><a href="#plan">4 Plan</a><a href="#coach">5 Goldie</a><a href="#proof">6 Proof link</a>
+          <a href="#passport">1 Passport</a><a href="#matches">2 Matches</a><a href="#jobs">3 Jobs &amp; internships</a><a href="#plan">4 Plan</a><a href="#coach">5 Goldie</a><a href="#proof">6 Proof link</a>
         </nav>
       </div>
       {saveStage && <SaveAccount stage={saveStage} pendingEmail={user.new_email} />}
@@ -127,14 +127,14 @@ export default async function ProfilePage({ searchParams }) {
         ))}
       </div>
 
-      <Step n="3" id="jobs">Live sports jobs</Step>
+      <Step n="3" id="jobs">Sports jobs &amp; internships</Step>
       <div className="card">
-        <p className="muted">Ask in your own words. AI turns it into a search, real listings come back, and each one shows how much of it you can already prove.</p>
+        <p className="muted">Ask in your own words. Real postings come back from Adzuna and the career pages of sports employers, from anywhere in the US and beyond, and each one shows how much of it you can already prove.</p>
         {profile ? (
           <JobSearch starters={[
+            "Sports internships",
             "Sports jobs near me",
             matches[0] ? `${matches[0].name} jobs` : "Entry-level sports jobs",
-            "Athletic department jobs",
             "Remote sports marketing jobs"
           ]} />
         ) : <p>Save your Passport first so results can be checked against your proof.</p>}
@@ -167,7 +167,7 @@ export default async function ProfilePage({ searchParams }) {
       <div className="card goldie-intro">
         <GoldieBall size={72} />
         <div>
-          <p>Goldie knows your Passport, matches and plan. Ask anything, practise an interview, or say &ldquo;find me NBA jobs&rdquo; and she&apos;ll run the search. Every quote is checked against your own achievements.</p>
+          <p>Goldie knows your Passport, matches and plan. Ask anything, practise an interview, or say &ldquo;find me sports internships&rdquo; and she&apos;ll show real postings right in the chat. Every quote is checked against your own achievements.</p>
           <GoldieButtons canInterview={!!plan} />
         </div>
       </div>
@@ -199,7 +199,7 @@ export default async function ProfilePage({ searchParams }) {
         targetIdx: plan ? plan.role_idx : null,
         starters: [
           !profile ? "How do I fill in my Passport?" : matches[0] ? `Why is ${matches[0].name} my best match?` : "Which sports career fits me best?",
-          "Find me sports jobs near me",
+          "Find me sports internships",
           plan ? "What should I do first on my plan?" : "Which match should I pick as my target?"
         ]
       }} />

@@ -210,7 +210,7 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .found h3 { color: var(--ok); margin: 0 0 4px; }
 .evidence { margin: 4px 0; }
 
-/* Live jobs */
+/* Jobs & internships */
 .job-form { display: flex; gap: 8px; align-items: stretch; }
 .job-form input { flex: 1; }
 .job-form button { margin: 0; white-space: nowrap; }
@@ -224,6 +224,12 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .job-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
 .job-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
 .job-actions button, .job-actions form button { margin: 0; }
+.job-source { color: var(--muted); font-size: 12px; }
+.job-results.compact .job { padding: 12px; }
+.job-results.compact .job h3 { font-size: 15px; }
+.job-results.compact .job-actions { gap: 8px; }
+.job-results.compact .job-actions button { padding: 7px 14px; font-size: 13px; }
+.job-results.compact > button.ghost { width: 100%; }
 .badge-full { background: var(--gold); color: #1a1206; border-color: transparent; }
 .job-skeleton span { display: block; height: 74px; margin: 10px 0; border-radius: 14px; background: linear-gradient(90deg, var(--card-2), #1d212c, var(--card-2)); background-size: 200% 100%; animation: shimmer 1.2s linear infinite; }
 @keyframes shimmer { to { background-position: -200% 0; } }
