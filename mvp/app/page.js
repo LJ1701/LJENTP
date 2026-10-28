@@ -45,9 +45,9 @@ export default async function Home({ searchParams }) {
         </div>
         <div className="live-stats">
           <span className="live-dot" aria-hidden="true" />
-          <span><strong>{stats.total.toLocaleString("en-US")}</strong> sports job postings live</span>
-          <span><strong>{stats.internships}</strong> internships at sports companies</span>
-          <span><strong>{stats.sources}</strong> sources · updated hourly</span>
+          <span><strong>{stats.total.toLocaleString("en-US")}</strong> open jobs at sports companies</span>
+          <span><strong>{stats.internships}</strong> internships</span>
+          <span><strong>{stats.employers}</strong> employers · counted hourly</span>
         </div>
         <HomeSearch signedIn={!!user} />
         {stats.latest.length > 0 && (
