@@ -10,14 +10,13 @@ import GuestButton from "./guest-button";
 // on other pages Goldie gives a short scripted welcome (no AI call, so no Gemini quota is used).
 
 const TOUR = [
-  ["passport", "This is your Sports Passport. Fill in who you are, then add achievements, one per line. They're your proof."],
-  ["matches", "Your career matches land here: the skills you have for each path, and what's still missing."],
+  ["passport", "This is your Sports Passport. Paste your résumé or fill it in, and add achievements, one per line. They're your proof."],
+  ["path", "Your path: the sports careers you fit, with proof for each skill. Pick a target and your plan appears right inside it."],
   ["jobs", "Real sports jobs and internships, from anywhere. Ask for what you want, then press Fit check on any posting."],
-  ["plan", "Pick a target role and your plan appears here. Tick steps off as you go."],
   ["proof", "Your proof: one public link and honest résumé bullets for every application."],
-  [null, "That's it! I'm always here in the corner. Ask me anything, find jobs, or practise an interview."]
+  [null, "That's it! Tick plan steps as you go and they become proof. I'm always here in the corner."]
 ];
-const SECTIONS = { go_passport: "passport", go_matches: "matches", go_jobs: "jobs", go_plan: "plan", go_proof: "proof" };
+const SECTIONS = { go_passport: "passport", go_matches: "path", go_jobs: "jobs", go_plan: "path", go_proof: "proof" };
 
 const store = {
   get: (k) => { try { return window.localStorage.getItem(k); } catch { return null; } },
@@ -58,6 +57,16 @@ export function GoldieBall({ talking = false, size = 64 }) {
         ? <ellipse className="goldie-mouth" cx="50" cy="67" rx="5" ry="3.5" fill="#1a1206" />
         : <path d="M43 65 Q50 71 57 65" fill="none" stroke="#1a1206" strokeWidth="2.4" strokeLinecap="round" />}
     </svg>
+  );
+}
+
+// Goldie on the homepage hero: click to open the guide.
+export function HeroGoldie() {
+  return (
+    <button type="button" className="hero-goldie" onClick={() => window.dispatchEvent(new CustomEvent("goldie:open"))} aria-label="Say hi to Goldie, your guide">
+      <span className="hero-goldie-bubble" aria-hidden="true">Hi! I&apos;m Goldie.</span>
+      <GoldieBall size={78} />
+    </button>
   );
 }
 

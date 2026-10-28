@@ -48,7 +48,7 @@ export async function setTarget(formData) {
   // Skills found in achievements count as "have", so the plan doesn't ask the user to build them again.
   await supabase.from("plans").upsert({ user_id: user.id, role_idx: idx, steps: buildPlanSteps(idx, effectiveProfile(profile)), updated_at: new Date().toISOString() });
   revalidatePath("/profile");
-  redirect("/profile#plan");
+  redirect("/profile#path");
 }
 
 // AI résumé bullets from the user's SAVED achievements (read on the server, sent to Gemini on the server).
@@ -121,7 +121,7 @@ export async function askCoach(history, mode) {
 async function quickAnswer(quick, profile, plan) {
   const base = { evidence: [], droppedEvidence: 0, unverified: [], nextStep: "", suggestRole: -1, instant: true, action: quick.action, actionQuery: "" };
   if (quick.action === "start_tour") {
-    return { ...base, reply: "Let's go! Follow my bubble through the six steps.", followUps: ["Find sports internships", "Find sports jobs anywhere"] };
+    return { ...base, reply: "Let's go! Follow my bubble through the steps.", followUps: ["Find sports internships", "Find sports jobs anywhere"] };
   }
   if (quick.action !== "search_jobs") {
     return { ...base, reply: `Here's ${quick.label}.`, followUps: [plan ? "What should I do first on my plan?" : "Which match should I pick as my target?", "Find sports internships"] };
@@ -155,15 +155,37 @@ export async function setPublic(formData) {
   redirect("/profile#proof");
 }
 
-export async function toggleStep(formData) {
+// Ticks a plan step. A note about what they did is saved as a new achievement line, so the plan builds proof.
+export async function completeStep(i, note) {
   const { supabase, user } = await currentUser();
-  const i = Number(formData.get("step"));
   const { data: plan } = await supabase.from("plans").select("steps").eq("user_id", user.id).maybeSingle();
-  if (!plan || !plan.steps[i]) return;
-  const steps = plan.steps.map((s, n) => (n === i ? { ...s, done: !s.done } : s));
+  if (!plan || !plan.steps[i]) return { error: "That step wasn't found. Refresh the page." };
+  const steps = plan.steps.map((s, n) => (n === i ? { ...s, done: true } : s));
+  const { error } = await supabase.from("plans").update({ steps, updated_at: new Date().toISOString() }).eq("user_id", user.id);
+  if (error) return { error: "Couldn't save that step. Try again." };
+  const line = clean(note, 200).replace(/\s+/g, " ");
+  let added = false;
+  if (line) {
+    const { data: profile } = await supabase.from("sports_profiles").select("achievements").eq("user_id", user.id).maybeSingle();
+    const current = String((profile && profile.achievements) || "").trim();
+    const exists = current.split("\n").some((l) => l.trim().toLowerCase() === line.toLowerCase());
+    if (profile && !exists && (current + "\n" + line).length <= 4000) {
+      const { error: e2 } = await supabase.from("sports_profiles").update({ achievements: current ? `${current}\n${line}` : line, updated_at: new Date().toISOString() }).eq("user_id", user.id);
+      added = !e2;
+    }
+  }
+  revalidatePath("/profile");
+  return { ok: true, added };
+}
+
+export async function undoStep(i) {
+  const { supabase, user } = await currentUser();
+  const { data: plan } = await supabase.from("plans").select("steps").eq("user_id", user.id).maybeSingle();
+  if (!plan || !plan.steps[i]) return { error: "That step wasn't found." };
+  const steps = plan.steps.map((s, n) => (n === i ? { ...s, done: false } : s));
   await supabase.from("plans").update({ steps, updated_at: new Date().toISOString() }).eq("user_id", user.id);
   revalidatePath("/profile");
-  redirect("/profile#plan");
+  return { ok: true };
 }
 
 // Job search: plain rules read the request, Adzuna and sports employers' career boards supply the real postings,

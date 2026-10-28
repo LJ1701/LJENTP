@@ -1,6 +1,7 @@
 "use client";
 import { useState, useTransition, useEffect } from "react";
 import { findJobs, checkFit, addGapToPlan } from "./actions";
+import { PENDING_KEY } from "../home-search";
 
 const ERRORS = {
   off: "Job listings aren't switched on yet. These searches open real listings for the same request:",
@@ -41,6 +42,14 @@ function FitRows({ fit }) {
       ))}
     </ul>
   );
+}
+
+// A search started on the homepage ("See my fit"), waiting until the Passport is saved.
+export function PendingNote() {
+  const [q, setQ] = useState("");
+  useEffect(() => { try { setQ(window.localStorage.getItem(PENDING_KEY) || ""); } catch {} }, []);
+  if (!q) return null;
+  return <p className="pending-note">Save your Passport and we&apos;ll check your fit for &ldquo;{q}&rdquo;.</p>;
 }
 
 // A button anywhere on the page that runs a search in the jobs step and scrolls there.
@@ -118,6 +127,13 @@ export default function JobSearch({ starters }) {
     setText(q);
     start(async () => setResult(await findJobs(q)));
   };
+
+  // A search started on the homepage runs here once, now with fit checks.
+  useEffect(() => {
+    let q = null;
+    try { q = window.localStorage.getItem(PENDING_KEY); window.localStorage.removeItem(PENDING_KEY); } catch {}
+    if (q) { search(q); setTimeout(() => document.getElementById("jobs")?.scrollIntoView({ behavior: "smooth", block: "start" }), 300); }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Goldie can run a search for the user ("find me NBA jobs").
   useEffect(() => {

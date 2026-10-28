@@ -2,14 +2,25 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, ROLES, CAREER_PATHS, topMatches, label, jobLinks } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
-import { saveProfile, setTarget, toggleStep, setPublic } from "./actions";
+import { saveProfile, setTarget, setPublic } from "./actions";
+import PlanSteps from "./plan-steps";
+import ResumeFill from "./resume-fill";
 import ResumeBullets from "./resume-bullets";
 import Goldie from "../goldie";
 import SaveAccount from "./save-account";
-import JobSearch, { SearchFor } from "./job-search";
+import JobSearch, { SearchFor, PendingNote } from "./job-search";
 import CopyButton from "./copy-button";
 
 export const dynamic = "force-dynamic";
+
+// The saved plan for the target role: progress, then steps that turn into proof when ticked.
+const PlanBlock = ({ plan, done }) => (
+  <div className="plan-block">
+    <p className="plan-head"><strong>Your plan</strong> · {done} of {plan.steps.length} done</p>
+    <div className="meter" aria-hidden="true"><span style={{ width: `${Math.round((done / plan.steps.length) * 100)}%` }} /></div>
+    <PlanSteps steps={plan.steps} />
+  </div>
+);
 
 const Step = ({ n, children, id }) => <h2 className="step-title" id={id}><span className="step-num">{n}</span> {children}</h2>;
 
@@ -39,7 +50,7 @@ export default async function ProfilePage({ searchParams }) {
         <p className="eyebrow">Your sports career workspace</p>
         <h1>{firstName ? <>Welcome back, <span className="gold-text">{firstName}</span></> : <>Build your <span className="gold-text">Sports Passport</span></>}</h1>
         <nav className="step-nav" aria-label="Sections">
-          <a href="#passport">1 Passport</a><a href="#matches">2 Matches</a><a href="#jobs">3 Jobs &amp; internships</a><a href="#plan">4 Plan</a><a href="#proof">5 Proof</a>
+          <a href="#passport">1 Passport</a><a href="#path">2 Your path</a><a href="#jobs">3 Jobs &amp; internships</a><a href="#proof">4 Proof</a>
         </nav>
       </div>
       {saveStage && <SaveAccount stage={saveStage} pendingEmail={user.new_email} />}
@@ -48,7 +59,10 @@ export default async function ProfilePage({ searchParams }) {
       {error && <p className="error">{error}</p>}
 
       <Step n="1" id="passport">Your Sports Passport</Step>
-      <form action={saveProfile} className="card">
+      {/* key: when a plan step adds proof, the form reloads with the new achievements instead of the old text. */}
+      <form action={saveProfile} className="card" key={p.updated_at || "new"}>
+        {!profile && <PendingNote />}
+        <ResumeFill />
         <div className="row">
           <div><label htmlFor="full_name">Name</label><input id="full_name" name="full_name" type="text" defaultValue={p.full_name} /></div>
           <div><label htmlFor="location">City</label><input id="location" name="location" type="text" placeholder="Dallas, TX" defaultValue={p.location} /></div>
@@ -97,30 +111,43 @@ export default async function ProfilePage({ searchParams }) {
         </div>
       )}
 
-      <Step n="2" id="matches">Your career matches</Step>
+      <Step n="2" id="path">Your path</Step>
       <div className="card">
-        {!profile && <p>Save your Passport to see matches.</p>}
+        {!profile && <p>Save your Passport to see the sports careers you fit.</p>}
         {profile && !matches.length && <p>Tick a few skills or interests, or add achievements, to see matches.</p>}
-        {matches.map((m) => (
-          <div key={m.idx} className="match">
-            <div className="match-head"><strong>{m.name}</strong><span className="badge">{m.strength}</span></div>
-            <div className="meter" aria-label={`${Math.round(m.ratio * 100)}% of this role's skills`}><span style={{ width: `${Math.round(m.ratio * 100)}%` }} /></div>
-            <p>You have: {m.matched.map(label).join(", ")}</p>
-            {m.matched.some((t) => eff.evidence[t]) && (
-              <ul className="evidence">
-                {m.matched.filter((t) => eff.evidence[t]).map((t) => <li key={t}><small>{label(t)}: &ldquo;{eff.evidence[t]}&rdquo;</small></li>)}
-              </ul>
-            )}
-            <p>Missing: {m.gaps.length ? m.gaps.map(label).join(", ") : "nothing from the core skills"}</p>
-            <div className="job-actions">
-              <form action={setTarget}>
-                <input type="hidden" name="role_idx" value={m.idx} />
-                <button type="submit" disabled={plan?.role_idx === m.idx}>{plan?.role_idx === m.idx ? "✓ My target role" : "Make this my target role"}</button>
-              </form>
-              <SearchFor query={`${CAREER_PATHS[m.idx].search} jobs`}>See jobs for this role</SearchFor>
-            </div>
+        {/* The target role comes first, with its plan inside; it may be a path outside the top matches. */}
+        {plan && !matches.some((m) => m.idx === plan.role_idx) && (
+          <div className="match target">
+            <div className="match-head"><strong>{CAREER_PATHS[plan.role_idx].name}</strong><span className="badge badge-full">Your target</span></div>
+            <PlanBlock plan={plan} done={done} />
           </div>
-        ))}
+        )}
+        {[...matches].sort((x, y) => (y.idx === plan?.role_idx) - (x.idx === plan?.role_idx)).map((m) => {
+          const isTarget = plan?.role_idx === m.idx;
+          return (
+            <div key={m.idx} className={isTarget ? "match target" : "match"}>
+              <div className="match-head"><strong>{m.name}</strong><span className={isTarget ? "badge badge-full" : "badge"}>{isTarget ? "Your target" : m.strength}</span></div>
+              <div className="meter" aria-label={`${Math.round(m.ratio * 100)}% of this role's skills`}><span style={{ width: `${Math.round(m.ratio * 100)}%` }} /></div>
+              <p>You have: {m.matched.map(label).join(", ")}</p>
+              {m.matched.some((t) => eff.evidence[t]) && (
+                <ul className="evidence">
+                  {m.matched.filter((t) => eff.evidence[t]).map((t) => <li key={t}><small>{label(t)}: &ldquo;{eff.evidence[t]}&rdquo;</small></li>)}
+                </ul>
+              )}
+              <p>Missing: {m.gaps.length ? m.gaps.map(label).join(", ") : "nothing from the core skills"}</p>
+              {isTarget && <PlanBlock plan={plan} done={done} />}
+              <div className="job-actions">
+                {!isTarget && (
+                  <form action={setTarget}>
+                    <input type="hidden" name="role_idx" value={m.idx} />
+                    <button type="submit">Make this my target</button>
+                  </form>
+                )}
+                <SearchFor query={`${CAREER_PATHS[m.idx].search} jobs`}>See jobs for this role</SearchFor>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <Step n="3" id="jobs">Sports jobs &amp; internships</Step>
@@ -135,30 +162,7 @@ export default async function ProfilePage({ searchParams }) {
         ) : <p>Save your Passport first so results can be checked against your proof.</p>}
       </div>
 
-      <Step n="4" id="plan">Your plan</Step>
-      <div className="card">
-        {!plan ? (
-          <p>Pick a target role in step 2 to get a saved plan.</p>
-        ) : (
-          <>
-            <p><strong>{CAREER_PATHS[plan.role_idx].name}</strong> · {done} of {plan.steps.length} steps done</p>
-            <div className="meter" aria-hidden="true"><span style={{ width: `${Math.round((done / plan.steps.length) * 100)}%` }} /></div>
-            <ul className="plan-list">
-              {plan.steps.map((s, i) => (
-                <li key={i}>
-                  <form action={toggleStep}>
-                    <input type="hidden" name="step" value={i} />
-                    <button type="submit" className={s.done ? "check done" : "check"} aria-label={s.done ? "Mark not done" : "Mark done"}>{s.done ? "✓" : ""}</button>
-                  </form>
-                  <span className={s.done ? "done-text" : ""}>{s.text}</span>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </div>
-
-      <Step n="5" id="proof">Your proof</Step>
+      <Step n="4" id="proof">Your proof</Step>
       <div className="card">
         {!profile ? (
           <p>Save your Passport first.</p>
