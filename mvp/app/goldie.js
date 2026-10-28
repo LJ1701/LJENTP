@@ -12,12 +12,12 @@ import GuestButton from "./guest-button";
 const TOUR = [
   ["passport", "This is your Sports Passport. Fill in who you are, then add achievements, one per line. They're your proof."],
   ["matches", "Your career matches land here: the skills you have for each path, and what's still missing."],
-  ["jobs", "Sports jobs and internships, from anywhere. Type what you want, like \"marketing internships\", then press Fit check on any posting."],
+  ["jobs", "Real sports jobs and internships, from anywhere. Ask for what you want, then press Fit check on any posting."],
   ["plan", "Pick a target role and your plan appears here. Tick steps off as you go."],
-  ["coach", "That's me! Ask me anything, or practise an interview for your target role."],
-  ["proof", "Turn on your proof link and paste it into applications. You can switch it off any time."]
+  ["proof", "Your proof: one public link and honest résumé bullets for every application."],
+  [null, "That's it! I'm always here in the corner. Ask me anything, find jobs, or practise an interview."]
 ];
-const SECTIONS = { go_passport: "passport", go_matches: "matches", go_jobs: "jobs", go_plan: "plan", go_coach: "coach", go_proof: "proof" };
+const SECTIONS = { go_passport: "passport", go_matches: "matches", go_jobs: "jobs", go_plan: "plan", go_proof: "proof" };
 
 const store = {
   get: (k) => { try { return window.localStorage.getItem(k); } catch { return null; } },
@@ -58,18 +58,6 @@ export function GoldieBall({ talking = false, size = 64 }) {
         ? <ellipse className="goldie-mouth" cx="50" cy="67" rx="5" ry="3.5" fill="#1a1206" />
         : <path d="M43 65 Q50 71 57 65" fill="none" stroke="#1a1206" strokeWidth="2.4" strokeLinecap="round" />}
     </svg>
-  );
-}
-
-// Buttons elsewhere on the page that open Goldie (optionally straight into interview practice).
-export function GoldieButtons({ canInterview }) {
-  const open = (mode) => window.dispatchEvent(new CustomEvent("goldie:open", { detail: { mode } }));
-  return (
-    <div className="job-actions">
-      <button type="button" onClick={() => open("ask")}>Ask Goldie</button>
-      <button type="button" className="ghost" onClick={() => open("interview")} disabled={!canInterview} title={canInterview ? "" : "Pick a target role first"}>Practise an interview</button>
-      <button type="button" className="ghost" onClick={() => window.dispatchEvent(new CustomEvent("goldie:tour"))}>Take the tour</button>
-    </div>
   );
 }
 
@@ -125,7 +113,8 @@ export default function Goldie({ coach }) {
 
   useEffect(() => {
     if (tour === null) { document.querySelectorAll(".goldie-spot").forEach((el) => el.classList.remove("goldie-spot")); return; }
-    spotlight(TOUR[tour][0]);
+    if (TOUR[tour][0]) spotlight(TOUR[tour][0]);
+    else document.querySelectorAll(".goldie-spot").forEach((el) => el.classList.remove("goldie-spot"));
   }, [tour, spotlight]);
 
   if (hidden) return null;

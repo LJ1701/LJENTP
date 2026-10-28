@@ -43,6 +43,16 @@ function FitRows({ fit }) {
   );
 }
 
+// A button anywhere on the page that runs a search in the jobs step and scrolls there.
+export function SearchFor({ query, children }) {
+  return (
+    <button type="button" className="ghost" onClick={() => {
+      window.dispatchEvent(new CustomEvent("goldie:search", { detail: { query } }));
+      document.getElementById("jobs")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }}>{children}</button>
+  );
+}
+
 // The postings for one search, each with a fit check. In Goldie's chat (compact) the first 5 show, then "Show more".
 export function JobResults({ result, compact = false }) {
   const [open, setOpen] = useState(null);

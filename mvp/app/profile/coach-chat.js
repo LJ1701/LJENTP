@@ -8,7 +8,7 @@ import { JobResults } from "./job-search";
 // paths: [{ name, links: [[site, url], ...] }] for the 8 career paths; targetIdx: current target role or null.
 // Inside Goldie (compact): onAction runs page actions from a reply, onBusy animates Goldie while she thinks,
 // and modeRequest ({ mode, at }) switches mode when a button elsewhere asks for interview practice.
-const DID = { go_passport: "Took you to your Passport", go_matches: "Took you to your matches", go_jobs: "Took you to jobs & internships", go_plan: "Took you to your plan", go_coach: "Took you to the coach", go_proof: "Took you to your proof link", search_jobs: "Searched real postings", start_tour: "Started the tour" };
+const DID = { go_passport: "Took you to your Passport", go_matches: "Took you to your matches", go_jobs: "Took you to jobs & internships", go_plan: "Took you to your plan", go_proof: "Took you to your proof link", search_jobs: "Searched real postings", start_tour: "Started the tour" };
 
 export default function CoachChat({ paths, targetIdx, starters, compact = false, onAction, onBusy, modeRequest }) {
   const [mode, setMode] = useState("ask");
@@ -64,7 +64,6 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
   return (
     <section aria-label="Goldie chat" className={compact ? "coach coach-compact" : "coach"}>
       {!compact && <h3>Ask your Career Coach</h3>}
-      <p><small>I read your saved Passport, matches and plan. Every quote I use is checked against your own achievements.</small></p>
 
       <div role="group" aria-label="Coach mode" className="coach-modes">
         <button type="button" aria-pressed={mode === "ask"} onClick={() => switchMode("ask")}>Ask questions</button>
@@ -72,7 +71,6 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
           Interview practice{targetIdx !== null ? `: ${paths[targetIdx].name}` : ""}
         </button>
       </div>
-      {targetIdx === null && <p><small>Interview practice unlocks once you pick a target role under your matches.</small></p>}
 
       <div className="coach-log" aria-live="polite">
         {!messages.length && mode === "ask" && (
@@ -143,7 +141,7 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
         <button type="submit" disabled={pending || !text.trim() || asked >= 10}>{pending ? "Sending…" : "Send"}</button>{" "}
         <small>{asked}/10 messages this visit</small>
       </form>
-      <p><small>Written by Google Gemini from your saved profile. It can still be wrong: check advice before acting on it.</small></p>
+      <p><small>AI can be wrong. Check advice before acting on it.</small></p>
     </section>
   );
 }

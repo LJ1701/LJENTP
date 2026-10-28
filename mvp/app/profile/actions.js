@@ -5,10 +5,10 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, CAREER_PATHS, buildPlanSteps, topMatches, label } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
-import { honestBullets, coachReply, jobQuery } from "@/lib/gemini";
+import { honestBullets, coachReply } from "@/lib/gemini";
 import { searchJobs, searchLinks, jobsEnabled } from "@/lib/jobs";
 import { fitCheck } from "@/lib/fit";
-import { quickIntent } from "@/lib/intent";
+import { quickIntent, parseJobs } from "@/lib/intent";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -166,7 +166,7 @@ export async function toggleStep(formData) {
   redirect("/profile#plan");
 }
 
-// Job search: Gemini reads the request, Adzuna and sports employers' career boards supply the real postings,
+// Job search: plain rules read the request, Adzuna and sports employers' career boards supply the real postings,
 // and each posting gets a fit check against the user's own saved evidence.
 async function jobResults(q, profile) {
   const links = searchLinks(q.keywords, q.location);
@@ -190,9 +190,8 @@ export async function findJobs(text) {
   const { supabase, user } = await currentUser();
   const request = String(text || "").trim().slice(0, 200) || "sports jobs that fit me";
   const { data: profile } = await supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle();
-  const matches = profile ? topMatches(effectiveProfile(profile)) : [];
-  const q = await jobQuery(request, { city: profile && profile.location, matches: matches.map((m) => m.name).join(", ") });
-  return jobResults(q, profile);
+  // Read with plain rules (no AI call), so searching works even when the AI is busy.
+  return jobResults(parseJobs(request, profile && profile.location), profile);
 }
 
 // Fit check for a pasted job posting.
