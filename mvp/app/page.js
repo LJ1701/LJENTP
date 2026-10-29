@@ -25,7 +25,7 @@ export default async function Home({ searchParams }) {
           <div className="hero-copy">
             <p className="eyebrow">AI sports career discovery · by LJSOCCER</p>
             <h1 id="heroTitle" className="hero-title">Find your place in the sports industry. <span className="gold-text">Prove it.</span></h1>
-            <p className="hero-sub">Played, coached, created or just love the game: see the careers you fit, real jobs hiring now, and what you can already prove.</p>
+            <p className="hero-sub">Love sports? Find a job in sports that fits you. Then show what you can do.</p>
             {user ? <a href="/profile" className="cta big">Open my Sports Passport →</a> : <GuestButton />}
             {!user && <p className="hero-note"><small>Free · no account needed · <a href="#start">Sign in</a></small></p>}
           </div>
@@ -36,7 +36,7 @@ export default async function Home({ searchParams }) {
             <svg className="hero-sig" viewBox="0 0 200 200" aria-hidden="true">
               <polygon className="hero-sig-grid" points="100,30 150,50 170,100 150,150 100,170 50,150 30,100 50,50" />
               <polygon className="hero-sig-grid" points="100,65 125,75 135,100 125,125 100,135 75,125 65,100 75,75" />
-              <polygon className="hero-sig-shape" points="100,42 142,58 158,100 136,138 100,152 62,140 48,100 66,62" />
+              <polygon className="hero-sig-shape" points="100,44 140,60 156,100 140,140 100,156 60,140 44,100 60,60" />
             </svg>
             <img src="/logo.svg" alt="" className="hero-logo" />
             <div className="hero-scan" aria-hidden="true" />
