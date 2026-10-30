@@ -2,6 +2,7 @@
 import { useState, useTransition, useEffect } from "react";
 import { findJobs, checkFit, addGapToPlan } from "./actions";
 import { PENDING_KEY } from "../home-search";
+import { GAP_STEPS } from "@/lib/careers";
 
 const ERRORS = {
   off: "Job listings aren't switched on yet. These searches open real listings for the same request:",
@@ -29,13 +30,17 @@ function FitRows({ fit }) {
             <strong>{r.name}</strong>{" "}
             {r.status === "proof" && <small>proof: &ldquo;{r.quote}&rdquo;</small>}
             {r.status === "claimed" && <small>ticked, but no achievement shows it yet</small>}
-            {r.status === "gap" && (
-              added[r.tag] ? <small>{added[r.tag]}</small> : (
-                <button type="button" className="mini" disabled={pending} onClick={() => start(async () => {
-                  const res = await addGapToPlan(r.tag);
-                  setAdded((a) => ({ ...a, [r.tag]: res.error || (res.already ? "Already in your plan" : "Added to your plan ✓") }));
-                })}>Add to my plan</button>
-              )
+            {/* Close the gap: a 1-week step that ends in proof, one tap into the plan. */}
+            {r.status !== "proof" && GAP_STEPS[r.tag] && (
+              <span className="gap-step">
+                <small><strong>{r.status === "gap" ? "Close the gap this week:" : "Prove it this week:"}</strong> {GAP_STEPS[r.tag]}</small>
+                {added[r.tag] ? <small className="gap-done">{added[r.tag]}</small> : (
+                  <button type="button" className="mini" disabled={pending} onClick={() => start(async () => {
+                    const res = await addGapToPlan(r.tag);
+                    setAdded((a) => ({ ...a, [r.tag]: res.error || (res.already ? "Already in your plan" : "Added to your plan ✓ Tick it when it's done and it becomes proof.") }));
+                  })}>Add to my plan</button>
+                )}
+              </span>
             )}
           </span>
         </li>
