@@ -6,6 +6,12 @@ import "server-only";
 // Results are cached for an hour, so repeated searches don't hit the sources again.
 const SPORTS_WORDS = ["sport", "sports", "athletic", "athletics", "athlete", "team", "league", "stadium", "arena", "esports", "recreation", "fitness", "club", "coach", "coaching", "tournament", "ballpark", "nfl", "nba", "mlb", "nhl", "mls", "ncaa", "wnba", "nwsl", "fifa", "olympic"];
 const sportsRe = new RegExp(`\\b(${SPORTS_WORDS.join("|")})`, "i");
+// Clearly about sports: an Adzuna posting must use one of these somewhere. Words most job ads use ("team",
+// "club", "fitness", "coach") don't count on their own; they let in vets, ICU doctors and engineers.
+// Checked against live Adzuna results on 4 Nov 2026.
+const STRONG_SPORTS = ["sport", "sports", "athletic", "athletics", "athlete", "athletes", "league", "stadium", "arena", "esports", "ballpark", "tournament", "nfl", "nba", "mlb", "nhl", "mls", "ncaa", "wnba", "nwsl", "fifa", "olympic", "soccer", "football", "basketball", "baseball", "hockey", "volleyball", "tennis", "golf", "fans?", "season tickets?", "game ?days?", "ticketing"];
+const strongRe = new RegExp(`\\b(${STRONG_SPORTS.join("|")})\\b`, "i");
+const clearlySports = (j) => strongRe.test(`${j.title} ${j.company} ${j.snippet}`);
 
 const stripTags = (s) => String(s || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 
@@ -131,7 +137,10 @@ async function searchAdzuna({ keywords, location }) {
         source: "Adzuna"
       }))
       // Keep postings that are really about sports.
-      .filter((j) => j.url && sportsRe.test(`${j.title} ${j.company} ${j.snippet}`));
+      // Keep postings that are really about sports; for internship searches, the title must say so too
+      // (Adzuna also matches "internship" anywhere in a description).
+      .filter((j) => j.url && clearlySports(j))
+      .filter((j) => !wantsIntern(keywords) || INTERN.test(j.title));
     return { jobs, total: data.count || 0 };
   } catch {
     return { error: "down" };
