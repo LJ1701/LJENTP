@@ -70,6 +70,34 @@ export async function honestBullets(achievements) {
   }
 }
 
+// ---------- Résumé PDF reader ----------
+// Copies the text out of an uploaded résumé PDF (base64), so the Passport's résumé filler can read it.
+// The model only transcribes; the filler then uses the same keyword rules as a pasted résumé.
+const PDF_INSTRUCTIONS = `Copy out the text of this résumé exactly as written.
+Put each heading, job line and bullet point on its own line. Keep the original words, numbers and order.
+Do not summarize, rewrite, fix, translate or add anything. Plain text only, no markdown.
+If the file is not a résumé or has no readable text, reply with exactly: NO_TEXT`;
+
+export async function pdfText(base64) {
+  if (!process.env.GEMINI_API_KEY) return { error: "noKey" };
+  try {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const res = await generate(ai, {
+      contents: [{ role: "user", parts: [{ inlineData: { mimeType: "application/pdf", data: base64 } }, { text: "Copy out this résumé's text." }] }],
+      config: { systemInstruction: PDF_INSTRUCTIONS, temperature: 0, maxOutputTokens: 6000, thinkingConfig: { thinkingLevel: "minimal" }, abortSignal: AbortSignal.timeout(30000) }
+    });
+    const text = String(res.text || "").trim();
+    if (!text || text === "NO_TEXT") return { error: "unreadable" };
+    return { text };
+  } catch (err) {
+    const msg = String((err && (err.status || err.message)) || "");
+    if (/429|quota|exhaust|rate/i.test(msg)) return { error: "limit" };
+    if (/abort|timeout|503|overload|unavailable/i.test(msg) || (err && err.name === "AbortError")) return { error: "slow" };
+    console.error("PDF read failed:", msg.slice(0, 200));
+    return { error: "error" };
+  }
+}
+
 // ---------- Career Coach chat ----------
 // Unlike a general chatbot, the coach is given the user's saved profile, matches and plan (read on the
 // server, never from the browser), must quote evidence from their own achievements, and can suggest one
