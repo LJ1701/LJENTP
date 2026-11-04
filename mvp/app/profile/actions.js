@@ -9,6 +9,7 @@ import { honestBullets, coachReply } from "@/lib/gemini";
 import { searchJobs, searchLinks, jobsEnabled } from "@/lib/jobs";
 import { fitCheck } from "@/lib/fit";
 import { quickIntent, parseJobs } from "@/lib/intent";
+import { resumeFileText } from "@/lib/resume-file";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -49,6 +50,25 @@ export async function setTarget(formData) {
   await supabase.from("plans").upsert({ user_id: user.id, role_idx: idx, steps: buildPlanSteps(idx, effectiveProfile(profile)), updated_at: new Date().toISOString() });
   revalidatePath("/profile");
   redirect("/profile#path");
+}
+
+// Uploaded résumé file (PDF, Word or text) to plain text for the résumé filler. Nothing is saved here:
+// the text goes back to the page, where the user checks the filled-in Passport before saving.
+const RESUME_ERRORS = {
+  empty: "That file looks empty. Try another one.",
+  big: "That file is over 4 MB. Try a smaller PDF or a Word file.",
+  type: "Use a PDF, Word (.docx) or text (.txt) file. Old .doc files: save as .docx first.",
+  unreadable: "Couldn't read any text in that file. If it's a scanned image, paste the text instead.",
+  noKey: "PDF reading isn't switched on yet. Upload a Word file or paste the text instead.",
+  limit: "The AI has used up today's free PDF reads. Upload a Word file or paste the text instead.",
+  slow: "Reading that PDF took too long. Try again, or paste the text instead.",
+  error: "Couldn't read that PDF right now. Try again, or paste the text instead."
+};
+
+export async function readResumeFile(formData) {
+  await currentUser();
+  const res = await resumeFileText(formData.get("file"));
+  return res.error ? { error: RESUME_ERRORS[res.error] || RESUME_ERRORS.error } : res;
 }
 
 // AI résumé bullets from the user's SAVED achievements (read on the server, sent to Gemini on the server).

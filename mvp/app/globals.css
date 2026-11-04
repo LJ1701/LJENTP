@@ -337,6 +337,11 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .resume-fill { margin: 0 0 6px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--accent); background: rgba(201, 151, 74, 0.07); }
 .resume-fill summary { cursor: pointer; font-weight: 600; color: var(--accent-light); }
 .resume-fill textarea { margin-top: 10px; }
+.resume-upload { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.upload-btn { display: inline-flex; align-self: flex-start; align-items: center; margin: 0; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent-light); font-weight: 600; cursor: pointer; }
+.upload-btn:hover, .resume-upload:has(input:focus-visible) .upload-btn { background: rgba(201, 151, 74, 0.15); }
+.resume-upload:has(input:focus-visible) .upload-btn { outline: 3px solid var(--accent-light); outline-offset: 2px; }
+.upload-btn.busy { opacity: 0.7; cursor: progress; }
 .pending-note { margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; background: rgba(111, 211, 154, 0.1); border: 1px solid rgba(111, 211, 154, 0.35); color: var(--ok); }
 
 @media (max-width: 760px) {
