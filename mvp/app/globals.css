@@ -362,6 +362,40 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
   .goldie-launch svg { width: 56px; height: 56px; }
 }
 
+/* Goldie: looks picker, celebration, proof builder, close-the-gap steps */
+.goldie-look-btn { margin: 0; padding: 4px 10px; font-size: 12px; font-weight: 600; color: var(--accent-light); background: transparent; border: 1px solid var(--border-soft); box-shadow: none; }
+.goldie-looks { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; padding: 10px 0; border-bottom: 1px solid var(--border-soft); }
+.goldie-looks button { margin: 0; padding: 6px 2px; display: flex; flex-direction: column; align-items: center; gap: 2px; background: transparent; border: 1px solid transparent; box-shadow: none; color: var(--muted); }
+.goldie-looks button.on { border-color: var(--accent); color: var(--accent-light); background: rgba(201, 151, 74, 0.08); }
+.goldie-looks .goldie-ball { animation: none; }
+.goldie-looks small { font-size: 10px; }
+.goldie-ball.cheering { animation: goldieCheer 0.55s ease-out 4; transform-origin: 50% 90%; }
+@keyframes goldieCheer { 0% { transform: translateY(0) scale(1, 1); } 35% { transform: translateY(-18px) scale(0.94, 1.06) rotate(-8deg); } 70% { transform: translateY(0) scale(1.1, 0.9); } 100% { transform: translateY(0) scale(1, 1); } }
+.goldie-cheer { border-color: var(--accent-light); background: linear-gradient(135deg, #3a2f18, #12141b 70%); }
+.proof-builder { margin: 14px 0 4px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--accent); background: rgba(201, 151, 74, 0.07); }
+.proof-builder-head { display: flex; gap: 10px; align-items: center; }
+.proof-builder-head .goldie-ball { flex: none; animation: none; }
+.proof-builder-head p { margin: 0; line-height: 1.3; }
+.proof-builder-head small { display: block; color: var(--muted); }
+.proof-builder input, .proof-builder textarea { margin-top: 10px; }
+.pb-q { margin: 10px 0 0; font-weight: 600; }
+.pb-tip { margin: 6px 0 0; font-size: 13px; color: var(--accent-light); }
+.gap-step { display: block; margin-top: 4px; }
+.gap-step small { display: block; color: var(--muted); }
+.gap-step button.mini { margin: 6px 0 0; }
+.gap-step .gap-done { color: var(--accent-light); }
+
+/* Language and country pickers */
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.lang-picker, .country-picker { margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+.lang-picker select, .country-picker select { width: auto; max-width: 240px; margin: 0; padding: 6px 10px; font-size: 14px; }
+.country-picker { margin-bottom: 8px; flex-wrap: wrap; }
+@media (max-width: 520px) {
+  .topbar-right { gap: 6px; }
+  .lang-picker select { max-width: 92px; padding: 6px; font-size: 13px; }
+  .topbar-cta { white-space: nowrap; padding-left: 10px; padding-right: 10px; font-size: 13px; }
+}
+
 /* People who ask their device for less motion get a still page. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

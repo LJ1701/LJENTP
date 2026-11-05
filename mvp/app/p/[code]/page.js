@@ -1,18 +1,20 @@
 import { notFound } from "next/navigation";
 import { getPublicProfile } from "@/lib/public-profile";
-import { CAREER_PATHS, label, topMatches } from "@/lib/careers";
+import { labelIn, pathName, stepText } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
+import { getT } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
 // Title and description for link previews (LinkedIn, iMessage, group chats); the image is opengraph-image.js.
 export async function generateMetadata({ params }) {
   const { code } = await params;
   const p = await getPublicProfile(code);
-  if (!p) return { title: "Sports Profile · LJSportMind", robots: { index: false } };
+  const { t, dict } = await getT();
+  if (!p) return { title: `${t("public.title")} · LJSportMind`, robots: { index: false } };
   const eff = effectiveProfile(p);
   const proofs = Object.keys(eff.evidence).length;
-  const title = `${p.full_name || "Sports Profile"} · LJSportMind Sports Passport`;
-  const description = `${[p.role, p.sport].filter(Boolean).join(" · ")}${proofs ? ` · ${proofs} skills backed by proof` : ""}. See the evidence.`;
+  const title = t("public.metaTitle", { name: p.full_name || t("public.title") });
+  const description = `${[dict.roles[p.role] || p.role, dict.sports[p.sport] || p.sport].filter(Boolean).join(" · ")}${proofs ? ` · ${t("public.metaProofs", { n: proofs })}` : ""}. ${t("public.metaSee")}`;
   return { title, description, robots: { index: false }, openGraph: { title, description, type: "profile" }, twitter: { card: "summary_large_image", title, description } };
 }
 
@@ -24,25 +26,26 @@ export default async function PublicProfile({ params }) {
   const p = await getPublicProfile(code);
   if (!p) notFound();
 
+  const { t, lang, dict } = await getT();
   const eff = effectiveProfile(p);
   const done = p.steps ? p.steps.filter((s) => s.done).length : 0;
 
   return (
     <>
       <div className="proof-hero">
-        <span className="verified">LJSportMind Sports Profile</span>
-        <h1>{p.full_name || "Sports Profile"}</h1>
-        <p className="muted">{[p.role, p.sport].filter(Boolean).join(" · ")}</p>
-        {p.goal && <p><strong>Goal:</strong> {p.goal}</p>}
+        <span className="verified">{t("public.badge")}</span>
+        <h1>{p.full_name || t("public.title")}</h1>
+        <p className="muted">{[dict.roles[p.role] || p.role, dict.sports[p.sport] || p.sport].filter(Boolean).join(" · ")}</p>
+        {p.goal && <p><strong>{t("public.goal")}</strong> {p.goal}</p>}
       </div>
 
       <section>
-      <h2>Skills and interests</h2>
+      <h2>{t("public.skillsTitle")}</h2>
       <ul>
-        {[...eff.skills, ...eff.interests].map((t) => (
-          <li key={t}>
-            <strong>{label(t)}</strong>
-            {eff.evidence[t] && <> · evidence: &ldquo;{eff.evidence[t]}&rdquo;</>}
+        {[...eff.skills, ...eff.interests].map((tag) => (
+          <li key={tag}>
+            <strong>{labelIn(dict, tag)}</strong>
+            {eff.evidence[tag] && <> · {t("public.evidence")} &ldquo;{eff.evidence[tag]}&rdquo;</>}
           </li>
         ))}
       </ul>
@@ -50,23 +53,23 @@ export default async function PublicProfile({ params }) {
 
       {p.achievements && (
         <section>
-          <h2>Achievements</h2>
+          <h2>{t("public.achievements")}</h2>
           <ul>{p.achievements.split("\n").filter((l) => l.trim()).map((l, i) => <li key={i}>{l}</li>)}</ul>
         </section>
       )}
 
       {p.role_idx !== null && p.role_idx !== undefined && p.steps && (
         <section>
-          <h2>Working toward: <span className="gold-text">{CAREER_PATHS[p.role_idx].name}</span></h2>
-          <p>{done} of {p.steps.length} plan steps done</p>
+          <h2>{t("public.workingToward")} <span className="gold-text">{pathName(dict, p.role_idx)}</span></h2>
+          <p>{t("public.planDone", { done, total: p.steps.length })}</p>
           <div className="progress" aria-hidden="true"><span style={{ width: `${Math.round((done / p.steps.length) * 100)}%` }} /></div>
           <ul className="plan-list">
-            {p.steps.map((s, i) => <li key={i}><span className={s.done ? "check done" : "check"} style={{ display: "inline-grid", placeItems: "center" }}>{s.done ? "✓" : ""}</span> <span className={s.done ? "done-text" : ""}>{s.text}</span></li>)}
+            {p.steps.map((s, i) => <li key={i}><span className={s.done ? "check done" : "check"} style={{ display: "inline-grid", placeItems: "center" }}>{s.done ? "✓" : ""}</span> <span className={s.done ? "done-text" : ""}>{stepText(dict, s, p.role_idx)}</span></li>)}
           </ul>
         </section>
       )}
 
-      <p><small>Self-reported by the profile owner; achievements are in their own words. Last updated {new Date(p.updated_at).toLocaleDateString("en-US")}.</small></p>
+      <p><small>{t("public.footnote", { date: new Date(p.updated_at).toLocaleDateString(lang) })}</small></p>
     </>
   );
 }

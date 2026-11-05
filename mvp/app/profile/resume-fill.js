@@ -2,14 +2,16 @@
 import { useRef, useState, useTransition } from "react";
 import { detectSkills, detectInterests } from "@/lib/detect";
 import { readResumeFile } from "./actions";
+import { useT } from "../i18n-provider";
 
 // Paste a résumé or LinkedIn "About", or upload the file: the same keyword tables used for matching tick the
 // skills and interests it mentions, and its achievement-style lines are added to the achievements box.
 // Word and text files are read without AI; PDFs are read by Gemini on the server. Nothing is saved until the
 // user checks the form and presses "Save my Passport".
-const VERB_START = /^(led|ran|managed|created|built|coached|organized|organised|wrote|edited|filmed|produced|designed|launched|grew|increased|planned|played|captained|volunteered|helped|trained|analy[sz]ed|developed|hosted|sold|coordinated|started|founded|won|mentored|taught|interned|worked|assisted|directed|published|recorded|shot|promoted|supported)\b/i;
+// Lines that start like an achievement ("Led…", "Organicé…", "Organisé…"), in the app's Latin-script languages.
 
 export default function ResumeFill() {
+  const { t } = useT();
   const ref = useRef(null);
   const [text, setText] = useState("");
   const [msg, setMsg] = useState("");
@@ -39,9 +41,7 @@ export default function ResumeFill() {
     for (const l of add) { if ((next + "\n" + l).length > 4000) break; next = next ? `${next}\n${l}` : l; }
     box.value = next;
 
-    return ticked || add.length
-      ? `Ticked ${ticked} skills and interests and added ${add.length} achievements. Check them below, then save.`
-      : "Nothing we recognise yet. Try pasting your experience section, one role or bullet per line.";
+    return ticked || add.length ? t("resume.result", { ticked, added: add.length }) : t("resume.nothing");
   }
 
   function upload(e) {
@@ -54,25 +54,25 @@ export default function ResumeFill() {
     data.append("file", file);
     start(async () => {
       const res = await readResumeFile(data);
-      if (res.error) return setError(res.error);
+      if (res.error) return setError(res);
       setText(res.text);
-      setMsg(`Read ${file.name}${res.via === "ai" ? " (PDF read by AI)" : ""}. ${fill(res.text)}`);
+      setMsg(`${t(res.via === "ai" ? "resume.readAi" : "resume.read", { file: file.name })} ${fill(res.text)}`);
     });
   }
 
   return (
     <details className="resume-fill" ref={ref}>
-      <summary>⚡ Paste or upload your résumé to fill this in</summary>
+      <summary>{t("resume.summary")}</summary>
       <div className="resume-upload">
-        <label htmlFor="resume-file" className={reading ? "upload-btn busy" : "upload-btn"}>{reading ? "Reading your résumé…" : "📄 Upload résumé (PDF, Word or .txt)"}</label>
+        <label htmlFor="resume-file" className={reading ? "upload-btn busy" : "upload-btn"}>{reading ? t("resume.reading") : t("resume.upload")}</label>
         <input id="resume-file" type="file" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" onChange={upload} disabled={reading} className="visually-hidden" />
-        <small className="muted">Up to 4 MB. PDFs are read by Google&apos;s Gemini AI; Word and text files are read without AI. Nothing is saved until you press Save.</small>
+        <small className="muted">{t("resume.uploadNote")}</small>
       </div>
-      <p className="divider"><span>or paste it</span></p>
-      <label htmlFor="resume-text" className="visually-hidden">Your résumé or LinkedIn About</label>
-      <textarea id="resume-text" rows={6} maxLength={12000} value={text} onChange={(e) => setText(e.target.value)} placeholder="Paste your résumé or LinkedIn About section here" />
-      <button type="button" disabled={!text.trim() || reading} onClick={() => setMsg(fill(text))}>Fill my Passport</button>
-      {error && <p className="error">{error.replace(" or see plans at /pricing", "")}{error.includes("/pricing") && <> <a href="/pricing">See plans</a></>}</p>}
+      <p className="divider"><span>{t("resume.or")}</span></p>
+      <label htmlFor="resume-text" className="visually-hidden">{t("resume.label")}</label>
+      <textarea id="resume-text" rows={6} maxLength={12000} value={text} onChange={(e) => setText(e.target.value)} placeholder={t("resume.placeholder")} />
+      <button type="button" disabled={!text.trim() || reading} onClick={() => setMsg(fill(text))}>{t("resume.fill")}</button>
+      {error && <p className="error">{error.error}{error.upgrade && <> <a href="/pricing">{t("billing.seePlans")}</a></>}</p>}
       {msg && <p className="ok">{msg}</p>}
     </details>
   );

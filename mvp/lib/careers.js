@@ -41,44 +41,61 @@ export const CAREER_PATHS = [
 ];
 
 export const label = (tag) => SKILLS[tag] || INTERESTS[tag] || tag;
+// The same, in the visitor's language (dict: a locales/<lang>.js dictionary).
+export const labelIn = (dict, tag) => (dict && ((dict.skills && dict.skills[tag]) || (dict.interests && dict.interests[tag]))) || label(tag);
+export const pathName = (dict, idx) => (dict && dict.paths && dict.paths[idx] && dict.paths[idx].name) || CAREER_PATHS[idx].name;
 
-// Job-search links for a path, same searches as the live site (Indeed, LinkedIn) plus the two sports boards.
+// Job-search links for a path: LinkedIn works in every country; Indeed and the two US sports boards only for the US.
 const JOB_QUERIES = ["sports content creator", "sports video analyst", "sports journalist", "youth sports coach", "sports scout analyst", "sports marketing sponsorship", "sports event coordinator", "sports operations coordinator"];
 
-export function jobLinks(idx, location) {
+export function jobLinks(idx, location, country = "US", countryLabel = "") {
   const q = encodeURIComponent(JOB_QUERIES[idx]);
-  const l = encodeURIComponent(location || "");
-  return [
-    ["Indeed", `https://www.indeed.com/jobs?q=${q}${l ? `&l=${l}` : ""}`],
-    ["LinkedIn", `https://www.linkedin.com/jobs/search/?keywords=${q}${l ? `&location=${l}` : ""}`],
-    ["TeamWork Online", "https://www.teamworkonline.com/"],
-    ["WorkInSports", "https://www.workinsports.com/"]
-  ];
+  const l = encodeURIComponent(location || countryLabel || "");
+  const links = [["LinkedIn", `https://www.linkedin.com/jobs/search/?keywords=${q}${l ? `&location=${l}` : ""}`]];
+  if (country === "US") links.unshift(["Indeed", `https://www.indeed.com/jobs?q=${q}${location ? `&l=${encodeURIComponent(location)}` : ""}`]);
+  if (country === "US" || country === "CA") links.push(["TeamWork Online", "https://www.teamworkonline.com/"], ["WorkInSports", "https://www.workinsports.com/"]);
+  return links;
 }
 
 // Top 3 paths by how much of each role's typical skill set the profile covers.
+// level: "strong" | "good" | "possible", shown through the dictionary.
 export function topMatches(profile) {
   const have = new Set([...(profile?.skills || []), ...(profile?.interests || [])]);
   return CAREER_PATHS.map((path, idx) => {
     const matched = path.tags.filter((t) => have.has(t));
     const ratio = matched.length / path.tags.length;
-    const strength = ratio >= 0.67 ? "Strong match" : ratio >= 0.34 ? "Good match" : "Possible match";
+    const level = ratio >= 0.67 ? "strong" : ratio >= 0.34 ? "good" : "possible";
+    const strength = { strong: "Strong match", good: "Good match", possible: "Possible match" }[level];
     const gaps = path.tags.filter((t) => SKILLS[t] && !have.has(t));
-    return { ...path, idx, matched, ratio, strength, gaps };
+    return { ...path, idx, matched, ratio, level, strength, gaps };
   })
     .filter((m) => m.matched.length > 0)
     .sort((a, b) => b.ratio - a.ratio || b.matched.length - a.matched.length)
     .slice(0, 3);
 }
 
+// "Close the gap": one concrete step per skill, small enough for one week, that ends in something countable.
+// The words are in locales/<lang>.js (gapSteps), so a step shows in whatever language the visitor reads.
+export const gapStepIn = (dict, tag) => `${labelIn(dict, tag)}: ${(dict && dict.gapSteps && dict.gapSteps[tag]) || ""}`.replace(/: $/, "");
+
 // A saved plan: one step per missing skill, then the path's next step and an application step.
-export function buildPlanSteps(idx, profile) {
+// Each step remembers what it is (tag or kind), so it's shown in the reader's language; text is the
+// English version, kept for the AI coach and for plans saved before translations existed.
+export function buildPlanSteps(idx, profile, en) {
   const path = CAREER_PATHS[idx];
   const have = new Set(profile?.skills || []);
   const gaps = path.tags.filter((t) => SKILLS[t] && !have.has(t));
   return [
-    ...gaps.map((g) => ({ text: `Build ${label(g)}: get one project or experience that shows it.`, done: false })),
-    { text: path.nextStep, done: false },
-    { text: `Apply to one ${path.name} opening.`, done: false }
+    ...gaps.map((g) => ({ tag: g, text: gapStepIn(en, g), done: false })),
+    { kind: "next", text: path.nextStep, done: false },
+    { kind: "apply", text: `Apply to one ${path.name} opening.`, done: false }
   ];
+}
+
+// One plan step's words in the reader's language.
+export function stepText(dict, step, roleIdx) {
+  if (step.tag && dict.gapSteps && dict.gapSteps[step.tag]) return gapStepIn(dict, step.tag);
+  if (step.kind === "next" && dict.paths && dict.paths[roleIdx]) return dict.paths[roleIdx].nextStep;
+  if (step.kind === "apply") return (dict.profile.applyStep || "").replace("{role}", pathName(dict, roleIdx));
+  return step.text;
 }

@@ -2,19 +2,24 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { adminClient } from "@/lib/supabase/admin";
 import { getCheckout, periodEnd } from "@/lib/stripe";
+import { getT } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Payment · LJSportMind" };
+export async function generateMetadata() {
+  const { t } = await getT();
+  return { title: t("paid.metaTitle") };
+}
 
 // Stripe sends the buyer here after paying. We never trust the link itself: the checkout is looked up with
 // Stripe, must belong to this user and be paid, and is applied once only (the database refuses repeats).
 export default async function PaymentDone({ searchParams }) {
   const { session_id } = await searchParams;
+  const { t } = await getT();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  let message = "We couldn't confirm that payment. If you were charged, contact us and we'll fix it.";
+  let message = t("paid.failed");
   let ok = false;
   try {
     const db = adminClient();
@@ -31,7 +36,7 @@ export default async function PaymentDone({ searchParams }) {
         });
         if (!error) {
           ok = true;
-          message = kind === "pack" ? "Done: 25 AI answers were added to your account. They don't expire." : "Done: you're on Pro. Unlimited AI answers until you cancel.";
+          message = kind === "pack" ? t("paid.pack") : t("paid.pro");
         }
       }
     }
@@ -39,10 +44,10 @@ export default async function PaymentDone({ searchParams }) {
 
   return (
     <div className="card" style={{ textAlign: "center", marginTop: 24 }}>
-      <h1>{ok ? <>Thank <span className="gold-text">you</span></> : "Payment"}</h1>
+      <h1>{ok ? <span className="gold-text">{t("paid.thanks")}</span> : t("paid.title")}</h1>
       <p className={ok ? "ok" : "error"}>{message}</p>
-      <a className="cta" href="/profile">Back to my Sports Passport →</a>
-      <p><small><a href="/pricing">See your plan</a></small></p>
+      <a className="cta" href="/profile">{t("paid.back")}</a>
+      <p><small><a href="/pricing">{t("paid.seePlan")}</a></small></p>
     </div>
   );
 }
