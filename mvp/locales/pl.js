@@ -590,6 +590,7 @@ const pl = {
   },
 
   tailor: {
+    retry: "Spróbuj ponownie",
     button: "✨ Dopasuj CV i list",
     short: "✨ Dopasuj",
     offer: "Punkty do CV i list motywacyjny do tej oferty, na podstawie twoich osiągnięć. Zużywa 1 odpowiedź AI.",

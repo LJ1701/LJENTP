@@ -590,6 +590,7 @@ const de = {
   },
 
   tailor: {
+    retry: "Erneut versuchen",
     button: "✨ Lebenslauf & Anschreiben anpassen",
     short: "✨ Anpassen",
     offer: "Lebenslauf-Punkte und ein Anschreiben für diese Stelle, aus deinen eigenen Erfolgen. Nutzt 1 KI-Antwort.",

@@ -571,6 +571,7 @@ const fr = {
   },
 
   tailor: {
+    retry: "Réessayer",
     button: "✨ Adapter mon CV et ma lettre",
     short: "✨ Adapter",
     offer: "Des puces de CV et une lettre de motivation pour ce poste, à partir de vos propres réalisations. Utilise 1 réponse IA.",

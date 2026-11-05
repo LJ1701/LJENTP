@@ -571,6 +571,7 @@ const es = {
   },
 
   tailor: {
+    retry: "Reintentar",
     button: "✨ Adaptar mi currículum y carta",
     short: "✨ Adaptar",
     offer: "Viñetas de currículum y una carta de presentación para este empleo, con tus propios logros. Usa 1 respuesta de IA.",

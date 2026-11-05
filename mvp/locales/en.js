@@ -592,6 +592,7 @@ const en = {
   },
 
   tailor: {
+    retry: "Try again",
     button: "✨ Tailor my résumé & cover letter",
     short: "✨ Tailor",
     offer: "Résumé bullets and a cover letter for this job, from your own achievements. Uses 1 AI answer.",

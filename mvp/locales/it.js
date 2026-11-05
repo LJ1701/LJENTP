@@ -590,6 +590,7 @@ const it = {
   },
 
   tailor: {
+    retry: "Riprova",
     button: "✨ Adatta CV e lettera",
     short: "✨ Adatta",
     offer: "Punti del CV e una lettera di presentazione per questo lavoro, dai tuoi risultati. Usa 1 risposta IA.",

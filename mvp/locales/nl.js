@@ -590,6 +590,7 @@ const nl = {
   },
 
   tailor: {
+    retry: "Opnieuw proberen",
     button: "✨ Cv & motivatiebrief afstemmen",
     short: "✨ Afstemmen",
     offer: "Cv-punten en een motivatiebrief voor deze baan, uit je eigen prestaties. Kost 1 AI-antwoord.",

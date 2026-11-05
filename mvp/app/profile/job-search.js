@@ -25,7 +25,7 @@ export function Tailor({ job, pasted, startOpen = false, auto = false }) {
     <div className="tailor">
       {!res && <button type="button" onClick={run} disabled={busy}>{busy ? t("tailor.working") : t("tailor.button")}</button>}
       {busy && <p className="muted"><small>{t("tailor.wait")}</small></p>}
-      {res && res.error && <p className={res.upgrade ? "warn" : "error"}>{res.error}{res.upgrade && <> <a href="/pricing">{t("billing.seePlans")}</a></>}</p>}
+      {res && res.error && <p className={res.upgrade ? "warn" : "error"}>{res.error}{res.upgrade ? <> <a href="/pricing">{t("billing.seePlans")}</a></> : <> <button type="button" className="ghost mini" onClick={run} disabled={busy}>{t("tailor.retry")}</button></>}</p>}
       {res && !res.error && (
         <>
           {res.matched.length > 0 && <p><small><strong>{t("tailor.matched")}</strong> {res.matched.join(" · ")}</small></p>}

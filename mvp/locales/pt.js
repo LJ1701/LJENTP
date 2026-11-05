@@ -571,6 +571,7 @@ const pt = {
   },
 
   tailor: {
+    retry: "Tentar de novo",
     button: "✨ Adaptar meu currículo e carta",
     short: "✨ Adaptar",
     offer: "Tópicos de currículo e uma carta de apresentação para esta vaga, com suas próprias conquistas. Usa 1 resposta de IA.",
