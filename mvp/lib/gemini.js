@@ -235,7 +235,8 @@ education, school, degree, student status, age or years of experience unless the
 2. cover_letter: under 200 words, 3 short paragraphs: why this role at this employer (use the posting), the 2 or 3
    achievements that best match its requirements (quote facts exactly), and a short close. No placeholders like
    [Name]; no greeting name if none is given ("Dear hiring team,"). Plain text, paragraphs separated by a blank line.
-3. matched: the posting's requirements the achievements really show (short phrases).
+3. matched: the posting's requirements the achievements really show (short phrases). Never list education or
+   student status here unless an achievement states it.
 4. gaps: requirements the achievements do not show yet (short phrases). Never claim these in bullets or letter.
 Write everything in the same language as the job posting.`;
 
