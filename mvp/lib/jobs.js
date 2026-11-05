@@ -28,7 +28,18 @@ const strongRe = new RegExp(`(?<![\\p{L}])(${STRONG_SPORTS.join("|")})(?![\\p{L}
 // Cleaning and janitorial roles at gyms and arenas pass the sports test but aren't sports careers (seen in
 // Brazilian results on 5 Nov 2026), so they're left out in every language the app speaks.
 const NOT_CAREER = /(?<![\p{L}])(limpeza|limpieza|faxin\p{L}*|cleaner|cleaning|janitor\p{L}*|housekeep\p{L}*|custodian|nettoyage|agent d'entretien|reinigung\p{L}*|putzkraft|pulizi\p{L}*|schoonma\p{L}*|sprzątan\p{L}*)/iu;
-const clearlySports = (j) => strongRe.test(`${j.title} ${j.company} ${j.snippet}`) && !NOT_CAREER.test(j.title);
+const strongAll = new RegExp(strongRe.source, "giu");
+// How clearly a posting is about sports: 3 = its title says so, 2 = the employer's name does (not just "Arena"),
+// 1 = only the description does. Outside the US, a description must mention sports at least twice: European
+// ads often list "sport" once as a staff perk (checked on live results for Europe on 5 Nov 2026). US results
+// keep the rule tested on 4 Nov 2026 (one mention anywhere).
+function sportsScore(j, country) {
+  if (NOT_CAREER.test(j.title)) return 0;
+  if (strongRe.test(j.title)) return 3;
+  if ((String(j.company).match(strongAll) || []).some((w) => !/^arena$/i.test(w))) return 2;
+  const hits = (String(j.snippet).match(strongAll) || []).length;
+  return hits >= (country === "US" ? 1 : 2) ? 1 : 0;
+}
 
 const stripTags = (s) => String(s || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 
@@ -177,7 +188,8 @@ async function searchAdzunaIn({ keywords, location, country = "US" }, perPage = 
       // Keep postings that are really about sports.
       // Keep postings that are really about sports; for internship searches, the title must say so too
       // (Adzuna also matches "internship" anywhere in a description).
-      .filter((j) => j.url && clearlySports(j))
+      .map((j) => ({ ...j, score: sportsScore(j, country) }))
+      .filter((j) => j.url && j.score > 0)
       .filter((j) => !wantsIntern(keywords) || INTERN.test(j.title));
     return { jobs, total: data.count || 0 };
   } catch {
@@ -196,7 +208,8 @@ export async function searchJobs(query) {
   const seen = new Set();
   const found = [...(adzuna.jobs || []), ...boards]
     .filter((j) => { const k = `${j.title}|${j.company}`.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; })
-    .sort((a, b) => new Date(b.created || 0) - new Date(a.created || 0));
+    // Clearly-sports titles and employers first (board postings are all from sports employers), then newest.
+    .sort((a, b) => ((b.score ?? 2) >= 2) - ((a.score ?? 2) >= 2) || new Date(b.created || 0) - new Date(a.created || 0));
   // An Adzuna problem only matters when the employer boards found nothing either.
   if (!found.length && adzuna.error) return { error: adzuna.error };
   return { jobs: found.slice(0, 40), total: found.length };
