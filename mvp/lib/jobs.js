@@ -237,8 +237,10 @@ export async function searchJobs(query) {
   const seen = new Set();
   const found = [...(adzuna.jobs || []), ...boards]
     .filter((j) => { const k = `${j.title}|${j.company}`.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; })
-    // Clearly-sports titles and employers first (board postings are all from sports employers), then newest.
-    .sort((a, b) => ((b.score ?? 2) >= 2) - ((a.score ?? 2) >= 2) || new Date(b.created || 0) - new Date(a.created || 0));
+    // Most clearly sports first: sports in the title, or a posting from a known sports employer's board (3);
+    // then an employer whose name says sports (2, e.g. a "Sport- und Wellnesshotel"); then description-only (1).
+    // Newest first within each group.
+    .sort((a, b) => (b.score ?? 3) - (a.score ?? 3) || new Date(b.created || 0) - new Date(a.created || 0));
   // An Adzuna problem only matters when the employer boards found nothing either.
   if (!found.length && adzuna.error) return { error: adzuna.error };
   return { jobs: found.slice(0, 100), total: Math.min(found.length, 100) };
