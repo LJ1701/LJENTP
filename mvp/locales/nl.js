@@ -589,6 +589,22 @@ const nl = {
     seePlan: "Bekijk je abonnement"
   },
 
+  tailor: {
+    button: "✨ Cv & motivatiebrief afstemmen",
+    short: "✨ Afstemmen",
+    offer: "Cv-punten en een motivatiebrief voor deze baan, uit je eigen prestaties. Kost 1 AI-antwoord.",
+    working: "Afstemmen…",
+    wait: "De vacature wordt gelezen en met je prestaties vergeleken…",
+    matched: "Dit kun je laten zien:",
+    gaps: "Nog niet aangetoond (weggelaten, nooit verzonnen):",
+    bullets: "Cv-punten voor deze baan",
+    copyBullets: "Punten kopiëren",
+    letter: "Motivatiebrief (pas hem aan voor je hem verstuurt)",
+    copyLetter: "Brief kopiëren",
+    unverified: "Controleer dit: {nums} staat niet in je profiel of de vacature.",
+    note: "Door AI geschreven, alleen uit je prestaties en de vacature. Lees elk woord en maak het van jou voordat je het verstuurt."
+  },
+
   roles: {
     "Student": "Student", "Player": "Speler", "Former player": "Oud-speler", "Coach": "Trainer", "Content creator": "Contentmaker",
     "Fan": "Fan", "Career changer": "Carrièreswitcher", "Already work in sports": "Werk al in de sport", "Other": "Anders"

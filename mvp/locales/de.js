@@ -589,6 +589,22 @@ const de = {
     seePlan: "Deinen Tarif ansehen"
   },
 
+  tailor: {
+    button: "✨ Lebenslauf & Anschreiben anpassen",
+    short: "✨ Anpassen",
+    offer: "Lebenslauf-Punkte und ein Anschreiben für diese Stelle, aus deinen eigenen Erfolgen. Nutzt 1 KI-Antwort.",
+    working: "Wird angepasst…",
+    wait: "Die Anzeige wird gelesen und mit deinen Erfolgen abgeglichen…",
+    matched: "Das kannst du zeigen:",
+    gaps: "Noch nicht belegt (weggelassen, nie erfunden):",
+    bullets: "Lebenslauf-Punkte für diese Stelle",
+    copyBullets: "Punkte kopieren",
+    letter: "Anschreiben (vor dem Senden bearbeiten)",
+    copyLetter: "Anschreiben kopieren",
+    unverified: "Prüf das: {nums} steht weder in deinem Profil noch in der Anzeige.",
+    note: "Von KI nur aus deinen Erfolgen und der Anzeige geschrieben. Lies jedes Wort und mach es zu deinem, bevor du es sendest."
+  },
+
   roles: {
     "Student": "Studierende:r", "Player": "Spieler:in", "Former player": "Ehemalige:r Spieler:in", "Coach": "Trainer:in", "Content creator": "Content Creator",
     "Fan": "Fan", "Career changer": "Quereinsteiger:in", "Already work in sports": "Arbeite schon im Sport", "Other": "Sonstiges"

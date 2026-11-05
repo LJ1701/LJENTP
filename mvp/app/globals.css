@@ -430,3 +430,9 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
   .price-grid { grid-template-columns: 1fr; }
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* Tailored résumé bullets and cover letter for one job */
+.tailor { margin-top: 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--accent); background: rgba(201, 151, 74, 0.07); }
+.tailor h4 { margin: 12px 0 6px; font-size: 15px; }
+.tailor ul { margin: 0 0 8px; padding-left: 18px; }
+.tailor textarea { width: 100%; margin-bottom: 8px; }

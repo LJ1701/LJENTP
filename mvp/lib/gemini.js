@@ -214,3 +214,64 @@ export async function coachReply(context, history, mode, lang = "en") {
 
 // Trims and shortens text from the AI before it is used.
 const clip = (s, n) => String(s || "").replace(/\s+/g, " ").trim().slice(0, n);
+
+// ---------- Tailor an application to one job ----------
+// Résumé bullets and a short cover letter for one posting, written ONLY from the user's own achievements and
+// the posting. Bullets that add a number the user never wrote are dropped; numbers in the letter that are in
+// neither the achievements nor the posting are returned as "unverified" so the page can flag them.
+const TAILOR_RULES = `You help someone apply for one specific job in the sports industry.
+You get their ACHIEVEMENTS (their own words), their SKILLS and GOAL, and the JOB POSTING.
+Use ONLY facts stated in the achievements. Never invent numbers, results, job titles, employers, dates,
+tools or qualifications. If a number is not in the achievements, do not add one.
+1. bullets: 3 to 5 résumé bullets that put the achievements most relevant to THIS job first, rephrased in the
+   posting's own words where the meaning is the same. Each starts with a strong past-tense verb, at most 25 words.
+2. cover_letter: under 200 words, 3 short paragraphs: why this role at this employer (use the posting), the 2 or 3
+   achievements that best match its requirements (quote facts exactly), and a short close. No placeholders like
+   [Name]; no greeting name if none is given ("Dear hiring team,"). Plain text, paragraphs separated by a blank line.
+3. matched: the posting's requirements the achievements really show (short phrases).
+4. gaps: requirements the achievements do not show yet (short phrases). Never claim these in bullets or letter.
+Write everything in the same language as the job posting.`;
+
+const TAILOR_SCHEMA = {
+  type: "object",
+  properties: {
+    bullets: { type: "array", items: { type: "string" } },
+    cover_letter: { type: "string" },
+    matched: { type: "array", items: { type: "string" } },
+    gaps: { type: "array", items: { type: "string" } }
+  },
+  required: ["bullets", "cover_letter", "matched", "gaps"]
+};
+
+export async function tailorApplication({ achievements, skills, goal, job }) {
+  const text = String(achievements || "").trim();
+  if (!text) return { error: FALLBACK.empty };
+  if (!process.env.GEMINI_API_KEY) return { error: FALLBACK.noKey };
+  const posting = [`TITLE: ${job.title}`, `EMPLOYER: ${job.company || "(not given)"}`, job.location ? `LOCATION: ${job.location}` : "", `POSTING:\n${job.text}`].filter(Boolean).join("\n").slice(0, 8000);
+  try {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const res = await generate(ai, {
+      contents: `ACHIEVEMENTS:\n${text.slice(0, 4000)}\n\nSKILLS: ${skills || "(none ticked)"}\nGOAL: ${goal || "(not given)"}\n\nJOB POSTING:\n${posting}`,
+      config: {
+        systemInstruction: TAILOR_RULES, temperature: 0.3, maxOutputTokens: 2500,
+        responseMimeType: "application/json", responseSchema: TAILOR_SCHEMA,
+        thinkingConfig: { thinkingLevel: "minimal" }, abortSignal: AbortSignal.timeout(25000)
+      }
+    });
+    const out = JSON.parse(String(res.text || "{}"));
+    const all = (Array.isArray(out.bullets) ? out.bullets : []).map((b) => String(b).replace(/^[\s\-•*]+/, "").trim()).filter(Boolean);
+    const bullets = all.filter((b) => !inventsNumbers(b, text)).slice(0, 5);
+    const letter = String(out.cover_letter || "").trim();
+    if (!bullets.length && !letter) return { error: FALLBACK.error };
+    const known = `${text} ${posting}`.replace(/,/g, "");
+    const unverified = [...new Set((letter.replace(/,/g, "").match(/\d+(\.\d+)?/g) || []).filter((n) => !known.includes(n)))];
+    const clean = (a) => (Array.isArray(a) ? a.map((x) => String(x).trim()).filter(Boolean).slice(0, 6) : []);
+    return { bullets, dropped: all.length - bullets.length, letter, unverified, matched: clean(out.matched), gaps: clean(out.gaps) };
+  } catch (err) {
+    const msg = String((err && (err.status || err.message)) || "");
+    if (/429|quota|exhaust|rate/i.test(msg)) return { error: FALLBACK.limit };
+    if (/abort|timeout/i.test(msg) || (err && err.name === "AbortError")) return { error: FALLBACK.slow };
+    console.error("Gemini tailor failed:", msg.slice(0, 200));
+    return { error: FALLBACK.error };
+  }
+}

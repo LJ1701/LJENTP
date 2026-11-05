@@ -589,6 +589,22 @@ const ja = {
     seePlan: "プランを見る"
   },
 
+  tailor: {
+    button: "✨ 履歴書とカバーレターをこの仕事向けに",
+    short: "✨ この仕事向けに",
+    offer: "あなた自身の実績から、この仕事向けの履歴書の箇条書きとカバーレターを作ります。AI回答を1回使います。",
+    working: "作成中…",
+    wait: "求人を読み、あなたの実績と照らし合わせています…",
+    matched: "示せること：",
+    gaps: "まだ示せていないこと（省略し、作り話はしません）：",
+    bullets: "この仕事向けの履歴書の箇条書き",
+    copyBullets: "箇条書きをコピー",
+    letter: "カバーレター（送る前に編集してください）",
+    copyLetter: "レターをコピー",
+    unverified: "確認してください：{nums} はプロフィールにも求人にもありません。",
+    note: "あなたの実績と求人だけをもとにAIが作成しました。送る前にすべての言葉を読み、自分らしく直してください。"
+  },
+
   roles: {
     "Student": "学生", "Player": "選手", "Former player": "元選手", "Coach": "コーチ", "Content creator": "コンテンツクリエイター",
     "Fan": "ファン", "Career changer": "キャリアチェンジ中", "Already work in sports": "すでにスポーツ業界で働いている", "Other": "その他"

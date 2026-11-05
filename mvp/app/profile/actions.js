@@ -5,8 +5,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, CAREER_PATHS, buildPlanSteps, topMatches, label, gapStepIn, pathName } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
-import { honestBullets, coachReply } from "@/lib/gemini";
-import { searchJobs, searchLinks, jobsEnabled } from "@/lib/jobs";
+import { honestBullets, coachReply, tailorApplication } from "@/lib/gemini";
+import { searchJobs, searchLinks, jobsEnabled, postingText } from "@/lib/jobs";
 import { fitCheck } from "@/lib/fit";
 import { quickIntent, parseJobs } from "@/lib/intent";
 import { resumeFileText } from "@/lib/resume-file";
@@ -308,6 +308,27 @@ export async function checkFit(text) {
   const fit = fitCheck(posting, profile);
   if (!fit.total) return { error: t("jobs.noSkillsPasted") };
   return { fit };
+}
+
+// Tailored résumé bullets and cover letter for one job: a posting from the search (job) or a pasted one
+// (pasted text). Written by AI only from the user's saved achievements; counts as one AI answer.
+export async function tailorApplicationFor(job, pasted) {
+  const { supabase, user } = await currentUser();
+  const { t } = await getT();
+  const { data: profile } = await supabase.from("sports_profiles").select("skills, interests, goal, achievements").eq("user_id", user.id).maybeSingle();
+  if (!profile) return { error: t("jobs.passportFirst") };
+  if (!String(profile.achievements || "").trim()) return { error: t("ai.empty") };
+  if (!(await canUseAi(user.id))) return { error: t("billing.outOfAnswers", { n: FREE_ANSWERS }), upgrade: true };
+  const s = (v, n) => String(v || "").trim().slice(0, n);
+  const target = pasted
+    ? { title: s(pasted, 120).split("\n")[0], company: "", location: "", text: s(pasted, 8000) }
+    : { title: s(job && job.title, 200), company: s(job && job.company, 120), location: s(job && job.location, 120), text: await postingText({ id: s(job && job.id, 60), company: s(job && job.company, 120), snippet: s(job && job.snippet, 2000) }) };
+  if (!target.title) return { error: t("jobs.pasteShort") };
+  const eff = effectiveProfile(profile);
+  const res = await tailorApplication({ achievements: profile.achievements, skills: eff.skills.map(label).join(", "), goal: profile.goal, job: target });
+  if (res.error) return { error: t(`ai.${res.error}`) };
+  await spendAnswer(user.id);
+  return res;
 }
 
 // Adds the 1-week "close the gap" step for a skill to the saved plan, from a gap found by the fit check.

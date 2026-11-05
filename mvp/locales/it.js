@@ -589,6 +589,22 @@ const it = {
     seePlan: "Vedi il tuo piano"
   },
 
+  tailor: {
+    button: "✨ Adatta CV e lettera",
+    short: "✨ Adatta",
+    offer: "Punti del CV e una lettera di presentazione per questo lavoro, dai tuoi risultati. Usa 1 risposta IA.",
+    working: "Adattamento…",
+    wait: "Sto leggendo l’annuncio e confrontandolo con i tuoi risultati…",
+    matched: "Puoi dimostrare:",
+    gaps: "Non ancora dimostrato (escluso, mai inventato):",
+    bullets: "Punti del CV per questo lavoro",
+    copyBullets: "Copia i punti",
+    letter: "Lettera di presentazione (modificala prima di inviarla)",
+    copyLetter: "Copia la lettera",
+    unverified: "Controlla: {nums} non è nel tuo profilo né nell’annuncio.",
+    note: "Scritto dall’IA solo dai tuoi risultati e dall’annuncio. Leggi ogni parola e rendila tua prima di inviarla."
+  },
+
   roles: {
     "Student": "Studente", "Player": "Giocatore", "Former player": "Ex giocatore", "Coach": "Allenatore", "Content creator": "Content creator",
     "Fan": "Tifoso", "Career changer": "Cambio carriera", "Already work in sports": "Lavoro già nello sport", "Other": "Altro"

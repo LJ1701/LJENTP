@@ -30,15 +30,22 @@ const strongRe = new RegExp(`(?<![\\p{L}])(${STRONG_SPORTS.join("|")})(?![\\p{L}
 const NOT_CAREER = /(?<![\p{L}])(limpeza|limpieza|faxin\p{L}*|cleaner|cleaning|janitor\p{L}*|housekeep\p{L}*|custodian|nettoyage|agent d'entretien|reinigung\p{L}*|putzkraft|pulizi\p{L}*|schoonma\p{L}*|sprzątan\p{L}*)/iu;
 const strongAll = new RegExp(strongRe.source, "giu");
 // How clearly a posting is about sports: 3 = its title says so, 2 = the employer's name does (not just "Arena"),
-// 1 = only the description does. Outside the US, a description must mention sports at least twice: European
-// ads often list "sport" once as a staff perk (checked on live results for Europe on 5 Nov 2026). US results
-// keep the rule tested on 4 Nov 2026 (one mention anywhere).
+// 1 = only the description does. Outside the US, a description mention doesn't count when it's only a staff
+// perk ("we offer: gym, sport, …"), which European ads often list (seen on live results on 5 Nov 2026).
+// Requiring two mentions instead (first try, 5 Nov) left too few results: Adzuna only sends a short excerpt.
+// US results keep the rule tested on 4 Nov 2026 (one mention anywhere).
+const PERK = /(benefit|perk|we offer|wir bieten|benefits|vorteile|firmen|zuschuss|gym|fitness|wellbeing|wellness|ofrecemos|beneficios|oferecemos|benefícios|nous offrons|avantages|offriamo|vantaggi|welfare|wij bieden|oferujemy|karta|multisport|urban sports|egym|wellpass|hansefit)/i;
 function sportsScore(j, country) {
   if (NOT_CAREER.test(j.title)) return 0;
   if (strongRe.test(j.title)) return 3;
   if ((String(j.company).match(strongAll) || []).some((w) => !/^arena$/i.test(w))) return 2;
-  const hits = (String(j.snippet).match(strongAll) || []).length;
-  return hits >= (country === "US" ? 1 : 2) ? 1 : 0;
+  const snippet = String(j.snippet);
+  const hits = [...snippet.matchAll(strongAll)];
+  if (!hits.length) return 0;
+  if (country === "US" || hits.length >= 2) return 1;
+  // One mention: count it unless the words just before it are about perks.
+  const before = snippet.slice(Math.max(0, hits[0].index - 80), hits[0].index);
+  return PERK.test(before) ? 0 : 1;
 }
 
 const stripTags = (s) => String(s || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
@@ -133,15 +140,37 @@ async function searchBoards({ keywords, location, country }) {
 async function searchAdzuna(query) {
   const list = adzunaFor(query.country || "US");
   if (!list.length) return { jobs: [], total: 0 };
-  const results = await Promise.all(list.map((c) => searchAdzunaIn({ ...query, country: c }, list.length > 1 ? 20 : 50)));
+  // One country: the first two pages (100 postings), since the sports check leaves out many. A region: 20 per
+  // country, to keep within Adzuna's daily allowance (every page is one call, cached for an hour).
+  const pages = list.length > 1 ? [1] : [1, 2];
+  const results = await Promise.all(list.flatMap((c) => pages.map((page) => searchAdzunaIn({ ...query, country: c }, list.length > 1 ? 20 : 50, page))));
   const ok = results.filter((r) => !r.error);
   if (!ok.length) return { error: results[0].error };
-  return { jobs: ok.flatMap((r) => r.jobs), total: ok.reduce((n, r) => n + r.total, 0) };
+  return { jobs: ok.flatMap((r) => r.jobs), total: Math.max(0, ...ok.map((r) => r.total)) };
+}
+
+// The full text of one posting, for tailoring an application. Greenhouse lists give only titles, so the
+// posting is fetched by its id; other sources already carry a description excerpt.
+export async function postingText(job) {
+  const m = /^gh-(\d+)$/.exec(String(job.id || ""));
+  const board = m && EMPLOYERS.find(([kind, , name]) => kind === "greenhouse" && name === job.company);
+  if (board) {
+    try {
+      const res = await fetch(`https://boards-api.greenhouse.io/v1/boards/${board[1]}/jobs/${m[1]}`, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(8000) });
+      if (res.ok) {
+        const data = await res.json();
+        const html = String(data.content || "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+        const text = stripTags(html.replace(/<\/(p|li|h\d|div)>/gi, "\n"));
+        if (text.length > 80) return text.slice(0, 7000);
+      }
+    } catch { /* fall back to what the list gave */ }
+  }
+  return String(job.snippet || "").slice(0, 7000);
 }
 
 // keywords: the role words ("video analyst", "marketing internship"); may be empty for "any sports job".
 // location: "Dallas, TX", or "" for anywhere in the country.
-async function searchAdzunaIn({ keywords, location, country = "US" }, perPage = 50) {
+async function searchAdzunaIn({ keywords, location, country = "US" }, perPage = 50, page = 1) {
   if (!jobsEnabled()) return { error: "off" };
   const cc = country.toLowerCase();
   const params = new URLSearchParams({
@@ -163,7 +192,7 @@ async function searchAdzunaIn({ keywords, location, country = "US" }, perPage = 
     params.set("distance", "80");
   }
   try {
-    const res = await fetch(`https://api.adzuna.com/v1/api/jobs/${cc}/search/1?${params}`, {
+    const res = await fetch(`https://api.adzuna.com/v1/api/jobs/${cc}/search/${page}?${params}`, {
       next: { revalidate: 3600 },
       signal: AbortSignal.timeout(10000)
     });
@@ -201,7 +230,7 @@ async function searchAdzunaIn({ keywords, location, country = "US" }, perPage = 
 const CURRENCY = { US: "USD", GB: "GBP", CA: "CAD", AU: "AUD", NZ: "NZD", IN: "INR", SG: "SGD", ZA: "ZAR", BR: "BRL", MX: "MXN", PL: "PLN", CH: "CHF" };
 const money = (n, country) => new Intl.NumberFormat("en", { style: "currency", currency: CURRENCY[country] || "EUR", maximumFractionDigits: 0 }).format(Math.round(n));
 
-// Both sources at once, newest first, duplicates (same title at the same employer) removed. Up to 40 postings.
+// Both sources at once, newest first, duplicates (same title at the same employer) removed. Up to 100 postings (the count shown matches what can be listed).
 // query: { keywords, location, country }
 export async function searchJobs(query) {
   const [adzuna, boards] = await Promise.all([searchAdzuna(query), searchBoards(query)]);
@@ -212,7 +241,7 @@ export async function searchJobs(query) {
     .sort((a, b) => ((b.score ?? 2) >= 2) - ((a.score ?? 2) >= 2) || new Date(b.created || 0) - new Date(a.created || 0));
   // An Adzuna problem only matters when the employer boards found nothing either.
   if (!found.length && adzuna.error) return { error: adzuna.error };
-  return { jobs: found.slice(0, 40), total: found.length };
+  return { jobs: found.slice(0, 100), total: Math.min(found.length, 100) };
 }
 
 // Homepage numbers, counted exactly from the sports employers' own career boards every hour: open postings,
