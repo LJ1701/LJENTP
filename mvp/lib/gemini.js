@@ -14,11 +14,17 @@ const TIMEOUT_MS = 15000;
 // Worth trying the other model: daily limit used up (429) or Google's servers briefly overloaded (503).
 const tryOther = (err) => /429|503|quota|exhaust|rate|overload|unavailable/i.test(String((err && (err.status || err.message)) || ""));
 
+// A brief overload (503) on the main model gets one retry after a short pause before switching models: on
+// 5 Nov 2026 the lite model was also returning 503 for structured (JSON) answers, so both failed at once.
 async function generate(ai, request, models = [MODEL, LITE_MODEL]) {
   for (let i = 0; i < models.length; i++) {
     try {
       return await ai.models.generateContent({ ...request, model: models[i] });
     } catch (err) {
+      if (i === 0 && /503|overload|unavailable/i.test(String((err && (err.status || err.message)) || ""))) {
+        await new Promise((r) => setTimeout(r, 1500));
+        try { return await ai.models.generateContent({ ...request, model: models[i] }); } catch (again) { err = again; }
+      }
       if (i === models.length - 1 || !tryOther(err)) throw err;
     }
   }
