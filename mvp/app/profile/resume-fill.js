@@ -72,7 +72,7 @@ export default function ResumeFill() {
       <label htmlFor="resume-text" className="visually-hidden">Your résumé or LinkedIn About</label>
       <textarea id="resume-text" rows={6} maxLength={12000} value={text} onChange={(e) => setText(e.target.value)} placeholder="Paste your résumé or LinkedIn About section here" />
       <button type="button" disabled={!text.trim() || reading} onClick={() => setMsg(fill(text))}>Fill my Passport</button>
-      {error && <p className="error">{error}</p>}
+      {error && <p className="error">{error.replace(" or see plans at /pricing", "")}{error.includes("/pricing") && <> <a href="/pricing">See plans</a></>}</p>}
       {msg && <p className="ok">{msg}</p>}
     </details>
   );

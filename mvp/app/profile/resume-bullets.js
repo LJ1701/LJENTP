@@ -13,7 +13,8 @@ export default function ResumeBullets() {
       <button type="button" disabled={pending} onClick={() => start(async () => setResult(await writeBullets()))}>
         {pending ? "Writing…" : "Write my résumé bullets"}
       </button>
-      {result && result.error && <p className="error">{result.error}</p>}
+      {result && result.error && <p className={result.upgrade ? "warn" : "error"}>{result.error}</p>}
+      {result && result.upgrade && <p><a className="cta small" href="/pricing">See plans</a></p>}
       {result && result.bullets && (
         <>
           <ul>{result.bullets.map((b, i) => <li key={i}>{b}</li>)}</ul>

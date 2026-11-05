@@ -10,6 +10,7 @@ import { searchJobs, searchLinks, jobsEnabled } from "@/lib/jobs";
 import { fitCheck } from "@/lib/fit";
 import { quickIntent, parseJobs } from "@/lib/intent";
 import { resumeFileText } from "@/lib/resume-file";
+import { canUseAi, spendAnswer, OUT_OF_ANSWERS } from "@/lib/billing";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -66,8 +67,14 @@ const RESUME_ERRORS = {
 };
 
 export async function readResumeFile(formData) {
-  await currentUser();
-  const res = await resumeFileText(formData.get("file"));
+  const { user } = await currentUser();
+  const file = formData.get("file");
+  // Word and text files are read without AI (free). A PDF read by the AI counts as one AI answer.
+  if (/\.pdf$/i.test(String(file?.name || "")) && !(await canUseAi(user.id))) {
+    return { error: "You've used this month's free AI answers, so PDFs can't be read right now. Upload a Word file or paste the text (both free), or see plans at /pricing.", upgrade: true };
+  }
+  const res = await resumeFileText(file);
+  if (res.via === "ai") await spendAnswer(user.id);
   return res.error ? { error: RESUME_ERRORS[res.error] || RESUME_ERRORS.error } : res;
 }
 
@@ -75,7 +82,10 @@ export async function readResumeFile(formData) {
 export async function writeBullets() {
   const { supabase, user } = await currentUser();
   const { data: profile } = await supabase.from("sports_profiles").select("achievements").eq("user_id", user.id).maybeSingle();
-  return honestBullets(profile && profile.achievements);
+  if (!(await canUseAi(user.id))) return { error: OUT_OF_ANSWERS, upgrade: true };
+  const res = await honestBullets(profile && profile.achievements);
+  if (!res.error) await spendAnswer(user.id);
+  return res;
 }
 
 // Career Coach: the profile, matches and plan are read here from the database (never sent by the browser),
@@ -124,9 +134,12 @@ export async function askCoach(history, mode) {
     if (quick) return quickAnswer(quick, profile, plan);
   }
 
+  // Real questions use the AI, which counts against the monthly allowance (instant answers above don't).
+  if (!(await canUseAi(user.id))) return { error: OUT_OF_ANSWERS, upgrade: true };
   const res = await coachReply({ profileText: "USER DATA:\n" + contextText, achievements, contextText }, turns, mode === "interview" ? "interview" : "ask");
   // AI busy, slow or out of free answers: the chat offers the things that work without it.
   if (res.error) return { ...res, offline: true };
+  await spendAnswer(user.id);
   // Asked for jobs or internships: Goldie's reply already says what to search, so the real postings are
   // fetched right here and shown in the chat (no second AI call).
   if (res.action === "search_jobs") {
