@@ -25,7 +25,10 @@ const ADZUNA_SPORTS = {
 const STRONG_SPORTS = ["sports?", "athletic", "athletics", "athletes?", "league", "stadium", "arena", "esports", "ballpark", "tournament", "nfl", "nba", "mlb", "nhl", "mls", "ncaa", "wnba", "nwsl", "fifa", "uefa", "olympic", "soccer", "football", "basketball", "baseball", "hockey", "volleyball", "tennis", "golf", "fans?", "season tickets?", "game ?days?", "ticketing",
   "deport\\p{L}*", "esport[ei]s?", "esportiv\\p{L}*", "desport\\p{L}*", "f[uú]tbol", "futebol", "fu[sß]ball", "calcio", "voetbal", "pi[lł]k\\p{L}*", "estadio", "est[aá]dio", "stade", "stadion", "stadio", "liga", "ligue", "torneo", "torneio", "tournoi", "turnier", "sportif", "sportive", "sportivo", "sportiva", "sportverein", "sportowy", "sportowa", "sportlich", "atleta", "atletas", "ol[ií]mpic\\p{L}*"];
 const strongRe = new RegExp(`(?<![\\p{L}])(${STRONG_SPORTS.join("|")})(?![\\p{L}])`, "iu");
-const clearlySports = (j) => strongRe.test(`${j.title} ${j.company} ${j.snippet}`);
+// Cleaning and janitorial roles at gyms and arenas pass the sports test but aren't sports careers (seen in
+// Brazilian results on 5 Nov 2026), so they're left out in every language the app speaks.
+const NOT_CAREER = /(?<![\p{L}])(limpeza|limpieza|faxin\p{L}*|cleaner|cleaning|janitor\p{L}*|housekeep\p{L}*|custodian|nettoyage|agent d'entretien|reinigung\p{L}*|putzkraft|pulizi\p{L}*|schoonma\p{L}*|sprzątan\p{L}*)/iu;
+const clearlySports = (j) => strongRe.test(`${j.title} ${j.company} ${j.snippet}`) && !NOT_CAREER.test(j.title);
 
 const stripTags = (s) => String(s || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 
