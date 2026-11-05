@@ -4,6 +4,32 @@ const CODES = "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG
 
 export const isCountry = (code) => CODES.includes(code);
 
+// Regions in the "Jobs in" menu. A region search asks Adzuna in its biggest covered countries (each
+// search costs one Adzuna call per country, so the list is kept short) and keeps employer-board postings
+// located in any of its countries or marked remote for that region.
+const LATAM_CENTRAL = "MX GT BZ HN SV NI CR PA CU DO HT PR".split(" ");
+const SOUTH_AMERICA = "AR BO BR CL CO EC GY PE PY SR UY VE GF FK".split(" ");
+export const REGIONS = {
+  "R-EU": {
+    codes: "AD AL AT AX BA BE BG BY CH CY CZ DE DK EE ES FI FO FR GB GG GI GR HR HU IE IM IS IT JE LI LT LU LV MC MD ME MK MT NL NO PL PT RO RS SE SI SJ SK SM UA VA XK".split(" "),
+    adzuna: ["GB", "DE", "FR", "ES", "IT", "NL"],
+    remote: /europe|emea|\beu\b|european union/i
+  },
+  "R-LATAM": { codes: [...LATAM_CENTRAL, ...SOUTH_AMERICA], adzuna: ["MX", "BR"], remote: /latam|latin america|am[eé]rica latina|south america|sudam[eé]rica|americas/i },
+  "R-SAM": { codes: SOUTH_AMERICA, adzuna: ["BR"], remote: /latam|latin america|am[eé]rica latina|south america|sudam[eé]rica|am[eé]rica do sul/i }
+};
+export const isRegion = (code) => Object.prototype.hasOwnProperty.call(REGIONS, code);
+// The Adzuna countries a search covers: the country itself, or a region's countries.
+export const adzunaFor = (code) => (isRegion(code) ? REGIONS[code].adzuna : ADZUNA.includes(code) ? [code] : []);
+
+// Region names, in the app's ten languages.
+const REGION_NAMES = {
+  "R-EU": { en: "Europe", es: "Europa", pt: "Europa", fr: "Europe", de: "Europa", it: "Europa", nl: "Europa", pl: "Europa", hi: "यूरोप", ja: "ヨーロッパ" },
+  "R-LATAM": { en: "Latin America", es: "América Latina", pt: "América Latina", fr: "Amérique latine", de: "Lateinamerika", it: "America Latina", nl: "Latijns-Amerika", pl: "Ameryka Łacińska", hi: "लैटिन अमेरिका", ja: "ラテンアメリカ" },
+  "R-SAM": { en: "South America", es: "Sudamérica", pt: "América do Sul", fr: "Amérique du Sud", de: "Südamerika", it: "Sud America", nl: "Zuid-Amerika", pl: "Ameryka Południowa", hi: "दक्षिण अमेरिका", ja: "南アメリカ" }
+};
+export const regionList = (lang) => Object.keys(REGIONS).map((r) => [r, REGION_NAMES[r][lang] || REGION_NAMES[r].en]);
+
 // Countries sorted by their name in the given language, for the picker.
 export function countryList(lang) {
   const names = new Intl.DisplayNames([lang, "en"], { type: "region" });
@@ -11,6 +37,7 @@ export function countryList(lang) {
 }
 
 export function countryName(code, lang = "en") {
+  if (isRegion(code)) return REGION_NAMES[code][lang] || REGION_NAMES[code].en;
   try { return new Intl.DisplayNames([lang, "en"], { type: "region" }).of(code) || code; } catch { return code; }
 }
 
@@ -35,8 +62,11 @@ const ALIASES = {
   SE: ["sweden", "stockholm", "gothenburg"], NO: ["norway", "oslo"], FI: ["finland", "helsinki"], CH: ["switzerland", "zurich", "zürich", "geneva", "basel"], AT: ["austria", "vienna", "wien"],
   PL: ["poland", "polska", "warsaw", "warszawa", "krakow", "kraków", "wroclaw"], CA: ["canada", "toronto", "vancouver", "montreal", "montréal", "calgary", "ottawa"],
   AU: ["australia", "sydney", "melbourne", "brisbane", "perth"], NZ: ["new zealand", "auckland", "wellington"], IN: ["india", "bangalore", "bengaluru", "mumbai", "delhi", "hyderabad", "pune", "chennai"],
+  CL: ["chile", "santiago de chile"], PE: ["peru", "perú", "lima"], UY: ["uruguay", "montevideo"], EC: ["ecuador", "quito", "guayaquil"],
+  PA: ["panama", "panamá"], GT: ["guatemala"], DO: ["dominican republic", "república dominicana", "santo domingo"], PR: ["puerto rico"],
+  VE: ["venezuela", "caracas"], PY: ["paraguay", "asunción"], BO: ["bolivia", "la paz"], CR: ["costa rica"], MT: ["malta", "st. julian's", "valletta"],
   JP: ["japan", "tokyo", "osaka"], SG: ["singapore"], BR: ["brazil", "brasil", "são paulo", "sao paulo", "rio de janeiro"], MX: ["mexico", "méxico", "mexico city", "ciudad de méxico", "guadalajara", "monterrey"],
-  AE: ["uae", "united arab emirates", "dubai", "abu dhabi"], ZA: ["south africa", "cape town", "johannesburg"], AR: ["argentina", "buenos aires"], CO: ["colombia", "bogotá", "bogota", "medellín"],
+  AE: ["uae", "united arab emirates", "dubai", "abu dhabi"], ZA: ["south africa", "cape town", "johannesburg"], AR: ["argentina", "buenos aires"], CO: ["colombia", "bogotá", "bogota", "medellín", "medellin", "cali", "barranquilla"],
   KR: ["south korea", "korea", "seoul"], CN: ["china", "beijing", "shanghai", "shenzhen"], HK: ["hong kong"], IL: ["israel", "tel aviv"], PH: ["philippines", "manila"], CZ: ["czech", "czechia", "prague"],
   GR: ["greece", "athens"], TR: ["turkey", "türkiye", "istanbul"], EE: ["estonia", "tallinn"], LT: ["lithuania", "vilnius"], UA: ["ukraine", "kyiv"], RO: ["romania", "bucharest"], HU: ["hungary", "budapest"]
 };
@@ -71,6 +101,11 @@ const REMOTE = /remote|anywhere|worldwide|global|distributed/i;
 export function inCountry(location, country) {
   if (!country || country === "ANY") return true;
   const cc = locationCountry(location);
+  if (isRegion(country)) {
+    const r = REGIONS[country];
+    if (cc) return r.codes.includes(cc);
+    return r.remote.test(String(location || "")) || REMOTE.test(String(location || ""));
+  }
   if (cc) return cc === country;
   return REMOTE.test(String(location || ""));
 }

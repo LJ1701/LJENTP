@@ -46,6 +46,8 @@ const es = {
     seeFit: "Ver mi encaje →",
     jobsIn: "Empleos en",
     anywhere: "Cualquier lugar (todo el mundo)",
+    regions: "Regiones",
+    countries: "Países",
     sumJobs: "Empleos de {kw}",
     sumInterns: "Prácticas de {kw}",
     sportsJobs: "Empleos deportivos",

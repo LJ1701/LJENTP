@@ -49,6 +49,8 @@ const en = {
     seeFit: "See my fit →",
     jobsIn: "Jobs in",
     anywhere: "Anywhere (worldwide)",
+    regions: "Regions",
+    countries: "Countries",
     // Search summaries
     sumJobs: "{kw} jobs",
     sumInterns: "{kw} internships",

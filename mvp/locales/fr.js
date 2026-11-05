@@ -46,6 +46,8 @@ const fr = {
     seeFit: "Voir mon adéquation →",
     jobsIn: "Emplois en/au",
     anywhere: "Partout (monde entier)",
+    regions: "Régions",
+    countries: "Pays",
     sumJobs: "Emplois {kw}",
     sumInterns: "Stages {kw}",
     sportsJobs: "Emplois dans le sport",

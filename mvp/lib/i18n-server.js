@@ -1,7 +1,7 @@
 import "server-only";
 import { cookies, headers } from "next/headers";
 import { LANG_CODES, LANG_COOKIE, COUNTRY_COOKIE, ANYWHERE, pickLang, makeT } from "./i18n";
-import { isCountry } from "./countries";
+import { isCountry, isRegion } from "./countries";
 import en from "@/locales/en";
 import es from "@/locales/es";
 import pt from "@/locales/pt";
@@ -45,7 +45,7 @@ export async function getT() {
 // Where they want to work: their saved choice, else the country Vercel sees them in, else the US.
 export async function getCountry() {
   const saved = (await cookies()).get(COUNTRY_COOKIE)?.value;
-  if (saved === ANYWHERE || isCountry(saved)) return saved;
+  if (saved === ANYWHERE || isCountry(saved) || isRegion(saved)) return saved;
   const seen = (await headers()).get("x-vercel-ip-country");
   return isCountry(seen) ? seen : "US";
 }

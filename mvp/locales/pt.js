@@ -46,6 +46,8 @@ const pt = {
     seeFit: "Ver minha compatibilidade →",
     jobsIn: "Vagas em",
     anywhere: "Qualquer lugar (mundo todo)",
+    regions: "Regiões",
+    countries: "Países",
     sumJobs: "Vagas de {kw}",
     sumInterns: "Estágios em {kw}",
     sportsJobs: "Vagas no esporte",

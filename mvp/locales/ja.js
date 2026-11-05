@@ -48,6 +48,8 @@ const ja = {
     seeFit: "自分の適合度を見る →",
     jobsIn: "勤務地",
     anywhere: "どこでも（世界中）",
+    regions: "地域",
+    countries: "国",
     sumJobs: "{kw}の仕事",
     sumInterns: "{kw}のインターン",
     sportsJobs: "スポーツの仕事",
