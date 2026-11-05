@@ -2,15 +2,16 @@
 import { useState, useTransition, useRef, useEffect } from "react";
 import { askCoach, setTarget } from "./actions";
 import { JobResults } from "./job-search";
+import { useT } from "../i18n-provider";
 
 // Career Coach chat. The server action reads the user's saved profile, so this component only keeps the
 // conversation (in memory: refreshing the page starts a new chat) and shows what comes back.
 // paths: [{ name, links: [[site, url], ...] }] for the 8 career paths; targetIdx: current target role or null.
 // Inside Goldie (compact): onAction runs page actions from a reply, onBusy animates Goldie while she thinks,
 // and modeRequest ({ mode, at }) switches mode when a button elsewhere asks for interview practice.
-const DID = { go_passport: "Took you to your Passport", go_matches: "Took you to your matches", go_jobs: "Took you to jobs & internships", go_plan: "Took you to your plan", go_proof: "Took you to your proof link", search_jobs: "Searched real postings", start_tour: "Started the tour" };
-
 export default function CoachChat({ paths, targetIdx, starters, compact = false, onAction, onBusy, modeRequest }) {
+  const { t, dict } = useT();
+  const DID = dict.coach.did;
   const [mode, setMode] = useState("ask");
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
@@ -47,7 +48,7 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
       const res = await askCoach(next.map(({ role, text }) => ({ role, text })), chatMode);
       setOffline(!!res.offline);
       setUpgrade(!!res.upgrade);
-      if (res.error) setError(res.offline ? "My AI brain is busy right now, but these still work instantly:" : res.error);
+      if (res.error) setError(res.offline ? t("coach.busy") : res.error);
       else {
         setMessages((m) => [...m, { role: "coach", text: res.reply, ...res }]);
         if (res.action && res.action !== "none") onAction?.(res.action, res.actionQuery);
@@ -60,17 +61,17 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
     setMode(m);
     setMessages([]);
     setError("");
-    if (m === "interview") send("I'm ready. Ask me the first interview question.", [], "interview");
+    if (m === "interview") send(t("coach.ready"), [], "interview");
   }
 
   return (
-    <section aria-label="Goldie chat" className={compact ? "coach coach-compact" : "coach"}>
-      {!compact && <h3>Ask your Career Coach</h3>}
+    <section aria-label={t("goldie.dialog")} className={compact ? "coach coach-compact" : "coach"}>
+      {!compact && <h3>{t("coach.title")}</h3>}
 
       <div role="group" aria-label="Coach mode" className="coach-modes">
-        <button type="button" aria-pressed={mode === "ask"} onClick={() => switchMode("ask")}>Ask questions</button>
-        <button type="button" aria-pressed={mode === "interview"} onClick={() => switchMode("interview")} disabled={targetIdx === null} title={targetIdx === null ? "Pick a target role first" : ""}>
-          Interview practice{targetIdx !== null ? `: ${paths[targetIdx].name}` : ""}
+        <button type="button" aria-pressed={mode === "ask"} onClick={() => switchMode("ask")}>{t("coach.ask")}</button>
+        <button type="button" aria-pressed={mode === "interview"} onClick={() => switchMode("interview")} disabled={targetIdx === null} title={targetIdx === null ? t("coach.pickTargetFirst") : ""}>
+          {t("coach.interview")}{targetIdx !== null ? `: ${paths[targetIdx].name}` : ""}
         </button>
       </div>
 
@@ -85,36 +86,36 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
         ) : (
           <div key={i} className="msg msg-coach" ref={i === messages.length - 1 ? lastRef : null}>
             <p>{m.reply}</p>
-            {m.instant && <p className="did"><small>⚡ Instant answer: no AI needed</small></p>}
+            {m.instant && <p className="did"><small>{t("coach.instant")}</small></p>}
             {m.action && m.action !== "none" && m.action !== "search_jobs" && DID[m.action] && <p className="did"><small>↳ {DID[m.action]}</small></p>}
             {m.jobs && <JobResults result={m.jobs} compact />}
             {m.evidence?.length > 0 && (
               <div className="proof">
-                <strong>Proof from your profile</strong>
+                <strong>{t("coach.proofFrom")}</strong>
                 <ul>{m.evidence.map((e) => <li key={e}>&ldquo;{e}&rdquo;</li>)}</ul>
               </div>
             )}
-            {m.nextStep && <p><strong>This week:</strong> {m.nextStep}</p>}
+            {m.nextStep && <p><strong>{t("coach.thisWeek")}</strong> {m.nextStep}</p>}
             {m.suggestRole >= 0 && (
               <div className="coach-action">
                 <strong>{paths[m.suggestRole].name}</strong>{" "}
                 {targetIdx === m.suggestRole ? (
-                  <small>(already your target role)</small>
+                  <small>{t("coach.alreadyTarget")}</small>
                 ) : (
                   <form action={setTarget} style={{ display: "inline" }}>
                     <input type="hidden" name="role_idx" value={m.suggestRole} />
-                    <button type="submit">Make this my target role</button>
+                    <button type="submit">{t("coach.makeTargetRole")}</button>
                   </form>
                 )}
-                <p><small>Find openings:{" "}
+                <p><small>{t("coach.findOpenings")}{" "}
                   {paths[m.suggestRole].links.map(([site, url], j) => (
                     <span key={site}>{j > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{site}</a></span>
                   ))}
                 </small></p>
               </div>
             )}
-            {m.unverified?.length > 0 && <p className="warn"><small>Check this: {m.unverified.join(", ")} {m.unverified.length === 1 ? "isn't" : "aren't"} in your profile, so the coach can&apos;t back {m.unverified.length === 1 ? "it" : "them"} up.</small></p>}
-            {m.droppedEvidence > 0 && <p><small>{m.droppedEvidence} quote(s) removed because they weren&apos;t in your achievements.</small></p>}
+            {m.unverified?.length > 0 && <p className="warn"><small>{t("coach.unverified", { nums: m.unverified.join(", ") })}</small></p>}
+            {m.droppedEvidence > 0 && <p><small>{t("coach.dropped", { n: m.droppedEvidence })}</small></p>}
             {i === messages.length - 1 && m.followUps?.length > 0 && (
               <div className="chips">
                 {m.followUps.map((f) => <button type="button" key={f} onClick={() => send(f)} disabled={pending}>{f}</button>)}
@@ -122,29 +123,29 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
             )}
           </div>
         )))}
-        {pending && <p className="msg msg-coach"><em>Goldie is thinking…</em></p>}
+        {pending && <p className="msg msg-coach"><em>{t("coach.thinking")}</em></p>}
         {error && <p className={offline || upgrade ? "warn" : "error"}>{error}</p>}
-        {error && upgrade && <p><a className="cta small" href="/pricing">See plans</a> <small>Job searches and instant answers stay free.</small></p>}
+        {error && upgrade && <p><a className="cta small" href="/pricing">{t("billing.seePlans")}</a> <small>{t("billing.stayFree")}</small></p>}
         {error && offline && (
           <div className="chips">
-            <button type="button" onClick={() => send("Find sports internships")} disabled={pending}>Find internships</button>
-            <button type="button" onClick={() => send("Find sports jobs anywhere")} disabled={pending}>Find jobs</button>
-            {onAction && <button type="button" onClick={() => onAction("start_tour")}>Take the tour</button>}
-            {onAction && <button type="button" onClick={() => onAction("go_plan")}>Go to my plan</button>}
+            <button type="button" onClick={() => send(t("coach.msgInterns"))} disabled={pending}>{t("coach.findInterns")}</button>
+            <button type="button" onClick={() => send(t("coach.msgJobs"))} disabled={pending}>{t("coach.findJobs")}</button>
+            {onAction && <button type="button" onClick={() => onAction("start_tour")}>{t("coach.takeTour")}</button>}
+            {onAction && <button type="button" onClick={() => onAction("go_plan")}>{t("coach.goPlan")}</button>}
           </div>
         )}
         <div ref={endRef} />
       </div>
 
       <form onSubmit={(e) => { e.preventDefault(); send(text); }}>
-        <label htmlFor="coach-input">{mode === "interview" ? "Your answer" : "Your question"}</label>
+        <label htmlFor="coach-input">{mode === "interview" ? t("coach.yourAnswer") : t("coach.yourQuestion")}</label>
         <textarea id="coach-input" rows={2} maxLength={500} value={text} onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(text); } }}
-          placeholder={mode === "interview" ? "Answer like you would in the interview…" : "e.g. Which match fits me best, and why?"} />
-        <button type="submit" disabled={pending || !text.trim() || asked >= 10}>{pending ? "Sending…" : "Send"}</button>{" "}
-        <small>{asked}/10 messages this visit</small>
+          placeholder={mode === "interview" ? t("coach.answerPh") : t("coach.questionPh")} />
+        <button type="submit" disabled={pending || !text.trim() || asked >= 10}>{pending ? t("coach.sending") : t("coach.send")}</button>{" "}
+        <small>{t("coach.count", { n: asked })}</small>
       </form>
-      <p><small>AI can be wrong. Check advice before acting on it.</small></p>
+      <p><small>{t("coach.aiWrong")}</small></p>
     </section>
   );
 }

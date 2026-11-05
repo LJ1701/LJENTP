@@ -385,6 +385,17 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .gap-step button.mini { margin: 6px 0 0; }
 .gap-step .gap-done { color: var(--accent-light); }
 
+/* Language and country pickers */
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.lang-picker, .country-picker { margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+.lang-picker select, .country-picker select { width: auto; max-width: 240px; margin: 0; padding: 6px 10px; font-size: 14px; }
+.country-picker { margin-bottom: 8px; flex-wrap: wrap; }
+@media (max-width: 520px) {
+  .topbar-right { gap: 6px; }
+  .lang-picker select { max-width: 92px; padding: 6px; font-size: 13px; }
+  .topbar-cta { white-space: nowrap; padding-left: 10px; padding-right: 10px; font-size: 13px; }
+}
+
 /* People who ask their device for less motion get a still page. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

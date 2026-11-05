@@ -5,18 +5,14 @@ import { createClient } from "@/lib/supabase/client";
 import CoachChat from "./profile/coach-chat";
 import { newSince } from "./profile/actions";
 import GuestButton from "./guest-button";
+import { useT } from "./i18n-provider";
 
 // Goldie: LJSportMind's guide, an original gold ball mascot in the logo colours (octagon from the logo,
 // seams from every sport). On the Passport page Goldie is the AI coach and can move the page for the user;
 // on other pages Goldie gives a short scripted welcome (no AI call, so no Gemini quota is used).
 
-const TOUR = [
-  ["passport", "This is your Sports Passport. Paste your résumé or fill it in. Then tell me one thing you did and I'll turn it into proof with numbers employers can check."],
-  ["path", "Your path: the sports careers you fit, with proof for each skill. Pick a target and your plan appears right inside it."],
-  ["jobs", "Real sports jobs and internships, from anywhere. Ask for what you want, then press Fit check on any posting."],
-  ["proof", "Your proof: one public link and honest résumé bullets for every application."],
-  [null, "That's it! Tick plan steps as you go and they become proof. I'm always here in the corner."]
-];
+// The step each tour stop spotlights; its words are in locales/<lang>.js (goldie.tour).
+const TOUR = ["passport", "path", "jobs", "proof", null];
 const SECTIONS = { go_passport: "passport", go_matches: "path", go_jobs: "jobs", go_plan: "path", go_proof: "proof" };
 
 const store = {
@@ -25,14 +21,14 @@ const store = {
 };
 
 // Goldie's looks. Gold is the default; the user can pick a sport ball in the panel (saved in this browser only).
-export const SKINS = [["gold", "Goldie"], ["soccer", "Soccer"], ["basketball", "Basketball"], ["football", "Football"], ["baseball", "Baseball"], ["volleyball", "Volleyball"]];
+export const SKINS = ["gold", "soccer", "basketball", "football", "baseball", "volleyball"];
 const SKIN_KEY = "goldie-skin";
 
 export function useGoldieSkin() {
   const [skin, setSkin] = useState("gold");
   useEffect(() => {
     const saved = store.get(SKIN_KEY);
-    if (SKINS.some(([k]) => k === saved)) setSkin(saved);
+    if (SKINS.includes(saved)) setSkin(saved);
     const onSkin = (e) => setSkin(e.detail);
     window.addEventListener("goldie:skin", onSkin);
     return () => window.removeEventListener("goldie:skin", onSkin);
@@ -136,9 +132,10 @@ export function GoldieBall({ talking = false, cheering = false, size = 64, skin 
 
 // Goldie on the homepage hero: click to open the guide.
 export function HeroGoldie() {
+  const { t } = useT();
   return (
-    <button type="button" className="hero-goldie" onClick={() => window.dispatchEvent(new CustomEvent("goldie:open"))} aria-label="Say hi to Goldie, your guide">
-      <span className="hero-goldie-bubble" aria-hidden="true">Hi! I&apos;m Goldie.</span>
+    <button type="button" className="hero-goldie" onClick={() => window.dispatchEvent(new CustomEvent("goldie:open"))} aria-label={t("goldie.heroLabel")}>
+      <span className="hero-goldie-bubble" aria-hidden="true">{t("goldie.heroHi")}</span>
       <GoldieBall size={78} />
     </button>
   );
@@ -147,6 +144,7 @@ export function HeroGoldie() {
 // coach: { paths, targetIdx, starters, firstName } on the Passport page; absent everywhere else.
 export default function Goldie({ coach }) {
   const pathname = usePathname();
+  const { t, lang, dict } = useT();
   const [open, setOpen] = useState(false);
   const [bubble, setBubble] = useState(null);
   const [tour, setTour] = useState(null);
@@ -156,7 +154,7 @@ export default function Goldie({ coach }) {
   const [howOpen, setHowOpen] = useState(false);
   const [lookOpen, setLookOpen] = useState(false);
   const [cheer, setCheer] = useState(null); // { count } while Goldie celebrates new proof
-  const [news, setNews] = useState(null); // { count, withProof, query, word, since } for "new since you left"
+  const [news, setNews] = useState(null); // { count, withProof, query, role, since } for "new since you left"
   const newsChecked = useRef(false);
   const skin = useGoldieSkin();
   const hidden = !coach && pathname === "/profile"; // the Passport page renders its own Goldie with the coach
@@ -176,14 +174,14 @@ export default function Goldie({ coach }) {
     if (hidden) return;
     if (coach) {
       if (!store.get("goldie-welcomed")) {
-        const t = setTimeout(() => setBubble("welcome"), 1200);
-        return () => clearTimeout(t);
+        const timer = setTimeout(() => setBubble("welcome"), 1200);
+        return () => clearTimeout(timer);
       }
     } else {
       createClient().auth.getSession().then(({ data }) => setSignedIn(!!data.session));
       if (!store.get("goldie-hello")) {
-        const t = setTimeout(() => setBubble("hello"), 1500);
-        return () => clearTimeout(t);
+        const timer = setTimeout(() => setBubble("hello"), 1500);
+        return () => clearTimeout(timer);
       }
     }
   }, [coach, hidden]);
@@ -202,10 +200,10 @@ export default function Goldie({ coach }) {
   // New proof anywhere on the page (proof builder, plan steps): Goldie bounces and counts it.
   useEffect(() => {
     if (hidden) return;
-    let t;
-    const onCheer = (e) => { setCheer({ count: (e.detail && e.detail.count) || 0 }); clearTimeout(t); t = setTimeout(() => setCheer(null), 4500); };
+    let timer;
+    const onCheer = (e) => { setCheer({ count: (e.detail && e.detail.count) || 0 }); clearTimeout(timer); timer = setTimeout(() => setCheer(null), 4500); };
     window.addEventListener("goldie:cheer", onCheer);
-    return () => { window.removeEventListener("goldie:cheer", onCheer); clearTimeout(t); };
+    return () => { window.removeEventListener("goldie:cheer", onCheer); clearTimeout(timer); };
   }, [hidden]);
 
   // "New since you left": once per page load, compare with the last visit saved in this browser.
@@ -220,7 +218,7 @@ export default function Goldie({ coach }) {
 
   useEffect(() => {
     if (tour === null) { document.querySelectorAll(".goldie-spot").forEach((el) => el.classList.remove("goldie-spot")); return; }
-    if (TOUR[tour][0]) spotlight(TOUR[tour][0]);
+    if (TOUR[tour]) spotlight(TOUR[tour]);
     else document.querySelectorAll(".goldie-spot").forEach((el) => el.classList.remove("goldie-spot"));
   }, [tour, spotlight]);
 
@@ -258,28 +256,28 @@ export default function Goldie({ coach }) {
   const sinceText = (iso) => {
     const d = new Date(iso);
     const days = (Date.now() - d.getTime()) / 86400000;
-    return days < 1 ? "earlier today" : days < 7 ? `${d.toLocaleDateString("en-US", { weekday: "long" })}` : d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return days < 1 ? t("time.earlierToday") : days < 7 ? d.toLocaleDateString(lang, { weekday: "long" }) : d.toLocaleDateString(lang, { month: "short", day: "numeric" });
   };
 
-  const step = tour !== null ? TOUR[tour] : null;
+  const step = tour !== null ? dict.goldie.tour[tour] : null;
   const name = coach && coach.firstName;
 
   return (
     <div className="goldie">
       {/* Kept mounted while closed, so the chat isn't lost when Goldie is minimised. */}
       {(open || coach) && (
-        <div className="goldie-panel" role="dialog" aria-label="Goldie, your guide" hidden={!open}>
+        <div className="goldie-panel" role="dialog" aria-label={t("goldie.dialog")} hidden={!open}>
           <div className="goldie-panel-head">
             <GoldieBall size={40} talking={busy} />
-            <div><strong>Goldie</strong><small className="goldie-sub">Your sports career guide</small></div>
-            <button type="button" className="goldie-look-btn" onClick={() => setLookOpen(!lookOpen)} aria-expanded={lookOpen}>Look</button>
-            <button type="button" className="goldie-close" onClick={() => setOpen(false)} aria-label="Close Goldie">×</button>
+            <div><strong>{t("goldie.name")}</strong><small className="goldie-sub">{t("goldie.sub")}</small></div>
+            <button type="button" className="goldie-look-btn" onClick={() => setLookOpen(!lookOpen)} aria-expanded={lookOpen}>{t("goldie.look")}</button>
+            <button type="button" className="goldie-close" onClick={() => setOpen(false)} aria-label={t("goldie.close")}>×</button>
           </div>
           {lookOpen && (
-            <div className="goldie-looks" role="group" aria-label="Choose Goldie's look">
-              {SKINS.map(([k, l]) => (
+            <div className="goldie-looks" role="group" aria-label={t("goldie.chooseLook")}>
+              {SKINS.map((k) => (
                 <button type="button" key={k} className={skin === k ? "on" : ""} aria-pressed={skin === k} onClick={() => pickSkin(k)}>
-                  <GoldieBall size={34} skin={k} /><small>{l}</small>
+                  <GoldieBall size={34} skin={k} /><small>{dict.goldie.skins[k]}</small>
                 </button>
               ))}
             </div>
@@ -287,29 +285,27 @@ export default function Goldie({ coach }) {
           {coach ? (
             <>
               <div className="chips goldie-quick">
-                <button type="button" onClick={startTour}>Give me the tour</button>
-                <button type="button" onClick={openProofBuilder}>Turn something I did into proof</button>
+                <button type="button" onClick={startTour}>{t("goldie.tourBtn")}</button>
+                <button type="button" onClick={openProofBuilder}>{t("goldie.proofBtn")}</button>
               </div>
               <CoachChat compact paths={coach.paths} targetIdx={coach.targetIdx} starters={coach.starters} onAction={onAction} onBusy={setBusy} modeRequest={modeRequest} />
             </>
           ) : signedIn ? (
             <div className="goldie-script">
-              <p>Welcome back! Your Passport, matches, jobs and plan are all on one page, and I can answer questions there.</p>
-              <a className="cta" href="/profile">Open my Passport →</a>
+              <p>{t("goldie.signedIn")}</p>
+              <a className="cta" href="/profile">{t("goldie.openPassport")}</a>
             </div>
           ) : (
             <div className="goldie-script">
-              <p>Hi, I&apos;m Goldie! I help anyone heading into the sports industry find careers they fit and prove it.</p>
-              <GuestButton className="guest-btn">Try it now as a guest</GuestButton>
-              <button type="button" className="ghost" onClick={() => setHowOpen(!howOpen)} aria-expanded={howOpen}>How does it work?</button>
+              <p>{t("goldie.hi")}</p>
+              <GuestButton className="guest-btn">{t("guest.tryNow")}</GuestButton>
+              <button type="button" className="ghost" onClick={() => setHowOpen(!howOpen)} aria-expanded={howOpen}>{t("goldie.how")}</button>
               {howOpen && (
                 <ol className="goldie-how">
-                  <li>Fill in your Sports Passport: what you&apos;ve done, one achievement per line.</li>
-                  <li>See your sports career matches and real jobs and internships, each with a fit check.</li>
-                  <li>Follow your plan and share one proof link with employers.</li>
+                  {dict.goldie.howSteps.map((h) => <li key={h}>{h}</li>)}
                 </ol>
               )}
-              <p><small>Already have an account? <a href="/#start" onClick={() => setOpen(false)}>Sign in</a></small></p>
+              <p><small>{t("goldie.haveAccount")} <a href="/#start" onClick={() => setOpen(false)}>{t("goldie.signIn")}</a></small></p>
             </div>
           )}
         </div>
@@ -318,52 +314,52 @@ export default function Goldie({ coach }) {
       {!open && (step || bubble || cheer) && (
         <div className={cheer && !step ? "goldie-bubble goldie-cheer" : "goldie-bubble"} role="status">
           {cheer && !step ? (
-            <p><strong>{cheer.count ? `Proof #${cheer.count}!` : "New proof!"}</strong> Nice work{name ? `, ${name}` : ""}. Your matches and fit checks just got stronger.</p>
+            <p><strong>{cheer.count ? t("goldie.cheer", { n: cheer.count }) : t("goldie.cheerNew")}</strong> {name ? t("goldie.cheerTextName", { name }) : t("goldie.cheerText")}</p>
           ) : step ? (
             <>
-              <p><small className="muted">Tour {tour + 1} of {TOUR.length}</small><br />{step[1]}</p>
+              <p><small className="muted">{t("goldie.tourN", { n: tour + 1, total: TOUR.length })}</small><br />{step}</p>
               <div className="goldie-bubble-actions">
-                <button type="button" className="ghost mini" onClick={() => setTour(null)}>End tour</button>
-                {tour > 0 && <button type="button" className="ghost mini" onClick={() => setTour(tour - 1)}>Back</button>}
+                <button type="button" className="ghost mini" onClick={() => setTour(null)}>{t("goldie.endTour")}</button>
+                {tour > 0 && <button type="button" className="ghost mini" onClick={() => setTour(tour - 1)}>{t("goldie.back")}</button>}
                 {tour < TOUR.length - 1
-                  ? <button type="button" className="mini" onClick={() => setTour(tour + 1)}>Next</button>
-                  : <button type="button" className="mini" onClick={() => { setTour(null); setOpen(true); }}>Ask me something</button>}
+                  ? <button type="button" className="mini" onClick={() => setTour(tour + 1)}>{t("goldie.next")}</button>
+                  : <button type="button" className="mini" onClick={() => { setTour(null); setOpen(true); }}>{t("goldie.askMe")}</button>}
               </div>
             </>
           ) : bubble === "welcome" ? (
             <>
-              <p>Hi{name ? ` ${name}` : ""}! I&apos;m Goldie, your sports career guide. Want a 30-second tour?</p>
+              <p>{name ? t("goldie.welcomeName", { name }) : t("goldie.welcome")}</p>
               <div className="goldie-bubble-actions">
-                <button type="button" className="ghost mini" onClick={closeBubble}>Not now</button>
-                <button type="button" className="mini" onClick={startTour}>Show me around</button>
+                <button type="button" className="ghost mini" onClick={closeBubble}>{t("goldie.notNow")}</button>
+                <button type="button" className="mini" onClick={startTour}>{t("goldie.showAround")}</button>
               </div>
             </>
           ) : bubble === "news" && news ? (
             <>
-              <p>Welcome back{name ? `, ${name}` : ""}! <strong>{news.count} new {news.word} {news.count === 1 ? "job" : "jobs"}</strong> since {sinceText(news.since)}{news.withProof ? `, and you already have proof for ${news.withProof} of them` : ""}.</p>
+              <p>{t(name ? "goldie.newsName" : "goldie.news", { name, count: news.count, role: news.role || t("search.sportsJobs"), since: sinceText(news.since) })}{news.withProof ? ` ${t("goldie.newsProof", { n: news.withProof })}` : ""}</p>
               <div className="goldie-bubble-actions">
-                <button type="button" className="ghost mini" onClick={() => setBubble(null)}>Later</button>
-                <button type="button" className="mini" onClick={showNews}>Show me</button>
+                <button type="button" className="ghost mini" onClick={() => setBubble(null)}>{t("goldie.later")}</button>
+                <button type="button" className="mini" onClick={showNews}>{t("goldie.showMe")}</button>
               </div>
             </>
           ) : bubble === "moved" ? (
             <>
-              <p>Here it is! Tap me when you need me again.</p>
-              <div className="goldie-bubble-actions"><button type="button" className="ghost mini" onClick={() => setBubble(null)}>OK</button></div>
+              <p>{t("goldie.moved")}</p>
+              <div className="goldie-bubble-actions"><button type="button" className="ghost mini" onClick={() => setBubble(null)}>{t("goldie.ok")}</button></div>
             </>
           ) : (
             <>
-              <p>Hi, I&apos;m Goldie! New to sports careers? I&apos;ll show you around.</p>
+              <p>{t("goldie.hello")}</p>
               <div className="goldie-bubble-actions">
-                <button type="button" className="ghost mini" onClick={closeBubble}>Later</button>
-                <button type="button" className="mini" onClick={() => { closeBubble(); setOpen(true); }}>Say hi</button>
+                <button type="button" className="ghost mini" onClick={closeBubble}>{t("goldie.later")}</button>
+                <button type="button" className="mini" onClick={() => { closeBubble(); setOpen(true); }}>{t("goldie.sayHi")}</button>
               </div>
             </>
           )}
         </div>
       )}
 
-      <button type="button" className="goldie-launch" onClick={() => { closeBubble(); setTour(null); setOpen(!open); }} aria-label={open ? "Close Goldie" : "Open Goldie, your guide"} aria-expanded={open}>
+      <button type="button" className="goldie-launch" onClick={() => { closeBubble(); setTour(null); setOpen(!open); }} aria-label={open ? t("goldie.close") : t("goldie.open")} aria-expanded={open}>
         <GoldieBall talking={busy} cheering={!!cheer} />
       </button>
     </div>

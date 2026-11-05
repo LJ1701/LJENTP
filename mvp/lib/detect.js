@@ -1,5 +1,7 @@
 // Skills and interests found in the user's own achievements text, using the live site's keyword tables
-// (script.js). Matching is whole-word at the start, case-insensitive, English only.
+// (script.js) plus the same ideas in nine more languages (lib/detect-words.js). Matching is at the start of a
+// word and ignores case.
+import { SKILL_WORDS, INTEREST_WORDS } from "./detect-words";
 
 const SKILL_KEYWORDS = {
   "video editing": ["edited video", "edit video", "video editor", "highlight reel", "highlight video", "highlight tape", "premiere pro", "video edit", "editing video", "premiere", "final cut", "davinci", "capcut", "after effects", "filmora", "videograph", "video production", "motion graphics"],
@@ -27,20 +29,34 @@ const INTEREST_KEYWORDS = {
 
 const escapeRe = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+// One pattern per tag. Latin-script words must start a word ("é" and "ł" count as letters);
+// Hindi and Japanese words match anywhere, because those scripts don't always put spaces between words.
+const LATIN = /^[\p{Script=Latin}\d]/u;
+function compile(...tables) {
+  const out = {};
+  for (const table of tables) for (const [tag, words] of Object.entries(table)) (out[tag] = out[tag] || []).push(...words);
+  return Object.entries(out).map(([tag, words]) => {
+    const unique = [...new Set(words.map((w) => w.toLowerCase()))];
+    const parts = unique.map((w) => (LATIN.test(w) ? `(?<![\\p{L}\\p{N}])${escapeRe(w)}` : escapeRe(w)));
+    return [tag, new RegExp(parts.join("|"), "iu")];
+  });
+}
+const SKILL_RES = compile(SKILL_KEYWORDS, SKILL_WORDS);
+const INTEREST_RES = compile(INTEREST_KEYWORDS, INTEREST_WORDS);
+
 // For each tag, the first achievement line that mentions it (that line is the evidence shown to the user).
-function detect(text, table) {
+function detect(text, compiled) {
   const lines = String(text || "").split("\n").map((l) => l.trim()).filter(Boolean);
   const found = {};
-  for (const [tag, words] of Object.entries(table)) {
-    const res = words.map((w) => new RegExp("\\b" + escapeRe(w), "i"));
-    const line = lines.find((l) => res.some((re) => re.test(l)));
+  for (const [tag, re] of compiled) {
+    const line = lines.find((l) => re.test(l));
     if (line) found[tag] = line;
   }
   return found;
 }
 
-export const detectSkills = (text) => detect(text, SKILL_KEYWORDS);
-export const detectInterests = (text) => detect(text, INTEREST_KEYWORDS);
+export const detectSkills = (text) => detect(text, SKILL_RES);
+export const detectInterests = (text) => detect(text, INTEREST_RES);
 
 // Ticked skills plus those found in achievements. `evidence` maps each found tag to its achievement line.
 export function effectiveProfile(profile) {

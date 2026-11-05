@@ -1,44 +1,34 @@
 "use client";
 import { useState, useTransition, useEffect } from "react";
 import { findJobs, checkFit, addGapToPlan } from "./actions";
-import { PENDING_KEY } from "../home-search";
-import { GAP_STEPS } from "@/lib/careers";
-
-const ERRORS = {
-  off: "Job listings aren't switched on yet. These searches open real listings for the same request:",
-  keys: "The job service rejected our keys, so live listings are paused. These searches open real listings:",
-  limit: "The job service's free daily limit is used up. Try again tomorrow, or use these searches:",
-  down: "The job service isn't answering right now. Try again in a minute, or use these searches:"
-};
-
-const ago = (iso) => {
-  const days = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 86400000));
-  return days === 0 ? "today" : days === 1 ? "1 day ago" : `${days} days ago`;
-};
+import { PENDING_KEY, agoText } from "../home-search";
+import { useT, CountryPicker } from "../i18n-provider";
+import { labelIn } from "@/lib/careers";
 
 // Shows which skills a job asks for: proof (quoted from the user's achievements), ticked only, or a gap.
 function FitRows({ fit }) {
+  const { t, dict } = useT();
   const [added, setAdded] = useState({});
   const [pending, start] = useTransition();
-  if (!fit.total) return <p><small>This posting&apos;s summary doesn&apos;t name skills we can check. Open it to read the full requirements.</small></p>;
+  if (!fit.total) return <p><small>{t("fit.noSkills")}</small></p>;
   return (
     <ul className="fit-list">
       {fit.rows.map((r) => (
         <li key={r.tag} className={`fit-${r.status}`}>
           <span className="fit-icon" aria-hidden="true">{r.status === "proof" ? "✓" : r.status === "claimed" ? "~" : "✕"}</span>
           <span>
-            <strong>{r.name}</strong>{" "}
-            {r.status === "proof" && <small>proof: &ldquo;{r.quote}&rdquo;</small>}
-            {r.status === "claimed" && <small>ticked, but no achievement shows it yet</small>}
+            <strong>{labelIn(dict, r.tag)}</strong>{" "}
+            {r.status === "proof" && <small>{t("fit.proof")} &ldquo;{r.quote}&rdquo;</small>}
+            {r.status === "claimed" && <small>{t("fit.claimed")}</small>}
             {/* Close the gap: a 1-week step that ends in proof, one tap into the plan. */}
-            {r.status !== "proof" && GAP_STEPS[r.tag] && (
+            {r.status !== "proof" && dict.gapSteps[r.tag] && (
               <span className="gap-step">
-                <small><strong>{r.status === "gap" ? "Close the gap this week:" : "Prove it this week:"}</strong> {GAP_STEPS[r.tag]}</small>
+                <small><strong>{r.status === "gap" ? t("fit.closeGap") : t("fit.proveIt")}</strong> {dict.gapSteps[r.tag]}</small>
                 {added[r.tag] ? <small className="gap-done">{added[r.tag]}</small> : (
                   <button type="button" className="mini" disabled={pending} onClick={() => start(async () => {
                     const res = await addGapToPlan(r.tag);
-                    setAdded((a) => ({ ...a, [r.tag]: res.error || (res.already ? "Already in your plan" : "Added to your plan ✓ Tick it when it's done and it becomes proof.") }));
-                  })}>Add to my plan</button>
+                    setAdded((a) => ({ ...a, [r.tag]: res.error || (res.already ? t("fit.already") : t("fit.added")) }));
+                  })}>{t("fit.addToPlan")}</button>
                 )}
               </span>
             )}
@@ -51,10 +41,11 @@ function FitRows({ fit }) {
 
 // A search started on the homepage ("See my fit"), waiting until the Passport is saved.
 export function PendingNote() {
+  const { t } = useT();
   const [q, setQ] = useState("");
   useEffect(() => { try { setQ(window.localStorage.getItem(PENDING_KEY) || ""); } catch {} }, []);
   if (!q) return null;
-  return <p className="pending-note">Save your Passport and we&apos;ll check your fit for &ldquo;{q}&rdquo;.</p>;
+  return <p className="pending-note">{t("jobs.pending", { q })}</p>;
 }
 
 // A button anywhere on the page that runs a search in the jobs step and scrolls there.
@@ -69,20 +60,21 @@ export function SearchFor({ query, children }) {
 
 // The postings for one search, each with a fit check. In Goldie's chat (compact) the first 5 show, then "Show more".
 export function JobResults({ result, compact = false }) {
+  const { t } = useT();
   const [open, setOpen] = useState(null);
   const [shown, setShown] = useState(compact ? 5 : 15);
   const links = (list) => list.map(([site, url], i) => <span key={site}>{i > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{site}</a></span>);
   return (
     <div className={compact ? "job-results compact" : "job-results"} aria-live="polite">
-      <p className="job-summary"><span className="live-dot" aria-hidden="true" /> {result.query.summary}{result.jobs && result.jobs.length ? ` · ${result.total} found` : ""}</p>
+      <p className="job-summary"><span className="live-dot" aria-hidden="true" /> {result.query.summary}{result.jobs && result.jobs.length ? ` · ${t("jobs.found", { n: result.total })}` : ""}</p>
       {result.error ? (
         <>
-          <p className="warn">{ERRORS[result.error] || ERRORS.down}</p>
+          <p className="warn">{t(`jobs.errors.${["off", "keys", "limit"].includes(result.error) ? result.error : "down"}`)}</p>
           <p>{links(result.links)}</p>
         </>
       ) : !result.jobs.length ? (
         <>
-          <p>No sports postings matched that right now. Try fewer words, or search these sites:</p>
+          <p>{t("jobs.noneMatched")}</p>
           <p>{links(result.links)}</p>
         </>
       ) : (
@@ -92,35 +84,39 @@ export function JobResults({ result, compact = false }) {
               <div className="job-head">
                 <div>
                   <h3>{j.title}</h3>
-                  <p className="muted">{j.company}{j.location && ` · ${j.location}`}{j.created && ` · posted ${ago(j.created)}`}</p>
+                  <p className="muted">{j.company}{j.location && ` · ${j.location}`}{j.created && ` · ${t("jobs.posted", { ago: agoText(t, j.created) })}`}</p>
                   {j.salary && <p><small>{j.salary}</small></p>}
                 </div>
-                {j.fit.total > 0 && <span className={`badge ${j.fit.proven === j.fit.total ? "badge-full" : ""}`}>Proof {j.fit.proven}/{j.fit.total}</span>}
+                {j.fit.total > 0 && <span className={`badge ${j.fit.proven === j.fit.total ? "badge-full" : ""}`}>{t("jobs.proofBadge")} {j.fit.proven}/{j.fit.total}</span>}
               </div>
               <div className="job-actions">
-                <a className="cta small" href={j.url} target="_blank" rel="noopener noreferrer">Apply ↗</a>
-                <button type="button" className="ghost" aria-expanded={open === j.id} onClick={() => setOpen(open === j.id ? null : j.id)}>{open === j.id ? "Hide fit check" : "Fit check"}</button>
-                <small className="job-source">via {j.source}</small>
+                <a className="cta small" href={j.url} target="_blank" rel="noopener noreferrer">{t("jobs.apply")}</a>
+                <button type="button" className="ghost" aria-expanded={open === j.id} onClick={() => setOpen(open === j.id ? null : j.id)}>{open === j.id ? t("jobs.hideFit") : t("jobs.fitCheck")}</button>
+                <small className="job-source">{t("jobs.via", { source: j.source })}</small>
               </div>
               {open === j.id && (
                 <div className="fit-box">
-                  {j.snippet && <p><small>From the listing: &ldquo;{j.snippet}&rdquo;</small></p>}
+                  {j.snippet && <p><small>{t("jobs.fromListing")} &ldquo;{j.snippet}&rdquo;</small></p>}
                   <FitRows fit={j.fit} />
                 </div>
               )}
             </article>
           ))}
           {result.jobs.length > shown && (
-            <button type="button" className="ghost" onClick={() => setShown(shown + (compact ? 10 : 15))}>Show {Math.min(compact ? 10 : 15, result.jobs.length - shown)} more</button>
+            <button type="button" className="ghost" onClick={() => setShown(shown + (compact ? 10 : 15))}>{t("jobs.showMore", { n: Math.min(compact ? 10 : 15, result.jobs.length - shown) })}</button>
           )}
-          <p><small>Real postings from <a href="https://www.adzuna.com" target="_blank" rel="noopener noreferrer">Adzuna</a> and the career pages of sports employers; each link opens the original. More: {links(result.links.slice(2))}</small></p>
+          {result.boardsOnly
+            ? <p><small>{t("jobs.boardsOnly", { country: result.boardsOnly })} {links(result.links)}</small></p>
+            : <p><small>{t("jobs.realFrom")} <a href="https://www.adzuna.com" target="_blank" rel="noopener noreferrer">Adzuna</a> {t("jobs.realRest")} {links(result.links)}</small></p>}
         </>
       )}
     </div>
   );
 }
 
+// starters: [[what the chip says, what it searches for], ...]
 export default function JobSearch({ starters }) {
+  const { t } = useT();
   const [text, setText] = useState("");
   const [result, setResult] = useState(null);
   const [posting, setPosting] = useState("");
@@ -128,8 +124,8 @@ export default function JobSearch({ starters }) {
   const [pending, start] = useTransition();
   const [checking, startCheck] = useTransition();
 
-  const search = (q) => {
-    setText(q);
+  const search = (q, shown = q) => {
+    setText(shown);
     start(async () => setResult(await findJobs(q)));
   };
 
@@ -149,28 +145,29 @@ export default function JobSearch({ starters }) {
 
   return (
     <div>
+      <CountryPicker onChange={() => { if (result) search(text || "sports jobs"); }} />
       <form className="job-form" onSubmit={(e) => { e.preventDefault(); search(text); }}>
-        <label htmlFor="job-q" className="visually-hidden">What jobs are you looking for?</label>
-        <input id="job-q" type="text" maxLength={200} value={text} onChange={(e) => setText(e.target.value)} placeholder='Try "sports internships" or "ticket sales jobs in Chicago"' />
-        <button type="submit" disabled={pending}>{pending ? "Searching…" : "Search"}</button>
+        <label htmlFor="job-q" className="visually-hidden">{t("jobs.label")}</label>
+        <input id="job-q" type="text" maxLength={200} value={text} onChange={(e) => setText(e.target.value)} placeholder={t("jobs.placeholder")} />
+        <button type="submit" disabled={pending}>{pending ? t("jobs.searching") : t("jobs.search")}</button>
       </form>
       <div className="chips">
-        {starters.map((s) => <button type="button" key={s} disabled={pending} onClick={() => search(s)}>{s}</button>)}
+        {starters.map(([label, q]) => <button type="button" key={label} disabled={pending} onClick={() => search(q, label)}>{label}</button>)}
       </div>
 
-      {pending && <div className="job-skeleton" aria-label="Searching jobs"><span /><span /><span /></div>}
+      {pending && <div className="job-skeleton" aria-label={t("jobs.searching")}><span /><span /><span /></div>}
 
       {result && !pending && <JobResults result={result} />}
 
       <details className="paste-fit">
-        <summary>Have a job posting already? Check your fit</summary>
-        <label htmlFor="posting">Paste the job posting (requirements section is enough)</label>
+        <summary>{t("jobs.pasteSummary")}</summary>
+        <label htmlFor="posting">{t("jobs.pasteLabel")}</label>
         <textarea id="posting" rows={5} maxLength={8000} value={posting} onChange={(e) => setPosting(e.target.value)} />
-        <button type="button" disabled={checking || !posting.trim()} onClick={() => startCheck(async () => setPasted(await checkFit(posting)))}>{checking ? "Checking…" : "Check my fit"}</button>
+        <button type="button" disabled={checking || !posting.trim()} onClick={() => startCheck(async () => setPasted(await checkFit(posting)))}>{checking ? t("jobs.checking") : t("jobs.checkFit")}</button>
         {pasted && pasted.error && <p className="error">{pasted.error}</p>}
         {pasted && pasted.fit && (
           <div className="fit-box">
-            <p><strong>You have proof for {pasted.fit.proven} of {pasted.fit.total} skills this job asks for.</strong></p>
+            <p><strong>{t("jobs.proofFor", { proven: pasted.fit.proven, total: pasted.fit.total })}</strong></p>
             <FitRows fit={pasted.fit} />
           </div>
         )}

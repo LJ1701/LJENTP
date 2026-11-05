@@ -1,5 +1,6 @@
 import "server-only";
 import { GoogleGenAI } from "@google/genai";
+import { LANG_ENGLISH } from "./i18n";
 
 // Turns the user's achievements into three résumé bullets with Google Gemini. Runs only on the server
 // (the "server-only" import makes the build fail if browser code ever imports this file), so
@@ -28,13 +29,13 @@ Use ONLY facts stated in their achievements. Never invent numbers, results, titl
 If a number is not in the achievements, do not add one. Write exactly 3 bullets, one per line,
 each starting with a strong past-tense verb, at most 25 words each. No intro, no markdown, no bullet symbols.`;
 
-const FALLBACK = {
-  noKey: "The AI writer isn't switched on yet (the Gemini key hasn't been added). Your profile and matches work without it.",
-  limit: "The AI writer has hit its free daily limit. Try again later; your profile and matches still work.",
-  slow: "The AI writer is taking too long right now. Try again in a minute.",
-  error: "The AI writer isn't available right now. Try again later; your profile and matches still work.",
-  empty: "Add a few achievements to your profile first, one per line, then try again."
-};
+// Problems come back as codes; the page shows the matching message from locales/<lang>.js ("ai.<code>").
+const FALLBACK = { noKey: "noKey", limit: "limit", slow: "slow", error: "error", empty: "empty" };
+
+// Tells the AI which language to write in (job search words stay English: the employer boards are in English).
+const languageRule = (lang) => (lang && lang !== "en"
+  ? `\nLANGUAGE: write every text the user reads (reply, next_step, follow_ups, action_query, bullets) in ${LANG_ENGLISH[lang] || "English"}. Quote achievement lines exactly as written (any language). Keep job_keywords in English.`
+  : "");
 
 // Numbers in a bullet must appear in the achievements; anything else was invented, so the bullet is dropped.
 function inventsNumbers(bullet, achievements) {
@@ -42,7 +43,7 @@ function inventsNumbers(bullet, achievements) {
   return (bullet.replace(/,/g, "").match(/\d+(\.\d+)?/g) || []).some((n) => !source.includes(n));
 }
 
-export async function honestBullets(achievements) {
+export async function honestBullets(achievements, lang = "en") {
   const text = String(achievements || "").trim();
   if (!text) return { error: FALLBACK.empty };
   if (!process.env.GEMINI_API_KEY) return { error: FALLBACK.noKey };
@@ -52,7 +53,7 @@ export async function honestBullets(achievements) {
       contents: `Achievements:\n${text.slice(0, 4000)}`,
       // Minimal thinking: tested at ~1.5 s with complete answers. Default thinking took 35 s, and its
       // thinking also used up a small output limit, cutting answers off mid-sentence.
-      config: { systemInstruction: INSTRUCTIONS, temperature: 0.3, maxOutputTokens: 1500, thinkingConfig: { thinkingLevel: "minimal" }, abortSignal: AbortSignal.timeout(TIMEOUT_MS) }
+      config: { systemInstruction: INSTRUCTIONS + languageRule(lang), temperature: 0.3, maxOutputTokens: 1500, thinkingConfig: { thinkingLevel: "minimal" }, abortSignal: AbortSignal.timeout(TIMEOUT_MS) }
     });
     const lines = String(res.text || "")
       .split("\n")
@@ -109,7 +110,7 @@ You are given their saved Sports Profile, their top career matches and their pla
 HOW THE APP WORKS (use this to guide them):
 1 Passport: name, city, where they are now, skills, interests, goal, and achievements one per line (their proof). They can paste a résumé to fill it in. Saving updates everything.
 2 Your path: their top sports career matches (8 paths), the skills they have and what is missing. "Make this my target" puts a plan inside that match; ticking a plan step asks what they did and saves it as a new achievement (proof).
-3 Jobs & internships: real postings from anywhere, each with a Fit check that shows proof, ticked-only skills and gaps; gaps can be added to the plan.
+3 Jobs & internships: real postings from any country (the user picks the country above the search), each with a Fit check that shows proof, ticked-only skills and gaps; gaps can be added to the plan.
 4 Proof: a public proof link to paste into applications (can be turned off) and honest résumé bullets.
 You (Goldie) are in the corner of every page: questions, job searches, and interview practice for their target role.
 Guests can save their Passport with an email at the top of the page.
@@ -125,7 +126,7 @@ Rules:
 - "follow_ups" are 3 short questions (under 10 words) they might ask you next, written in their voice.
 - "action" moves the page for them. Use it ONLY when they ask to see, go to, open or find something, otherwise "none":
   go_passport, go_matches, go_jobs, go_plan, go_proof (scroll to that step); search_jobs (see JOBS AND INTERNSHIPS); start_tour (they want a tour or don't know where to start).
-- For search_jobs fill: "job_keywords" = 0 to 4 words for the kind of role, plus "internship" if they want internships (e.g. "marketing internship", "video analyst", "NBA social media"); never the words sports, job or jobs; empty for any sports job. "job_location" = a place ONLY if they named one, their profile CITY only if they said near me / nearby / local, otherwise "" (anywhere). "action_query" = a short label like "Sports marketing internships, anywhere in the US".`;
+- For search_jobs fill: "job_keywords" = 0 to 4 words for the kind of role, plus "internship" if they want internships (e.g. "marketing internship", "video analyst", "NBA social media"); never the words sports, job or jobs; empty for any sports job. "job_location" = a place ONLY if they named one, their profile CITY only if they said near me / nearby / local, otherwise "" (anywhere). "action_query" = a short label like "Sports marketing internships in Spain" (use JOB SEARCH COUNTRY).`;
 
 const INTERVIEW_RULES = `
 INTERVIEW PRACTICE MODE: act as a hiring manager for their target role.
@@ -152,22 +153,17 @@ const COACH_SCHEMA = {
   required: ["reply", "evidence", "next_step", "suggest_role", "follow_ups", "action"]
 };
 
-const COACH_FALLBACK = {
-  ...FALLBACK,
-  limit: "Goldie has used up today's free AI answers. Try again tomorrow; your Passport, matches and jobs still work.",
-  slow: "Goldie's AI is busy right now. Try again in a few seconds.",
-  error: "Goldie isn't available right now. Try again in a minute; your profile and matches still work."
-};
+const COACH_FALLBACK = { ...FALLBACK, limit: "coachLimit", slow: "coachSlow", error: "coachError" };
 
 // context: { profileText, achievements (array of lines), contextText (everything the coach may cite) }
-export async function coachReply(context, history, mode) {
+export async function coachReply(context, history, mode, lang = "en") {
   if (!process.env.GEMINI_API_KEY) return { error: FALLBACK.noKey };
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     const res = await generate(ai, {
       contents: history.map((m) => ({ role: m.role === "coach" ? "model" : "user", parts: [{ text: m.text }] })),
       config: {
-        systemInstruction: COACH_RULES + (mode === "interview" ? INTERVIEW_RULES : "") + "\n\n" + context.profileText,
+        systemInstruction: COACH_RULES + (mode === "interview" ? INTERVIEW_RULES : "") + languageRule(lang) + "\n\n" + context.profileText,
         temperature: 0.5,
         maxOutputTokens: 2000,
         thinkingConfig: { thinkingLevel: "minimal" },

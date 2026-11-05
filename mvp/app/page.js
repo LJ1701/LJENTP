@@ -4,30 +4,25 @@ import GuestButton from "./guest-button";
 import HomeSearch from "./home-search";
 import { HeroGoldie } from "./goldie";
 import { jobStats } from "@/lib/jobs";
+import { getT } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
-
-const HOW = [
-  ["1", "Passport", "Add what you've done, in your own words, or paste your résumé."],
-  ["2", "Fit", "See the sports careers and real jobs you fit, with proof for each skill."],
-  ["3", "Proof", "One link and honest résumé bullets for every application."]
-];
 
 export default async function Home({ searchParams }) {
   const { error } = await searchParams;
   const supabase = await createClient();
-  const [{ data: { user } }, stats] = await Promise.all([supabase.auth.getUser(), jobStats()]);
+  const [{ data: { user } }, stats, { t, lang, dict }] = await Promise.all([supabase.auth.getUser(), jobStats(), getT()]);
 
   return (
     <>
       <section className="hero-x" aria-labelledby="heroTitle">
         <div className="hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow">AI sports career discovery · by LJSOCCER</p>
-            <h1 id="heroTitle" className="hero-title">Find your place in the sports industry. <span className="gold-text">Prove it.</span></h1>
-            <p className="hero-sub">Love sports? Find a job in sports that fits you. Then show what you can do.</p>
-            {user ? <a href="/profile" className="cta big">Open my Sports Passport →</a> : <GuestButton />}
-            {!user && <p className="hero-note"><small>Free · no account needed · <a href="#start">Sign in</a></small></p>}
+            <p className="eyebrow">{t("home.eyebrow")}</p>
+            <h1 id="heroTitle" className="hero-title">{t("home.title")} <span className="gold-text">{t("home.titleGold")}</span></h1>
+            <p className="hero-sub">{t("home.sub")}</p>
+            {user ? <a href="/profile" className="cta big">{t("home.openPassport")}</a> : <GuestButton />}
+            {!user && <p className="hero-note"><small>{t("home.free")} <a href="#start">{t("home.signIn")}</a></small></p>}
           </div>
           <div className="hero-visual">
             <div className="orbit orbit-1" aria-hidden="true" />
@@ -45,41 +40,41 @@ export default async function Home({ searchParams }) {
         </div>
         <div className="live-stats">
           <span className="live-dot" aria-hidden="true" />
-          <span><strong>{stats.total.toLocaleString("en-US")}</strong> open jobs at sports companies</span>
-          <span><strong>{stats.internships}</strong> internships</span>
-          <span><strong>{stats.employers}</strong> employers · counted hourly</span>
+          <span><strong>{stats.total.toLocaleString(lang)}</strong> {t("home.statsJobs")}</span>
+          <span><strong>{stats.internships.toLocaleString(lang)}</strong> {t("home.statsInterns")}</span>
+          <span><strong>{stats.employers}</strong> {t("home.statsEmployers")}</span>
         </div>
         <HomeSearch signedIn={!!user} />
         {stats.latest.length > 0 && (
           <div className="just-posted">
-            <span className="eyebrow">Just posted</span>
+            <span className="eyebrow">{t("home.justPosted")}</span>
             <div className="just-posted-track">
               {stats.latest.map((j) => <a key={j.id} href={j.url} target="_blank" rel="noopener noreferrer">{j.title} · <span className="muted">{j.company}</span></a>)}
             </div>
           </div>
         )}
         <ol className="how-strip">
-          {HOW.map(([n, title, text]) => (
-            <li key={n}><span className="step-num">{n}</span><div><strong>{title}</strong><span>{text}</span></div></li>
+          {dict.home.how.map(([title, text], i) => (
+            <li key={title}><span className="step-num">{i + 1}</span><div><strong>{title}</strong><span>{text}</span></div></li>
           ))}
         </ol>
       </section>
 
       <section className="who card">
-        <h2>Built for everyone heading into sports</h2>
+        <h2>{t("home.whoTitle")}</h2>
         <div className="who-grid">
-          {["Students", "Athletes, any sport", "Former players", "Coaches", "Creators", "Career changers", "Fans with a plan"].map((w) => <span key={w} className="pill">{w}</span>)}
+          {dict.home.who.map((w) => <span key={w} className="pill">{w}</span>)}
         </div>
       </section>
 
       <div id="start" />
-      {error === "signin" && <p className="error">That confirmation link didn&apos;t work or has expired. Try signing in, or create the account again. Saving a guest Passport? Open the browser you started it in and refresh: your email may already be confirmed.</p>}
+      {error === "signin" && <p className="error">{t("home.errorSignin")}</p>}
       {user ? (
         <div className="card auth-card" style={{ textAlign: "center" }}>
-          <p className="ok">{user.is_anonymous ? "You're using a guest Passport on this browser." : `Signed in as ${user.email}`}</p>
-          <a className="cta" href="/profile">Go to my Sports Passport →</a>
+          <p className="ok">{user.is_anonymous ? t("home.guestUsing") : t("home.signedInAs", { email: user.email })}</p>
+          <a className="cta" href="/profile">{t("home.goPassport")}</a>
           <form action="/auth/signout" method="post">
-            <button type="submit" className="ghost">{user.is_anonymous ? "Leave guest mode (you lose this Passport)" : "Sign out"}</button>
+            <button type="submit" className="ghost">{user.is_anonymous ? t("home.leaveGuest") : t("home.signOut")}</button>
           </form>
         </div>
       ) : (

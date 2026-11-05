@@ -1,32 +1,47 @@
 import "server-only";
 
+import { ADZUNA, INTERN_WORD, inCountry } from "./countries";
+
 // Real job postings from two kinds of source; nothing is written by AI and every link is the employer's own posting.
-// 1. Adzuna (https://developer.adzuna.com): thousands of US job boards, filtered to sports.
-// 2. Public career boards of sports employers (Greenhouse, Lever and Ashby publish them as open JSON, no key needed).
+// 1. Adzuna (https://developer.adzuna.com): local job boards in 19 countries, filtered to sports.
+// 2. Public career boards of sports employers (Greenhouse, Lever and Ashby publish them as open JSON, no key needed),
+//    which hire worldwide; their postings are filtered by the country in each posting's location.
+// Every search has a country: a two-letter code, or "ANY" for every country (employer boards only).
 // Results are cached for an hour, so repeated searches don't hit the sources again.
-const SPORTS_WORDS = ["sport", "sports", "athletic", "athletics", "athlete", "team", "league", "stadium", "arena", "esports", "recreation", "fitness", "club", "coach", "coaching", "tournament", "ballpark", "nfl", "nba", "mlb", "nhl", "mls", "ncaa", "wnba", "nwsl", "fifa", "olympic"];
-const sportsRe = new RegExp(`\\b(${SPORTS_WORDS.join("|")})`, "i");
+const SPORTS_WORDS = ["sport", "athlet", "atlet", "team", "league", "liga", "stadium", "stadion", "stadio", "estadio", "est[aá]dio", "stade", "arena", "esports", "recreation", "fitness", "club", "clube", "verein", "coach", "tournament", "torneo", "torneio", "tournoi", "turnier", "ballpark", "deport", "esporte", "esportiv", "desport", "futbol", "f[uú]tbol", "futebol", "fu[sß]ball", "calcio", "voetbal", "pi[lł]k", "football", "nfl", "nba", "mlb", "nhl", "mls", "ncaa", "wnba", "nwsl", "fifa", "uefa", "olympic", "ol[ií]mpic"];
+const sportsRe = new RegExp(`(?<![\\p{L}])(${SPORTS_WORDS.join("|")})`, "iu");
+// Sent to Adzuna as "at least one of these words", in English and the local language.
+const ADZUNA_SPORTS = {
+  default: "sports athletic athletics athlete stadium arena league esports recreation",
+  es: "sports deporte deportes deportivo deportiva estadio club liga", mx: "sports deporte deportes deportivo deportiva estadio club liga",
+  br: "sports esporte esportes esportivo esportiva estádio clube futebol", fr: "sport sports sportif sportive stade club ligue",
+  be: "sport sports sportif sportive stade club voetbal", de: "sport sportverein verein stadion fußball sportlich", at: "sport sportverein verein stadion fußball",
+  ch: "sport sportverein verein stadion fußball sportif", it: "sport sportivo sportiva calcio stadio club", nl: "sport sportclub voetbal stadion vereniging",
+  pl: "sport sportowy sportowa klub stadion piłka"
+};
 // Clearly about sports: an Adzuna posting must use one of these somewhere. Words most job ads use ("team",
 // "club", "fitness", "coach") don't count on their own; they let in vets, ICU doctors and engineers.
-// Checked against live Adzuna results on 4 Nov 2026.
-const STRONG_SPORTS = ["sport", "sports", "athletic", "athletics", "athlete", "athletes", "league", "stadium", "arena", "esports", "ballpark", "tournament", "nfl", "nba", "mlb", "nhl", "mls", "ncaa", "wnba", "nwsl", "fifa", "olympic", "soccer", "football", "basketball", "baseball", "hockey", "volleyball", "tennis", "golf", "fans?", "season tickets?", "game ?days?", "ticketing"];
-const strongRe = new RegExp(`\\b(${STRONG_SPORTS.join("|")})\\b`, "i");
+// Checked against live Adzuna results on 4 Nov 2026; local-language sports words added for other countries.
+const STRONG_SPORTS = ["sports?", "athletic", "athletics", "athletes?", "league", "stadium", "arena", "esports", "ballpark", "tournament", "nfl", "nba", "mlb", "nhl", "mls", "ncaa", "wnba", "nwsl", "fifa", "uefa", "olympic", "soccer", "football", "basketball", "baseball", "hockey", "volleyball", "tennis", "golf", "fans?", "season tickets?", "game ?days?", "ticketing",
+  "deport\\p{L}*", "esport[ei]s?", "esportiv\\p{L}*", "desport\\p{L}*", "f[uú]tbol", "futebol", "fu[sß]ball", "calcio", "voetbal", "pi[lł]k\\p{L}*", "estadio", "est[aá]dio", "stade", "stadion", "stadio", "liga", "ligue", "torneo", "torneio", "tournoi", "turnier", "sportif", "sportive", "sportivo", "sportiva", "sportverein", "sportowy", "sportowa", "sportlich", "atleta", "atletas", "ol[ií]mpic\\p{L}*"];
+const strongRe = new RegExp(`(?<![\\p{L}])(${STRONG_SPORTS.join("|")})(?![\\p{L}])`, "iu");
 const clearlySports = (j) => strongRe.test(`${j.title} ${j.company} ${j.snippet}`);
 
 const stripTags = (s) => String(s || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 
 export const jobsEnabled = () => !!(process.env.ADZUNA_APP_ID && process.env.ADZUNA_APP_KEY);
 
-// Search-page links for when job listings aren't switched on (or as "see more").
-export function searchLinks(keywords, location) {
+// Search-page links for when job listings aren't switched on (or as "see more"). LinkedIn works in every country;
+// Indeed's US site and the two US sports boards are only offered for the US (and Canada for the boards).
+export function searchLinks(keywords, location, country = "US", countryLabel = "") {
   const q = encodeURIComponent(`sports ${keywords || ""}`.trim());
-  const l = encodeURIComponent(location || "");
-  return [
-    ["Indeed", `https://www.indeed.com/jobs?q=${q}${l ? `&l=${l}` : ""}`],
-    ["LinkedIn", `https://www.linkedin.com/jobs/search/?keywords=${q}${l ? `&location=${l}` : ""}`],
-    ["TeamWork Online", "https://www.teamworkonline.com/"],
-    ["WorkInSports", "https://www.workinsports.com/"]
-  ];
+  const where = location || (country !== "ANY" ? countryLabel : "");
+  const l = encodeURIComponent(where);
+  const links = [["LinkedIn", `https://www.linkedin.com/jobs/search/?keywords=${q}${l ? `&location=${l}` : ""}`]];
+  if (country === "US") links.unshift(["Indeed", `https://www.indeed.com/jobs?q=${q}${location ? `&l=${encodeURIComponent(location)}` : ""}`]);
+  if (country === "US" || country === "CA") links.push(["TeamWork Online", "https://www.teamworkonline.com/"], ["WorkInSports", "https://www.workinsports.com/"]);
+  else links.push(["Google", `https://www.google.com/search?q=${encodeURIComponent(`sports jobs ${keywords || ""} ${where}`.replace(/\s+/g, " ").trim())}&ibp=htl;jobs`]);
+  return links;
 }
 
 // Sports employers whose public career boards were checked on 28 Oct 2026 (all returned open jobs).
@@ -70,14 +85,14 @@ async function boardJobs([kind, token, name]) {
   }
 }
 
-const INTERN = /\bintern(ship)?s?\b|\bco-?op\b|\bapprentice/i;
+const INTERN = /\bintern(ship)?s?\b|\bco-?op\b|\bapprentice|\btrainee|\bpraktik|werkstudent|pr[aá]cticas|\bbecari|est[aá]gi|\bstage\b|\bstagiaire|alternance|tirocini|stageplaats|sta[zż]\b|sta[zż]ysta/i;
 const wantsIntern = (keywords) => /\bintern/i.test(keywords || "");
 // The search words without "intern(ship)", each shortened a little so "analyst" also matches "analytics".
 const terms = (keywords) => String(keywords || "").toLowerCase().replace(/\bintern(ship)?s?\b/g, " ").split(/[^a-z0-9&+]+/)
   .filter((w) => w.length > 2 && !["and", "the", "for", "with", "remote"].includes(w))
   .map((w) => (w.length > 6 ? w.slice(0, w.length - 2) : w));
 
-async function searchBoards({ keywords, location }) {
+async function searchBoards({ keywords, location, country }) {
   const all = (await Promise.all(EMPLOYERS.map(boardJobs))).flat();
   const words = terms(keywords);
   const intern = wantsIntern(keywords);
@@ -86,15 +101,18 @@ async function searchBoards({ keywords, location }) {
     const text = `${j.title} ${j.team}`.toLowerCase();
     if (intern && !INTERN.test(`${j.title} ${j.type}`)) return false;
     if (words.length && !words.every((w) => text.includes(w))) return false;
+    if (!inCountry(j.location, country)) return false;
     if (place && !`${j.location}`.toLowerCase().includes(place) && !/remote/i.test(j.location)) return false;
     return j.url;
   });
 }
 
 // keywords: the role words ("video analyst", "marketing internship"); may be empty for "any sports job".
-// location: "Dallas, TX", or "" for anywhere (the default: results don't have to be near the user).
-async function searchAdzuna({ keywords, location }) {
+// location: "Dallas, TX", or "" for anywhere in the country. Countries Adzuna doesn't cover return nothing (no error).
+async function searchAdzuna({ keywords, location, country = "US" }) {
+  if (!ADZUNA.includes(country)) return { jobs: [], total: 0 };
   if (!jobsEnabled()) return { error: "off" };
+  const cc = country.toLowerCase();
   const params = new URLSearchParams({
     app_id: process.env.ADZUNA_APP_ID,
     app_key: process.env.ADZUNA_APP_KEY,
@@ -105,16 +123,16 @@ async function searchAdzuna({ keywords, location }) {
   });
   const words = String(keywords || "").replace(/\bintern(ship)?s?\b/gi, " ").replace(/\s+/g, " ").trim();
   // Internships: Adzuna matches the word "internship", which nearly every intern posting contains.
-  const what = [words, wantsIntern(keywords) ? "internship" : ""].filter(Boolean).join(" ");
+  const what = [words, wantsIntern(keywords) ? INTERN_WORD[country] || "internship" : ""].filter(Boolean).join(" ");
   if (what) params.set("what", what);
   // At least one sports word must appear, so "marketing coordinator" means sports marketing, not any marketing.
-  params.set("what_or", "sports athletic athletics athlete stadium arena league esports recreation");
+  params.set("what_or", ADZUNA_SPORTS[cc] || ADZUNA_SPORTS.default);
   if (location) {
     params.set("where", location);
     params.set("distance", "80");
   }
   try {
-    const res = await fetch(`https://api.adzuna.com/v1/api/jobs/us/search/1?${params}`, {
+    const res = await fetch(`https://api.adzuna.com/v1/api/jobs/${cc}/search/1?${params}`, {
       next: { revalidate: 3600 },
       signal: AbortSignal.timeout(10000)
     });
@@ -132,7 +150,7 @@ async function searchAdzuna({ keywords, location }) {
         url: j.redirect_url,
         snippet: stripTags(j.description).slice(0, 600),
         salary: j.salary_min && j.salary_is_predicted !== "1"
-          ? `$${Math.round(j.salary_min).toLocaleString("en-US")}${j.salary_max && j.salary_max !== j.salary_min ? `–$${Math.round(j.salary_max).toLocaleString("en-US")}` : ""} (as listed)`
+          ? `${money(j.salary_min, country)}${j.salary_max && j.salary_max !== j.salary_min ? `–${money(j.salary_max, country)}` : ""}`
           : "",
         source: "Adzuna"
       }))
@@ -147,7 +165,12 @@ async function searchAdzuna({ keywords, location }) {
   }
 }
 
+// A salary in the posting country's currency, as Adzuna lists it.
+const CURRENCY = { US: "USD", GB: "GBP", CA: "CAD", AU: "AUD", NZ: "NZD", IN: "INR", SG: "SGD", ZA: "ZAR", BR: "BRL", MX: "MXN", PL: "PLN", CH: "CHF" };
+const money = (n, country) => new Intl.NumberFormat("en", { style: "currency", currency: CURRENCY[country] || "EUR", maximumFractionDigits: 0 }).format(Math.round(n));
+
 // Both sources at once, newest first, duplicates (same title at the same employer) removed. Up to 40 postings.
+// query: { keywords, location, country }
 export async function searchJobs(query) {
   const [adzuna, boards] = await Promise.all([searchAdzuna(query), searchBoards(query)]);
   const seen = new Set();
