@@ -10,6 +10,8 @@ import Goldie from "../goldie";
 import SaveAccount from "./save-account";
 import JobSearch, { SearchFor, PendingNote } from "./job-search";
 import CopyButton from "./copy-button";
+import { billingStatus, FREE_ANSWERS } from "@/lib/billing";
+import { joinProgram, leaveProgram } from "../billing/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -22,17 +24,40 @@ const PlanBlock = ({ plan, done }) => (
   </div>
 );
 
+// How many AI answers are left, with the ways to get more. Hidden until billing is set up.
+const AiBar = ({ s }) => (
+  <div className="card ai-bar">
+    <p><strong>AI answers:</strong>{" "}
+      {s.pro ? "unlimited (Pro)" : s.program ? `unlimited with ${s.program.name}` : <>{s.freeLeft} of {FREE_ANSWERS} free left this month{s.packLeft > 0 && ` · ${s.packLeft} bought`}</>}
+      <br /><small>Job search, fit checks and Goldie&apos;s instant answers are always free.</small></p>
+    {!s.unlimited && <a className="cta small" href="/pricing">Get more</a>}
+    {s.program ? (
+      <form action={leaveProgram}><button type="submit" className="ghost mini">Leave program</button></form>
+    ) : (
+      <details>
+        <summary>Have a join code from your school or club?</summary>
+        <form action={joinProgram} className="join-form">
+          <input type="text" name="code" placeholder="e.g. K7M2QX" maxLength={12} aria-label="Program join code" required />
+          <button type="submit">Join</button>
+        </form>
+        <p><small>Your program director sees totals only, never your name, Passport or chats.</small></p>
+      </details>
+    )}
+  </div>
+);
+
 const Step = ({ n, children, id }) => <h2 className="step-title" id={id}><span className="step-num">{n}</span> {children}</h2>;
 
 export default async function ProfilePage({ searchParams }) {
-  const { saved, error } = await searchParams;
+  const { saved, error, ok } = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  const [{ data: profile, error: profileError }, { data: plan }] = await Promise.all([
+  const [{ data: profile, error: profileError }, { data: plan }, billing] = await Promise.all([
     supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle(),
-    supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle()
+    supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle(),
+    billingStatus(user.id)
   ]);
   const p = profile || {};
   // Matches use ticked skills plus those found in the achievements text.
@@ -57,6 +82,8 @@ export default async function ProfilePage({ searchParams }) {
       {profileError && <p className="error">The database isn&apos;t set up yet (run the SQL in mvp/supabase/schema.sql).</p>}
       {saved && <p className="ok">Saved. Your matches below are updated.</p>}
       {error && <p className="error">{error}</p>}
+      {ok && <p className="ok">{ok}</p>}
+      {billing.ready && <AiBar s={billing} />}
 
       <Step n="1" id="passport">Your Sports Passport</Step>
       {/* key: when a plan step adds proof, the form reloads with the new achievements instead of the old text. */}

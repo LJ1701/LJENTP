@@ -16,6 +16,7 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [offline, setOffline] = useState(false);
+  const [upgrade, setUpgrade] = useState(false);
   const [pending, start] = useTransition();
   const endRef = useRef(null);
   const lastRef = useRef(null);
@@ -45,6 +46,7 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
     start(async () => {
       const res = await askCoach(next.map(({ role, text }) => ({ role, text })), chatMode);
       setOffline(!!res.offline);
+      setUpgrade(!!res.upgrade);
       if (res.error) setError(res.offline ? "My AI brain is busy right now, but these still work instantly:" : res.error);
       else {
         setMessages((m) => [...m, { role: "coach", text: res.reply, ...res }]);
@@ -121,7 +123,8 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
           </div>
         )))}
         {pending && <p className="msg msg-coach"><em>Goldie is thinking…</em></p>}
-        {error && <p className={offline ? "warn" : "error"}>{error}</p>}
+        {error && <p className={offline || upgrade ? "warn" : "error"}>{error}</p>}
+        {error && upgrade && <p><a className="cta small" href="/pricing">See plans</a> <small>Job searches and instant answers stay free.</small></p>}
         {error && offline && (
           <div className="chips">
             <button type="button" onClick={() => send("Find sports internships")} disabled={pending}>Find internships</button>
