@@ -332,7 +332,7 @@ const de = {
 
   goldie: {
     tour: [
-      "Das ist dein Sportpass. Füge deinen Lebenslauf ein oder fülle ihn aus. Erzähl mir dann eine Sache, die du gemacht hast, und ich mache daraus einen Nachweis mit Zahlen, die Arbeitgeber prüfen können.",
+      "Das ist dein Sportpass. Füge deinen Lebenslauf ein oder fülle ihn aus, und trag unter Erfolge ein, was du gemacht hast: eine Zeile pro Erfolg, wenn möglich mit einer Zahl.",
       "Dein Weg: die Sportberufe, die zu dir passen, mit einem Nachweis für jede Fähigkeit. Wähle ein Ziel und dein Plan erscheint direkt darin.",
       "Echte Sportjobs und Praktika aus jedem Land. Frag nach dem, was du willst, und klick dann bei einer Stelle auf Passungs-Check.",
       "Dein Nachweis: ein öffentlicher Link und ehrliche Lebenslauf-Punkte für jede Bewerbung.",

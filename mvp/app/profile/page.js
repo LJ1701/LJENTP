@@ -12,7 +12,6 @@ import JobSearch, { SearchFor, PendingNote } from "./job-search";
 import CopyButton from "./copy-button";
 import { billingStatus, FREE_ANSWERS } from "@/lib/billing";
 import { joinProgram, leaveProgram } from "../billing/actions";
-import ProofBuilder from "./proof-builder";
 import { getT, getCountry } from "@/lib/i18n-server";
 import { countryName } from "@/lib/countries";
 
@@ -130,7 +129,6 @@ export default async function ProfilePage({ searchParams }) {
         </fieldset>
         <label htmlFor="goal">{t("profile.goal")}</label>
         <input id="goal" name="goal" type="text" placeholder={t("profile.goalPh")} defaultValue={p.goal} />
-        <ProofBuilder hasProfile={!!profile} />
         <label htmlFor="achievements">{t("profile.achievements")}</label>
         <textarea id="achievements" name="achievements" rows={5} placeholder={t("profile.achievementsPh")} defaultValue={p.achievements} />
         <button type="submit">{t("profile.savePassport")}</button>

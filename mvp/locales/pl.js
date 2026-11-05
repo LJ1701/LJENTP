@@ -332,7 +332,7 @@ const pl = {
 
   goldie: {
     tour: [
-      "To twój Paszport Sportowy. Wklej CV albo go wypełnij. Potem opowiedz mi o jednej rzeczy, którą zrobiłeś, a zamienię ją w dowód z liczbami, które pracodawcy mogą sprawdzić.",
+      "To twój Paszport Sportowy. Wklej CV albo go wypełnij i wpisz, co zrobiłeś, w Osiągnięciach: jedno w linii, najlepiej z liczbą.",
       "Twoja ścieżka: zawody sportowe, do których pasujesz, z dowodem na każdą umiejętność. Wybierz cel, a plan pojawi się w nim od razu.",
       "Prawdziwe oferty pracy i staży w sporcie z każdego kraju. Poproś o to, czego chcesz, a potem kliknij „Sprawdź dopasowanie” przy ofercie.",
       "Twój dowód: jeden publiczny link i uczciwe punkty do CV przy każdej aplikacji.",

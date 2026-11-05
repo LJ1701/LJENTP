@@ -317,7 +317,7 @@ const es = {
   },
   goldie: {
     tour: [
-      "Este es tu Pasaporte Deportivo. Pega tu currículum o rellénalo. Luego cuéntame algo que hayas hecho y lo convertiré en prueba con números que los empleadores pueden comprobar.",
+      "Este es tu Pasaporte Deportivo. Pega tu currículum o rellénalo, y escribe lo que has hecho en Logros: una línea cada uno, con un número si puedes.",
       "Tu camino: las carreras deportivas que te encajan, con pruebas de cada habilidad. Elige un objetivo y tu plan aparecerá dentro.",
       "Empleos y prácticas deportivas reales, de cualquier país. Pide lo que quieras y pulsa Ver encaje en cualquier oferta.",
       "Tu prueba: un enlace público y frases de currículum honestas para cada candidatura.",
