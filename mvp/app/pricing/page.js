@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { billingStatus, FREE_ANSWERS } from "@/lib/billing";
-import { testMode, getSubscription } from "@/lib/stripe";
+import { getSubscription } from "@/lib/stripe";
 import { buy, setProRenewal, joinProgram, requestPilot } from "../billing/actions";
 
 export const dynamic = "force-dynamic";
@@ -26,7 +26,6 @@ export default async function Pricing({ searchParams }) {
         <h1>Free to build your proof. <span className="gold-text">Pay only for more AI.</span></h1>
         <p className="muted">Your Passport, career matches, plan, live job search, fit checks and proof link are free for everyone, always.</p>
       </div>
-      {testMode() && <p className="warn test-banner">Test mode: no real money moves. Pay with card 4242 4242 4242 4242, any future date, any 3-digit code.</p>}
       {error && <p className="error">{error}</p>}
       {ok && <p className="ok">{ok}</p>}
       {canceled && <p className="warn">Payment cancelled. Nothing was charged.</p>}

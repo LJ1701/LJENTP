@@ -26,10 +26,7 @@ export default function RootLayout({ children }) {
               <img src="/logo.svg" alt="" width={38} height={38} className="brand-logo" />
               <span>LJSport<span className="gold-text">Mind</span></span>
             </a>
-            <nav className="topbar-links">
-              <a href="/pricing" className="topbar-link">Pricing</a>
-              <a href="/profile" className="topbar-cta">My Passport</a>
-            </nav>
+            <a href="/profile" className="topbar-cta">My Passport</a>
           </div>
         </header>
         <main>{children}</main>
