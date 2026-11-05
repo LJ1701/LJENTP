@@ -2,13 +2,14 @@
 import { createContext, useContext, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { LANGS, LANG_COOKIE, COUNTRY_COOKIE, ANYWHERE, makeT, setCookie } from "@/lib/i18n";
-import { countryList } from "@/lib/countries";
 
 // The visitor's language for browser components: the server passes in one dictionary (not all ten).
-const I18n = createContext({ lang: "en", dict: {}, country: "US", t: (k) => k });
+const I18n = createContext({ lang: "en", dict: {}, country: "US", countries: [], t: (k) => k });
 
-export function I18nProvider({ lang, dict, country, children }) {
-  const value = useMemo(() => ({ lang, dict, country, t: makeT(dict) }), [lang, dict, country]);
+// countries: the country picker's list, built once on the server so the browser shows exactly the same names
+// (browsers and the server can spell some country names differently, which breaks the page on load).
+export function I18nProvider({ lang, dict, country, countries, children }) {
+  const value = useMemo(() => ({ lang, dict, country, countries, t: makeT(dict) }), [lang, dict, country, countries]);
   return <I18n.Provider value={value}>{children}</I18n.Provider>;
 }
 
@@ -18,8 +19,7 @@ export const useT = () => useContext(I18n);
 // "Anywhere". The choice is saved in a cookie; onChange lets the search run again for the new country.
 export function CountryPicker({ onChange }) {
   const router = useRouter();
-  const { lang, country, t } = useT();
-  const list = useMemo(() => countryList(lang), [lang]);
+  const { country, countries: list, t } = useT();
   return (
     <label className="country-picker">
       <span>{t("search.jobsIn")}</span>

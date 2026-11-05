@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Goldie from "./goldie";
 import { I18nProvider, LanguagePicker } from "./i18n-provider";
+import { countryList } from "@/lib/countries";
 import { getT, getCountry } from "@/lib/i18n-server";
 
 // Same fonts and logo as the live LJSportMind site (ljentp.vercel.app).
@@ -27,7 +28,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={lang} className={`${inter.variable} ${grotesk.variable}`}>
       <body>
-        <I18nProvider lang={lang} dict={dict} country={country}>
+        <I18nProvider lang={lang} dict={dict} country={country} countries={countryList(lang)}>
           <div className="bg-glow" aria-hidden="true" />
           <header className="topbar">
             <div className="topbar-inner">
