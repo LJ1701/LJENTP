@@ -228,7 +228,8 @@ const clip = (s, n) => String(s || "").replace(/\s+/g, " ").trim().slice(0, n);
 const TAILOR_RULES = `You help someone apply for one specific job in the sports industry.
 You get their ACHIEVEMENTS (their own words), their SKILLS and GOAL, and the JOB POSTING.
 Use ONLY facts stated in the achievements. Never invent numbers, results, job titles, employers, dates,
-tools or qualifications. If a number is not in the achievements, do not add one.
+tools or qualifications. If a number is not in the achievements, do not add one. Do not state the person's
+education, school, degree, student status, age or years of experience unless the achievements say it.
 1. bullets: 3 to 5 résumé bullets that put the achievements most relevant to THIS job first, rephrased in the
    posting's own words where the meaning is the same. Each starts with a strong past-tense verb, at most 25 words.
 2. cover_letter: under 200 words, 3 short paragraphs: why this role at this employer (use the posting), the 2 or 3
