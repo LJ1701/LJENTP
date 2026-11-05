@@ -2,6 +2,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { completeStep, undoStep } from "./actions";
+import { cheer } from "./proof-builder";
 
 // The plan checklist. Ticking a step asks what the user did; that line is saved as a new achievement, so
 // finishing the plan builds proof and the matches, fit checks and proof link update straight away.
@@ -20,6 +21,7 @@ export default function PlanSteps({ steps }) {
     setAsking(null);
     setNote("");
     setMsg(res.error || (res.added ? "Added to your proof ✓ Your matches and fit checks just got stronger." : "Step done ✓"));
+    if (res.added) cheer();
     router.refresh();
   });
 

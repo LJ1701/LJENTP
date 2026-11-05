@@ -12,6 +12,7 @@ import JobSearch, { SearchFor, PendingNote } from "./job-search";
 import CopyButton from "./copy-button";
 import { billingStatus, FREE_ANSWERS } from "@/lib/billing";
 import { joinProgram, leaveProgram } from "../billing/actions";
+import ProofBuilder from "./proof-builder";
 
 export const dynamic = "force-dynamic";
 
@@ -124,6 +125,7 @@ export default async function ProfilePage({ searchParams }) {
         </fieldset>
         <label htmlFor="goal">Career goal</label>
         <input id="goal" name="goal" type="text" placeholder="e.g. Work in a college athletic department" defaultValue={p.goal} />
+        <ProofBuilder hasProfile={!!profile} />
         <label htmlFor="achievements">Achievements: your proof (one per line)</label>
         <textarea id="achievements" name="achievements" rows={5} placeholder={"Ran social media for my school's basketball team\nVolunteered at a city marathon\nWrote game recaps for the student paper"} defaultValue={p.achievements} />
         <button type="submit">Save my Passport</button>
@@ -209,6 +211,7 @@ export default async function ProfilePage({ searchParams }) {
       {profile && <ResumeBullets />}
       <Goldie coach={{
         firstName,
+        hasProfile: !!profile,
         paths: CAREER_PATHS.map((c, i) => ({ name: c.name, links: jobLinks(i, p.location) })),
         targetIdx: plan ? plan.role_idx : null,
         starters: [

@@ -71,13 +71,28 @@ export function topMatches(profile) {
     .slice(0, 3);
 }
 
+// "Close the gap": one concrete step per skill, small enough for one week, that ends in something countable.
+export const GAP_STEPS = {
+  "video editing": "Cut a 60-second highlight clip from one game (any level) and save the link.",
+  "writing": "Write a 300-word recap of one game you watched and publish it (blog, LinkedIn or student paper).",
+  "coaching": "Help run one practice for a youth or club team and note the drill you led and how many players.",
+  "data & analytics": "Track 3 stats for one full game in a spreadsheet and write 3 sentences on what they show.",
+  "social media": "Make 3 posts for a local team or club (ask first) and note the views or likes.",
+  "playing experience": "Play in one rec, intramural or pickup league game and note the team and level.",
+  "event management": "Volunteer for one shift at a local game, race or tournament and note how many people came.",
+  "marketing & sales": "Sell tickets or sponsorships for one campus or club event and record how many you sold.",
+  "photography / design": "Shoot or design 5 images for one game or event and put them in a shareable folder.",
+  "broadcasting / on-camera": "Record a 2-minute game preview or 5 minutes of play-by-play and upload it."
+};
+export const gapStep = (tag) => `${label(tag)}: ${GAP_STEPS[tag] || "get one project or experience that shows it."}`;
+
 // A saved plan: one step per missing skill, then the path's next step and an application step.
 export function buildPlanSteps(idx, profile) {
   const path = CAREER_PATHS[idx];
   const have = new Set(profile?.skills || []);
   const gaps = path.tags.filter((t) => SKILLS[t] && !have.has(t));
   return [
-    ...gaps.map((g) => ({ text: `Build ${label(g)}: get one project or experience that shows it.`, done: false })),
+    ...gaps.map((g) => ({ text: gapStep(g), done: false })),
     { text: path.nextStep, done: false },
     { text: `Apply to one ${path.name} opening.`, done: false }
   ];

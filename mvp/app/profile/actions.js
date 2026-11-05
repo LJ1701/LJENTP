@@ -3,7 +3,7 @@ import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { SKILLS, INTERESTS, SPORTS, CAREER_PATHS, buildPlanSteps, topMatches, label } from "@/lib/careers";
+import { SKILLS, INTERESTS, SPORTS, CAREER_PATHS, buildPlanSteps, topMatches, label, gapStep } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
 import { honestBullets, coachReply } from "@/lib/gemini";
 import { searchJobs, searchLinks, jobsEnabled } from "@/lib/jobs";
@@ -196,19 +196,50 @@ export async function completeStep(i, note) {
   const steps = plan.steps.map((s, n) => (n === i ? { ...s, done: true } : s));
   const { error } = await supabase.from("plans").update({ steps, updated_at: new Date().toISOString() }).eq("user_id", user.id);
   if (error) return { error: "Couldn't save that step. Try again." };
-  const line = clean(note, 200).replace(/\s+/g, " ");
-  let added = false;
-  if (line) {
-    const { data: profile } = await supabase.from("sports_profiles").select("achievements").eq("user_id", user.id).maybeSingle();
-    const current = String((profile && profile.achievements) || "").trim();
-    const exists = current.split("\n").some((l) => l.trim().toLowerCase() === line.toLowerCase());
-    if (profile && !exists && (current + "\n" + line).length <= 4000) {
-      const { error: e2 } = await supabase.from("sports_profiles").update({ achievements: current ? `${current}\n${line}` : line, updated_at: new Date().toISOString() }).eq("user_id", user.id);
-      added = !e2;
-    }
-  }
+  const added = await appendAchievement(supabase, user, note);
   revalidatePath("/profile");
   return { ok: true, added };
+}
+
+// Adds one line to the saved achievements (skipped if it's already there or the box is full). True if added.
+async function appendAchievement(supabase, user, note) {
+  const line = clean(note, 200).replace(/\s+/g, " ");
+  if (!line) return false;
+  const { data: profile } = await supabase.from("sports_profiles").select("achievements").eq("user_id", user.id).maybeSingle();
+  const current = String((profile && profile.achievements) || "").trim();
+  const exists = current.split("\n").some((l) => l.trim().toLowerCase() === line.toLowerCase());
+  if (!profile || exists || (current + "\n" + line).length > 4000) return false;
+  const { error } = await supabase.from("sports_profiles").update({ achievements: current ? `${current}\n${line}` : line, updated_at: new Date().toISOString() }).eq("user_id", user.id);
+  return !error;
+}
+
+// Proof builder: saves the line Goldie helped write. No Passport yet → the line only goes into the form.
+export async function addProof(line) {
+  const { supabase, user } = await currentUser();
+  const added = await appendAchievement(supabase, user, line);
+  if (added) revalidatePath("/profile");
+  return { added };
+}
+
+// "New since you left": postings for the user's target (or best match) published after their last visit,
+// and how many of those they already have proof for. Rules and open job data only, no AI.
+export async function newSince(since) {
+  const { supabase, user } = await currentUser();
+  const after = new Date(since);
+  if (Number.isNaN(after.getTime())) return { count: 0 };
+  const [{ data: profile }, { data: plan }] = await Promise.all([
+    supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle(),
+    supabase.from("plans").select("role_idx").eq("user_id", user.id).maybeSingle()
+  ]);
+  if (!profile) return { count: 0 };
+  const idx = plan ? plan.role_idx : (topMatches(effectiveProfile(profile))[0] || {}).idx;
+  const word = idx === undefined ? "" : CAREER_PATHS[idx].search;
+  const query = `${word ? word.replace(/^./, (c) => c.toUpperCase()) + " jobs" : "Sports jobs"}`;
+  const res = await searchJobs({ keywords: word, location: "", summary: query });
+  if (res.error) return { count: 0 };
+  const fresh = res.jobs.filter((j) => j.created && new Date(j.created) > after);
+  const withProof = fresh.filter((j) => fitCheck(`${j.title}. ${j.team || ""}. ${j.snippet}`, profile).proven > 0).length;
+  return { count: fresh.length, withProof, query, word: word || "sports" };
 }
 
 export async function undoStep(i) {
@@ -261,14 +292,15 @@ export async function checkFit(text) {
   return { fit };
 }
 
-// Adds "Build <skill>" to the saved plan, from a gap found by the fit check.
+// Adds the 1-week "close the gap" step for a skill to the saved plan, from a gap found by the fit check.
 export async function addGapToPlan(tag) {
   const { supabase, user } = await currentUser();
   if (!SKILLS[tag]) return { error: "Unknown skill." };
   const { data: plan } = await supabase.from("plans").select("steps").eq("user_id", user.id).maybeSingle();
-  if (!plan) return { error: "Pick a target role first; then gaps can go into your plan." };
-  const text = `Build ${label(tag)}: get one project or experience that shows it.`;
-  if (plan.steps.some((s) => s.text === text)) return { ok: true, already: true };
+  if (!plan) return { error: "Pick a target role in step 2 first; then gaps can go into your plan." };
+  const text = gapStep(tag);
+  // Plans made before 29 Oct 2026 used "Build <skill>: …" for the same gap.
+  if (plan.steps.some((s) => s.text === text || s.text.startsWith(`Build ${label(tag)}:`))) return { ok: true, already: true };
   const { error } = await supabase.from("plans").update({ steps: [...plan.steps.slice(0, -1), { text, done: false }, plan.steps[plan.steps.length - 1]], updated_at: new Date().toISOString() }).eq("user_id", user.id);
   if (error) return { error: "Couldn't update your plan. Try again." };
   revalidatePath("/profile");
