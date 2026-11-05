@@ -332,7 +332,7 @@ const nl = {
 
   goldie: {
     tour: [
-      "Dit is je Sportpaspoort. Plak je cv of vul het in. Vertel me dan één ding dat je hebt gedaan en ik maak er bewijs van met getallen die werkgevers kunnen checken.",
+      "Dit is je Sportpaspoort. Plak je cv of vul het in, en zet wat je hebt gedaan onder Prestaties: één regel per prestatie, met een getal als het kan.",
       "Jouw pad: de sportberoepen die bij je passen, met bewijs voor elke vaardigheid. Kies een doel en je plan verschijnt er meteen in.",
       "Echte sportbanen en stages, uit elk land. Vraag wat je zoekt en druk dan bij een vacature op Matchcheck.",
       "Jouw bewijs: één openbare link en eerlijke cv-punten voor elke sollicitatie.",

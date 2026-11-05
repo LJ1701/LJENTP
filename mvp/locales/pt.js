@@ -317,7 +317,7 @@ const pt = {
   },
   goldie: {
     tour: [
-      "Este é seu Passaporte Esportivo. Cole seu currículo ou preencha. Depois me conte algo que você fez e eu transformo em prova com números que empregadores podem checar.",
+      "Este é seu Passaporte Esportivo. Cole seu currículo ou preencha, e liste o que você fez em Conquistas: uma linha cada, com um número se puder.",
       "Seu caminho: as carreiras esportivas que combinam com você, com prova de cada habilidade. Escolha um objetivo e seu plano aparece dentro dele.",
       "Vagas e estágios reais no esporte, de qualquer país. Peça o que quiser e clique em Ver compatibilidade em qualquer vaga.",
       "Sua prova: um link público e frases honestas de currículo para cada candidatura.",

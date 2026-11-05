@@ -317,7 +317,7 @@ const fr = {
   },
   goldie: {
     tour: [
-      "Voici votre Passeport Sport. Collez votre CV ou remplissez-le. Puis dites-moi une chose que vous avez faite et j'en ferai une preuve avec des chiffres vérifiables.",
+      "Voici votre Passeport Sport. Collez votre CV ou remplissez-le, et notez ce que vous avez fait dans Réalisations : une ligne chacune, avec un chiffre si possible.",
       "Votre parcours : les métiers du sport qui vous correspondent, avec une preuve pour chaque compétence. Choisissez un objectif et votre plan apparaît à l'intérieur.",
       "De vrais emplois et stages dans le sport, de tout pays. Demandez ce que vous voulez, puis vérifiez l'adéquation sur une offre.",
       "Votre preuve : un lien public et des lignes de CV honnêtes pour chaque candidature.",

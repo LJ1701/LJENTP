@@ -334,7 +334,7 @@ const en = {
 
   goldie: {
     tour: [
-      "This is your Sports Passport. Paste your résumé or fill it in. Then tell me one thing you did and I'll turn it into proof with numbers employers can check.",
+      "This is your Sports Passport. Paste your résumé or fill it in, and list what you've done under Achievements: one line each, with a number if you can.",
       "Your path: the sports careers you fit, with proof for each skill. Pick a target and your plan appears right inside it.",
       "Real sports jobs and internships, from any country. Ask for what you want, then press Fit check on any posting.",
       "Your proof: one public link and honest résumé bullets for every application.",

@@ -237,16 +237,6 @@ export default function Goldie({ coach }) {
     if (window.innerWidth < 760) { setOpen(false); setBubble("moved"); }
   }
 
-  // Takes the user to the proof builder in step 1.
-  function openProofBuilder() {
-    setOpen(false);
-    const box = document.querySelector(".proof-builder");
-    if (!box) return spotlight("passport");
-    box.scrollIntoView({ behavior: "smooth", block: "center" });
-    box.classList.add("goldie-spot");
-    setTimeout(() => { box.classList.remove("goldie-spot"); document.getElementById("pb-input")?.focus({ preventScroll: true }); }, 700);
-  }
-
   function showNews() {
     setBubble(null);
     window.dispatchEvent(new CustomEvent("goldie:search", { detail: { query: news.query } }));
@@ -286,7 +276,6 @@ export default function Goldie({ coach }) {
             <>
               <div className="chips goldie-quick">
                 <button type="button" onClick={startTour}>{t("goldie.tourBtn")}</button>
-                <button type="button" onClick={openProofBuilder}>{t("goldie.proofBtn")}</button>
               </div>
               <CoachChat compact paths={coach.paths} targetIdx={coach.targetIdx} starters={coach.starters} onAction={onAction} onBusy={setBusy} modeRequest={modeRequest} />
             </>

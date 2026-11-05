@@ -332,7 +332,7 @@ const it = {
 
   goldie: {
     tour: [
-      "Questo è il tuo Passaporto Sportivo. Incolla il tuo CV o compilalo. Poi raccontami una cosa che hai fatto e la trasformerò in una prova con numeri che i datori di lavoro possono verificare.",
+      "Questo è il tuo Passaporto Sportivo. Incolla il tuo CV o compilalo, e scrivi ciò che hai fatto in Risultati: una riga ciascuno, con un numero se puoi.",
       "Il tuo percorso: le carriere sportive adatte a te, con una prova per ogni competenza. Scegli un obiettivo e il tuo piano appare proprio lì.",
       "Lavori e tirocini reali nello sport, da qualsiasi paese. Chiedi ciò che vuoi, poi premi Verifica compatibilità su un’offerta.",
       "La tua prova: un link pubblico e punti del CV onesti per ogni candidatura.",
