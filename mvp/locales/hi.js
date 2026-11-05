@@ -48,6 +48,8 @@ const hi = {
     seeFit: "मेरा फ़िट देखें →",
     jobsIn: "नौकरियाँ यहाँ",
     anywhere: "कहीं भी (पूरी दुनिया)",
+    regions: "क्षेत्र",
+    countries: "देश",
     sumJobs: "{kw} नौकरियाँ",
     sumInterns: "{kw} इंटर्नशिप",
     sportsJobs: "खेल नौकरियाँ",

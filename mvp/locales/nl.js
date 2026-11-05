@@ -48,6 +48,8 @@ const nl = {
     seeFit: "Bekijk mijn match →",
     jobsIn: "Banen in",
     anywhere: "Overal (wereldwijd)",
+    regions: "Regio’s",
+    countries: "Landen",
     sumJobs: "{kw}-banen",
     sumInterns: "{kw}-stages",
     sportsJobs: "Sportbanen",

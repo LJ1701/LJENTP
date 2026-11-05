@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 import { LANGS, LANG_COOKIE, COUNTRY_COOKIE, ANYWHERE, makeT, setCookie } from "@/lib/i18n";
 
 // The visitor's language for browser components: the server passes in one dictionary (not all ten).
-const I18n = createContext({ lang: "en", dict: {}, country: "US", countries: [], t: (k) => k });
+const I18n = createContext({ lang: "en", dict: {}, country: "US", countries: [], regions: [], t: (k) => k });
 
 // countries: the country picker's list, built once on the server so the browser shows exactly the same names
 // (browsers and the server can spell some country names differently, which breaks the page on load).
-export function I18nProvider({ lang, dict, country, countries, children }) {
-  const value = useMemo(() => ({ lang, dict, country, countries, t: makeT(dict) }), [lang, dict, country, countries]);
+export function I18nProvider({ lang, dict, country, countries, regions, children }) {
+  const value = useMemo(() => ({ lang, dict, country, countries, regions, t: makeT(dict) }), [lang, dict, country, countries, regions]);
   return <I18n.Provider value={value}>{children}</I18n.Provider>;
 }
 
@@ -19,13 +19,18 @@ export const useT = () => useContext(I18n);
 // "Anywhere". The choice is saved in a cookie; onChange lets the search run again for the new country.
 export function CountryPicker({ onChange }) {
   const router = useRouter();
-  const { country, countries: list, t } = useT();
+  const { country, countries: list, regions, t } = useT();
   return (
     <label className="country-picker">
       <span>{t("search.jobsIn")}</span>
       <select value={country} onChange={(e) => { setCookie(COUNTRY_COOKIE, e.target.value); router.refresh(); onChange?.(e.target.value); }}>
         <option value={ANYWHERE}>{t("search.anywhere")}</option>
-        {list.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
+        <optgroup label={t("search.regions")}>
+          {regions.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
+        </optgroup>
+        <optgroup label={t("search.countries")}>
+          {list.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
+        </optgroup>
       </select>
     </label>
   );

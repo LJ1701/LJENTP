@@ -12,7 +12,7 @@ import { quickIntent, parseJobs } from "@/lib/intent";
 import { resumeFileText } from "@/lib/resume-file";
 import { canUseAi, spendAnswer, FREE_ANSWERS } from "@/lib/billing";
 import { getT, getCountry, dictFor } from "@/lib/i18n-server";
-import { ADZUNA, countryName } from "@/lib/countries";
+import { adzunaFor, countryName } from "@/lib/countries";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -270,7 +270,7 @@ export async function undoStep(i) {
 async function jobResults(q, profile, ctx) {
   const { t, country, place } = ctx;
   const links = searchLinks(q.keywords, q.location, country, place);
-  const boardsOnly = country !== "ANY" && !ADZUNA.includes(country) ? place : "";
+  const boardsOnly = country !== "ANY" && !adzunaFor(country).length ? place : "";
   let res = await searchJobs({ ...q, country });
   // Nothing for the exact words ("video internships")? Widen to every sports internship (or job) in the same
   // country, and say so, rather than coming back empty.

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { ADZUNA, INTERN_WORD, inCountry } from "./countries";
+import { INTERN_WORD, inCountry, adzunaFor } from "./countries";
 
 // Real job postings from two kinds of source; nothing is written by AI and every link is the employer's own posting.
 // 1. Adzuna (https://developer.adzuna.com): local job boards in 19 countries, filtered to sports.
@@ -45,7 +45,14 @@ export function searchLinks(keywords, location, country = "US", countryLabel = "
 }
 
 // Sports employers whose public career boards were checked on 28 Oct 2026 (all returned open jobs).
+// Added 5 Nov 2026 for Europe and Latin America (each board checked and returning open jobs that day):
+// Catapult (London, Cologne), Eversports (Vienna), Gymshark (UK), Kaizen Gaming / Betano (Athens, Malta,
+// Germany, Spain), Wellhub (Brazil, Europe), Rush Street Interactive (Bogotá, Medellín, Mexico), Sporty Group
+// (São Paulo, Europe remote).
 const EMPLOYERS = [
+  ["greenhouse", "catapultsports", "Catapult"], ["greenhouse", "eversports", "Eversports"], ["greenhouse", "gymshark", "Gymshark"],
+  ["greenhouse", "kaizengaming", "Kaizen Gaming (Betano)"], ["greenhouse", "gympass", "Wellhub"],
+  ["greenhouse", "rushstreetinteractive", "Rush Street Interactive"], ["greenhouse", "sportygroup", "Sporty Group"],
   ["greenhouse", "hudl", "Hudl"], ["greenhouse", "fanduel", "FanDuel"], ["greenhouse", "prizepicks", "PrizePicks"],
   ["greenhouse", "geniussports", "Genius Sports"], ["greenhouse", "seatgeek", "SeatGeek"], ["greenhouse", "fubotv", "Fubo"],
   ["greenhouse", "barstoolsports", "Barstool Sports"], ["greenhouse", "zwift", "Zwift"], ["greenhouse", "peloton", "Peloton"],
@@ -107,16 +114,26 @@ async function searchBoards({ keywords, location, country }) {
   });
 }
 
+// A country, or a region (Europe, Latin America, South America): one Adzuna search per covered country,
+// merged. Countries Adzuna doesn't cover return nothing (no error); an error only counts if every search failed.
+async function searchAdzuna(query) {
+  const list = adzunaFor(query.country || "US");
+  if (!list.length) return { jobs: [], total: 0 };
+  const results = await Promise.all(list.map((c) => searchAdzunaIn({ ...query, country: c }, list.length > 1 ? 20 : 50)));
+  const ok = results.filter((r) => !r.error);
+  if (!ok.length) return { error: results[0].error };
+  return { jobs: ok.flatMap((r) => r.jobs), total: ok.reduce((n, r) => n + r.total, 0) };
+}
+
 // keywords: the role words ("video analyst", "marketing internship"); may be empty for "any sports job".
-// location: "Dallas, TX", or "" for anywhere in the country. Countries Adzuna doesn't cover return nothing (no error).
-async function searchAdzuna({ keywords, location, country = "US" }) {
-  if (!ADZUNA.includes(country)) return { jobs: [], total: 0 };
+// location: "Dallas, TX", or "" for anywhere in the country.
+async function searchAdzunaIn({ keywords, location, country = "US" }, perPage = 50) {
   if (!jobsEnabled()) return { error: "off" };
   const cc = country.toLowerCase();
   const params = new URLSearchParams({
     app_id: process.env.ADZUNA_APP_ID,
     app_key: process.env.ADZUNA_APP_KEY,
-    results_per_page: "50",
+    results_per_page: String(perPage),
     max_days_old: "60",
     sort_by: "date",
     "content-type": "application/json"

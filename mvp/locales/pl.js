@@ -48,6 +48,8 @@ const pl = {
     seeFit: "Zobacz moje dopasowanie →",
     jobsIn: "Praca w",
     anywhere: "Wszędzie (cały świat)",
+    regions: "Regiony",
+    countries: "Kraje",
     sumJobs: "Praca: {kw}",
     sumInterns: "Staże: {kw}",
     sportsJobs: "Praca w sporcie",
