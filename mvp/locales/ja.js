@@ -650,6 +650,42 @@ const ja = {
     others: "ほかの職業："
   },
 
+  tracker: {
+    nav: "管理",
+    title: "応募管理",
+    intro: "応募したい仕事をすべて管理：状況、応募日、フォローアップの日。あなただけが見られます。",
+    track: "＋ 管理に追加",
+    tracked: "管理中 ✓",
+    stage: "ステージ",
+    details: "日付とメモ",
+    applied: "応募日",
+    followUp: "フォローアップ日",
+    notes: "メモ",
+    notesPh: "話した相手、聞かれたこと、次のステップ…",
+    remove: "削除",
+    appliedOn: "{date}に応募",
+    overdue: "フォローアップ予定日は{date}でした",
+    dueToday: "今日フォローアップ",
+    filter: "ステージで絞り込む",
+    all: "すべて",
+    summary: "応募{sent}件 · 面接・内定{interviews}件",
+    dueCount: "フォローアップ{n}件",
+    empty: "まだ何も管理していません。上の求人で「＋ 管理に追加」を押すか、ほかで見つけた求人を追加してください。",
+    addManual: "＋ ほかで見つけた求人を追加",
+    jobTitle: "職種名",
+    company: "雇用主",
+    link: "リンク（任意）",
+    add: "管理に追加",
+    adding: "追加中…",
+    needTitle: "職種名を入力してください。",
+    error: "保存できませんでした。もう一度お試しください。",
+    notReady: "応募管理はまだ有効になっていません。",
+    statSent: "件の応募",
+    statStudents: "の学生が1件以上応募",
+    statInterviews: "件の面接・内定",
+    stages: {saved: "保存", applied: "応募済み", interview: "面接", offer: "内定", rejected: "不採用"}
+  },
+
   roles: {
     "Student": "学生", "Player": "選手", "Former player": "元選手", "Coach": "コーチ", "Content creator": "コンテンツクリエイター",
     "Fan": "ファン", "Career changer": "キャリアチェンジ中", "Already work in sports": "すでにスポーツ業界で働いている", "Other": "その他"

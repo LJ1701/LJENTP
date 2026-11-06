@@ -631,6 +631,42 @@ const es = {
     others: "Otras carreras:"
   },
 
+  tracker: {
+    nav: "Seguimiento",
+    title: "Mis postulaciones",
+    intro: "Sigue cada empleo al que aspiras: en qué punto está, cuándo te postulaste y cuándo hacer seguimiento. Solo tú lo ves.",
+    track: "＋ Seguir",
+    tracked: "En seguimiento ✓",
+    stage: "Etapa",
+    details: "Fechas y notas",
+    applied: "Me postulé el",
+    followUp: "Hacer seguimiento el",
+    notes: "Notas",
+    notesPh: "Con quién hablaste, qué te preguntaron, próximos pasos…",
+    remove: "Quitar",
+    appliedOn: "postulado el {date}",
+    overdue: "El seguimiento era el {date}",
+    dueToday: "Haz seguimiento hoy",
+    filter: "Filtrar por etapa",
+    all: "Todas",
+    summary: "{sent} postulaciones enviadas · {interviews} entrevistas u ofertas",
+    dueCount: "{n} seguimientos pendientes",
+    empty: "Aún no sigues ningún empleo. Pulsa ＋ Seguir en cualquier empleo de arriba o añade uno que encontraste en otro sitio.",
+    addManual: "＋ Añadir un empleo que encontraste en otro sitio",
+    jobTitle: "Puesto",
+    company: "Empresa",
+    link: "Enlace (opcional)",
+    add: "Añadir al seguimiento",
+    adding: "Añadiendo…",
+    needTitle: "Añade el nombre del puesto.",
+    error: "No se pudo guardar. Inténtalo de nuevo.",
+    notReady: "El seguimiento aún no está activado.",
+    statSent: "postulaciones enviadas",
+    statStudents: "de los estudiantes se postuló al menos a un empleo",
+    statInterviews: "entrevistas u ofertas",
+    stages: {saved: "Guardado", applied: "Postulado", interview: "Entrevista", offer: "Oferta", rejected: "No seleccionado"}
+  },
+
   roles: {
     "Student": "Estudiante", "Player": "Jugador", "Former player": "Exjugador", "Coach": "Entrenador", "Content creator": "Creador de contenido",
     "Fan": "Aficionado", "Career changer": "Cambio de carrera", "Already work in sports": "Ya trabajo en el deporte", "Other": "Otro"

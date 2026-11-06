@@ -631,6 +631,42 @@ const pt = {
     others: "Outras carreiras:"
   },
 
+  tracker: {
+    nav: "Acompanhamento",
+    title: "Minhas candidaturas",
+    intro: "Acompanhe cada vaga que você quer: em que pé está, quando se candidatou e quando fazer follow-up. Só você vê.",
+    track: "＋ Acompanhar",
+    tracked: "Acompanhando ✓",
+    stage: "Etapa",
+    details: "Datas e notas",
+    applied: "Candidatura em",
+    followUp: "Follow-up em",
+    notes: "Notas",
+    notesPh: "Com quem você falou, o que perguntaram, próximos passos…",
+    remove: "Remover",
+    appliedOn: "candidatura em {date}",
+    overdue: "O follow-up era em {date}",
+    dueToday: "Faça follow-up hoje",
+    filter: "Filtrar por etapa",
+    all: "Todas",
+    summary: "{sent} candidaturas enviadas · {interviews} entrevistas ou ofertas",
+    dueCount: "{n} follow-ups pendentes",
+    empty: "Nada acompanhado ainda. Toque em ＋ Acompanhar em qualquer vaga acima, ou adicione uma que encontrou em outro lugar.",
+    addManual: "＋ Adicionar uma vaga que encontrou em outro lugar",
+    jobTitle: "Cargo",
+    company: "Empresa",
+    link: "Link (opcional)",
+    add: "Adicionar ao acompanhamento",
+    adding: "Adicionando…",
+    needTitle: "Informe o cargo.",
+    error: "Não foi possível salvar. Tente de novo.",
+    notReady: "O acompanhamento ainda não está ativado.",
+    statSent: "candidaturas enviadas",
+    statStudents: "dos alunos se candidataram a pelo menos uma vaga",
+    statInterviews: "entrevistas ou ofertas",
+    stages: {saved: "Salva", applied: "Candidatado", interview: "Entrevista", offer: "Oferta", rejected: "Não selecionado"}
+  },
+
   roles: {
     "Student": "Estudante", "Player": "Jogador", "Former player": "Ex-jogador", "Coach": "Treinador", "Content creator": "Criador de conteúdo",
     "Fan": "Fã", "Career changer": "Mudando de carreira", "Already work in sports": "Já trabalho no esporte", "Other": "Outro"

@@ -650,6 +650,42 @@ const it = {
     others: "Altre carriere:"
   },
 
+  tracker: {
+    nav: "Tracker",
+    title: "Le mie candidature",
+    intro: "Segui ogni lavoro che ti interessa: a che punto è, quando ti sei candidato e quando fare follow-up. Lo vedi solo tu.",
+    track: "＋ Segui",
+    tracked: "Seguito ✓",
+    stage: "Fase",
+    details: "Date e note",
+    applied: "Candidato il",
+    followUp: "Follow-up il",
+    notes: "Note",
+    notesPh: "Con chi hai parlato, cosa ti hanno chiesto, prossimi passi…",
+    remove: "Rimuovi",
+    appliedOn: "candidato il {date}",
+    overdue: "Il follow-up era previsto il {date}",
+    dueToday: "Fai follow-up oggi",
+    filter: "Filtra per fase",
+    all: "Tutte",
+    summary: "{sent} candidature inviate · {interviews} colloqui o offerte",
+    dueCount: "{n} follow-up in scadenza",
+    empty: "Ancora niente. Premi ＋ Segui su un’offerta qui sopra o aggiungine una trovata altrove.",
+    addManual: "＋ Aggiungi un’offerta trovata altrove",
+    jobTitle: "Ruolo",
+    company: "Azienda",
+    link: "Link (facoltativo)",
+    add: "Aggiungi al tracker",
+    adding: "Aggiunta…",
+    needTitle: "Inserisci il ruolo.",
+    error: "Impossibile salvare. Riprova.",
+    notReady: "Il tracker non è ancora attivo.",
+    statSent: "candidature inviate",
+    statStudents: "degli studenti si è candidato ad almeno un’offerta",
+    statInterviews: "colloqui o offerte",
+    stages: {saved: "Salvata", applied: "Candidato", interview: "Colloquio", offer: "Offerta", rejected: "Non selezionato"}
+  },
+
   roles: {
     "Student": "Studente", "Player": "Giocatore", "Former player": "Ex giocatore", "Coach": "Allenatore", "Content creator": "Content creator",
     "Fan": "Tifoso", "Career changer": "Cambio carriera", "Already work in sports": "Lavoro già nello sport", "Other": "Altro"

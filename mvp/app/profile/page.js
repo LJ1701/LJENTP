@@ -6,6 +6,7 @@ import { saveProfile, setTarget, setPublic } from "./actions";
 import PlanSteps from "./plan-steps";
 import ResumeFill from "./resume-fill";
 import ResumeBullets from "./resume-bullets";
+import Tracker from "./tracker";
 import ShareButtons from "../share-buttons";
 import { getInvite, INVITE_BONUS } from "@/lib/referrals";
 import Goldie from "../goldie";
@@ -66,6 +67,9 @@ export default async function ProfilePage({ searchParams }) {
     supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle(),
     billingStatus(user.id)
   ]);
+  // Application tracker rows (null when supabase/006_applications.sql hasn't been run: the section stays hidden).
+  const { data: apps, error: appsError } = await supabase.from("applications").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
+  const tracked = appsError ? null : apps || [];
   const invite = await getInvite(user.id);
   const inviteUrl = invite ? `https://ljsportmind-mvp.vercel.app/?ref=${invite.code}` : "";
   const p = profile || {};
@@ -85,6 +89,7 @@ export default async function ProfilePage({ searchParams }) {
         <h1>{firstName ? <>{t("profile.welcome")} <span className="gold-text">{firstName}</span></> : <>{t("profile.build")} <span className="gold-text">{t("profile.passportWord")}</span></>}</h1>
         <nav className="step-nav" aria-label="Sections">
           {["passport", "path", "jobs", "proof"].map((id, i) => <a key={id} href={`#${id}`}>{dict.profile.nav[i]}</a>)}
+          {tracked && <a href="#tracker">{t("tracker.nav")}</a>}
         </nav>
       </div>
       {saveStage && <SaveAccount stage={saveStage} pendingEmail={user.new_email} />}
@@ -199,6 +204,16 @@ export default async function ProfilePage({ searchParams }) {
           ]} />
         ) : <p>{t("profile.jobsFirst")}</p>}
       </div>
+
+      {tracked && profile && (
+        <>
+          <h2 className="step-title" id="tracker"><span className="step-num">✓</span> {t("tracker.title")}</h2>
+          <div className="card">
+            <p className="muted"><small>{t("tracker.intro")}</small></p>
+            <Tracker initial={tracked} key={tracked.map((a) => a.id).join(",")} />
+          </div>
+        </>
+      )}
 
       <Step n="4" id="proof">{t("profile.step4")}</Step>
       <div className="card">

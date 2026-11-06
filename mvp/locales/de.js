@@ -650,6 +650,42 @@ const de = {
     others: "Weitere Berufe:"
   },
 
+  tracker: {
+    nav: "Tracker",
+    title: "Meine Bewerbungen",
+    intro: "Behalte jede Stelle im Blick: Stand, Bewerbungsdatum und wann du nachfasst. Nur du siehst das.",
+    track: "＋ Merken",
+    tracked: "Gemerkt ✓",
+    stage: "Phase",
+    details: "Daten & Notizen",
+    applied: "Beworben am",
+    followUp: "Nachfassen am",
+    notes: "Notizen",
+    notesPh: "Mit wem du gesprochen hast, was gefragt wurde, nächste Schritte…",
+    remove: "Entfernen",
+    appliedOn: "beworben am {date}",
+    overdue: "Nachfassen war am {date} fällig",
+    dueToday: "Heute nachfassen",
+    filter: "Nach Phase filtern",
+    all: "Alle",
+    summary: "{sent} Bewerbungen verschickt · {interviews} Gespräche oder Angebote",
+    dueCount: "{n} Nachfassaktionen fällig",
+    empty: "Noch nichts gemerkt. Drück oben bei einer Stelle auf ＋ Merken oder füge eine hinzu, die du woanders gefunden hast.",
+    addManual: "＋ Eine woanders gefundene Stelle hinzufügen",
+    jobTitle: "Stellentitel",
+    company: "Arbeitgeber",
+    link: "Link (optional)",
+    add: "Zum Tracker hinzufügen",
+    adding: "Wird hinzugefügt…",
+    needTitle: "Gib den Stellentitel ein.",
+    error: "Konnte nicht gespeichert werden. Versuch es erneut.",
+    notReady: "Der Tracker ist noch nicht aktiviert.",
+    statSent: "Bewerbungen verschickt",
+    statStudents: "der Studierenden haben sich auf mindestens eine Stelle beworben",
+    statInterviews: "Gespräche oder Angebote",
+    stages: {saved: "Gemerkt", applied: "Beworben", interview: "Gespräch", offer: "Angebot", rejected: "Absage"}
+  },
+
   roles: {
     "Student": "Studierende:r", "Player": "Spieler:in", "Former player": "Ehemalige:r Spieler:in", "Coach": "Trainer:in", "Content creator": "Content Creator",
     "Fan": "Fan", "Career changer": "Quereinsteiger:in", "Already work in sports": "Arbeite schon im Sport", "Other": "Sonstiges"
