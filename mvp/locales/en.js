@@ -652,6 +652,42 @@ const en = {
     others: "Other paths:"
   },
 
+  tracker: {
+    nav: "Tracker",
+    title: "My applications",
+    intro: "Track every job you're going for: where it stands, when you applied, when to follow up. Only you can see it.",
+    track: "＋ Track",
+    tracked: "Tracked ✓",
+    stage: "Stage",
+    details: "Dates & notes",
+    applied: "Applied on",
+    followUp: "Follow up on",
+    notes: "Notes",
+    notesPh: "Who you spoke to, what they asked, next steps…",
+    remove: "Remove",
+    appliedOn: "applied {date}",
+    overdue: "Follow-up was due {date}",
+    dueToday: "Follow up today",
+    filter: "Filter by stage",
+    all: "All",
+    summary: "{sent} applications sent · {interviews} interviews or offers",
+    dueCount: "{n} follow-ups due",
+    empty: "Nothing tracked yet. Press ＋ Track on any job above, or add one you found somewhere else.",
+    addManual: "＋ Add a job you found somewhere else",
+    jobTitle: "Job title",
+    company: "Employer",
+    link: "Link (optional)",
+    add: "Add to tracker",
+    adding: "Adding…",
+    needTitle: "Add the job title.",
+    error: "Couldn't save that. Try again.",
+    notReady: "The tracker isn't switched on yet.",
+    statSent: "applications sent",
+    statStudents: "of students applied to at least one job",
+    statInterviews: "interviews or offers",
+    stages: {saved: "Saved", applied: "Applied", interview: "Interview", offer: "Offer", rejected: "Not selected"}
+  },
+
   roles: {
     "Student": "Student", "Player": "Player", "Former player": "Former player", "Coach": "Coach", "Content creator": "Content creator",
     "Fan": "Fan", "Career changer": "Career changer", "Already work in sports": "Already work in sports", "Other": "Other"

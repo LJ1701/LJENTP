@@ -304,7 +304,80 @@ export async function findJobs(text) {
   const { data: profile } = await supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle();
   const ctx = await context();
   // Read with plain rules (no AI call), so searching works even when the AI is busy.
-  return jobResults(parseJobs(request, profile && profile.location, ctx.summarize), profile, ctx);
+  const res = await jobResults(parseJobs(request, profile && profile.location, ctx.summarize), profile, ctx);
+  // Which of these postings are already in the user's application tracker (none if the tracker isn't set up).
+  if (res.jobs && res.jobs.length) {
+    const { data, error } = await supabase.from("applications").select("job_key").eq("user_id", user.id).in("job_key", res.jobs.map((j) => String(j.id)));
+    if (!error) res.tracked = (data || []).map((r) => r.job_key);
+  }
+  return res;
+}
+
+// ---------- Application tracker ----------
+// Each user's tracked jobs live in the applications table (supabase/006_applications.sql), protected by
+// row level security, so these run as the signed-in user and only ever touch their own rows.
+const STATUSES = ["saved", "applied", "interview", "offer", "rejected"];
+const cut = (v, n) => String(v || "").trim().slice(0, n);
+const isDate = (v) => /^\d{4}-\d{2}-\d{2}$/.test(String(v || ""));
+
+// Adds a job from the search to the tracker (or, if it's already there, leaves it as it is).
+export async function trackJob(job, status = "saved") {
+  const { supabase, user } = await currentUser();
+  const { t } = await getT();
+  const row = {
+    user_id: user.id, job_key: cut(job && job.id, 120), title: cut(job && job.title, 200), company: cut(job && job.company, 120),
+    location: cut(job && job.location, 120), url: /^https?:\/\//.test(String(job && job.url)) ? cut(job.url, 1000) : "", source: cut(job && job.source, 80),
+    status: STATUSES.includes(status) ? status : "saved", applied_on: status === "applied" ? new Date().toISOString().slice(0, 10) : null
+  };
+  if (!row.job_key || !row.title) return { error: t("tracker.error") };
+  const { error } = await supabase.from("applications").upsert(row, { onConflict: "user_id,job_key", ignoreDuplicates: true });
+  if (error) return { error: t(error.code === "42P01" ? "tracker.notReady" : "tracker.error") };
+  revalidatePath("/profile");
+  return { ok: true };
+}
+
+// A job found somewhere else: title, employer and link typed in by the user.
+export async function addApplication(formData) {
+  const { supabase, user } = await currentUser();
+  const { t } = await getT();
+  const title = cut(formData.get("title"), 200);
+  if (!title) return { error: t("tracker.needTitle") };
+  const url = cut(formData.get("url"), 1000);
+  const { error } = await supabase.from("applications").insert({
+    user_id: user.id, job_key: `manual-${randomBytes(6).toString("hex")}`, title, company: cut(formData.get("company"), 120),
+    url: /^https?:\/\//.test(url) ? url : "", source: "manual", status: "saved"
+  });
+  if (error) return { error: t(error.code === "42P01" ? "tracker.notReady" : "tracker.error") };
+  revalidatePath("/profile");
+  return { ok: true };
+}
+
+// Changes one tracked job: its stage, applied date, follow-up date or notes. Moving to "applied" fills in today's
+// date if none was set.
+export async function updateApplication(id, patch) {
+  const { supabase, user } = await currentUser();
+  const { t } = await getT();
+  const change = { updated_at: new Date().toISOString() };
+  if (patch && STATUSES.includes(patch.status)) change.status = patch.status;
+  if (patch && "applied_on" in patch) change.applied_on = isDate(patch.applied_on) ? patch.applied_on : null;
+  if (patch && "follow_up" in patch) change.follow_up = isDate(patch.follow_up) ? patch.follow_up : null;
+  if (patch && "notes" in patch) change.notes = cut(patch.notes, 2000);
+  if (change.status === "applied" && !("applied_on" in change)) {
+    const { data } = await supabase.from("applications").select("applied_on").eq("id", id).eq("user_id", user.id).maybeSingle();
+    if (data && !data.applied_on) change.applied_on = new Date().toISOString().slice(0, 10);
+  }
+  const { data, error } = await supabase.from("applications").update(change).eq("id", id).eq("user_id", user.id).select().maybeSingle();
+  if (error || !data) return { error: t("tracker.error") };
+  return { ok: true, row: data };
+}
+
+export async function removeApplication(id) {
+  const { supabase, user } = await currentUser();
+  const { t } = await getT();
+  const { error } = await supabase.from("applications").delete().eq("id", id).eq("user_id", user.id);
+  if (error) return { error: t("tracker.error") };
+  revalidatePath("/profile");
+  return { ok: true };
 }
 
 // Fit check for a pasted job posting.

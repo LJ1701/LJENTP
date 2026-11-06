@@ -1,6 +1,6 @@
 "use client";
 import { useState, useTransition, useEffect } from "react";
-import { findJobs, checkFit, addGapToPlan, tailorApplicationFor } from "./actions";
+import { findJobs, checkFit, addGapToPlan, tailorApplicationFor, trackJob } from "./actions";
 import CopyButton from "./copy-button";
 import ShareButtons from "../share-buttons";
 import { PENDING_KEY, agoText } from "../home-search";
@@ -114,6 +114,13 @@ export function JobResults({ result, compact = false }) {
   const [open, setOpen] = useState(null);
   const [shown, setShown] = useState(compact ? 5 : 15);
   const [tailoring, setTailoring] = useState({});
+  // Jobs already in the application tracker, plus any tracked from this list ("error" when the tracker isn't set up).
+  const [trackedNow, setTrackedNow] = useState(() => new Set(result.tracked || []));
+  const [trackMsg, setTrackMsg] = useState("");
+  const track = async (j) => {
+    const r = await trackJob({ id: String(j.id), title: j.title, company: j.company, location: j.location, url: j.url, source: j.source });
+    if (r.error) setTrackMsg(r.error); else setTrackedNow((s) => new Set([...s, String(j.id)]));
+  };
   const links = (list) => list.map(([site, url], i) => <span key={site}>{i > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{site}</a></span>);
   return (
     <div className={compact ? "job-results compact" : "job-results"} aria-live="polite">
@@ -144,6 +151,9 @@ export function JobResults({ result, compact = false }) {
                 <a className="cta small" href={j.url} target="_blank" rel="noopener noreferrer">{t("jobs.apply")}</a>
                 <button type="button" className="ghost" aria-expanded={open === j.id} onClick={() => setOpen(open === j.id ? null : j.id)}>{open === j.id ? t("jobs.hideFit") : t("jobs.fitCheck")}</button>
                 {!compact && <button type="button" className="ghost" onClick={() => setTailoring({ ...tailoring, [j.id]: true })} disabled={tailoring[j.id]}>{t("tailor.short")}</button>}
+                {!compact && result.tracked && (trackedNow.has(String(j.id))
+                  ? <a className="tracked-badge" href="#tracker">{t("tracker.tracked")}</a>
+                  : <button type="button" className="ghost" onClick={() => track(j)}>{t("tracker.track")}</button>)}
                 {!compact && <ShareButtons compact url={j.url} text={t("share.jobText", { title: j.title, company: j.company })} />}
                 <small className="job-source">{t("jobs.via", { source: j.source })}</small>
               </div>
@@ -157,6 +167,7 @@ export function JobResults({ result, compact = false }) {
               {tailoring[j.id] && <Tailor job={j} startOpen auto key={`t-${j.id}`} />}
             </article>
           ))}
+          {trackMsg && <p className="error">{trackMsg}</p>}
           {result.jobs.length > shown && (
             <button type="button" className="ghost" onClick={() => setShown(shown + (compact ? 10 : 15))}>{t("jobs.showMore", { n: Math.min(compact ? 10 : 15, result.jobs.length - shown) })}</button>
           )}

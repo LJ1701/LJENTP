@@ -650,6 +650,42 @@ const pl = {
     others: "Inne kariery:"
   },
 
+  tracker: {
+    nav: "Tracker",
+    title: "Moje aplikacje",
+    intro: "Śledź każdą ofertę: na jakim jest etapie, kiedy aplikowałeś i kiedy się przypomnieć. Widzisz to tylko ty.",
+    track: "＋ Śledź",
+    tracked: "Śledzisz ✓",
+    stage: "Etap",
+    details: "Daty i notatki",
+    applied: "Aplikowałem",
+    followUp: "Przypomnij się",
+    notes: "Notatki",
+    notesPh: "Z kim rozmawiałeś, o co pytali, kolejne kroki…",
+    remove: "Usuń",
+    appliedOn: "aplikowano {date}",
+    overdue: "Termin przypomnienia minął {date}",
+    dueToday: "Przypomnij się dziś",
+    filter: "Filtruj według etapu",
+    all: "Wszystkie",
+    summary: "Wysłane aplikacje: {sent} · rozmowy lub oferty: {interviews}",
+    dueCount: "Przypomnień do zrobienia: {n}",
+    empty: "Jeszcze nic nie śledzisz. Kliknij ＋ Śledź przy ofercie powyżej albo dodaj ofertę znalezioną gdzie indziej.",
+    addManual: "＋ Dodaj ofertę znalezioną gdzie indziej",
+    jobTitle: "Stanowisko",
+    company: "Pracodawca",
+    link: "Link (opcjonalnie)",
+    add: "Dodaj do trackera",
+    adding: "Dodaję…",
+    needTitle: "Wpisz stanowisko.",
+    error: "Nie udało się zapisać. Spróbuj ponownie.",
+    notReady: "Tracker nie jest jeszcze włączony.",
+    statSent: "wysłanych aplikacji",
+    statStudents: "studentów zaaplikowało na co najmniej jedną ofertę",
+    statInterviews: "rozmów lub ofert",
+    stages: {saved: "Zapisana", applied: "Wysłana", interview: "Rozmowa", offer: "Oferta", rejected: "Odrzucona"}
+  },
+
   roles: {
     "Student": "Student", "Player": "Zawodnik", "Former player": "Były zawodnik", "Coach": "Trener", "Content creator": "Twórca treści",
     "Fan": "Kibic", "Career changer": "Zmieniam karierę", "Already work in sports": "Już pracuję w sporcie", "Other": "Inne"

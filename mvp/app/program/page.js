@@ -25,6 +25,9 @@ async function outcomes(db, code) {
     db.from("plans").select("user_id, role_idx, steps").in("user_id", ids)
   ]);
   const P = profiles || [], L = plans || [];
+  // Applications from the tracker (totals only; zero if the tracker table isn't set up yet).
+  const { data: apps } = await db.from("applications").select("user_id, status").in("user_id", ids);
+  const A = apps || [];
   const steps = L.flatMap((p) => p.steps || []);
   const roles = {};
   L.forEach((p) => { if (CAREER_PATHS[p.role_idx]) roles[p.role_idx] = (roles[p.role_idx] || 0) + 1; });
@@ -38,6 +41,9 @@ async function outcomes(db, code) {
     stepsTotal: steps.length,
     activePlans: L.filter((p) => (p.steps || []).some((s) => s.done)).length,
     publicLinks: P.filter((p) => p.is_public).length,
+    appsSent: A.filter((a) => a.status !== "saved").length,
+    appsInterview: A.filter((a) => a.status === "interview" || a.status === "offer").length,
+    appsStudents: new Set(A.filter((a) => a.status !== "saved").map((a) => a.user_id)).size,
     roles: Object.entries(roles).sort((a, b) => b[1] - a[1])
   };
 }
@@ -110,6 +116,9 @@ export default async function ProgramPage({ searchParams }) {
               <div><strong>{o.stepsDone} / {o.stepsTotal}</strong><span>{t("program.statSteps")}</span></div>
               <div><strong>{pct(o.activePlans, o.students)}</strong><span>{t("program.statActive")}</span></div>
               <div><strong>{pct(o.publicLinks, o.students)}</strong><span>{t("program.statLinks")}</span></div>
+              <div><strong>{o.appsSent}</strong><span>{t("tracker.statSent")}</span></div>
+              <div><strong>{pct(o.appsStudents, o.students)}</strong><span>{t("tracker.statStudents")}</span></div>
+              <div><strong>{o.appsInterview}</strong><span>{t("tracker.statInterviews")}</span></div>
             </div>
             {o.students >= 5 && o.roles.length > 0 && (
               <>
