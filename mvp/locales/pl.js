@@ -589,6 +589,23 @@ const pl = {
     seePlan: "Zobacz swój plan"
   },
 
+  tailor: {
+    retry: "Spróbuj ponownie",
+    button: "✨ Dopasuj CV i list",
+    short: "✨ Dopasuj",
+    offer: "Punkty do CV i list motywacyjny do tej oferty, na podstawie twoich osiągnięć. Zużywa 1 odpowiedź AI.",
+    working: "Dopasowuję…",
+    wait: "Czytam ogłoszenie i porównuję je z twoimi osiągnięciami…",
+    matched: "Możesz pokazać:",
+    gaps: "Jeszcze nie wykazane (pominięte, nigdy wymyślone):",
+    bullets: "Punkty do CV do tej oferty",
+    copyBullets: "Kopiuj punkty",
+    letter: "List motywacyjny (popraw go przed wysłaniem)",
+    copyLetter: "Kopiuj list",
+    unverified: "Sprawdź to: {nums} nie ma w twoim profilu ani w ogłoszeniu.",
+    note: "Napisane przez AI wyłącznie z twoich osiągnięć i ogłoszenia. Przeczytaj każde słowo i dopasuj do siebie przed wysłaniem."
+  },
+
   roles: {
     "Student": "Student", "Player": "Zawodnik", "Former player": "Były zawodnik", "Coach": "Trener", "Content creator": "Twórca treści",
     "Fan": "Kibic", "Career changer": "Zmieniam karierę", "Already work in sports": "Już pracuję w sporcie", "Other": "Inne"

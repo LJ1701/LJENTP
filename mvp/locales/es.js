@@ -570,6 +570,23 @@ const es = {
     seePlan: "Ver tu plan"
   },
 
+  tailor: {
+    retry: "Reintentar",
+    button: "✨ Adaptar mi currículum y carta",
+    short: "✨ Adaptar",
+    offer: "Viñetas de currículum y una carta de presentación para este empleo, con tus propios logros. Usa 1 respuesta de IA.",
+    working: "Adaptando…",
+    wait: "Leyendo la oferta y comparándola con tus logros…",
+    matched: "Puedes demostrar:",
+    gaps: "Aún no demostrado (se omite, nunca se inventa):",
+    bullets: "Viñetas de currículum para este empleo",
+    copyBullets: "Copiar viñetas",
+    letter: "Carta de presentación (edítala antes de enviarla)",
+    copyLetter: "Copiar carta",
+    unverified: "Comprueba esto: {nums} no está en tu perfil ni en la oferta.",
+    note: "Escrito por IA solo con tus logros y la oferta. Lee cada palabra y hazla tuya antes de enviarla."
+  },
+
   roles: {
     "Student": "Estudiante", "Player": "Jugador", "Former player": "Exjugador", "Coach": "Entrenador", "Content creator": "Creador de contenido",
     "Fan": "Aficionado", "Career changer": "Cambio de carrera", "Already work in sports": "Ya trabajo en el deporte", "Other": "Otro"

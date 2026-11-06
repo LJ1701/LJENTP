@@ -1,9 +1,58 @@
 "use client";
 import { useState, useTransition, useEffect } from "react";
-import { findJobs, checkFit, addGapToPlan } from "./actions";
+import { findJobs, checkFit, addGapToPlan, tailorApplicationFor } from "./actions";
+import CopyButton from "./copy-button";
 import { PENDING_KEY, agoText } from "../home-search";
 import { useT, CountryPicker } from "../i18n-provider";
 import { labelIn } from "@/lib/careers";
+
+// Tailored résumé bullets and cover letter for one job (job: a search posting; pasted: a pasted posting's text).
+// Written by AI only from the user's own achievements; the user edits and copies them. One AI answer each time.
+// auto: start writing as soon as it appears (the user already pressed "Tailor" on the job card).
+export function Tailor({ job, pasted, startOpen = false, auto = false }) {
+  const { t } = useT();
+  const [res, setRes] = useState(null);
+  const [letter, setLetter] = useState("");
+  const [busy, start] = useTransition();
+  const run = () => start(async () => {
+    const r = await tailorApplicationFor(job ? { id: job.id, title: job.title, company: job.company, location: job.location, snippet: job.snippet } : null, pasted || "");
+    setRes(r);
+    if (r.letter) setLetter(r.letter);
+  });
+  useEffect(() => { if (auto) run(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!res && !busy && !startOpen) return null;
+  return (
+    <div className="tailor">
+      {!res && <button type="button" onClick={run} disabled={busy}>{busy ? t("tailor.working") : t("tailor.button")}</button>}
+      {busy && <p className="muted"><small>{t("tailor.wait")}</small></p>}
+      {res && res.error && <p className={res.upgrade ? "warn" : "error"}>{res.error}{res.upgrade ? <> <a href="/pricing">{t("billing.seePlans")}</a></> : <> <button type="button" className="ghost mini" onClick={run} disabled={busy}>{t("tailor.retry")}</button></>}</p>}
+      {res && !res.error && (
+        <>
+          {res.matched.length > 0 && <p><small><strong>{t("tailor.matched")}</strong> {res.matched.join(" · ")}</small></p>}
+          {res.gaps.length > 0 && <p><small><strong>{t("tailor.gaps")}</strong> {res.gaps.join(" · ")}</small></p>}
+          {res.bullets.length > 0 && (
+            <>
+              <h4>{t("tailor.bullets")}</h4>
+              <ul>{res.bullets.map((b, i) => <li key={i}>{b}</li>)}</ul>
+              <CopyButton text={res.bullets.map((b) => `• ${b}`).join("\n")} label={t("tailor.copyBullets")} />
+              {res.dropped > 0 && <p><small>{t("bullets.dropped", { n: res.dropped })}</small></p>}
+            </>
+          )}
+          {letter && (
+            <>
+              <h4>{t("tailor.letter")}</h4>
+              <label htmlFor={`letter-${job ? job.id : "pasted"}`} className="visually-hidden">{t("tailor.letter")}</label>
+              <textarea id={`letter-${job ? job.id : "pasted"}`} rows={10} value={letter} onChange={(e) => setLetter(e.target.value)} />
+              <CopyButton text={letter} label={t("tailor.copyLetter")} />
+              {res.unverified.length > 0 && <p className="warn"><small>{t("tailor.unverified", { nums: res.unverified.join(", ") })}</small></p>}
+            </>
+          )}
+          <p><small>{t("tailor.note")}</small></p>
+        </>
+      )}
+    </div>
+  );
+}
 
 // Shows which skills a job asks for: proof (quoted from the user's achievements), ticked only, or a gap.
 function FitRows({ fit }) {
@@ -63,6 +112,7 @@ export function JobResults({ result, compact = false }) {
   const { t } = useT();
   const [open, setOpen] = useState(null);
   const [shown, setShown] = useState(compact ? 5 : 15);
+  const [tailoring, setTailoring] = useState({});
   const links = (list) => list.map(([site, url], i) => <span key={site}>{i > 0 && " · "}<a href={url} target="_blank" rel="noopener noreferrer">{site}</a></span>);
   return (
     <div className={compact ? "job-results compact" : "job-results"} aria-live="polite">
@@ -92,14 +142,17 @@ export function JobResults({ result, compact = false }) {
               <div className="job-actions">
                 <a className="cta small" href={j.url} target="_blank" rel="noopener noreferrer">{t("jobs.apply")}</a>
                 <button type="button" className="ghost" aria-expanded={open === j.id} onClick={() => setOpen(open === j.id ? null : j.id)}>{open === j.id ? t("jobs.hideFit") : t("jobs.fitCheck")}</button>
+                {!compact && <button type="button" className="ghost" onClick={() => setTailoring({ ...tailoring, [j.id]: true })} disabled={tailoring[j.id]}>{t("tailor.short")}</button>}
                 <small className="job-source">{t("jobs.via", { source: j.source })}</small>
               </div>
               {open === j.id && (
                 <div className="fit-box">
                   {j.snippet && <p><small>{t("jobs.fromListing")} &ldquo;{j.snippet}&rdquo;</small></p>}
                   <FitRows fit={j.fit} />
+                  {!compact && !tailoring[j.id] && <p><button type="button" onClick={() => setTailoring({ ...tailoring, [j.id]: true })}>{t("tailor.button")}</button> <small>{t("tailor.offer")}</small></p>}
                 </div>
               )}
+              {tailoring[j.id] && <Tailor job={j} startOpen auto key={`t-${j.id}`} />}
             </article>
           ))}
           {result.jobs.length > shown && (
@@ -169,6 +222,7 @@ export default function JobSearch({ starters }) {
           <div className="fit-box">
             <p><strong>{t("jobs.proofFor", { proven: pasted.fit.proven, total: pasted.fit.total })}</strong></p>
             <FitRows fit={pasted.fit} />
+            <Tailor pasted={posting} startOpen key={posting.length} />
           </div>
         )}
       </details>

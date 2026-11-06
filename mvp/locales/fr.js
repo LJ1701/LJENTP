@@ -570,6 +570,23 @@ const fr = {
     seePlan: "Voir votre offre"
   },
 
+  tailor: {
+    retry: "Réessayer",
+    button: "✨ Adapter mon CV et ma lettre",
+    short: "✨ Adapter",
+    offer: "Des puces de CV et une lettre de motivation pour ce poste, à partir de vos propres réalisations. Utilise 1 réponse IA.",
+    working: "Adaptation…",
+    wait: "Lecture de l’offre et comparaison avec vos réalisations…",
+    matched: "Vous pouvez montrer :",
+    gaps: "Pas encore démontré (laissé de côté, jamais inventé) :",
+    bullets: "Puces de CV pour ce poste",
+    copyBullets: "Copier les puces",
+    letter: "Lettre de motivation (modifiez-la avant de l’envoyer)",
+    copyLetter: "Copier la lettre",
+    unverified: "À vérifier : {nums} ne figure ni dans votre profil ni dans l’offre.",
+    note: "Écrit par l’IA uniquement à partir de vos réalisations et de l’offre. Relisez chaque mot et faites-la vôtre avant de l’envoyer."
+  },
+
   roles: {
     "Student": "Étudiant", "Player": "Joueur", "Former player": "Ancien joueur", "Coach": "Entraîneur", "Content creator": "Créateur de contenu",
     "Fan": "Fan", "Career changer": "En reconversion", "Already work in sports": "Je travaille déjà dans le sport", "Other": "Autre"

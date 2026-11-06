@@ -591,6 +591,23 @@ const en = {
     seePlan: "See your plan"
   },
 
+  tailor: {
+    retry: "Try again",
+    button: "✨ Tailor my résumé & cover letter",
+    short: "✨ Tailor",
+    offer: "Résumé bullets and a cover letter for this job, from your own achievements. Uses 1 AI answer.",
+    working: "Tailoring…",
+    wait: "Reading the posting and matching it to your achievements…",
+    matched: "You can show:",
+    gaps: "Not shown yet (left out, never invented):",
+    bullets: "Résumé bullets for this job",
+    copyBullets: "Copy bullets",
+    letter: "Cover letter (edit it before you send it)",
+    copyLetter: "Copy letter",
+    unverified: "Check this: {nums} isn't in your profile or the posting.",
+    note: "Written by AI only from your own achievements and the posting. Read every word and make it sound like you before you send it."
+  },
+
   roles: {
     "Student": "Student", "Player": "Player", "Former player": "Former player", "Coach": "Coach", "Content creator": "Content creator",
     "Fan": "Fan", "Career changer": "Career changer", "Already work in sports": "Already work in sports", "Other": "Other"

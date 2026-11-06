@@ -570,6 +570,23 @@ const pt = {
     seePlan: "Ver seu plano"
   },
 
+  tailor: {
+    retry: "Tentar de novo",
+    button: "✨ Adaptar meu currículo e carta",
+    short: "✨ Adaptar",
+    offer: "Tópicos de currículo e uma carta de apresentação para esta vaga, com suas próprias conquistas. Usa 1 resposta de IA.",
+    working: "Adaptando…",
+    wait: "Lendo a vaga e comparando com suas conquistas…",
+    matched: "Você consegue mostrar:",
+    gaps: "Ainda não comprovado (fica de fora, nunca é inventado):",
+    bullets: "Tópicos de currículo para esta vaga",
+    copyBullets: "Copiar tópicos",
+    letter: "Carta de apresentação (edite antes de enviar)",
+    copyLetter: "Copiar carta",
+    unverified: "Confira: {nums} não está no seu perfil nem na vaga.",
+    note: "Escrito por IA só com suas conquistas e a vaga. Leia cada palavra e deixe com a sua cara antes de enviar."
+  },
+
   roles: {
     "Student": "Estudante", "Player": "Jogador", "Former player": "Ex-jogador", "Coach": "Treinador", "Content creator": "Criador de conteúdo",
     "Fan": "Fã", "Career changer": "Mudando de carreira", "Already work in sports": "Já trabalho no esporte", "Other": "Outro"
