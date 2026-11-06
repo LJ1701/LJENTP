@@ -1,7 +1,7 @@
 // German. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const de = {
   nav: { language: "Sprache", myPassport: "Mein Pass", home: "LJSportMind Startseite" },
-  footer: { advice: "Ratschläge gibt es überall.", proof: "Nachweise nicht.", follow: "Folge @ljsoccer01 auf TikTok", by: "LJSportMind von LJSOCCER" },
+  footer: { advice: "Ratschläge gibt es überall.", proof: "Nachweise nicht.", follow: "Folge @ljsoccer01 auf TikTok", by: "LJSportMind von LJSOCCER", careers: "Sportberufe" },
   meta: { description: "Finde deinen Platz in der Sportbranche und beweise es: ein Sportpass, passende Berufe, aktuelle Sportjobs und ein gespeicherter Plan." },
   time: { today: "heute", oneDay: "vor 1 Tag", days: "vor {n} Tagen", earlierToday: "heute früher" },
 
@@ -604,6 +604,50 @@ const de = {
     copyLetter: "Anschreiben kopieren",
     unverified: "Prüf das: {nums} steht weder in deinem Profil noch in der Anzeige.",
     note: "Von KI nur aus deinen Erfolgen und der Anzeige geschrieben. Lies jedes Wort und mach es zu deinem, bevor du es sendest."
+  },
+
+  share: {
+    share: "Teilen…",
+    email: "E-Mail",
+    copyLink: "Link kopieren",
+    proofText: "Sieh dir an, was ich für eine Sportkarriere nachweisen kann, alles in einem Link:",
+    inviteText: "Ich baue auf LJSportMind meine Nachweise für eine Sportkarriere auf. Melde dich über meinen Link an und wir bekommen beide 5 zusätzliche KI-Antworten:",
+    jobText: "Diesen Sportjob habe ich gesehen und an dich gedacht: {title} bei {company}"
+  },
+
+  invite: {
+    title: "Freunde einladen, beide bekommen KI-Antworten",
+    text: "Teile deinen Link. Wenn ein Freund seinen Sportpass mit einem Erfolg speichert, bekommt ihr beide {n} zusätzliche KI-Antworten.",
+    copy: "Einladungslink kopieren",
+    count: "{n} Freunde sind dabei.",
+    none: "Noch keine Freunde dabei.",
+    cap: "(Bis zu 10 Freunde bringen dir Antworten.)",
+    welcome: "Willkommen! Du und die Person, die dich eingeladen hat, habt je {n} zusätzliche KI-Antworten bekommen."
+  },
+
+  careers: {
+    eyebrow: "Leitfaden für Sportberufe",
+    indexTitle: "Sportberufe: Fähigkeiten, erste Schritte und aktuelle Jobs · LJSportMind",
+    indexDescription: "Acht Sportberufe, die Fähigkeiten, die Arbeitgeber suchen, wie du jede diese Woche zeigst, und echte offene Stellen.",
+    indexH1: "Finde deinen Weg im",
+    indexH1Gold: "Sport.",
+    indexSub: "Acht Wege in die Sportbranche, die Fähigkeiten für jeden davon und echte Stellen, die jetzt offen sind. Kostenlos, ohne Konto.",
+    read: "Leitfaden lesen",
+    metaTitle: "{role}: Fähigkeiten, erste Schritte und aktuelle Jobs · LJSportMind",
+    metaDescription: "Welche Fähigkeiten Arbeitgeber im Bereich {role} suchen, wie du jede diese Woche zeigst, und echte offene Stellen.",
+    intro: "{role}: was es braucht, welche Fähigkeiten Arbeitgeber suchen, wie du jede diese Woche zeigst, und echte offene Stellen.",
+    skillsTitle: "Fähigkeiten, die Arbeitgeber suchen",
+    showIt: "Zeig es diese Woche:",
+    goodFit: "Passt zu dir, wenn dich interessiert:",
+    firstStep: "Dein erster Schritt",
+    jobsTitle: "Jetzt offene Stellen · {place}",
+    jobsCount: "{n} gefunden auf Karriereseiten von Sportarbeitgebern und Jobbörsen",
+    noJobs: "Gerade keine passenden Stellen. Probiere andere Wörter in der Jobsuche.",
+    jobsNote: "Echte Stellen von Adzuna und von Karriereseiten der Sportarbeitgeber; jeder Link öffnet das Original.",
+    ctaTitle: "Bereit für {role}? Beweise es.",
+    ctaText: "Erstelle einen kostenlosen Sportpass: deine Erfolge werden zu Nachweisen, abgeglichen mit echten Jobs.",
+    cta: "Meinen kostenlosen Sportpass erstellen →",
+    others: "Weitere Berufe:"
   },
 
   roles: {

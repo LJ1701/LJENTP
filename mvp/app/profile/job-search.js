@@ -2,6 +2,7 @@
 import { useState, useTransition, useEffect } from "react";
 import { findJobs, checkFit, addGapToPlan, tailorApplicationFor } from "./actions";
 import CopyButton from "./copy-button";
+import ShareButtons from "../share-buttons";
 import { PENDING_KEY, agoText } from "../home-search";
 import { useT, CountryPicker } from "../i18n-provider";
 import { labelIn } from "@/lib/careers";
@@ -143,6 +144,7 @@ export function JobResults({ result, compact = false }) {
                 <a className="cta small" href={j.url} target="_blank" rel="noopener noreferrer">{t("jobs.apply")}</a>
                 <button type="button" className="ghost" aria-expanded={open === j.id} onClick={() => setOpen(open === j.id ? null : j.id)}>{open === j.id ? t("jobs.hideFit") : t("jobs.fitCheck")}</button>
                 {!compact && <button type="button" className="ghost" onClick={() => setTailoring({ ...tailoring, [j.id]: true })} disabled={tailoring[j.id]}>{t("tailor.short")}</button>}
+                {!compact && <ShareButtons compact url={j.url} text={t("share.jobText", { title: j.title, company: j.company })} />}
                 <small className="job-source">{t("jobs.via", { source: j.source })}</small>
               </div>
               {open === j.id && (

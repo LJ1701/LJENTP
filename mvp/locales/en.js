@@ -2,7 +2,7 @@
 // {name} marks a value the app fills in. Keep keys in sync across all ten files.
 const en = {
   nav: { language: "Language", myPassport: "My Passport", home: "LJSportMind home" },
-  footer: { advice: "Advice is everywhere.", proof: "Proof isn't.", follow: "Follow @ljsoccer01 on TikTok", by: "LJSportMind by LJSOCCER" },
+  footer: { advice: "Advice is everywhere.", proof: "Proof isn't.", follow: "Follow @ljsoccer01 on TikTok", by: "LJSportMind by LJSOCCER", careers: "Sports careers" },
   meta: { description: "Find your place in the sports industry and prove it: a Sports Passport, career matches, live sports jobs and a saved plan." },
   time: { today: "today", oneDay: "1 day ago", days: "{n} days ago", earlierToday: "earlier today" },
 
@@ -606,6 +606,50 @@ const en = {
     copyLetter: "Copy letter",
     unverified: "Check this: {nums} isn't in your profile or the posting.",
     note: "Written by AI only from your own achievements and the posting. Read every word and make it sound like you before you send it."
+  },
+
+  share: {
+    share: "Share…",
+    email: "Email",
+    copyLink: "Copy link",
+    proofText: "See what I can prove for a sports career, all in one link:",
+    inviteText: "I'm building my sports career proof on LJSportMind. Join with my link and we both get 5 extra AI answers:",
+    jobText: "Saw this sports job and thought of you: {title} at {company}"
+  },
+
+  invite: {
+    title: "Invite friends, both get AI answers",
+    text: "Share your link. When a friend saves their Sports Passport with an achievement, you both get {n} extra AI answers.",
+    copy: "Copy invite link",
+    count: "{n} friends joined.",
+    none: "No friends joined yet.",
+    cap: "(Up to 10 friends earn you answers.)",
+    welcome: "Welcome! You and the friend who invited you each got {n} extra AI answers."
+  },
+
+  careers: {
+    eyebrow: "Sports career guide",
+    indexTitle: "Sports career paths: skills, first steps and live jobs · LJSportMind",
+    indexDescription: "Eight sports career paths, the skills employers look for, how to show each skill this week, and real open jobs.",
+    indexH1: "Find your path in",
+    indexH1Gold: "sports.",
+    indexSub: "Eight ways into the sports industry, the skills each one needs, and real jobs open right now. Free, no account needed.",
+    read: "Read the guide",
+    metaTitle: "{role}: skills, first steps and live jobs · LJSportMind",
+    metaDescription: "Skills employers look for in {role}, how to show each one this week, and real open jobs right now.",
+    intro: "{role}: what it takes, the skills employers look for, how to show each one this week, and real jobs open now.",
+    skillsTitle: "Skills employers look for",
+    showIt: "Show it this week:",
+    goodFit: "Good fit if you're into:",
+    firstStep: "Your first step",
+    jobsTitle: "Open jobs right now · {place}",
+    jobsCount: "{n} found across sports employers' boards and job sites",
+    noJobs: "No matching postings right now. Try the job search for other words.",
+    jobsNote: "Real postings from Adzuna and sports employers' career pages; each link opens the original.",
+    ctaTitle: "Ready for {role}? Prove it.",
+    ctaText: "Build a free Sports Passport: your achievements become proof, matched to real jobs.",
+    cta: "Build my free Sports Passport →",
+    others: "Other paths:"
   },
 
   roles: {

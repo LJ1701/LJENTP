@@ -13,6 +13,8 @@ import { resumeFileText } from "@/lib/resume-file";
 import { canUseAi, spendAnswer, FREE_ANSWERS } from "@/lib/billing";
 import { getT, getCountry, dictFor } from "@/lib/i18n-server";
 import { adzunaFor, countryName } from "@/lib/countries";
+import { cookies } from "next/headers";
+import { applyReferral, REF_COOKIE } from "@/lib/referrals";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -54,8 +56,16 @@ export async function saveProfile(formData) {
     updated_at: new Date().toISOString()
   });
   if (error) redirect(`/profile?error=${encodeURIComponent((await getT()).t("profile.saveError"))}`);
+  // Invited by a friend? Once this Passport has an achievement, both get their bonus answers (once only).
+  const jar = await cookies();
+  const ref = jar.get(REF_COOKIE)?.value;
+  let invited = false;
+  if (ref && clean(formData.get("achievements"), 4000)) {
+    invited = await applyReferral(user.id, ref);
+    jar.delete(REF_COOKIE);
+  }
   revalidatePath("/profile");
-  redirect("/profile?saved=1");
+  redirect(invited ? "/profile?saved=1&invited=1" : "/profile?saved=1");
 }
 
 export async function setTarget(formData) {

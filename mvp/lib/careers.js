@@ -99,3 +99,6 @@ export function stepText(dict, step, roleIdx) {
   if (step.kind === "apply") return (dict.profile.applyStep || "").replace("{role}", pathName(dict, roleIdx));
   return step.text;
 }
+
+// Web addresses of the public career guide pages (/careers/<slug>), in CAREER_PATHS order.
+export const CAREER_SLUGS = ["content-creator", "video-analyst", "journalist-broadcaster", "youth-coach", "scouting-analytics", "marketing-sponsorship", "event-operations", "front-office"];

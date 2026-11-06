@@ -1,7 +1,7 @@
 // French. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const fr = {
   nav: { language: "Langue", myPassport: "Mon Passeport", home: "Accueil LJSportMind" },
-  footer: { advice: "Les conseils sont partout.", proof: "Les preuves, non.", follow: "Suivez @ljsoccer01 sur TikTok", by: "LJSportMind par LJSOCCER" },
+  footer: { advice: "Les conseils sont partout.", proof: "Les preuves, non.", follow: "Suivez @ljsoccer01 sur TikTok", by: "LJSportMind par LJSOCCER", careers: "Métiers du sport" },
   meta: { description: "Trouvez votre place dans l'industrie du sport et prouvez-le : un Passeport Sport, des métiers adaptés, des offres sportives en direct et un plan enregistré." },
   time: { today: "aujourd'hui", oneDay: "il y a 1 jour", days: "il y a {n} jours", earlierToday: "plus tôt aujourd'hui" },
   home: {
@@ -585,6 +585,50 @@ const fr = {
     copyLetter: "Copier la lettre",
     unverified: "À vérifier : {nums} ne figure ni dans votre profil ni dans l’offre.",
     note: "Écrit par l’IA uniquement à partir de vos réalisations et de l’offre. Relisez chaque mot et faites-la vôtre avant de l’envoyer."
+  },
+
+  share: {
+    share: "Partager…",
+    email: "Email",
+    copyLink: "Copier le lien",
+    proofText: "Voici ce que je peux prouver pour une carrière dans le sport, en un seul lien :",
+    inviteText: "Je construis mes preuves pour une carrière dans le sport sur LJSportMind. Inscrivez-vous avec mon lien et nous recevons chacun 5 réponses IA en plus :",
+    jobText: "J’ai vu cette offre dans le sport et j’ai pensé à vous : {title} chez {company}"
+  },
+
+  invite: {
+    title: "Invitez des amis, chacun gagne des réponses IA",
+    text: "Partagez votre lien. Quand un ami enregistre son Passeport Sportif avec une réalisation, vous recevez chacun {n} réponses IA en plus.",
+    copy: "Copier le lien d’invitation",
+    count: "{n} amis ont rejoint.",
+    none: "Aucun ami n’a encore rejoint.",
+    cap: "(Jusqu’à 10 amis vous rapportent des réponses.)",
+    welcome: "Bienvenue ! Vous et l’ami qui vous a invité avez chacun reçu {n} réponses IA en plus."
+  },
+
+  careers: {
+    eyebrow: "Guide des métiers du sport",
+    indexTitle: "Métiers du sport : compétences, premiers pas et offres en direct · LJSportMind",
+    indexDescription: "Huit métiers du sport, les compétences recherchées, comment montrer chacune cette semaine et de vraies offres ouvertes.",
+    indexH1: "Trouvez votre voie dans le",
+    indexH1Gold: "sport.",
+    indexSub: "Huit façons d’entrer dans l’industrie du sport, les compétences de chacune et de vraies offres ouvertes maintenant. Gratuit, sans compte.",
+    read: "Lire le guide",
+    metaTitle: "{role} : compétences, premiers pas et offres en direct · LJSportMind",
+    metaDescription: "Les compétences recherchées en {role}, comment montrer chacune cette semaine et de vraies offres ouvertes maintenant.",
+    intro: "{role} : ce qu’il faut, les compétences recherchées, comment montrer chacune cette semaine et de vraies offres ouvertes maintenant.",
+    skillsTitle: "Compétences recherchées",
+    showIt: "Montrez-la cette semaine :",
+    goodFit: "Pour vous si vous aimez :",
+    firstStep: "Votre premier pas",
+    jobsTitle: "Offres ouvertes maintenant · {place}",
+    jobsCount: "{n} trouvées sur les pages carrières d’employeurs du sport et des sites d’emploi",
+    noJobs: "Aucune offre correspondante pour le moment. Essayez d’autres mots dans la recherche d’emploi.",
+    jobsNote: "De vraies offres d’Adzuna et des pages carrières d’employeurs du sport ; chaque lien ouvre l’original.",
+    ctaTitle: "Prêt pour {role} ? Prouvez-le.",
+    ctaText: "Créez un Passeport Sportif gratuit : vos réalisations deviennent des preuves, comparées à de vraies offres.",
+    cta: "Créer mon Passeport Sportif gratuit →",
+    others: "Autres métiers :"
   },
 
   roles: {

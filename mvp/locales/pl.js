@@ -1,7 +1,7 @@
 // Polish. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const pl = {
   nav: { language: "Język", myPassport: "Mój Paszport", home: "Strona główna LJSportMind" },
-  footer: { advice: "Porady są wszędzie.", proof: "Dowody nie.", follow: "Obserwuj @ljsoccer01 na TikToku", by: "LJSportMind od LJSOCCER" },
+  footer: { advice: "Porady są wszędzie.", proof: "Dowody nie.", follow: "Obserwuj @ljsoccer01 na TikToku", by: "LJSportMind od LJSOCCER", careers: "Kariery w sporcie" },
   meta: { description: "Znajdź swoje miejsce w branży sportowej i udowodnij to: Paszport Sportowy, dopasowane zawody, aktualne oferty pracy w sporcie i zapisany plan." },
   time: { today: "dziś", oneDay: "1 dzień temu", days: "{n} dni temu", earlierToday: "dziś wcześniej" },
 
@@ -604,6 +604,50 @@ const pl = {
     copyLetter: "Kopiuj list",
     unverified: "Sprawdź to: {nums} nie ma w twoim profilu ani w ogłoszeniu.",
     note: "Napisane przez AI wyłącznie z twoich osiągnięć i ogłoszenia. Przeczytaj każde słowo i dopasuj do siebie przed wysłaniem."
+  },
+
+  share: {
+    share: "Udostępnij…",
+    email: "E-mail",
+    copyLink: "Kopiuj link",
+    proofText: "Zobacz, co mogę udowodnić w karierze sportowej, wszystko w jednym linku:",
+    inviteText: "Buduję swoje dowody na karierę w sporcie w LJSportMind. Dołącz przez mój link, a oboje dostaniemy 5 dodatkowych odpowiedzi AI:",
+    jobText: "Zobaczyłem tę ofertę w sporcie i pomyślałem o tobie: {title} w {company}"
+  },
+
+  invite: {
+    title: "Zaproś znajomych, oboje dostaniecie odpowiedzi AI",
+    text: "Udostępnij swój link. Gdy znajomy zapisze Paszport Sportowy z osiągnięciem, oboje dostaniecie {n} dodatkowych odpowiedzi AI.",
+    copy: "Kopiuj link zaproszenia",
+    count: "Dołączyło znajomych: {n}.",
+    none: "Jeszcze nikt nie dołączył.",
+    cap: "(Odpowiedzi dostajesz za maksymalnie 10 znajomych.)",
+    welcome: "Witaj! Ty i osoba, która cię zaprosiła, dostaliście po {n} dodatkowych odpowiedzi AI."
+  },
+
+  careers: {
+    eyebrow: "Przewodnik po karierach w sporcie",
+    indexTitle: "Kariery w sporcie: umiejętności, pierwsze kroki i aktualne oferty · LJSportMind",
+    indexDescription: "Osiem karier w sporcie, umiejętności, których szukają pracodawcy, jak pokazać każdą w tym tygodniu i prawdziwe otwarte oferty.",
+    indexH1: "Znajdź swoją drogę w",
+    indexH1Gold: "sporcie.",
+    indexSub: "Osiem sposobów na wejście do branży sportowej, umiejętności potrzebne w każdym i prawdziwe oferty otwarte teraz. Za darmo, bez konta.",
+    read: "Czytaj przewodnik",
+    metaTitle: "{role}: umiejętności, pierwsze kroki i aktualne oferty · LJSportMind",
+    metaDescription: "Umiejętności, których pracodawcy szukają w obszarze {role}, jak pokazać każdą w tym tygodniu i prawdziwe otwarte oferty.",
+    intro: "{role}: czego potrzeba, jakich umiejętności szukają pracodawcy, jak pokazać każdą w tym tygodniu i prawdziwe otwarte oferty.",
+    skillsTitle: "Umiejętności, których szukają pracodawcy",
+    showIt: "Pokaż to w tym tygodniu:",
+    goodFit: "Pasuje, jeśli interesuje cię:",
+    firstStep: "Twój pierwszy krok",
+    jobsTitle: "Oferty otwarte teraz · {place}",
+    jobsCount: "Znaleziono {n} na stronach kariery pracodawców sportowych i portalach z ofertami",
+    noJobs: "Teraz brak pasujących ofert. Spróbuj innych słów w wyszukiwarce ofert.",
+    jobsNote: "Prawdziwe oferty z Adzuna i stron kariery pracodawców sportowych; każdy link otwiera oryginał.",
+    ctaTitle: "Gotowy na {role}? Udowodnij to.",
+    ctaText: "Załóż darmowy Paszport Sportowy: twoje osiągnięcia stają się dowodami, porównanymi z prawdziwymi ofertami.",
+    cta: "Załóż mój darmowy Paszport Sportowy →",
+    others: "Inne kariery:"
   },
 
   roles: {
