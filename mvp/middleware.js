@@ -15,6 +15,12 @@ export async function middleware(request) {
     }
   });
   await supabase.auth.getUser();
+  // Arrived through a friend's invite link (?ref=abcd2345): remember the code for 30 days, so it counts
+  // when this visitor saves their Passport (lib/referrals.js).
+  const ref = request.nextUrl.searchParams.get("ref");
+  if (ref && /^[a-z0-9]{8}$/.test(ref) && !request.cookies.get("ref")) {
+    response.cookies.set("ref", ref, { path: "/", maxAge: 60 * 60 * 24 * 30, sameSite: "lax", httpOnly: true });
+  }
   return response;
 }
 

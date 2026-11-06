@@ -436,3 +436,16 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .tailor h4 { margin: 12px 0 6px; font-size: 15px; }
 .tailor ul { margin: 0 0 8px; padding-left: 18px; }
 .tailor textarea { width: 100%; margin-bottom: 8px; }
+
+/* Sharing, invites and the public career guide */
+.share-row { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 8px; }
+.share-row.compact { display: inline-flex; margin-top: 0; }
+.share-link { font-size: 14px; font-weight: 600; }
+.invite-card { border-color: var(--accent); }
+.career-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.career-tile { margin: 0; text-decoration: none; color: var(--text); display: flex; flex-direction: column; gap: 6px; }
+.career-tile:hover { border-color: var(--accent); }
+.career-tile span { color: var(--accent-light); font-weight: 600; }
+.career-skills, .career-jobs { padding-left: 18px; }
+.career-skills li, .career-jobs li { margin-bottom: 10px; }
+@media (max-width: 720px) { .career-grid { grid-template-columns: 1fr; } }

@@ -1,7 +1,7 @@
 // Japanese. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const ja = {
   nav: { language: "言語", myPassport: "マイパスポート", home: "LJSportMind ホーム" },
-  footer: { advice: "アドバイスはどこにでもある。", proof: "証拠はそうではない。", follow: "TikTokで@ljsoccer01をフォロー", by: "LJSOCCERのLJSportMind" },
+  footer: { advice: "アドバイスはどこにでもある。", proof: "証拠はそうではない。", follow: "TikTokで@ljsoccer01をフォロー", by: "LJSOCCERのLJSportMind", careers: "スポーツの職業" },
   meta: { description: "スポーツ業界で自分の居場所を見つけて証明しよう。スポーツパスポート、合う職業、最新のスポーツ求人、保存できるプラン。" },
   time: { today: "今日", oneDay: "1日前", days: "{n}日前", earlierToday: "今日の早い時間" },
 
@@ -604,6 +604,50 @@ const ja = {
     copyLetter: "レターをコピー",
     unverified: "確認してください：{nums} はプロフィールにも求人にもありません。",
     note: "あなたの実績と求人だけをもとにAIが作成しました。送る前にすべての言葉を読み、自分らしく直してください。"
+  },
+
+  share: {
+    share: "共有…",
+    email: "メール",
+    copyLink: "リンクをコピー",
+    proofText: "スポーツキャリアで私が証明できることを、1つのリンクにまとめました：",
+    inviteText: "LJSportMindでスポーツキャリアの証拠を作っています。私のリンクから参加すると、2人ともAI回答が5回分増えます：",
+    jobText: "このスポーツの仕事を見て、あなたを思い出しました：{company}の{title}"
+  },
+
+  invite: {
+    title: "友達を招待して、2人ともAI回答を獲得",
+    text: "リンクを共有しましょう。友達が実績を入れてスポーツパスポートを保存すると、2人ともAI回答が{n}回分増えます。",
+    copy: "招待リンクをコピー",
+    count: "{n}人の友達が参加しました。",
+    none: "まだ参加した友達はいません。",
+    cap: "（回答がもらえるのは友達10人まで）",
+    welcome: "ようこそ！あなたと招待してくれた友達に、それぞれAI回答{n}回分が追加されました。"
+  },
+
+  careers: {
+    eyebrow: "スポーツキャリアガイド",
+    indexTitle: "スポーツの職業：スキル、最初の一歩、最新の求人 · LJSportMind",
+    indexDescription: "8つのスポーツの職業、雇用主が求めるスキル、今週それぞれを示す方法、実際の求人。",
+    indexH1: "見つけよう、",
+    indexH1Gold: "スポーツでのあなたの道。",
+    indexSub: "スポーツ業界への8つの道、それぞれに必要なスキル、今募集中の実際の求人。無料、アカウント不要。",
+    read: "ガイドを読む",
+    metaTitle: "{role}になるには · スキル、最初の一歩、最新の求人",
+    metaDescription: "{role}に雇用主が求めること、今週それぞれのスキルを示す方法、今募集中の実際の求人。",
+    intro: "{role}として働くために必要なこと：雇用主が求めるスキル、今週それぞれを示す方法、今募集中の実際の求人。",
+    skillsTitle: "雇用主が求めるスキル",
+    showIt: "今週、示しましょう：",
+    goodFit: "こんな興味がある人に向いています：",
+    firstStep: "最初の一歩",
+    jobsTitle: "今募集中の求人 · {place}",
+    jobsCount: "スポーツ企業の採用ページと求人サイトで{n}件",
+    noJobs: "今は条件に合う求人がありません。求人検索で別の言葉を試してください。",
+    jobsNote: "Adzunaとスポーツ企業の採用ページからの実際の求人です。各リンクは元のページを開きます。",
+    ctaTitle: "{role}になる準備ができていることを証明しよう",
+    ctaText: "無料のスポーツパスポートを作りましょう。実績が証拠になり、実際の求人と照らし合わせられます。",
+    cta: "無料のスポーツパスポートを作る →",
+    others: "ほかの職業："
   },
 
   roles: {

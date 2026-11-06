@@ -6,6 +6,8 @@ import { saveProfile, setTarget, setPublic } from "./actions";
 import PlanSteps from "./plan-steps";
 import ResumeFill from "./resume-fill";
 import ResumeBullets from "./resume-bullets";
+import ShareButtons from "../share-buttons";
+import { getInvite, INVITE_BONUS } from "@/lib/referrals";
 import Goldie from "../goldie";
 import SaveAccount from "./save-account";
 import JobSearch, { SearchFor, PendingNote } from "./job-search";
@@ -52,7 +54,7 @@ const AiBar = ({ s, t }) => (
 const Step = ({ n, children, id }) => <h2 className="step-title" id={id}><span className="step-num">{n}</span> {children}</h2>;
 
 export default async function ProfilePage({ searchParams }) {
-  const { saved, error, ok } = await searchParams;
+  const { saved, error, ok, invited } = await searchParams;
   const supabase = await createClient();
   const [{ t, lang, dict }, country] = await Promise.all([getT(), getCountry()]);
   const L = (tag) => labelIn(dict, tag);
@@ -64,6 +66,8 @@ export default async function ProfilePage({ searchParams }) {
     supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle(),
     billingStatus(user.id)
   ]);
+  const invite = await getInvite(user.id);
+  const inviteUrl = invite ? `https://ljsportmind-mvp.vercel.app/?ref=${invite.code}` : "";
   const p = profile || {};
   // Matches use ticked skills plus those found in the achievements text.
   const eff = effectiveProfile(profile);
@@ -88,6 +92,7 @@ export default async function ProfilePage({ searchParams }) {
       {saved && <p className="ok">{t("profile.saved")}</p>}
       {error && <p className="error">{error}</p>}
       {ok && <p className="ok">{ok}</p>}
+      {invited && <p className="ok">{t("invite.welcome", { n: INVITE_BONUS })}</p>}
       {billing.ready && <AiBar s={billing} t={t} />}
 
       <Step n="1" id="passport">{t("profile.step1")}</Step>
@@ -207,12 +212,23 @@ export default async function ProfilePage({ searchParams }) {
               <CopyButton text={proofUrl} />
               <form action={setPublic}><input type="hidden" name="on" value="0" /><button type="submit" className="ghost">{t("profile.linkOff")}</button></form>
             </div>
+            <ShareButtons url={proofUrl} text={t("share.proofText")} />
           </>
         ) : (
           <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">{t("profile.createLink")}</button></form>
         )}
       </div>
       {profile && <ResumeBullets />}
+      {invite && (
+        <section className="card invite-card" aria-label={t("invite.title")}>
+          <h3>{t("invite.title")}</h3>
+          <p>{t("invite.text", { n: INVITE_BONUS })}</p>
+          <p className="proof-url"><small>{inviteUrl}</small></p>
+          <div className="job-actions"><CopyButton text={inviteUrl} label={t("invite.copy")} /></div>
+          <ShareButtons url={inviteUrl} text={t("share.inviteText")} />
+          <p><small>{invite.count ? t("invite.count", { n: invite.count }) : t("invite.none")} {t("invite.cap")}</small></p>
+        </section>
+      )}
       <Goldie coach={{
         firstName,
         hasProfile: !!profile,

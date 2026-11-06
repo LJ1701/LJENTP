@@ -1,7 +1,7 @@
 // Dutch. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const nl = {
   nav: { language: "Taal", myPassport: "Mijn Paspoort", home: "LJSportMind home" },
-  footer: { advice: "Advies is overal.", proof: "Bewijs niet.", follow: "Volg @ljsoccer01 op TikTok", by: "LJSportMind door LJSOCCER" },
+  footer: { advice: "Advies is overal.", proof: "Bewijs niet.", follow: "Volg @ljsoccer01 op TikTok", by: "LJSportMind door LJSOCCER", careers: "Sportberoepen" },
   meta: { description: "Vind je plek in de sportwereld en bewijs het: een Sportpaspoort, passende beroepen, actuele sportvacatures en een opgeslagen plan." },
   time: { today: "vandaag", oneDay: "1 dag geleden", days: "{n} dagen geleden", earlierToday: "eerder vandaag" },
 
@@ -604,6 +604,50 @@ const nl = {
     copyLetter: "Brief kopiëren",
     unverified: "Controleer dit: {nums} staat niet in je profiel of de vacature.",
     note: "Door AI geschreven, alleen uit je prestaties en de vacature. Lees elk woord en maak het van jou voordat je het verstuurt."
+  },
+
+  share: {
+    share: "Delen…",
+    email: "E-mail",
+    copyLink: "Link kopiëren",
+    proofText: "Bekijk wat ik kan bewijzen voor een sportcarrière, alles in één link:",
+    inviteText: "Ik bouw mijn bewijs voor een sportcarrière op LJSportMind. Doe mee via mijn link en we krijgen allebei 5 extra AI-antwoorden:",
+    jobText: "Ik zag deze sportbaan en dacht aan jou: {title} bij {company}"
+  },
+
+  invite: {
+    title: "Nodig vrienden uit, allebei AI-antwoorden",
+    text: "Deel je link. Als een vriend zijn Sportpaspoort met een prestatie opslaat, krijgen jullie allebei {n} extra AI-antwoorden.",
+    copy: "Uitnodigingslink kopiëren",
+    count: "{n} vrienden doen mee.",
+    none: "Nog geen vrienden doen mee.",
+    cap: "(Tot 10 vrienden leveren je antwoorden op.)",
+    welcome: "Welkom! Jij en de vriend die je uitnodigde kregen elk {n} extra AI-antwoorden."
+  },
+
+  careers: {
+    eyebrow: "Gids voor sportberoepen",
+    indexTitle: "Sportberoepen: vaardigheden, eerste stappen en actuele vacatures · LJSportMind",
+    indexDescription: "Acht sportberoepen, de vaardigheden die werkgevers zoeken, hoe je ze deze week laat zien en echte open vacatures.",
+    indexH1: "Vind je weg in de",
+    indexH1Gold: "sport.",
+    indexSub: "Acht manieren om de sportwereld in te gaan, de vaardigheden die elk nodig heeft en echte vacatures die nu open staan. Gratis, geen account nodig.",
+    read: "Lees de gids",
+    metaTitle: "Zo word je {role} · vaardigheden, eerste stappen en actuele vacatures",
+    metaDescription: "Wat werkgevers zoeken bij {role}, hoe je elke vaardigheid deze week laat zien en echte open vacatures.",
+    intro: "Wat je nodig hebt om als {role} te werken: de vaardigheden die werkgevers zoeken, hoe je ze deze week laat zien en echte open vacatures.",
+    skillsTitle: "Vaardigheden die werkgevers zoeken",
+    showIt: "Laat het deze week zien:",
+    goodFit: "Past bij je als je houdt van:",
+    firstStep: "Je eerste stap",
+    jobsTitle: "Nu open vacatures · {place}",
+    jobsCount: "{n} gevonden op vacaturepagina’s van sportwerkgevers en vacaturesites",
+    noJobs: "Nu geen passende vacatures. Probeer andere woorden in de vacaturezoeker.",
+    jobsNote: "Echte vacatures van Adzuna en vacaturepagina’s van sportwerkgevers; elke link opent het origineel.",
+    ctaTitle: "Laat zien dat je klaar bent voor {role}",
+    ctaText: "Maak een gratis Sportpaspoort: je prestaties worden bewijs, gekoppeld aan echte vacatures.",
+    cta: "Mijn gratis Sportpaspoort maken →",
+    others: "Andere beroepen:"
   },
 
   roles: {

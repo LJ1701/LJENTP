@@ -1,7 +1,7 @@
 // Spanish. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const es = {
   nav: { language: "Idioma", myPassport: "Mi Pasaporte", home: "Inicio de LJSportMind" },
-  footer: { advice: "Los consejos están en todas partes.", proof: "Las pruebas, no.", follow: "Sigue a @ljsoccer01 en TikTok", by: "LJSportMind por LJSOCCER" },
+  footer: { advice: "Los consejos están en todas partes.", proof: "Las pruebas, no.", follow: "Sigue a @ljsoccer01 en TikTok", by: "LJSportMind por LJSOCCER", careers: "Carreras deportivas" },
   meta: { description: "Encuentra tu lugar en la industria del deporte y demuéstralo: un Pasaporte Deportivo, carreras afines, empleos deportivos en vivo y un plan guardado." },
   time: { today: "hoy", oneDay: "hace 1 día", days: "hace {n} días", earlierToday: "hoy más temprano" },
   home: {
@@ -585,6 +585,50 @@ const es = {
     copyLetter: "Copiar carta",
     unverified: "Comprueba esto: {nums} no está en tu perfil ni en la oferta.",
     note: "Escrito por IA solo con tus logros y la oferta. Lee cada palabra y hazla tuya antes de enviarla."
+  },
+
+  share: {
+    share: "Compartir…",
+    email: "Email",
+    copyLink: "Copiar enlace",
+    proofText: "Mira lo que puedo demostrar para una carrera en el deporte, todo en un enlace:",
+    inviteText: "Estoy construyendo mis pruebas para una carrera deportiva en LJSportMind. Únete con mi enlace y los dos recibimos 5 respuestas de IA extra:",
+    jobText: "Vi este empleo deportivo y pensé en ti: {title} en {company}"
+  },
+
+  invite: {
+    title: "Invita amigos y ambos ganan respuestas de IA",
+    text: "Comparte tu enlace. Cuando un amigo guarde su Pasaporte Deportivo con un logro, los dos reciben {n} respuestas de IA extra.",
+    copy: "Copiar enlace de invitación",
+    count: "{n} amigos se unieron.",
+    none: "Aún no se ha unido ningún amigo.",
+    cap: "(Hasta 10 amigos te dan respuestas.)",
+    welcome: "¡Bienvenido! Tú y el amigo que te invitó recibieron {n} respuestas de IA extra cada uno."
+  },
+
+  careers: {
+    eyebrow: "Guía de carreras deportivas",
+    indexTitle: "Carreras en el deporte: habilidades, primeros pasos y empleos en vivo · LJSportMind",
+    indexDescription: "Ocho carreras en el deporte, las habilidades que buscan los empleadores, cómo demostrar cada una esta semana y empleos reales abiertos.",
+    indexH1: "Encuentra tu camino en el",
+    indexH1Gold: "deporte.",
+    indexSub: "Ocho formas de entrar en la industria del deporte, las habilidades que necesita cada una y empleos reales abiertos ahora. Gratis, sin cuenta.",
+    read: "Leer la guía",
+    metaTitle: "Cómo ser {role} · habilidades, primeros pasos y empleos en vivo",
+    metaDescription: "Lo que los empleadores buscan en un perfil de {role}, cómo demostrar cada habilidad esta semana y empleos reales abiertos ahora.",
+    intro: "Lo que hace falta para trabajar como {role}: las habilidades que buscan los empleadores, cómo demostrar cada una esta semana y empleos reales abiertos ahora.",
+    skillsTitle: "Habilidades que buscan los empleadores",
+    showIt: "Demuéstralo esta semana:",
+    goodFit: "Encaja contigo si te interesa:",
+    firstStep: "Tu primer paso",
+    jobsTitle: "Empleos abiertos ahora · {place}",
+    jobsCount: "{n} encontrados en páginas de empleo de empresas deportivas y portales de empleo",
+    noJobs: "No hay ofertas que coincidan ahora. Prueba otras palabras en la búsqueda de empleo.",
+    jobsNote: "Ofertas reales de Adzuna y de las páginas de empleo de empresas deportivas; cada enlace abre el original.",
+    ctaTitle: "Demuestra que estás listo para ser {role}",
+    ctaText: "Crea un Pasaporte Deportivo gratis: tus logros se convierten en pruebas, comparadas con empleos reales.",
+    cta: "Crear mi Pasaporte Deportivo gratis →",
+    others: "Otras carreras:"
   },
 
   roles: {
