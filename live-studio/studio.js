@@ -392,7 +392,7 @@ function lsMomentText(m, mo) {
   const hooks = lsArr(hookKey);
   const hook = lsFill(hooks[(mo.variant || 0) % hooks.length], vars);
   const caption = `${lsFill(lsArr(capKey)[0], vars)}\n\n${lsHashtags(m)}\n${t("lsCredit")}`;
-  return { hook, caption, goals };
+  return { hook, caption, goals, vars };
 }
 
 // The story of the result, only from what the feed shows: draw, comeback, late winner, big win or win.
@@ -1163,13 +1163,15 @@ function lsRecord(m, opts) {
     const share = (file) => {
       if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file] }).catch(() => {});
     };
+    // Previews are free; saving or sharing uses one of today's posts.
     const imgLink = el("a", "secondary ls-dl", t("lsSave"));
     imgLink.href = img.src;
     imgLink.download = `${name}.png`;
+    imgLink.addEventListener("click", lsUsePost);
     actions.append(imgLink);
     if (!lsVideoType()) {
       wrap.append(el("p", "ls-note", t("lsNoVideo")));
-      if (navigator.canShare) actions.append(btn(t("lsShare"), "secondary", () => canvas.toBlob((b) => share(new File([b], `${name}.png`, { type: "image/png" })))));
+      if (navigator.canShare) actions.append(btn(t("lsShare"), "secondary", () => lsUsePost() && canvas.toBlob((b) => share(new File([b], `${name}.png`, { type: "image/png" })))));
       return { wrap, actions };
     }
     const badge = el("span", "ls-making", t("lsMakingVideo"));
@@ -1189,8 +1191,9 @@ function lsRecord(m, opts) {
       const vLink = el("a", "btn-gold ls-dl", t("lsSaveVideo"));
       vLink.href = url;
       vLink.download = file.name;
+      vLink.addEventListener("click", lsUsePost);
       actions.prepend(vLink);
-      if (navigator.canShare && navigator.canShare({ files: [file] })) actions.insertBefore(btn(t("lsShareVideo"), "secondary", () => share(file)), vLink.nextSibling);
+      if (navigator.canShare && navigator.canShare({ files: [file] })) actions.insertBefore(btn(t("lsShareVideo"), "secondary", () => lsUsePost() && share(file)), vLink.nextSibling);
     }).catch(() => {
       badge.textContent = t("lsNoVideo");
     });
@@ -1224,20 +1227,28 @@ function lsRecord(m, opts) {
   function renderDrop() {
     drop.innerHTML = "";
     if (!shown) return;
+    drop.append(lsMeter());
     if (shown === "ft") return renderRecap();
     const mo = match.moments.find((x) => x.id === shown);
     if (!mo) return;
     const text = lsMomentText(match, mo);
     const ai = mo.ai || {};
-    const hook = ai.hook || text.hook;
-    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : text.caption;
+    // Clutch: on screen, his line is the video's big text and leads the caption; as narrator, the video
+    // keeps the standard line and he gets a voice-over script below. An AI pick still wins.
+    const mode = lsHypeMode();
+    const hype = lsHype(mo.type, text.vars, mo.variant || 0);
+    const onScreen = mode === "screen" && hype;
+    const hook = ai.hook || (onScreen ? hype : text.hook);
+    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : onScreen ? `${hype}\n\n${text.caption}` : text.caption;
     const opts = { ...momentOpts(mo, text), hook, ticker: hook };
     if (ai.prompt && opts.prompt) opts.prompt = ai.prompt;
     const { wrap, actions } = mediaBlock(`${match.id}|${mo.id}|${style}|${currentLang}|${hook}|${opts.prompt}`, opts, `${fileBase()}-${tag(mo.clock)}-${mo.type}`);
     const body = el("div", "ls-drop-body");
     body.append(el("p", "ls-hook", hook), el("p", "ls-caption", caption));
     actions.append(copyBtn("lsCopy", caption));
-    body.append(actions, aiPanel(mo, liveFacts(mo, text), (pick) => {
+    body.append(actions);
+    if (mode === "voice") body.append(narratorBlock(lsNarration(ai.hook || hype || text.hook)));
+    body.append(aiPanel(mo, liveFacts(mo, text), (pick) => {
       mo.ai = { ...(mo.ai || {}), ...pick };
       save();
       renderDrop();
@@ -1423,17 +1434,59 @@ function lsRecord(m, opts) {
       b.dataset.style = st;
       box.append(b);
     });
+    // Clutch's mode: on-screen hype or narrator.
+    const hypeBox = document.getElementById("lsHype");
+    hypeBox.innerHTML = "";
+    [["screen", "hpScreen"], ["voice", "hpVoice"]].forEach(([mode, key]) => {
+      hypeBox.append(btn(t(key), `ls-chip ${mode === lsHypeMode() ? "active" : ""}`, () => {
+        lsSetHypeMode(mode);
+        renderStyles();
+        renderDrop();
+      }));
+    });
+    document.getElementById("lsHypeNote").hidden = !!PERSONA.lines[currentLang];
+  }
+
+  function speakBtn(script) {
+    const play = btn(t("lsPlay"), "secondary", () => {
+      if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+        play.textContent = t("lsPlay");
+        return;
+      }
+      const u = new SpeechSynthesisUtterance(script);
+      u.lang = SPEECH_LANGS[currentLang] || "en-US";
+      u.onend = () => (play.textContent = t("lsPlay"));
+      speechSynthesis.speak(u);
+      play.textContent = t("lsStop");
+    });
+    return play;
+  }
+
+  // Narrator mode: Clutch's voice-over script with a read-aloud preview. Browsers can't record that voice
+  // into the saved video, so the script is there to record yourself or paste into TikTok's text-to-speech.
+  function narratorBlock(script) {
+    const box = el("div", "ls-narrator");
+    box.append(el("p", "ls-sub", t("hpScript")), el("p", "ls-caption ls-script", script));
+    const row = el("div", "actions ls-drop-actions");
+    if ("speechSynthesis" in window) row.append(speakBtn(script));
+    row.append(copyBtn("hpCopy", script));
+    box.append(row, el("p", "ls-note", t("hpNoAudio")));
+    return box;
   }
 
   function renderRecap() {
     const r = lsRecap(match);
     const rows = r.key.map((mo) => `${mo.clock} ${t(`m_${mo.type}`)} · ${mo.player || teamOf(mo)}`);
     const ai = match.ftAi || {};
-    const hook = ai.hook || r.hook;
-    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : r.caption;
+    const mode = lsHypeMode();
+    const hype = lsHype(`ft_${r.story}`, { winner: match.hs > match.as ? match.home : match.away, line: lsLine(match, match.hs, match.as) });
+    const onScreen = mode === "screen" && hype;
+    const hook = ai.hook || (onScreen ? hype : r.hook);
+    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : onScreen ? `${hype}\n\n${r.caption}` : r.caption;
     const opts = {
       theme: style, credit: t("lsCredit"), ...colorsFor(match.hs >= match.as ? "h" : "a"), ticker: hook,
-      status: t("lsFT"), clock: "FT", emoji: LS_EMOJI.ft, headline: t(`r_story_${r.story}`).toUpperCase(),
+      status: t("lsFT"), clock: "FT", headline: t(`r_story_${r.story}`).toUpperCase(),
       team: "", hs: match.hs, as: match.as, hook, list: rows.length ? rows : null, prompt: rows.length ? "" : (ai.prompt || t("r_question")), final: true, hot: true
     };
     const { wrap, actions } = mediaBlock(`${match.id}|ft|${match.moments.length}|${style}|${currentLang}|${hook}`, opts, `${fileBase()}-full-time`);
@@ -1444,22 +1497,10 @@ function lsRecord(m, opts) {
     body.append(el("p", "ls-sub", t("lsThread")), el("p", "ls-caption ls-thread", r.thread));
     const more = el("div", "actions ls-drop-actions");
     more.append(copyBtn("lsCopyThread", r.thread));
-    if ("speechSynthesis" in window) {
-      const play = btn(t("lsPlay"), "secondary", () => {
-        if (speechSynthesis.speaking) {
-          speechSynthesis.cancel();
-          play.textContent = t("lsPlay");
-          return;
-        }
-        const u = new SpeechSynthesisUtterance(r.voice);
-        u.lang = SPEECH_LANGS[currentLang] || "en-US";
-        u.onend = () => (play.textContent = t("lsPlay"));
-        speechSynthesis.speak(u);
-        play.textContent = t("lsStop");
-      });
-      more.append(play);
-    }
-    body.append(more, aiPanel(null, {
+    if (mode !== "voice" && "speechSynthesis" in window) more.append(speakBtn(r.voice));
+    body.append(more);
+    if (mode === "voice") body.append(narratorBlock(lsNarration(hype ? r.voice.replace(r.hook, hype) : r.voice)));
+    body.append(aiPanel(null, {
       ...gameFacts(), type: "full-time recap", story: t(`r_story_${r.story}`),
       events: rows.join("; ") || "none reported", take: match.moments.filter((mo) => mo.type === "take").map((mo) => mo.note).join("; ")
     }, (pick) => {

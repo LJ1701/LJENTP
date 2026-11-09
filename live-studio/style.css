@@ -1681,3 +1681,22 @@ body.app-arrive .wrap { animation: appArrive 0.9s ease-out both; }
   background: radial-gradient(closest-side, rgba(3, 4, 5, 0.82), rgba(3, 4, 5, 0.55) 60%, transparent 100%); }
 .ent-score { max-width: 44vw; overflow: hidden; text-overflow: ellipsis; }
 .ent-score-line { overflow: hidden; text-overflow: ellipsis; }
+
+/* Daily posts meter and plans */
+.ls-meter { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border); background: rgba(233, 199, 123, 0.06); font-size: 14px; color: var(--text); }
+.ls-meter.out { border-color: rgba(240, 163, 107, 0.5); background: rgba(240, 163, 107, 0.08); }
+.ls-plans { width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow: auto; padding: 22px; border-radius: 18px; border: 1px solid var(--border); background: var(--card); color: var(--text); }
+.ls-plans::backdrop { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); }
+.ls-plans h3 { margin: 0 0 6px; font-family: "Space Grotesk", Inter, sans-serif; font-size: 24px; }
+.ls-plans-sub { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 14px; }
+.ls-plan-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+.ls-plan { display: grid; gap: 4px; align-content: start; padding: 14px; border-radius: 14px; border: 1px solid var(--border-soft); background: rgba(255, 255, 255, 0.03); }
+.ls-plan.current { border-color: rgba(233, 199, 123, 0.6); }
+.ls-plan p { margin: 0; }
+.ls-plan-name { font-weight: 700; }
+.ls-plan-price { font-family: "Space Grotesk", Inter, sans-serif; font-size: 19px; overflow-wrap: anywhere; font-weight: 700; color: var(--accent-light); }
+.ls-plan-desc { font-size: 13px; color: #c9cbd1; }
+.ls-plan-tag { justify-self: start; margin-top: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.ls-plan.current .ls-plan-tag { color: var(--accent-light); }
+.ls-owner form { display: grid; gap: 6px; }
+.ls-owner input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: #0b0c10; color: var(--text); font: 16px Inter, sans-serif; }
