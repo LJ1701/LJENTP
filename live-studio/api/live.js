@@ -86,12 +86,22 @@ function normalize(sport, league, leagueName, e) {
   };
 }
 
+// The last good answer for each request while this instance is warm. If ESPN blips, viewers keep the
+// latest scores (marked stale) instead of an error.
+const lastGood = new Map();
+
 module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   const url = new URL(req.url, "http://localhost");
   const sport = url.searchParams.get("sport") || "soccer";
   const league = url.searchParams.get("league");
   const id = url.searchParams.get("id");
+  const key = `${sport}|${league || ""}|${id || ""}`;
+  const send = (body, cache) => {
+    lastGood.set(key, body);
+    res.setHeader("Cache-Control", cache);
+    return res.end(JSON.stringify(body));
+  };
   const leagues = LEAGUES[sport];
   if (!leagues) {
     res.statusCode = 400;
@@ -111,8 +121,7 @@ module.exports = async (req, res) => {
         res.statusCode = 404;
         return res.end(JSON.stringify({ error: "Game not found in today's feed." }));
       }
-      res.setHeader("Cache-Control", "s-maxage=10, stale-while-revalidate=10");
-      return res.end(JSON.stringify({ game: normalize(sport, league, meta[1], e), source: "ESPN" }));
+      return send({ game: normalize(sport, league, meta[1], e), source: "ESPN" }, "s-maxage=10, stale-while-revalidate=10");
     }
 
     const lists = await Promise.allSettled(leagues.map(([key]) => scoreboard(sport, key)));
@@ -125,9 +134,12 @@ module.exports = async (req, res) => {
       .sort((a, b) => order[a.state] - order[b.state] || String(a.start).localeCompare(String(b.start)))
       .slice(0, 120)
       .map(({ events, ...g }) => ({ ...g, events: events.length }));
-    res.setHeader("Cache-Control", "s-maxage=20, stale-while-revalidate=20");
-    return res.end(JSON.stringify({ games, source: "ESPN" }));
+    return send({ games, source: "ESPN" }, "s-maxage=20, stale-while-revalidate=20");
   } catch {
+    if (lastGood.has(key)) {
+      res.setHeader("Cache-Control", "s-maxage=5");
+      return res.end(JSON.stringify({ ...lastGood.get(key), stale: true }));
+    }
     res.statusCode = 502;
     return res.end(JSON.stringify({ error: "The live score feed isn't responding. Try again in a minute." }));
   }
