@@ -182,7 +182,15 @@ function sceneScore(t) {
   ctx.restore();
   text(g.away.name.toUpperCase(), W / 2, y + 210, 88);
   ctx.restore();
-  text("Real game. Real score.", W / 2, 1520, 56, { family: BODY, weight: 700, color: "#c9cbd1", alpha: prog(t, 1.2, 1.7) });
+  // Clutch points up at the real score.
+  if (typeof clutchBand === "function") {
+    ctx.save();
+    ctx.translate(W / 2, 1500);
+    clutchBand(ctx, { act: "pointup", say: "Real game. Real score." }, t, W - 120);
+    ctx.restore();
+  } else {
+    text("Real game. Real score.", W / 2, 1520, 56, { family: BODY, weight: 700, color: "#c9cbd1", alpha: prog(t, 1.2, 1.7) });
+  }
 }
 
 function postCard(x, y, w, h, theme, g, t) {

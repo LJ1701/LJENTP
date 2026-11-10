@@ -642,12 +642,14 @@ function lsDraw(ctx, m, opts, p) {
     hookFit = lsFitLines(ctx, opts.hook, textW - 40, 58, 800, display, 3, 34);
     blocks.push({ key: "hook", h: hookFit.lines.length * (hookFit.size * 1.25) + 16 });
   }
-  if (opts.emoji) blocks.push({ key: "emoji", h: 200 });
+  // Clutch replaces the emoji when he's on: he acts the moment out instead.
+  if (opts.emoji && !opts.clutch) blocks.push({ key: "emoji", h: 200 });
   ctx.font = `900 210px ${display}`;
   const headline = lsFitText(ctx, opts.headline || "", textW, 210, 900, display, 70);
   const headSize = parseInt(ctx.font.match(/(\d+)px/)[1], 10);
   blocks.push({ key: "headline", h: headSize * 1.05, size: headSize, text: headline });
   if (opts.team) blocks.push({ key: "team", h: 96 });
+  if (opts.clutch) blocks.push({ key: "clutch", h: 430 });
   if (kind === "matchday") blocks.push({ key: "matchday", h: 3 * 130 });
   else if (kind === "poll") blocks.push({ key: "poll", h: (opts.options || []).length * 150 });
   else if (kind === "spotlight") blocks.push({ key: "spot", h: 220 });
@@ -726,6 +728,12 @@ function lsDraw(ctx, m, opts, p) {
     ctx.fillStyle = th.text;
     const text = lsFitText(ctx, opts.team.toUpperCase(), textW, 76, 700, display, 34);
     ctx.fillText(text, 0, (1 - sub) * 40);
+  });
+
+  block("clutch", () => {
+    clutchBand(ctx, { ...opts.clutch, light: !!th.light }, p, W - 120);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
   });
 
   const rise = still ? 1 : lsEase(lsSpan(p, 1.3, 0.55));
@@ -1233,16 +1241,16 @@ function lsRecord(m, opts) {
     if (!mo) return;
     const text = lsMomentText(match, mo);
     const ai = mo.ai || {};
-    // Clutch: on screen, his line is the video's big text and leads the caption; as narrator, the video
-    // keeps the standard line and he gets a voice-over script below. An AI pick still wins.
+    // Clutch acts the moment out in the video. Speech bubble: his line is in the bubble and leads the caption.
+    // Narrator: he talks, and his voice-over script sits under the post. Off: no Clutch. An AI pick still wins.
     const mode = lsHypeMode();
-    const hype = lsHype(mo.type, text.vars, mo.variant || 0);
-    const onScreen = mode === "screen" && hype;
-    const hook = ai.hook || (onScreen ? hype : text.hook);
-    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : onScreen ? `${hype}\n\n${text.caption}` : text.caption;
+    const hype = mode === "off" ? null : lsHype(mo.type, text.vars, mo.variant || 0);
+    const hook = ai.hook || text.hook;
+    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : mode === "screen" && hype ? `${hype}\n\n${text.caption}` : text.caption;
     const opts = { ...momentOpts(mo, text), hook, ticker: hook };
     if (ai.prompt && opts.prompt) opts.prompt = ai.prompt;
-    const { wrap, actions } = mediaBlock(`${match.id}|${mo.id}|${style}|${currentLang}|${hook}|${opts.prompt}`, opts, `${fileBase()}-${tag(mo.clock)}-${mo.type}`);
+    opts.clutch = clutchLook(mo.type, mode, hype, opts);
+    const { wrap, actions } = mediaBlock(`${match.id}|${mo.id}|${style}|${currentLang}|${hook}|${opts.prompt}|${mode}`, opts, `${fileBase()}-${tag(mo.clock)}-${mo.type}`);
     const body = el("div", "ls-drop-body");
     body.append(el("p", "ls-hook", hook), el("p", "ls-caption", caption));
     actions.append(copyBtn("lsCopy", caption));
@@ -1434,17 +1442,17 @@ function lsRecord(m, opts) {
       b.dataset.style = st;
       box.append(b);
     });
-    // Clutch's mode: on-screen hype or narrator.
+    // Clutch: off, speech bubble (non-narrator) or narrator.
     const hypeBox = document.getElementById("lsHype");
     hypeBox.innerHTML = "";
-    [["screen", "hpScreen"], ["voice", "hpVoice"]].forEach(([mode, key]) => {
+    [["off", "hpOff"], ["screen", "hpScreen"], ["voice", "hpVoice"]].forEach(([mode, key]) => {
       hypeBox.append(btn(t(key), `ls-chip ${mode === lsHypeMode() ? "active" : ""}`, () => {
         lsSetHypeMode(mode);
         renderStyles();
         renderDrop();
       }));
     });
-    document.getElementById("lsHypeNote").hidden = !!PERSONA.lines[currentLang];
+    document.getElementById("lsHypeNote").hidden = !!PERSONA.lines[currentLang] || lsHypeMode() === "off";
   }
 
   function speakBtn(script) {
@@ -1475,21 +1483,27 @@ function lsRecord(m, opts) {
     return box;
   }
 
+  // What Clutch does in the video, or null when he's off.
+  function clutchLook(kind, mode, hype, opts) {
+    if (mode === "off") return null;
+    return { act: clutchAct(kind), say: mode === "screen" ? hype : null, narrate: mode === "voice", color: opts.color, alt: opts.alt };
+  }
+
   function renderRecap() {
     const r = lsRecap(match);
     const rows = r.key.map((mo) => `${mo.clock} ${t(`m_${mo.type}`)} · ${mo.player || teamOf(mo)}`);
     const ai = match.ftAi || {};
     const mode = lsHypeMode();
     const hype = lsHype(`ft_${r.story}`, { winner: match.hs > match.as ? match.home : match.away, line: lsLine(match, match.hs, match.as) });
-    const onScreen = mode === "screen" && hype;
-    const hook = ai.hook || (onScreen ? hype : r.hook);
-    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : onScreen ? `${hype}\n\n${r.caption}` : r.caption;
+    const hook = ai.hook || r.hook;
+    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : mode === "screen" && hype ? `${hype}\n\n${r.caption}` : r.caption;
     const opts = {
       theme: style, credit: t("lsCredit"), ...colorsFor(match.hs >= match.as ? "h" : "a"), ticker: hook,
       status: t("lsFT"), clock: "FT", headline: t(`r_story_${r.story}`).toUpperCase(),
       team: "", hs: match.hs, as: match.as, hook, list: rows.length ? rows : null, prompt: rows.length ? "" : (ai.prompt || t("r_question")), final: true, hot: true
     };
-    const { wrap, actions } = mediaBlock(`${match.id}|ft|${match.moments.length}|${style}|${currentLang}|${hook}`, opts, `${fileBase()}-full-time`);
+    opts.clutch = clutchLook(`ft_${r.story}`, mode, mode === "off" ? null : hype, opts);
+    const { wrap, actions } = mediaBlock(`${match.id}|ft|${match.moments.length}|${style}|${currentLang}|${hook}|${mode}`, opts, `${fileBase()}-full-time`);
     const body = el("div", "ls-drop-body");
     body.append(el("p", "ls-hook", hook), el("p", "ls-caption", caption));
     actions.append(copyBtn("lsCopy", caption));

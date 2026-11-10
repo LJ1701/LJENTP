@@ -1,8 +1,8 @@
 // Daily posts: live scores, previews and the videos on screen are always free. Saving or sharing a post
 // uses one of the day's posts; Free gives 3 a day. Paid plans sell more posts per day instead of a flat
 // premium price, and are shown as "coming soon" until accounts and payments exist. The count is kept on
-// this device and resets at local midnight. The owner unlocks unlimited posts on a device by opening
-// the app with #owner and entering the owner code, which /api/owner checks on the server.
+// this device and resets at local midnight. People the owner gives a code to (at most 15) unlock
+// unlimited posts by opening the app with #owner and entering it; /api/owner checks it on the server.
 
 const LS_USAGE_KEY = "ljlive_usage";
 const LS_OWNER_KEY = "ljlive_owner";
@@ -24,8 +24,8 @@ const LS_PLANS = [
       lsPlanCreator: "Creator", lsPlanCreatorD: "15 posts every day", lsPlanPro: "Pro", lsPlanProD: "50 posts every day",
       lsPriceFree: "$0", lsPriceDay: "$0.99 once", lsPriceCreator: "$2.99/month", lsPricePro: "$6.99/month",
       lsSoon: "Coming soon", lsCurrent: "Your plan", lsClose: "Close", lsResets: "Free posts reset at midnight.", lsPromo: "Watch the promo",
-      lsOwner: "Owner · unlimited posts on this device", lsOwnerTitle: "Owner access", lsOwnerCode: "Owner code", lsOwnerGo: "Unlock",
-      lsOwnerBad: "That code isn't right.", lsOwnerNotSet: "Owner access isn't set up on the server yet.", lsOwnerErr: "Couldn't check the code. Try again."
+      lsOwner: "Unlimited · {name}", lsOwnerTitle: "Unlimited access", lsOwnerCode: "Access code", lsOwnerGo: "Unlock",
+      lsOwnerBad: "That code isn't right.", lsOwnerNotSet: "Unlimited access isn't set up on the server yet.", lsOwnerErr: "Couldn't check the code. Try again."
     },
     es: {
       lsMeter: "{n} de {total} publicaciones gratis disponibles hoy", lsMeterOut: "Ya usaste las publicaciones gratis de hoy. Los marcadores en vivo y las vistas previas siguen siendo gratis.",
@@ -35,8 +35,8 @@ const LS_PLANS = [
       lsPlanCreator: "Creador", lsPlanCreatorD: "15 publicaciones cada día", lsPlanPro: "Pro", lsPlanProD: "50 publicaciones cada día",
       lsPriceFree: "$0", lsPriceDay: "$0.99 una vez", lsPriceCreator: "$2.99/mes", lsPricePro: "$6.99/mes",
       lsSoon: "Próximamente", lsCurrent: "Tu plan", lsClose: "Cerrar", lsResets: "Las publicaciones gratis se renuevan a medianoche.", lsPromo: "Ver el anuncio",
-      lsOwner: "Dueño · publicaciones ilimitadas en este dispositivo", lsOwnerTitle: "Acceso de dueño", lsOwnerCode: "Código de dueño", lsOwnerGo: "Desbloquear",
-      lsOwnerBad: "Ese código no es correcto.", lsOwnerNotSet: "El acceso de dueño aún no está configurado en el servidor.", lsOwnerErr: "No se pudo comprobar el código. Inténtalo de nuevo."
+      lsOwner: "Ilimitado · {name}", lsOwnerTitle: "Acceso ilimitado", lsOwnerCode: "Código de acceso", lsOwnerGo: "Desbloquear",
+      lsOwnerBad: "Ese código no es correcto.", lsOwnerNotSet: "El acceso ilimitado aún no está configurado en el servidor.", lsOwnerErr: "No se pudo comprobar el código. Inténtalo de nuevo."
     },
     zh: {
       lsMeter: "今天还剩 {n}/{total} 次免费发布", lsMeterOut: "今天的免费发布次数已用完。实时比分和预览仍然免费。",
@@ -118,6 +118,8 @@ const LS_PLANS = [
     originalRegister(code, pack);
     if (I18N_USAGE[code]) Object.assign(I18N[code], I18N_USAGE[code]);
   };
+  // core.js labels the footer before these strings exist; label the promo link again now.
+  document.querySelectorAll('.app-chrome [data-i18n="lsPromo"]').forEach((n) => (n.textContent = t("lsPromo")));
 })();
 
 function lsDay() {
@@ -135,13 +137,48 @@ function lsUsage() {
   return { day: lsDay(), used: 0 };
 }
 
+// Unlimited access: { code, name } saved on this device after the server accepted the code.
+let lsAccess = null;
+try {
+  const saved = JSON.parse(localStorage.getItem(LS_OWNER_KEY) || "null");
+  if (saved && saved.code) lsAccess = saved;
+} catch {
+  // old "1" flag or storage blocked: no access until a code is entered
+}
+
 function lsIsOwner() {
+  return !!lsAccess;
+}
+
+function lsSetAccess(access) {
+  lsAccess = access;
   try {
-    return localStorage.getItem(LS_OWNER_KEY) === "1";
+    if (access) localStorage.setItem(LS_OWNER_KEY, JSON.stringify(access));
+    else localStorage.removeItem(LS_OWNER_KEY);
   } catch {
-    return false;
+    // storage unavailable; access lasts until the page closes
+  }
+  lsRefreshMeters();
+}
+
+// Re-check the saved code each time the app opens. If the owner removed this person, access ends here.
+// If the check can't run (offline), keep the current state.
+async function lsCheckAccess() {
+  if (!lsAccess) return;
+  try {
+    const res = await fetch("/api/owner", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: lsAccess.code }) });
+    if (res.status === 401 || res.status === 503) {
+      lsSetAccess(null);
+      document.querySelectorAll(".ls-meter").forEach((n) => n.replaceWith(lsMeter()));
+      return;
+    }
+    const body = await res.json().catch(() => ({}));
+    if (body.owner && body.name !== lsAccess.name) lsSetAccess({ code: lsAccess.code, name: body.name });
+  } catch {
+    // offline: keep access for now
   }
 }
+lsCheckAccess();
 
 function lsPostsLeft() {
   if (lsIsOwner()) return Infinity;
@@ -149,7 +186,7 @@ function lsPostsLeft() {
 }
 
 function lsMeterText() {
-  if (lsIsOwner()) return t("lsOwner");
+  if (lsIsOwner()) return tf("lsOwner", { name: lsAccess.name || "" });
   const left = lsPostsLeft();
   return left ? tf("lsMeter", { n: left, total: LS_FREE_POSTS }) : t("lsMeterOut");
 }
@@ -192,7 +229,7 @@ function lsMeter() {
   return p;
 }
 
-// Opening the app with #owner asks for the owner code; a match turns on unlimited posts for this device.
+// Opening the app with #owner asks for an access code; a match turns on unlimited posts for this device.
 function lsOpenOwner() {
   const dialog = document.createElement("dialog");
   dialog.className = "ls-plans ls-owner";
@@ -219,14 +256,9 @@ function lsOpenOwner() {
       const res = await fetch("/api/owner", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: input.value }) });
       const body = await res.json().catch(() => ({}));
       if (body.owner) {
-        try {
-          localStorage.setItem(LS_OWNER_KEY, "1");
-        } catch {
-          // storage unavailable; owner mode lasts until the page closes
-        }
-        lsRefreshMeters();
+        lsSetAccess({ code: input.value, name: body.name || "" });
         document.querySelectorAll(".ls-meter .link-btn").forEach((b) => b.remove());
-        msg.textContent = t("lsOwner");
+        msg.textContent = lsMeterText();
         setTimeout(() => dialog.close(), 900);
       } else {
         msg.textContent = t(body.error === "not_set" ? "lsOwnerNotSet" : "lsOwnerBad");
