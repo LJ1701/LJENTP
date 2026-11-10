@@ -1241,21 +1241,20 @@ function lsRecord(m, opts) {
     if (!mo) return;
     const text = lsMomentText(match, mo);
     const ai = mo.ai || {};
-    // Clutch acts the moment out in the video. Speech bubble: his line is in the bubble and leads the caption.
-    // Narrator: he talks, and his voice-over script sits under the post. Off: no Clutch. An AI pick still wins.
-    const mode = lsHypeMode();
-    const hype = mode === "off" ? null : lsHype(mo.type, text.vars, mo.variant || 0);
+    // Clutch acts the moment out in every video, in the post's style. His line leads the caption and his
+    // voice-over script sits under the post. An AI pick still wins.
+    const hype = lsHype(mo.type, text.vars, mo.variant || 0);
     const hook = ai.hook || text.hook;
-    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : mode === "screen" && hype ? `${hype}\n\n${text.caption}` : text.caption;
+    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : hype ? `${hype}\n\n${text.caption}` : text.caption;
     const opts = { ...momentOpts(mo, text), hook, ticker: hook };
     if (ai.prompt && opts.prompt) opts.prompt = ai.prompt;
-    opts.clutch = clutchLook(mo.type, mode, hype, opts);
-    const { wrap, actions } = mediaBlock(`${match.id}|${mo.id}|${style}|${currentLang}|${hook}|${opts.prompt}|${mode}`, opts, `${fileBase()}-${tag(mo.clock)}-${mo.type}`);
+    opts.clutch = clutchLook(mo.type, opts);
+    const { wrap, actions } = mediaBlock(`${match.id}|${mo.id}|${style}|${currentLang}|${hook}|${opts.prompt}`, opts, `${fileBase()}-${tag(mo.clock)}-${mo.type}`);
     const body = el("div", "ls-drop-body");
     body.append(el("p", "ls-hook", hook), el("p", "ls-caption", caption));
     actions.append(copyBtn("lsCopy", caption));
     body.append(actions);
-    if (mode === "voice") body.append(narratorBlock(lsNarration(ai.hook || hype || text.hook)));
+    body.append(narratorBlock(lsNarration(ai.hook || hype || text.hook)));
     body.append(aiPanel(mo, liveFacts(mo, text), (pick) => {
       mo.ai = { ...(mo.ai || {}), ...pick };
       save();
@@ -1442,17 +1441,8 @@ function lsRecord(m, opts) {
       b.dataset.style = st;
       box.append(b);
     });
-    // Clutch: off, speech bubble (non-narrator) or narrator.
-    const hypeBox = document.getElementById("lsHype");
-    hypeBox.innerHTML = "";
-    [["off", "hpOff"], ["screen", "hpScreen"], ["voice", "hpVoice"]].forEach(([mode, key]) => {
-      hypeBox.append(btn(t(key), `ls-chip ${mode === lsHypeMode() ? "active" : ""}`, () => {
-        lsSetHypeMode(mode);
-        renderStyles();
-        renderDrop();
-      }));
-    });
-    document.getElementById("lsHypeNote").hidden = !!PERSONA.lines[currentLang] || lsHypeMode() === "off";
+    // Clutch has no setting of his own: the style above decides how he celebrates.
+    document.getElementById("lsHypeNote").hidden = !!PERSONA.lines[currentLang];
   }
 
   function speakBtn(script) {
@@ -1483,27 +1473,25 @@ function lsRecord(m, opts) {
     return box;
   }
 
-  // What Clutch does in the video, or null when he's off.
-  function clutchLook(kind, mode, hype, opts) {
-    if (mode === "off") return null;
-    return { act: clutchAct(kind), say: mode === "screen" ? hype : null, narrate: mode === "voice", color: opts.color, alt: opts.alt };
+  // What Clutch does in the video: the moment's reaction, played in the post's style.
+  function clutchLook(kind, opts) {
+    return { act: clutchAct(kind), style, color: opts.color, alt: opts.alt };
   }
 
   function renderRecap() {
     const r = lsRecap(match);
     const rows = r.key.map((mo) => `${mo.clock} ${t(`m_${mo.type}`)} · ${mo.player || teamOf(mo)}`);
     const ai = match.ftAi || {};
-    const mode = lsHypeMode();
     const hype = lsHype(`ft_${r.story}`, { winner: match.hs > match.as ? match.home : match.away, line: lsLine(match, match.hs, match.as) });
     const hook = ai.hook || r.hook;
-    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : mode === "screen" && hype ? `${hype}\n\n${r.caption}` : r.caption;
+    const caption = ai.caption ? `${ai.caption}\n${t("lsCredit")}` : hype ? `${hype}\n\n${r.caption}` : r.caption;
     const opts = {
       theme: style, credit: t("lsCredit"), ...colorsFor(match.hs >= match.as ? "h" : "a"), ticker: hook,
       status: t("lsFT"), clock: "FT", headline: t(`r_story_${r.story}`).toUpperCase(),
       team: "", hs: match.hs, as: match.as, hook, list: rows.length ? rows : null, prompt: rows.length ? "" : (ai.prompt || t("r_question")), final: true, hot: true
     };
-    opts.clutch = clutchLook(`ft_${r.story}`, mode, mode === "off" ? null : hype, opts);
-    const { wrap, actions } = mediaBlock(`${match.id}|ft|${match.moments.length}|${style}|${currentLang}|${hook}|${mode}`, opts, `${fileBase()}-full-time`);
+    opts.clutch = clutchLook(`ft_${r.story}`, opts);
+    const { wrap, actions } = mediaBlock(`${match.id}|ft|${match.moments.length}|${style}|${currentLang}|${hook}`, opts, `${fileBase()}-full-time`);
     const body = el("div", "ls-drop-body");
     body.append(el("p", "ls-hook", hook), el("p", "ls-caption", caption));
     actions.append(copyBtn("lsCopy", caption));
@@ -1511,9 +1499,8 @@ function lsRecord(m, opts) {
     body.append(el("p", "ls-sub", t("lsThread")), el("p", "ls-caption ls-thread", r.thread));
     const more = el("div", "actions ls-drop-actions");
     more.append(copyBtn("lsCopyThread", r.thread));
-    if (mode !== "voice" && "speechSynthesis" in window) more.append(speakBtn(r.voice));
     body.append(more);
-    if (mode === "voice") body.append(narratorBlock(lsNarration(hype ? r.voice.replace(r.hook, hype) : r.voice)));
+    body.append(narratorBlock(lsNarration(hype ? r.voice.replace(r.hook, hype) : r.voice)));
     body.append(aiPanel(null, {
       ...gameFacts(), type: "full-time recap", story: t(`r_story_${r.story}`),
       events: rows.join("; ") || "none reported", take: match.moments.filter((mo) => mo.type === "take").map((mo) => mo.note).join("; ")

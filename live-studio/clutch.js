@@ -3,10 +3,14 @@
 // up, a dance at full time. Used by studio.js (posts) and promo.js (the ad). Self-contained on purpose.
 //
 // drawClutch(ctx, look, t)      the character, hips at (0, 0), about 400 px tall (head top ≈ -280, feet ≈ 110)
-// clutchBand(ctx, look, t, w)   character + speech bubble (or narrator mic) laid out in a band w wide, centred
+// clutchBand(ctx, look, t, w)   character with his style's scenery in a band w wide, centred (bubble only if look.say)
 // clutchAct(kind)               which reaction a moment type gets
 //
-// look = { act, color, alt, say, narrate, light } · t = seconds since the clip started (Infinity = still)
+// look = { act, style, color, alt, say, light } · t = seconds since the clip started (Infinity = still)
+//
+// The post's Style sets how big he goes. Hype is over the top (backflip and fireworks, rocket boots,
+// a giant red card, a slow-motion collapse). Breaking, Clean and Team colours are cooler and more
+// cinematic: a news anchor at a desk, a smooth groove under spotlights, a caped hero with a team flag.
 
 const CLUTCH_ACTS = {
   goal: "celebrate", pen: "icecold", og: "facepalm", red: "redcard",
@@ -17,6 +21,19 @@ const CLUTCH_ACTS = {
 
 function clutchAct(kind) {
   return CLUTCH_ACTS[kind] || "point";
+}
+
+// The reaction for a style: Hype goes extraordinary, the other styles go vibe and epic.
+const CLUTCH_STYLE_ACTS = {
+  hype: { celebrate: "backflip", dance: "rocket", comeback: "rocket", redcard: "bigcard", facepalm: "collapse" },
+  breaking: { celebrate: "deskslam", dance: "deskslam", comeback: "deskslam", shrug: "point", camera: "point" },
+  clean: { celebrate: "groove", dance: "groove", comeback: "groove" },
+  team: { celebrate: "hero", dance: "hero", comeback: "hero", point: "hero" }
+};
+
+function clutchStyleAct(style, act) {
+  const map = CLUTCH_STYLE_ACTS[style] || CLUTCH_STYLE_ACTS.hype;
+  return map[act] || act;
 }
 
 const CL = {
@@ -45,7 +62,8 @@ function clutchPose(act, t) {
   const pose = {
     x: 0, y: 0, lean: 0, headTilt: 0, headY: 0, shrug: 0,
     lh: [-78, -18], rh: [78, -18], lf: [-34, 108], rf: [34, 108],
-    mouth: 0, smile: 1, brow: 0, lids: 0, wink: false, prop: null, confetti: false, flash: 0
+    mouth: 0, smile: 1, brow: 0, lids: 0, wink: false, prop: null, confetti: false, flash: 0,
+    spin: 0, flames: 0, shake: 0, fireworks: false, flag: false, slam: 0
   };
   const bounce = (speed, amp) => -Math.abs(Math.sin(t * speed)) * amp;
   if (act === "celebrate") {
@@ -167,6 +185,117 @@ function clutchPose(act, t) {
     pose.wink = t > 1.2 && (t % 2.4) < 1.6;
     pose.mouth = 0.25;
     pose.lean = -0.04;
+  } else if (act === "backflip") {
+    // HYPE goal: crouch, a full backflip, fireworks, then fist pumps.
+    if (t < 0.5) {
+      pose.y = 34;
+      pose.lh = [-60, 20];
+      pose.rh = [60, 20];
+      pose.lf = [-60, 80];
+      pose.rf = [60, 80];
+      pose.mouth = 0.3;
+    } else if (t < 1.35) {
+      const k = CL.span(t, 0.5, 0.85);
+      pose.y = -230 * Math.sin(Math.PI * k);
+      pose.spin = -Math.PI * 2 * CL.ease(k);
+      pose.lh = [-40, -60];
+      pose.rh = [40, -60];
+      pose.lf = [-30, 60];
+      pose.rf = [30, 60];
+      pose.mouth = 0.8;
+    } else {
+      const q = clutchPose("celebrate", t);
+      q.confetti = true;
+      q.fireworks = true;
+      q.flash = Math.max(0, 1 - CL.span(t, 1.35, 0.5));
+      q.shake = Math.max(0, 1 - CL.span(t, 1.35, 0.6));
+      return q;
+    }
+    pose.fireworks = t > 0.9;
+  } else if (act === "rocket") {
+    // HYPE full time: rocket boots, hovering with arms up, gold confetti, screen shake.
+    const lift = CL.ease(CL.span(t, 0.4, 1.2));
+    pose.y = -150 * lift + Math.sin(t * 5) * 10 * lift;
+    pose.lh = [-140, -300];
+    pose.rh = [140, -300];
+    pose.lf = [-30, 100];
+    pose.rf = [30, 100];
+    pose.flames = lift;
+    pose.shake = t > 0.4 && t < 1.6 ? 0.6 : 0.15;
+    pose.mouth = 0.8;
+    pose.brow = 1;
+    pose.confetti = t > 0.8;
+    pose.fireworks = t > 1.2;
+  } else if (act === "bigcard") {
+    // HYPE red card: a giant card slams in.
+    const q = clutchPose("redcard", t);
+    const slam = CL.span(t, 0.5, 0.3);
+    q.prop = { kind: "card", show: 1, scale: slam < 1 ? 3.6 - 1.4 * CL.ease(slam) : 2.2 };
+    q.shake = slam >= 1 ? Math.max(0, 1 - CL.span(t, 0.8, 0.5)) : 0;
+    q.flash = q.shake * 0.7;
+    return q;
+  } else if (act === "collapse") {
+    // HYPE own goal: a dramatic slow-motion collapse to his knees.
+    const k = CL.ease(CL.span(t, 0.5, 2.2));
+    pose.y = 50 * k;
+    pose.lean = 0.3 * k;
+    pose.headTilt = 0.35 * k;
+    pose.headY = 14 * k;
+    pose.lh = [-90 + k * 20, -18 + k * 70];
+    pose.rh = [90 - k * 20, -18 + k * 70];
+    pose.lf = [-34 - k * 50, 108 - k * 40];
+    pose.rf = [34 + k * 50, 108 - k * 40];
+    pose.smile = -1;
+    pose.brow = -1;
+    pose.lids = 0.6 * k;
+    pose.mouth = t > 0.6 && t < 2.4 ? 0.5 : 0;
+  } else if (act === "deskslam") {
+    // BREAKING: a news anchor. Calm at the desk, slams it, then points at the camera.
+    if (t < 1.1) {
+      pose.lh = [-90, -6];
+      pose.rh = [90, -6];
+      pose.mouth = 0.3;
+      pose.smile = 0.5;
+    } else if (t < 1.6) {
+      const k = CL.span(t, 1.1, 0.5);
+      const up = Math.sin(Math.PI * Math.min(1, k * 1.4));
+      pose.lh = [-90, -6 - up * 120];
+      pose.rh = [90, -6 - up * 120];
+      pose.brow = -1;
+      pose.mouth = 0.7;
+      pose.slam = k > 0.7 ? 1 : 0;
+      pose.shake = k > 0.7 ? 1 : 0;
+    } else {
+      pose.lh = [-90, -6];
+      pose.rh = [96, -150];
+      pose.prop = { kind: "you", k: CL.back(CL.span(t, 1.6, 0.4)) };
+      pose.mouth = 0.4;
+      pose.brow = 1;
+      pose.shake = Math.max(0, 0.6 - CL.span(t, 1.6, 0.6));
+    }
+  } else if (act === "groove") {
+    // CLEAN: a smooth groove, slow side steps and a confident nod.
+    const s = Math.sin(t * 2.6);
+    pose.x = s * 34;
+    pose.y = -Math.abs(Math.sin(t * 2.6)) * 10;
+    pose.lean = s * 0.06;
+    pose.lh = [-96 + s * 30, -70 + Math.cos(t * 2.6) * 20];
+    pose.rh = [96 + s * 30, -70 - Math.cos(t * 2.6) * 20];
+    pose.lf = [-38 + s * 14, 108];
+    pose.rf = [38 + s * 14, 108];
+    pose.headY = Math.max(0, Math.sin(t * 5.2)) * 6;
+    pose.lids = 0.3;
+    pose.smile = 0.9;
+  } else if (act === "hero") {
+    // TEAM COLOURS: a caped hero pose with the team flag, slow push-in.
+    pose.lh = [-62, -46];
+    pose.rh = [118, -236];
+    pose.lean = -0.04;
+    pose.headTilt = -0.08;
+    pose.smile = 0.8;
+    pose.brow = 0.5;
+    pose.flag = true;
+    pose.confetti = false;
   } else if (act === "mic") {
     pose.rh = [34, -176];
     pose.lh = [-140, -150 + Math.sin(t * 4) * 34];
@@ -198,6 +327,11 @@ function drawClutch(ctx, look, tIn) {
 
   ctx.translate(pose.x, pose.y);
   ctx.rotate(pose.lean);
+  if (pose.spin) {
+    ctx.translate(0, -120);
+    ctx.rotate(pose.spin);
+    ctx.translate(0, 120);
+  }
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
 
@@ -215,6 +349,28 @@ function drawClutch(ctx, look, tIn) {
     return r;
   };
 
+  // Cape (Team colours): flows behind him in the team's colours.
+  if (look.style === "team") {
+    const wave = Math.sin(t * 3.4) * 26;
+    const shc = -142 - pose.shrug * 14;
+    ctx.fillStyle = CL.ink;
+    ctx.beginPath();
+    ctx.moveTo(-66, shc - 4);
+    ctx.lineTo(66, shc - 4);
+    ctx.quadraticCurveTo(120 + wave, -40, 104 + wave * 1.4, 86);
+    ctx.lineTo(-104 + wave * 0.6, 86);
+    ctx.quadraticCurveTo(-120 + wave * 0.4, -40, -66, shc - 4);
+    ctx.fill();
+    ctx.fillStyle = trimOk === CL.gold ? jersey : trimOk;
+    ctx.beginPath();
+    ctx.moveTo(-58, shc);
+    ctx.lineTo(58, shc);
+    ctx.quadraticCurveTo(110 + wave, -40, 96 + wave * 1.4, 78);
+    ctx.lineTo(-96 + wave * 0.6, 78);
+    ctx.quadraticCurveTo(-110 + wave * 0.4, -40, -58, shc);
+    ctx.fill();
+  }
+
   // Legs and shoes.
   const lLeg = limb(-26, 26, pose.lf, 1, 50, 52, 30, CL.gold);
   const rLeg = limb(26, 26, pose.rf, -1, 50, 52, 30, CL.gold);
@@ -228,6 +384,25 @@ function drawClutch(ctx, look, tIn) {
     ctx.ellipse(r.hx + (i ? 10 : -10), r.hy + 1, 22, 8, 0, 0, Math.PI * 2);
     ctx.fill();
   });
+
+  // Rocket boots (Hype).
+  if (pose.flames > 0) {
+    [lLeg, rLeg].forEach((r, i) => {
+      const fl = (40 + Math.abs(Math.sin(t * 30 + i)) * 50) * pose.flames;
+      const fx = r.hx + (i ? 10 : -10);
+      const g = ctx.createLinearGradient(0, r.hy + 10, 0, r.hy + 10 + fl);
+      g.addColorStop(0, "#fff3c4");
+      g.addColorStop(0.4, "#ffb020");
+      g.addColorStop(1, "rgba(229, 56, 59, 0)");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.moveTo(fx - 20, r.hy + 10);
+      ctx.lineTo(fx + 20, r.hy + 10);
+      ctx.lineTo(fx, r.hy + 10 + fl);
+      ctx.closePath();
+      ctx.fill();
+    });
+  }
 
   // Shorts.
   ctx.fillStyle = CL.ink;
@@ -369,6 +544,8 @@ function drawClutch(ctx, look, tIn) {
     ctx.save();
     ctx.translate(rArm.hx, rArm.hy - 50);
     ctx.rotate(0.12);
+    const cs = pose.prop.scale || 1;
+    ctx.scale(cs, cs);
     if (pose.flash > 0) {
       ctx.fillStyle = `rgba(229, 56, 59, ${0.25 * pose.flash})`;
       ctx.beginPath();
@@ -383,6 +560,33 @@ function drawClutch(ctx, look, tIn) {
     ctx.beginPath();
     ctx.roundRect(-32, -50, 64, 96, 8);
     ctx.fill();
+    ctx.restore();
+  }
+  if (pose.flag) {
+    // Team flag on a pole, waving.
+    ctx.save();
+    ctx.translate(rArm.hx, rArm.hy);
+    ctx.strokeStyle = CL.ink;
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.moveTo(0, 40);
+    ctx.lineTo(0, -110);
+    ctx.stroke();
+    const fw = Math.sin(t * 4) * 14;
+    [[CL.ink, 0], [jersey, 5]].forEach(([c, inset]) => {
+      ctx.fillStyle = c;
+      ctx.beginPath();
+      ctx.moveTo(4, -110 + inset);
+      ctx.quadraticCurveTo(66, -128 + fw + inset, 136 - inset, -110 + fw * 1.5 + inset);
+      ctx.lineTo(136 - inset, -40 + fw * 1.5 - inset);
+      ctx.quadraticCurveTo(66, -58 + fw - inset, 4, -40 - inset);
+      ctx.closePath();
+      ctx.fill();
+    });
+    ctx.fillStyle = trimOk;
+    ctx.font = '900 34px "Space Grotesk", Inter, sans-serif';
+    ctx.textAlign = "center";
+    ctx.fillText("LJ", 70, -75 + fw);
     ctx.restore();
   }
   if (pose.prop && pose.prop.kind === "mic") {
@@ -421,6 +625,28 @@ function drawClutch(ctx, look, tIn) {
   });
   ctx.restore();
 
+  // News desk in front (Breaking): hides his legs, shakes when slammed.
+  if (look.style === "breaking") {
+    ctx.save();
+    ctx.translate(pose.slam ? Math.sin(t * 80) * 6 : 0, 0);
+    ctx.fillStyle = CL.ink;
+    ctx.beginPath();
+    ctx.roundRect(-270, -12, 540, 140, 14);
+    ctx.fill();
+    ctx.fillStyle = "#1c1d22";
+    ctx.beginPath();
+    ctx.roundRect(-262, -4, 524, 124, 10);
+    ctx.fill();
+    ctx.fillStyle = "#e5383b";
+    ctx.fillRect(-262, -4, 524, 18);
+    ctx.fillStyle = CL.white;
+    ctx.font = '900 46px "Space Grotesk", Inter, sans-serif';
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("LJ NEWS", 0, 66);
+    ctx.restore();
+  }
+
   // Confetti in front (deterministic, so the still and the video match).
   if (pose.confetti) {
     const colors = [CL.gold, jersey, trimOk, CL.white, "#f6e1a6"];
@@ -454,19 +680,105 @@ function clutchWrap(ctx, text, maxW) {
   return lines;
 }
 
-// Character on the left, speech bubble (or narrator mic) on the right, in a band `w` wide centred at 0.
-// The band is 420 px tall, centred vertically at 0.
+// Fireworks bursts behind him (Hype): three bursts at set times, so the still and the video match.
+function clutchFireworks(ctx, t, w, color) {
+  const bursts = [[-w * 0.3, -150, 0.9], [w * 0.32, -170, 1.3], [0, -200, 1.8], [-w * 0.2, -120, 2.6], [w * 0.25, -110, 3.2]];
+  const colors = [CL.gold, "#fff3c4", CL.hex(color, "#e5383b"), "#ffffff"];
+  bursts.forEach(([bx, by, at], b) => {
+    const k = (t - at) % 2.4;
+    if (t < at || k > 1.1) return;
+    const r = 30 + CL.ease(k / 1.1) * 150;
+    ctx.globalAlpha = Math.max(0, 1 - k / 1.1);
+    for (let i = 0; i < 18; i++) {
+      const a = (i / 18) * Math.PI * 2 + b;
+      ctx.fillStyle = colors[(i + b) % colors.length];
+      ctx.beginPath();
+      ctx.arc(bx + Math.cos(a) * r, by + Math.sin(a) * r + k * 30, 7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  });
+}
+
+// Clutch in a band `w` wide and 430 px tall, centred at 0, with his style's scenery and effects.
+// With look.say (used by the promo), he stands on the left with a speech bubble on the right.
 function clutchBand(ctx, look, tIn, w) {
   const still = tIn === Infinity;
   const t = still ? 2.6 : tIn;
   const display = '"Space Grotesk", Inter, sans-serif';
-  const charX = -w / 2 + 200;
-  const enter = still || look.act === "celebrate" ? 1 : CL.back(CL.span(t, 0.35, 0.5));
+  const style = look.style || "hype";
+  const act = clutchStyleAct(style, look.act || "point");
+  const look2 = { ...look, act, style };
+  const pose = clutchPose(act, t);
+  // Centred on his own; on the left when he has a speech bubble (the promo).
+  const charX = look.say ? -w / 2 + 200 : 0;
+  const enter = still ? 1 : CL.back(CL.span(t, 0.2, 0.5));
+  const shake = still ? 0 : pose.shake * 14;
+  ctx.save();
+  ctx.translate(Math.sin(t * 61) * shake, Math.cos(t * 47) * shake);
+
+  // Scenery behind him, by style.
+  if (style === "hype") {
+    // A gold aura, and fireworks for the big moments.
+    const aura = ctx.createRadialGradient(charX, 0, 20, charX, 0, 200);
+    aura.addColorStop(0, `rgba(233, 199, 123, ${0.35 + 0.15 * Math.sin(t * 4)})`);
+    aura.addColorStop(1, "rgba(233, 199, 123, 0)");
+    ctx.fillStyle = aura;
+    ctx.fillRect(-w / 2, -215, w, 430);
+    if (pose.fireworks) clutchFireworks(ctx, t, w, look.color);
+  } else if (style === "clean") {
+    // Two soft spotlights and a floor glow.
+    [-1, 1].forEach((side) => {
+      const sway = still ? 0 : Math.sin(t * 1.3 + side) * 30;
+      const g = ctx.createLinearGradient(0, -215, 0, 140);
+      g.addColorStop(0, look.light ? "rgba(201, 151, 74, 0.28)" : "rgba(255, 244, 214, 0.22)");
+      g.addColorStop(1, "rgba(255, 244, 214, 0)");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.moveTo(side * (w / 2 - 40), -215);
+      ctx.lineTo(side * (w / 2 - 110), -215);
+      ctx.lineTo(charX - 150 + sway, 140);
+      ctx.lineTo(charX + 150 + sway, 140);
+      ctx.closePath();
+      ctx.fill();
+    });
+  } else if (style === "team") {
+    // Light rays from behind, like a movie poster.
+    ctx.save();
+    ctx.translate(charX, -60);
+    ctx.rotate(still ? 0 : t * 0.15);
+    for (let i = 0; i < 12; i++) {
+      ctx.rotate((Math.PI * 2) / 12);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.07)";
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-30, -340);
+      ctx.lineTo(30, -340);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Team colours: a slow push-in.
+  const push = style === "team" && !still ? 1 + 0.08 * CL.ease(t / 5) : 1;
   ctx.save();
   ctx.translate(charX, 70);
-  ctx.scale(0.88 * Math.max(enter, 0.01), 0.88 * Math.max(enter, 0.01));
-  drawClutch(ctx, look, tIn);
+  const sc = 0.88 * Math.max(enter, 0.01) * push;
+  ctx.scale(sc, sc);
+  drawClutch(ctx, look2, tIn);
   ctx.restore();
+
+  // Stadium-light flash (Hype).
+  if (!still && pose.flash > 0 && style === "hype") {
+    const fl = ctx.createRadialGradient(charX, 0, 10, charX, 0, 210);
+    fl.addColorStop(0, `rgba(255, 250, 235, ${0.7 * pose.flash})`);
+    fl.addColorStop(1, "rgba(255, 250, 235, 0)");
+    ctx.fillStyle = fl;
+    ctx.fillRect(-w / 2, -215, w, 430);
+  }
+  ctx.restore();
+  if (!look.say) return;
 
   const bx = -w / 2 + 390, bw = w / 2 - 10 - bx, by = -120;
   const pop = still ? 1 : CL.back(CL.span(t, 0.9, 0.45));
@@ -476,25 +788,7 @@ function clutchBand(ctx, look, tIn, w) {
   ctx.scale(Math.max(pop, 0.01), Math.max(pop, 0.01));
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  if (look.narrate) {
-    // Narrator: a mic tag and moving sound bars; the words go in the voice-over script below the post.
-    const bars = 9;
-    ctx.fillStyle = look.light ? "rgba(255, 255, 255, 0.92)" : "rgba(0, 0, 0, 0.6)";
-    ctx.beginPath();
-    ctx.roundRect(-bw / 2, -70, bw, 140, 70);
-    ctx.fill();
-    ctx.fillStyle = look.light ? CL.ink : CL.white;
-    ctx.font = `800 44px ${display}`;
-    ctx.textAlign = "left";
-    ctx.fillText("🎙 CLUTCH", -bw / 2 + 44, 2);
-    for (let i = 0; i < bars; i++) {
-      const h = still ? 30 : 16 + Math.abs(Math.sin(t * 9 + i * 1.3)) * 56;
-      ctx.fillStyle = i % 2 ? CL.gold : "#e5383b";
-      ctx.beginPath();
-      ctx.roundRect(bw / 2 - 60 - (bars - i) * 22, -h / 2, 12, h, 6);
-      ctx.fill();
-    }
-  } else if (look.say) {
+  {
     ctx.font = `800 46px ${display}`;
     let size = 46;
     let lines = clutchWrap(ctx, look.say, bw - 70);

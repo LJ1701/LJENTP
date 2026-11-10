@@ -1,7 +1,7 @@
 // Daily posts: live scores, previews and the videos on screen are always free. Saving or sharing a post
 // uses one of the day's posts; Free gives 3 a day. Paid plans sell more posts per day instead of a flat
 // premium price, and are shown as "coming soon" until accounts and payments exist. The count is kept on
-// this device and resets at local midnight. People the owner gives a code to (at most 15) unlock
+// this device and resets at local midnight. People the owner gives a code to (at most 20) unlock
 // unlimited posts by opening the app with #owner and entering it; /api/owner checks it on the server.
 
 const LS_USAGE_KEY = "ljlive_usage";
@@ -25,7 +25,7 @@ const LS_PLANS = [
       lsPriceFree: "$0", lsPriceDay: "$0.99 once", lsPriceCreator: "$2.99/month", lsPricePro: "$6.99/month",
       lsSoon: "Coming soon", lsCurrent: "Your plan", lsClose: "Close", lsResets: "Free posts reset at midnight.", lsPromo: "Watch the promo",
       lsOwner: "Unlimited · {name}", lsOwnerTitle: "Unlimited access", lsOwnerCode: "Access code", lsOwnerGo: "Unlock",
-      lsOwnerBad: "That code isn't right.", lsOwnerNotSet: "Unlimited access isn't set up on the server yet.", lsOwnerErr: "Couldn't check the code. Try again."
+      lsOwnerBad: "That code isn't right.", lsOwnerWait: "Too many tries. Wait 15 minutes and try again.", lsOwnerNotSet: "Unlimited access isn't set up on the server yet.", lsOwnerErr: "Couldn't check the code. Try again."
     },
     es: {
       lsMeter: "{n} de {total} publicaciones gratis disponibles hoy", lsMeterOut: "Ya usaste las publicaciones gratis de hoy. Los marcadores en vivo y las vistas previas siguen siendo gratis.",
@@ -36,7 +36,7 @@ const LS_PLANS = [
       lsPriceFree: "$0", lsPriceDay: "$0.99 una vez", lsPriceCreator: "$2.99/mes", lsPricePro: "$6.99/mes",
       lsSoon: "Próximamente", lsCurrent: "Tu plan", lsClose: "Cerrar", lsResets: "Las publicaciones gratis se renuevan a medianoche.", lsPromo: "Ver el anuncio",
       lsOwner: "Ilimitado · {name}", lsOwnerTitle: "Acceso ilimitado", lsOwnerCode: "Código de acceso", lsOwnerGo: "Desbloquear",
-      lsOwnerBad: "Ese código no es correcto.", lsOwnerNotSet: "El acceso ilimitado aún no está configurado en el servidor.", lsOwnerErr: "No se pudo comprobar el código. Inténtalo de nuevo."
+      lsOwnerBad: "Ese código no es correcto.", lsOwnerWait: "Demasiados intentos. Espera 15 minutos y vuelve a intentarlo.", lsOwnerNotSet: "El acceso ilimitado aún no está configurado en el servidor.", lsOwnerErr: "No se pudo comprobar el código. Inténtalo de nuevo."
     },
     zh: {
       lsMeter: "今天还剩 {n}/{total} 次免费发布", lsMeterOut: "今天的免费发布次数已用完。实时比分和预览仍然免费。",
@@ -261,7 +261,7 @@ function lsOpenOwner() {
         msg.textContent = lsMeterText();
         setTimeout(() => dialog.close(), 900);
       } else {
-        msg.textContent = t(body.error === "not_set" ? "lsOwnerNotSet" : "lsOwnerBad");
+        msg.textContent = t(body.error === "not_set" ? "lsOwnerNotSet" : body.error === "too_many" ? "lsOwnerWait" : "lsOwnerBad");
       }
     } catch {
       msg.textContent = t("lsOwnerErr");

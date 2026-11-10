@@ -1,31 +1,43 @@
-// Unlimited access for people the owner chooses (at most 15). Codes live only in Vercel environment
-// variables, never in the page source:
-//   LJ_OWNER_CODE    the owner's own code (shown as "Owner")
-//   LJ_ACCESS_CODES  everyone else, as name:code pairs separated by commas or new lines,
-//                    e.g. "Sam:first-code, Ana:second-code"
-// The owner counts toward the 15; anyone past the 15th is ignored. A match unlocks unlimited daily
-// posts on that device, and the app re-checks the code each time it opens, so removing someone from
-// the list ends their access everywhere.
+// Unlimited access for people the owner chooses (at most 20, owner included). Nothing secret is in the
+// page source; it all lives in Vercel environment variables:
+//   LJ_OWNER_CODE      the owner's own code (shown as "Owner")
+//   LJ_ACCESS_PEOPLE   everyone else's full names, separated by commas or new lines ("Sam Kim, Ana Lopez")
+//   LJ_ACCESS_SUFFIX   the shared ending of every person's code (a Secret)
+// A person's code is their initials followed by the shared ending, e.g. Sam Kim -> "SK" + ending.
+// Letters are not case-sensitive. Anyone past the 20th person is ignored. The app re-checks the code
+// each time it opens, so removing a name ends that person's access.
 const crypto = require("crypto");
 
-const MAX_PEOPLE = 15;
+const MAX_PEOPLE = 20;
 const digest = (s) => crypto.createHash("sha256").update(String(s)).digest();
+const initials = (name) => name.split(/\s+/).map((w) => (w.match(/\p{L}/u) || [""])[0]).join("").toUpperCase();
 
 function people() {
   const list = [];
   if (process.env.LJ_OWNER_CODE) list.push({ name: "Owner", code: process.env.LJ_OWNER_CODE.trim() });
-  String(process.env.LJ_ACCESS_CODES || "")
-    .split(/[,\n]/)
-    .map((pair) => pair.trim())
-    .filter(Boolean)
-    .forEach((pair) => {
-      const i = pair.indexOf(":");
-      if (i < 1) return;
-      const name = pair.slice(0, i).trim().slice(0, 30);
-      const code = pair.slice(i + 1).trim();
-      if (name && code.length >= 6) list.push({ name, code });
-    });
+  const suffix = String(process.env.LJ_ACCESS_SUFFIX || "").trim();
+  if (suffix) {
+    String(process.env.LJ_ACCESS_PEOPLE || "")
+      .split(/[,\n]/)
+      .map((n) => n.trim().replace(/\s+/g, " ").slice(0, 40))
+      .filter(Boolean)
+      .forEach((name) => {
+        const ini = initials(name);
+        if (ini) list.push({ name: name.split(" ")[0], code: `${ini}${suffix}`.toUpperCase(), upper: true });
+      });
+  }
   return list.slice(0, MAX_PEOPLE);
+}
+
+// Guess-blocking: after 5 wrong codes from one address within 15 minutes, that address waits 15 minutes.
+// Kept in memory, so it only covers one server instance at a time; the 800 ms pause on every wrong code
+// still applies everywhere.
+const fails = new Map();
+const WINDOW = 15 * 60 * 1000;
+const LIMIT = 5;
+
+function clientIp(req) {
+  return String(req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "?").split(",")[0].trim();
 }
 
 module.exports = async (req, res) => {
@@ -40,6 +52,15 @@ module.exports = async (req, res) => {
     res.statusCode = 503;
     return res.end(JSON.stringify({ error: "not_set" }));
   }
+  const ip = clientIp(req);
+  const now = Date.now();
+  const rec = fails.get(ip);
+  if (rec && now - rec.first > WINDOW) fails.delete(ip);
+  else if (rec && rec.count >= LIMIT) {
+    res.statusCode = 429;
+    return res.end(JSON.stringify({ error: "too_many" }));
+  }
+
   let body = req.body;
   if (typeof body === "string") {
     try {
@@ -48,14 +69,20 @@ module.exports = async (req, res) => {
       body = {};
     }
   }
-  const code = String((body && body.code) || "");
+  const code = String((body && body.code) || "").trim();
   // Compare against every code (timing-safe) so the reply time doesn't hint at which one matched.
   let match = null;
   list.forEach((p) => {
-    if (crypto.timingSafeEqual(digest(code), digest(p.code)) && !match) match = p;
+    const given = p.upper ? code.toUpperCase() : code;
+    if (crypto.timingSafeEqual(digest(given), digest(p.code)) && !match) match = p;
   });
-  // A short pause on a wrong code makes guessing slow.
-  if (!match) await new Promise((r) => setTimeout(r, 800));
+  if (!match) {
+    const r = fails.get(ip) || { first: now, count: 0 };
+    r.count += 1;
+    fails.set(ip, r);
+    // A short pause on a wrong code makes guessing slow.
+    await new Promise((r2) => setTimeout(r2, 800));
+  }
   res.statusCode = match ? 200 : 401;
   return res.end(JSON.stringify(match ? { owner: true, name: match.name } : { owner: false }));
 };
