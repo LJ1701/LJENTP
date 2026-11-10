@@ -25,32 +25,32 @@ The lines live in `persona.js` (`PERSONA`). Change the name there and in this fi
 - No claims about the future presented as fact ("they'll win the league").
 
 ## The animated character
-Clutch is a cartoon mascot drawn in code (`clutch.js`): a gold head, a headband and jersey in the scoring team's colours, "LJ" on the chest. He's inside every saved 9:16 video, between the headline and the scoreboard, and acts the moment out:
+Clutch is a cartoon mascot drawn in code (`clutch.js`): a gold head, a headband and jersey in the scoring team's colours, "LJ" on the chest. He's in **every** saved 9:16 video, between the headline and the scoreboard. There's no separate Clutch setting: the post's **Style** decides how he celebrates.
 
-| Moment | What Clutch does |
+| Moment | Base reaction |
 |---|---|
-| Goal | Knee-slide in, arms out, then fist pumps and confetti |
-| Penalty | Sunglasses drop, a calm nod, points out ("ice cold") |
-| Own goal | Facepalm and head shake |
-| Red card | Holds a red card up, points off the pitch, card flash |
-| Score update, player spotlight | Points down at the scoreboard |
+| Goal | Knee-slide, fist pumps, confetti |
+| Penalty | Sunglasses drop, calm nod, points ("ice cold") |
+| Own goal | Facepalm |
+| Red card | Holds up a red card, points off |
+| Score update, player spotlight | Points at the scoreboard |
 | Matchday, poll | Points at the viewer, winks |
 | Hot take | Talks into a microphone |
-| Full time: win, blowout, late winner | Dance and confetti |
-| Full time: comeback | On his knees, then a big jump, then the dance |
-| Full time: draw | Shrug |
+| Full time | Dance (win), kneel then jump (comeback), shrug (draw) |
 
-The promo (`promo.html`) uses him too: he points up at the real score.
+**How each style changes him**
+| Style | Feel | What changes |
+|---|---|---|
+| **Hype** | Extraordinary | Gold aura. Goal: a backflip, fireworks and a stadium-light flash. Full-time win or comeback: rocket boots, fireworks and screen shake. Red card: a giant card slams in. Own goal: a slow-motion collapse to his knees. |
+| **Breaking** | Epic, news style | He's an anchor behind an "LJ NEWS" desk. Goal and full time: calm, then he slams the desk and points at the camera. |
+| **Clean** | Vibe | Two soft spotlights. Goal and full time: a smooth groove with a cool nod. |
+| **Team colours** | Epic, movie poster | Light rays behind him and a cape in the team's colours, with a slow push-in. Goal, full time and score posts: a hero pose holding a team flag. |
 
-## Three settings (in the app, under "Clutch")
-| Setting | What it does |
-|---|---|
-| **Off** | No character. The post looks like before (with the moment's emoji). |
-| **Speech bubble** (non-narrator) | Clutch acts the moment out and his line types into a speech bubble. The line also leads the caption. The big headline stays the standard one. |
-| **Narrator** | Clutch acts it out and his mouth moves, with a "🎙 CLUTCH" tag and sound bars. Below the post: his voice-over script ("Clutch here, live. … It's LIVE. Post it first.") with a ▶ preview and Copy. Saved videos are silent: record the script yourself or paste it into TikTok's text-to-speech. |
+## His words
+His line leads the caption. His voice-over script ("Clutch here, live. … It's LIVE. Post it first.") is always under the post, with a ▶ preview and Copy. Saved videos are silent: record the script yourself or paste it into TikTok's text-to-speech. There's no speech bubble in post videos. The promo uses one ("Real game. Real score.").
 
 ## Languages
-Clutch's lines are in English and Spanish. In other languages he still acts the moment out, without a speech bubble.
+Clutch's lines and voice-over are in English and Spanish. In other languages he still acts the moment out.
 
 ## Score checks
 Clutch only says what the feed says. Before a result is used in a post or promo, check it against a second
