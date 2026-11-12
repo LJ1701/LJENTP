@@ -9,6 +9,7 @@ import { useT } from "../i18n-provider";
 // Word and text files are read without AI; PDFs are read by Gemini on the server. Nothing is saved until the
 // user checks the form and presses "Save my Passport".
 // Lines that start like an achievement ("Led…", "Organicé…", "Organisé…"), in the app's Latin-script languages.
+const VERB_START = /^(led|ran|managed|created|built|coached|organized|organised|wrote|edited|filmed|produced|designed|launched|grew|increased|planned|played|captained|volunteered|helped|trained|analy[sz]ed|developed|hosted|sold|coordinated|started|founded|won|mentored|taught|interned|worked|assisted|directed|published|recorded|shot|promoted|supported|organicé|organizé|dirigí|creé|entrené|gestioné|lideré|jugué|ayudé|organizei|criei|treinei|liderei|joguei|ajudei|organisé|dirigé|créé|entraîné|géré|organisiert|geleitet|trainiert|organizzato|gestito|allenato|georganiseerd|zorganizowałem|zorganizowałam)(?=\s|$|[.,;:])/iu;
 
 export default function ResumeFill() {
   const { t } = useT();
