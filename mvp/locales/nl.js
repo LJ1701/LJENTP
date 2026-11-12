@@ -650,6 +650,42 @@ const nl = {
     others: "Andere beroepen:"
   },
 
+  tracker: {
+    nav: "Tracker",
+    title: "Mijn sollicitaties",
+    intro: "Volg elke baan waar je voor gaat: de stand van zaken, wanneer je solliciteerde en wanneer je navraagt. Alleen jij ziet dit.",
+    track: "＋ Volgen",
+    tracked: "Gevolgd ✓",
+    stage: "Fase",
+    details: "Data & notities",
+    applied: "Gesolliciteerd op",
+    followUp: "Navragen op",
+    notes: "Notities",
+    notesPh: "Met wie je sprak, wat ze vroegen, volgende stappen…",
+    remove: "Verwijderen",
+    appliedOn: "gesolliciteerd op {date}",
+    overdue: "Navragen stond gepland op {date}",
+    dueToday: "Vandaag navragen",
+    filter: "Filteren op fase",
+    all: "Alle",
+    summary: "{sent} sollicitaties verstuurd · {interviews} gesprekken of aanbiedingen",
+    dueCount: "{n} keer navragen gepland",
+    empty: "Nog niets gevolgd. Druk hierboven bij een vacature op ＋ Volgen, of voeg er een toe die je ergens anders vond.",
+    addManual: "＋ Een elders gevonden vacature toevoegen",
+    jobTitle: "Functietitel",
+    company: "Werkgever",
+    link: "Link (optioneel)",
+    add: "Aan tracker toevoegen",
+    adding: "Toevoegen…",
+    needTitle: "Vul de functietitel in.",
+    error: "Opslaan lukte niet. Probeer het opnieuw.",
+    notReady: "De tracker staat nog niet aan.",
+    statSent: "sollicitaties verstuurd",
+    statStudents: "van de studenten solliciteerde op minstens één baan",
+    statInterviews: "gesprekken of aanbiedingen",
+    stages: {saved: "Bewaard", applied: "Gesolliciteerd", interview: "Gesprek", offer: "Aanbod", rejected: "Afgewezen"}
+  },
+
   roles: {
     "Student": "Student", "Player": "Speler", "Former player": "Oud-speler", "Coach": "Trainer", "Content creator": "Contentmaker",
     "Fan": "Fan", "Career changer": "Carrièreswitcher", "Already work in sports": "Werk al in de sport", "Other": "Anders"

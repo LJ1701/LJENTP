@@ -449,3 +449,20 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .career-skills, .career-jobs { padding-left: 18px; }
 .career-skills li, .career-jobs li { margin-bottom: 10px; }
 @media (max-width: 720px) { .career-grid { grid-template-columns: 1fr; } }
+
+/* Application tracker */
+.stage-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.chip { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--text); font-size: 13px; font-weight: 600; }
+.chip.on { background: var(--gold); color: #1a1206; border-color: transparent; }
+.app-row { border: 1px solid var(--border-soft); border-left: 4px solid var(--muted); border-radius: 12px; padding: 10px 12px; margin: 10px 0; background: var(--card-2); }
+.app-row.stage-applied { border-left-color: var(--accent); }
+.app-row.stage-interview { border-left-color: var(--warn); }
+.app-row.stage-offer { border-left-color: var(--ok); }
+.app-row.stage-rejected { border-left-color: var(--bad); opacity: 0.75; }
+.app-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.app-head h4 { margin: 0 0 2px; font-size: 16px; }
+.app-head p { margin: 0; }
+.app-head select { width: auto; min-width: 130px; }
+.app-row input[type="date"] { width: 100%; padding: 8px; border-radius: 10px; border: 1px solid var(--border); background: #0a0c11; color: var(--text); }
+.tracked-badge { font-size: 13px; font-weight: 600; text-decoration: none; }
+.add-app { margin-top: 12px; }

@@ -631,6 +631,42 @@ const fr = {
     others: "Autres métiers :"
   },
 
+  tracker: {
+    nav: "Suivi",
+    title: "Mes candidatures",
+    intro: "Suivez chaque poste visé : où en est la candidature, quand vous avez postulé, quand relancer. Vous seul le voyez.",
+    track: "＋ Suivre",
+    tracked: "Suivi ✓",
+    stage: "Étape",
+    details: "Dates et notes",
+    applied: "Candidature le",
+    followUp: "Relancer le",
+    notes: "Notes",
+    notesPh: "À qui vous avez parlé, ce qu’on vous a demandé, prochaines étapes…",
+    remove: "Retirer",
+    appliedOn: "candidature le {date}",
+    overdue: "La relance était prévue le {date}",
+    dueToday: "Relancez aujourd’hui",
+    filter: "Filtrer par étape",
+    all: "Toutes",
+    summary: "{sent} candidatures envoyées · {interviews} entretiens ou offres",
+    dueCount: "{n} relances à faire",
+    empty: "Rien de suivi pour l’instant. Cliquez sur ＋ Suivre sur une offre ci-dessus, ou ajoutez-en une trouvée ailleurs.",
+    addManual: "＋ Ajouter une offre trouvée ailleurs",
+    jobTitle: "Intitulé du poste",
+    company: "Employeur",
+    link: "Lien (facultatif)",
+    add: "Ajouter au suivi",
+    adding: "Ajout…",
+    needTitle: "Indiquez l’intitulé du poste.",
+    error: "Enregistrement impossible. Réessayez.",
+    notReady: "Le suivi n’est pas encore activé.",
+    statSent: "candidatures envoyées",
+    statStudents: "des étudiants ont postulé à au moins une offre",
+    statInterviews: "entretiens ou offres",
+    stages: {saved: "Enregistrée", applied: "Candidature envoyée", interview: "Entretien", offer: "Offre", rejected: "Non retenue"}
+  },
+
   roles: {
     "Student": "Étudiant", "Player": "Joueur", "Former player": "Ancien joueur", "Coach": "Entraîneur", "Content creator": "Créateur de contenu",
     "Fan": "Fan", "Career changer": "En reconversion", "Already work in sports": "Je travaille déjà dans le sport", "Other": "Autre"
