@@ -77,7 +77,7 @@ small { color: var(--muted); }
 /* Forms */
 input, select, button, textarea { font: inherit; }
 label { display: block; margin-top: 14px; margin-bottom: 4px; font-size: 14px; color: var(--muted); font-weight: 500; }
-input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea {
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="url"], select, textarea {
   width: 100%; padding: 11px 12px; color: var(--text); background: #0b0d12;
   border: 1px solid var(--border-soft); border-radius: 10px; outline: none;
 }
@@ -449,3 +449,72 @@ button.mini { margin: 0 0 0 6px; padding: 3px 10px; font-size: 12px; }
 .career-skills, .career-jobs { padding-left: 18px; }
 .career-skills li, .career-jobs li { margin-bottom: 10px; }
 @media (max-width: 720px) { .career-grid { grid-template-columns: 1fr; } }
+
+/* Passport tabs */
+.progress-line { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.progress-line .meter { flex: 1; margin: 0; }
+.progress-line small { white-space: nowrap; }
+.tabs { display: flex; gap: 6px; margin-top: 14px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { display: inline-flex; align-items: center; gap: 8px; flex: none; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border-soft); color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; background: rgba(255, 255, 255, 0.02); }
+.tab:hover { color: var(--accent-light); border-color: var(--accent); }
+.tab.on { color: #1a1206; background: var(--gold); border-color: transparent; }
+.tab-num { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; border: 1px solid currentColor; }
+.tab-num.done { background: var(--ok); color: #06210f; border-color: transparent; }
+.tab.on .tab-num.done { background: #1a1206; color: var(--accent-light); }
+.tab-panel[hidden] { display: none; }
+.tab-head { margin-top: 26px; scroll-margin-top: 96px; }
+.tab-head h2 { margin-bottom: 2px; }
+.tab-head p { margin: 0; }
+.tab-pager { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 6px 0 10px; }
+.ghost-link { color: var(--muted); text-decoration: none; font-size: 14px; }
+.ghost-link:hover { color: var(--accent-light); }
+
+/* Proof: tags under each achievement, on the Passport and the public page */
+.ev-line { padding: 12px 0; border-top: 1px solid var(--border-soft); }
+.ev-line:first-of-type { border-top: 0; }
+.ev-text { margin: 0 0 6px; font-weight: 600; }
+.ev-line.backed .ev-text::before { content: "✓ "; color: var(--ok); }
+.ev-line details summary { cursor: pointer; color: var(--accent-light); font-size: 14px; font-weight: 600; margin-top: 4px; }
+.ev-chips { list-style: none; padding: 0; margin: 4px 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.ev-chips li { display: inline-flex; align-items: center; }
+.ev-chip { display: inline-flex; align-items: baseline; gap: 6px; flex-wrap: wrap; padding: 5px 10px; border-radius: 10px; font-size: 13px; border: 1px solid var(--border); background: rgba(201, 151, 74, 0.07); color: var(--text); text-decoration: none; max-width: 100%; overflow-wrap: anywhere; }
+a.ev-chip:hover { border-color: var(--accent); color: var(--accent-light); }
+.ev-kind { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent-light); }
+.ev-remove { display: inline; }
+.ev-remove button.mini { padding: 2px 8px; margin-left: 4px; }
+.ev-public { list-style: none; padding: 0; margin: 0; }
+.hero-stats { margin: 4px 0 0; }
+
+/* Add-proof form */
+.evidence-form { margin-top: 10px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-soft); background: var(--card-2); }
+.kind-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.kind-tab { margin: 0; padding: 6px 12px; font-size: 13px; font-weight: 600; color: var(--muted); background: transparent; border: 1px solid var(--border-soft); box-shadow: none; border-radius: 999px; }
+.kind-tab.on { color: #1a1206; background: var(--gold); border-color: transparent; }
+.small-print { font-size: 13px; margin: 8px 0 0; }
+.check-line { display: flex; align-items: center; gap: 8px; color: var(--text); }
+.check-line input { width: auto; margin: 0; }
+@media (max-width: 600px) {
+  .tab { padding: 7px 11px; font-size: 13px; }
+  .evidence-form .row { grid-template-columns: 1fr; }
+}
+
+/* Portfolio cards (Passport and public page) */
+.pf-grid { list-style: none; padding: 0; margin: 10px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.pf-card { position: relative; display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 14px; background: var(--card-2); overflow: hidden; }
+.pf-thumb { display: block; aspect-ratio: 16 / 9; background: #0b0d12; }
+.pf-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pf-body { padding: 12px 14px; }
+.pf-body p { margin: 0 0 4px; }
+.pf-kind { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent-light); }
+.pf-title { font-weight: 600; overflow-wrap: anywhere; }
+.pf-title a { text-decoration: none; }
+.pf-meta, .pf-desc { font-size: 14px; color: var(--muted); overflow-wrap: anywhere; }
+.pf-desc { color: var(--text); }
+.pf-shows small { font-style: italic; }
+.pf-remove { position: absolute; top: 6px; right: 6px; }
+.pf-remove button.mini { margin: 0; padding: 2px 9px; background: rgba(5, 6, 8, 0.75); }
+.file-input { display: block; width: 100%; padding: 10px; border: 1px dashed var(--border); border-radius: 10px; background: #0b0d12; color: var(--muted); }
+.file-input::file-selector-button { margin-right: 10px; padding: 6px 14px; border: 0; border-radius: 999px; background: var(--gold); color: #1a1206; font-weight: 600; cursor: pointer; }
+.ev-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; }
+.hero-stats a { font-size: 14px; }

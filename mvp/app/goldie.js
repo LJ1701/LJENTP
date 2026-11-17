@@ -160,8 +160,12 @@ export default function Goldie({ coach }) {
   const hidden = !coach && pathname === "/profile"; // the Passport page renders its own Goldie with the coach
 
   // Spotlight: scroll to a step and glow its card.
-  const spotlight = useCallback((id) => {
+  // The Passport is split into tabs, so open the right tab first ("proof" means the public link, on Share).
+  const spotlight = useCallback((section) => {
     document.querySelectorAll(".goldie-spot").forEach((el) => el.classList.remove("goldie-spot"));
+    const tab = { passport: "profile", path: "path", jobs: "jobs", proof: "share" }[section];
+    const id = section === "proof" ? "share" : section;
+    if (tab) window.dispatchEvent(new CustomEvent("passport:show", { detail: { tab } }));
     const head = document.getElementById(id);
     if (!head) return false;
     head.scrollIntoView({ behavior: "smooth", block: "start" });

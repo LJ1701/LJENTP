@@ -40,22 +40,27 @@ async function context() {
   return { t, lang, dict, country, place, summarize };
 }
 
+// The Passport is split into tabs: the Profile tab sends the "about you" fields, the Proof tab sends only
+// the achievements. Only the fields a form actually sent are saved, so one tab never blanks the other.
 export async function saveProfile(formData) {
   const { supabase, user } = await currentUser();
-  const sport = clean(formData.get("sport"), 40);
-  const { error } = await supabase.from("sports_profiles").upsert({
-    user_id: user.id,
-    full_name: clean(formData.get("full_name"), 100),
-    location: clean(formData.get("location"), 100),
-    role: clean(formData.get("role"), 40),
-    sport: SPORTS.includes(sport) ? sport : "",
-    skills: formData.getAll("skills").filter((s) => SKILLS[s]),
-    interests: formData.getAll("interests").filter((s) => INTERESTS[s]),
-    goal: clean(formData.get("goal"), 200),
-    achievements: clean(formData.get("achievements"), 4000),
-    updated_at: new Date().toISOString()
-  });
-  if (error) redirect(`/profile?error=${encodeURIComponent((await getT()).t("profile.saveError"))}`);
+  const tab = formData.get("tab") === "portfolio" ? "portfolio" : "profile";
+  const row = { user_id: user.id, updated_at: new Date().toISOString() };
+  if (formData.has("full_name")) {
+    const sport = clean(formData.get("sport"), 40);
+    Object.assign(row, {
+      full_name: clean(formData.get("full_name"), 100),
+      location: clean(formData.get("location"), 100),
+      role: clean(formData.get("role"), 40),
+      sport: SPORTS.includes(sport) ? sport : "",
+      skills: formData.getAll("skills").filter((s) => SKILLS[s]),
+      interests: formData.getAll("interests").filter((s) => INTERESTS[s]),
+      goal: clean(formData.get("goal"), 200)
+    });
+  }
+  if (formData.has("achievements")) row.achievements = clean(formData.get("achievements"), 4000);
+  const { error } = await supabase.from("sports_profiles").upsert(row);
+  if (error) redirect(`/profile?tab=${tab}&error=${encodeURIComponent((await getT()).t("profile.saveError"))}`);
   // Invited by a friend? Once this Passport has an achievement, both get their bonus answers (once only).
   const jar = await cookies();
   const ref = jar.get(REF_COOKIE)?.value;
@@ -65,7 +70,69 @@ export async function saveProfile(formData) {
     jar.delete(REF_COOKIE);
   }
   revalidatePath("/profile");
-  redirect(invited ? "/profile?saved=1&invited=1" : "/profile?saved=1");
+  // Saving "about you" moves on to the Portfolio, where achievements and their files/links live.
+  redirect(`/profile?tab=portfolio&saved=${tab}${invited ? "&invited=1" : ""}${tab === "portfolio" ? "#achievements-card" : ""}`);
+}
+
+// Portfolio: files, links and references the user adds themselves. No one signs them off; the public
+// page says "added by". Files go straight from the browser to Supabase Storage (portfolio/<user id>/...),
+// then this saves the row. Returns { ok } or { error } for the form to show.
+const PORTFOLIO_KINDS = ["file", "link", "reference"];
+const MAX_ITEMS = 40;
+const MAX_FILES = 20;
+const FILE_TYPES = ["application/pdf", "image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/quicktime", "video/webm"];
+
+export async function addPortfolioItem(input) {
+  const { supabase, user } = await currentUser();
+  const { t } = await getT();
+  const v = (k, max) => clean(input && input[k], max);
+  const kind = v("kind", 20);
+  if (!PORTFOLIO_KINDS.includes(kind)) return { error: t("evidence.saveError") };
+  const item = { user_id: user.id, kind, title: v("title", 120), description: v("description", 200), achievement: v("achievement", 200) };
+  if (kind === "file") {
+    const path = v("file_path", 300);
+    if (!path.startsWith(`${user.id}/`) || path.includes("..")) return { error: t("evidence.needFile") };
+    const type = v("file_type", 80);
+    if (!FILE_TYPES.includes(type)) return { error: t("evidence.fileType") };
+    Object.assign(item, { file_path: path, file_name: v("file_name", 160), file_type: type, file_size: Math.max(0, Math.min(Number(input.file_size) || 0, 10485760)) });
+    if (!item.title) item.title = item.file_name.replace(/\.[a-z0-9]+$/i, "").slice(0, 120);
+  } else if (kind === "link") {
+    let url = v("url", 300);
+    if (url && !/^https?:\/\//i.test(url)) url = `https://${url}`;
+    try { if (!new URL(url).hostname.includes(".")) url = ""; } catch { url = ""; }
+    if (!url) return { error: t("evidence.badLink") };
+    item.url = url;
+  } else {
+    const ref_name = v("ref_name", 100);
+    if (!ref_name) return { error: t("evidence.needName") };
+    Object.assign(item, { ref_name, ref_role: v("ref_role", 100), ref_org: v("ref_org", 100), ref_relation: v("ref_relation", 100), ref_contact: v("ref_contact", 120), show_contact: !!input.show_contact });
+  }
+  const { data: rows, error: readError } = await supabase.from("portfolio_items").select("kind").eq("user_id", user.id);
+  if (readError) return { error: t("evidence.notReady") };
+  if (rows.length >= MAX_ITEMS) return { error: t("evidence.full", { n: MAX_ITEMS }) };
+  if (kind === "file" && rows.filter((r) => r.kind === "file").length >= MAX_FILES) return { error: t("evidence.filesFull", { n: MAX_FILES }) };
+  const { error } = await supabase.from("portfolio_items").insert(item);
+  if (error) {
+    if (item.file_path) await supabase.storage.from("portfolio").remove([item.file_path]);
+    return { error: t("evidence.saveError") };
+  }
+  revalidatePath("/profile");
+  return { ok: true };
+}
+
+// Removes one portfolio item, and its file if it has one.
+export async function deletePortfolioItem(formData) {
+  const { supabase, user } = await currentUser();
+  const id = String(formData.get("id") || "");
+  if (/^[0-9a-f-]{36}$/i.test(id)) {
+    const { data: item } = await supabase.from("portfolio_items").select("file_path").eq("id", id).eq("user_id", user.id).maybeSingle();
+    if (item) {
+      await supabase.from("portfolio_items").delete().eq("id", id).eq("user_id", user.id);
+      if (item.file_path) await supabase.storage.from("portfolio").remove([item.file_path]);
+    }
+  }
+  revalidatePath("/profile");
+  redirect("/profile?tab=portfolio");
 }
 
 export async function setTarget(formData) {
@@ -76,7 +143,7 @@ export async function setTarget(formData) {
   // Skills found in achievements count as "have", so the plan doesn't ask the user to build them again.
   await supabase.from("plans").upsert({ user_id: user.id, role_idx: idx, steps: buildPlanSteps(idx, effectiveProfile(profile), dictFor("en")), updated_at: new Date().toISOString() });
   revalidatePath("/profile");
-  redirect("/profile#path");
+  redirect("/profile?tab=path");
 }
 
 // Uploaded résumé file (PDF, Word or text) to plain text for the résumé filler. Nothing is saved here:
@@ -204,9 +271,9 @@ export async function setPublic(formData) {
   const update = { is_public: on };
   if (on && !profile.public_code) update.public_code = randomBytes(5).toString("hex"); // 10 lowercase hex characters
   const { error } = await supabase.from("sports_profiles").update(update).eq("user_id", user.id);
-  if (error) redirect(`/profile?error=${encodeURIComponent((await getT()).t("profile.linkError"))}`);
+  if (error) redirect(`/profile?tab=share&error=${encodeURIComponent((await getT()).t("profile.linkError"))}`);
   revalidatePath("/profile");
-  redirect("/profile#proof");
+  redirect("/profile?tab=share");
 }
 
 // Ticks a plan step. A note about what they did is saved as a new achievement line, so the plan builds proof.

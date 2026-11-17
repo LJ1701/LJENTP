@@ -36,7 +36,7 @@ export default function HomeSearch({ signedIn }) {
       const res = await startGuest();
       if (res.error) { setError(res.error === "notOn" ? t("guest.notOn") : res.error); setGoing(false); return; }
     }
-    router.push("/profile");
+    router.push("/profile?tab=jobs");
     router.refresh();
   }
 
