@@ -2,10 +2,14 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, ROLES, CAREER_PATHS, topMatches, labelIn, pathName, stepText, jobLinks } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
-import { saveProfile, setTarget, setPublic } from "./actions";
+import { saveProfile, setTarget, setPublic, deleteProofItem } from "./actions";
 import PlanSteps from "./plan-steps";
 import ResumeFill from "./resume-fill";
 import ResumeBullets from "./resume-bullets";
+import ProofBuilder from "./proof-builder";
+import EvidenceForm from "./evidence-form";
+import Tabs from "./tabs";
+import ProofChips, { groupProof } from "../proof-chips";
 import ShareButtons from "../share-buttons";
 import { getInvite, INVITE_BONUS } from "@/lib/referrals";
 import Goldie from "../goldie";
@@ -19,8 +23,11 @@ import { countryName } from "@/lib/countries";
 
 export const dynamic = "force-dynamic";
 
+// The Passport has five tabs. Each one is a link (?tab=...), so it works without JavaScript and the
+// browser's back button moves between tabs.
+const TABS = ["profile", "proof", "path", "jobs", "share"];
+
 // The saved plan for the target role: progress, then steps that turn into proof when ticked.
-// Steps are shown in the reader's language (stepText); the saved English text is the fallback.
 const PlanBlock = ({ plan, done, t, dict }) => (
   <div className="plan-block">
     <p className="plan-head"><strong>{t("profile.plan")}</strong> · {t("profile.planDone", { done, total: plan.steps.length })}</p>
@@ -51,184 +58,290 @@ const AiBar = ({ s, t }) => (
   </div>
 );
 
-const Step = ({ n, children, id }) => <h2 className="step-title" id={id}><span className="step-num">{n}</span> {children}</h2>;
+// Tab heading: a short title and one line saying what this tab is for.
+const Head = ({ title, lead, id }) => (
+  <div className="tab-head" id={id}>
+    <h2>{title}</h2>
+    {lead && <p className="muted">{lead}</p>}
+  </div>
+);
+
+// Previous / next tab buttons at the bottom of each tab.
+const Pager = ({ tab, t }) => {
+  const i = TABS.indexOf(tab);
+  return (
+    <nav className="tab-pager" aria-label={t("tabs.label")}>
+      {i > 0 ? <a className="ghost-link" data-tab-link={TABS[i - 1]} href={`/profile?tab=${TABS[i - 1]}`}>← {t(`tabs.${TABS[i - 1]}`)}</a> : <span />}
+      {i < TABS.length - 1 && <a className="cta small" data-tab-link={TABS[i + 1]} href={`/profile?tab=${TABS[i + 1]}`}>{t(`tabs.${TABS[i + 1]}`)} →</a>}
+    </nav>
+  );
+};
 
 export default async function ProfilePage({ searchParams }) {
-  const { saved, error, ok, invited } = await searchParams;
+  const { saved, error, ok, invited, added, tab: askedTab } = await searchParams;
   const supabase = await createClient();
   const [{ t, lang, dict }, country] = await Promise.all([getT(), getCountry()]);
   const L = (tag) => labelIn(dict, tag);
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  const [{ data: profile, error: profileError }, { data: plan }, billing] = await Promise.all([
+  const [{ data: profile, error: profileError }, { data: plan }, proofRes, billing] = await Promise.all([
     supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle(),
     supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle(),
+    supabase.from("proof_items").select("*").eq("user_id", user.id).order("created_at"),
     billingStatus(user.id)
   ]);
+  // proof_items only exists once supabase/006_proof_items.sql has been run; until then proof tags are hidden.
+  const proofReady = !proofRes.error;
+  const items = proofReady ? proofRes.data || [] : [];
   const invite = await getInvite(user.id);
   const inviteUrl = invite ? `https://ljsportmind-mvp.vercel.app/?ref=${invite.code}` : "";
   const p = profile || {};
-  // Matches use ticked skills plus those found in the achievements text.
   const eff = effectiveProfile(profile);
   const matches = profile ? topMatches(eff) : [];
   const done = plan ? plan.steps.filter((s) => s.done).length : 0;
   const proofUrl = p.public_code ? `https://ljsportmind-mvp.vercel.app/p/${p.public_code}` : "";
   const firstName = (p.full_name || "").split(" ")[0];
-  // Guest accounts: no email yet, link sent (new_email), or email confirmed but no password chosen yet.
   const saveStage = user.is_anonymous ? (user.new_email ? "pending" : "guest") : user.user_metadata?.needs_password ? "password" : null;
+  const { lines, orphans } = groupProof(p.achievements, items);
+  const backed = lines.filter((l) => l.items.length).length;
+
+  // Progress across the five tabs: what counts as "done" for each.
+  const doneTabs = {
+    profile: !!(profile && (p.full_name || p.role) && (p.skills?.length || p.interests?.length)),
+    proof: backed > 0,
+    path: !!plan,
+    jobs: false,
+    share: !!(p.is_public && p.public_code)
+  };
+  const countable = ["profile", "proof", "path", "share"];
+  const progress = countable.filter((k) => doneTabs[k]).length;
+  const tab = TABS.includes(askedTab) ? askedTab : profile ? "proof" : "profile";
+  const href = (k) => `/profile?tab=${k}`;
 
   return (
     <>
       <div className="page-head">
         <p className="eyebrow">{t("profile.eyebrow")}</p>
         <h1>{firstName ? <>{t("profile.welcome")} <span className="gold-text">{firstName}</span></> : <>{t("profile.build")} <span className="gold-text">{t("profile.passportWord")}</span></>}</h1>
-        <nav className="step-nav" aria-label="Sections">
-          {["passport", "path", "jobs", "proof"].map((id, i) => <a key={id} href={`#${id}`}>{dict.profile.nav[i]}</a>)}
+        <div className="progress-line">
+          <div className="meter" aria-hidden="true"><span style={{ width: `${(progress / countable.length) * 100}%` }} /></div>
+          <small>{t("tabs.progress", { n: progress, total: countable.length })}</small>
+        </div>
+        <nav className="tabs" aria-label={t("tabs.label")}>
+          {TABS.map((k, i) => (
+            <a key={k} href={href(k)} data-tab-link={k} className={k === tab ? "tab on" : "tab"} aria-current={k === tab ? "page" : undefined}>
+              <span className={doneTabs[k] ? "tab-num done" : "tab-num"}>{doneTabs[k] ? "✓" : i + 1}</span> {t(`tabs.${k}`)}
+            </a>
+          ))}
         </nav>
       </div>
       {saveStage && <SaveAccount stage={saveStage} pendingEmail={user.new_email} />}
       {profileError && <p className="error">{t("profile.dbMissing")}</p>}
-      {saved && <p className="ok">{t("profile.saved")}</p>}
-      {error && <p className="error">{error}</p>}
-      {ok && <p className="ok">{ok}</p>}
-      {invited && <p className="ok">{t("invite.welcome", { n: INVITE_BONUS })}</p>}
-      {billing.ready && <AiBar s={billing} t={t} />}
+      {saved && <p className="ok flash">{t("tabs.saved")}</p>}
+      {added && <p className="ok flash">{t("evidence.added")}</p>}
+      {error && <p className="error flash">{error}</p>}
+      {ok && <p className="ok flash">{ok}</p>}
+      {invited && <p className="ok flash">{t("invite.welcome", { n: INVITE_BONUS })}</p>}
+      {/* Billing messages (joined a program, bought answers) come back without a tab, so the AI bar shows with them. */}
+      {billing.ready && ok && <AiBar s={billing} t={t} />}
 
-      <Step n="1" id="passport">{t("profile.step1")}</Step>
-      {/* key: when a plan step adds proof, the form reloads with the new achievements instead of the old text. */}
-      <form action={saveProfile} className="card" key={p.updated_at || "new"}>
-        {!profile && <PendingNote />}
-        <ResumeFill />
-        <div className="row">
-          <div><label htmlFor="full_name">{t("profile.name")}</label><input id="full_name" name="full_name" type="text" defaultValue={p.full_name} /></div>
-          <div><label htmlFor="location">{t("profile.city")}</label><input id="location" name="location" type="text" placeholder={t("profile.cityPh")} defaultValue={p.location} /></div>
-        </div>
-        <div className="row">
-          <div>
-            <label htmlFor="role">{t("profile.whereNow")}</label>
-            <select id="role" name="role" defaultValue={p.role || ""}>
-              <option value="">{t("profile.choose")}</option>
-              {ROLES.map((r) => <option key={r} value={r}>{dict.roles[r] || r}</option>)}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="sport">{t("profile.mainSport")}</label>
-            <select id="sport" name="sport" defaultValue={p.sport || ""}>
-              <option value="">{t("profile.choose")}</option>
-              {SPORTS.map((s) => <option key={s} value={s}>{dict.sports[s] || s}</option>)}
-            </select>
-          </div>
-        </div>
-        <fieldset>
-          <legend>{t("profile.skills")}</legend>
-          {Object.keys(SKILLS).map((v) => (
-            <label key={v}><input type="checkbox" name="skills" value={v} defaultChecked={(p.skills || []).includes(v)} /> {L(v)}</label>
-          ))}
-        </fieldset>
-        <fieldset>
-          <legend>{t("profile.interests")}</legend>
-          {Object.keys(INTERESTS).map((v) => (
-            <label key={v}><input type="checkbox" name="interests" value={v} defaultChecked={(p.interests || []).includes(v)} /> {L(v)}</label>
-          ))}
-        </fieldset>
-        <label htmlFor="goal">{t("profile.goal")}</label>
-        <input id="goal" name="goal" type="text" placeholder={t("profile.goalPh")} defaultValue={p.goal} />
-        <label htmlFor="achievements">{t("profile.achievements")}</label>
-        <textarea id="achievements" name="achievements" rows={5} placeholder={t("profile.achievementsPh")} defaultValue={p.achievements} />
-        <button type="submit">{t("profile.savePassport")}</button>
-      </form>
-
-      {eff.auto.size > 0 && (
-        <div className="card found">
-          <h3>{t("profile.found")}</h3>
-          <ul>
-            {[...eff.auto].map((tag) => <li key={tag}><strong>{L(tag)}</strong> · {t("profile.from")} &ldquo;{eff.evidence[tag]}&rdquo;</li>)}
-          </ul>
-        </div>
-      )}
-
-      <Step n="2" id="path">{t("profile.step2")}</Step>
-      <div className="card">
-        {!profile && <p>{t("profile.saveFirstMatches")}</p>}
-        {profile && !matches.length && <p>{t("profile.tickSome")}</p>}
-        {/* The target role comes first, with its plan inside; it may be a path outside the top matches. */}
-        {plan && !matches.some((m) => m.idx === plan.role_idx) && (
-          <div className="match target">
-            <div className="match-head"><strong>{pathName(dict, plan.role_idx)}</strong><span className="badge badge-full">{t("profile.target")}</span></div>
-            <PlanBlock plan={plan} done={done} t={t} dict={dict} />
-          </div>
-        )}
-        {[...matches].sort((x, y) => (y.idx === plan?.role_idx) - (x.idx === plan?.role_idx)).map((m) => {
-          const isTarget = plan?.role_idx === m.idx;
-          return (
-            <div key={m.idx} className={isTarget ? "match target" : "match"}>
-              <div className="match-head"><strong>{pathName(dict, m.idx)}</strong><span className={isTarget ? "badge badge-full" : "badge"}>{isTarget ? t("profile.target") : dict.profile.strength[m.level]}</span></div>
-              <div className="meter" aria-label={`${Math.round(m.ratio * 100)}% of this role's skills`}><span style={{ width: `${Math.round(m.ratio * 100)}%` }} /></div>
-              <p>{t("profile.youHave")} {m.matched.map(L).join(", ")}</p>
-              {m.matched.some((tag) => eff.evidence[tag]) && (
-                <ul className="evidence">
-                  {m.matched.filter((tag) => eff.evidence[tag]).map((tag) => <li key={tag}><small>{L(tag)}: &ldquo;{eff.evidence[tag]}&rdquo;</small></li>)}
-                </ul>
-              )}
-              <p>{t("profile.missing")} {m.gaps.length ? m.gaps.map(L).join(", ") : t("profile.nothingCore")}</p>
-              {isTarget && <PlanBlock plan={plan} done={done} t={t} dict={dict} />}
-              <div className="job-actions">
-                {!isTarget && (
-                  <form action={setTarget}>
-                    <input type="hidden" name="role_idx" value={m.idx} />
-                    <button type="submit">{t("profile.makeTarget")}</button>
-                  </form>
-                )}
-                <SearchFor query={`${CAREER_PATHS[m.idx].search} jobs`}>{t("profile.seeJobs")}</SearchFor>
+      <div className="tab-panel" data-tab-panel="profile" hidden={tab !== "profile"}>
+          <Head id="passport" title={t("profile.step1")} lead={t("tabs.lead.profile")} />
+          <form action={saveProfile} className="card" key={p.updated_at || "new"}>
+            <input type="hidden" name="tab" value="profile" />
+            {!profile && <PendingNote />}
+            <ResumeFill />
+            <div className="row">
+              <div><label htmlFor="full_name">{t("profile.name")}</label><input id="full_name" name="full_name" type="text" defaultValue={p.full_name} /></div>
+              <div><label htmlFor="location">{t("profile.city")}</label><input id="location" name="location" type="text" placeholder={t("profile.cityPh")} defaultValue={p.location} /></div>
+            </div>
+            <div className="row">
+              <div>
+                <label htmlFor="role">{t("profile.whereNow")}</label>
+                <select id="role" name="role" defaultValue={p.role || ""}>
+                  <option value="">{t("profile.choose")}</option>
+                  {ROLES.map((r) => <option key={r} value={r}>{dict.roles[r] || r}</option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="sport">{t("profile.mainSport")}</label>
+                <select id="sport" name="sport" defaultValue={p.sport || ""}>
+                  <option value="">{t("profile.choose")}</option>
+                  {SPORTS.map((s) => <option key={s} value={s}>{dict.sports[s] || s}</option>)}
+                </select>
               </div>
             </div>
-          );
-        })}
+            <fieldset>
+              <legend>{t("profile.skills")}</legend>
+              {Object.keys(SKILLS).map((v) => (
+                <label key={v}><input type="checkbox" name="skills" value={v} defaultChecked={(p.skills || []).includes(v)} /> {L(v)}</label>
+              ))}
+            </fieldset>
+            <fieldset>
+              <legend>{t("profile.interests")}</legend>
+              {Object.keys(INTERESTS).map((v) => (
+                <label key={v}><input type="checkbox" name="interests" value={v} defaultChecked={(p.interests || []).includes(v)} /> {L(v)}</label>
+              ))}
+            </fieldset>
+            <label htmlFor="goal">{t("profile.goal")}</label>
+            <input id="goal" name="goal" type="text" placeholder={t("profile.goalPh")} defaultValue={p.goal} />
+            {/* New users have no Proof tab content yet, so the achievements box stays here until the first save. */}
+            {!profile && (
+              <>
+                <label htmlFor="achievements">{t("profile.achievements")}</label>
+                <textarea id="achievements" name="achievements" rows={4} placeholder={t("profile.achievementsPh")} />
+              </>
+            )}
+            <button type="submit">{profile ? t("tabs.saveNext") : t("profile.savePassport")}</button>
+          </form>
+          <Pager tab="profile" t={t} />
+        </div>
+
+      <div className="tab-panel" data-tab-panel="proof" hidden={tab !== "proof"}>
+          <Head id="proof" title={t("tabs.proofTitle")} lead={t("tabs.lead.proof")} />
+          {!profile ? <div className="card"><p>{t("profile.proofFirst")}</p><a className="cta small" data-tab-link="profile" href={href("profile")}>{t("tabs.goProfile")}</a></div> : (
+            <>
+              <form action={saveProfile} className="card" key={p.updated_at || "new"}>
+                <input type="hidden" name="tab" value="proof" />
+                <ProofBuilder hasProfile />
+                <label htmlFor="achievements">{t("profile.achievements")}</label>
+                <textarea id="achievements" name="achievements" rows={5} placeholder={t("profile.achievementsPh")} defaultValue={p.achievements} />
+                <button type="submit">{t("tabs.saveAchievements")}</button>
+              </form>
+
+              <div className="card" id="proof-list">
+                <h3>{t("evidence.title")}</h3>
+                <p className="muted">{t("evidence.lead")}</p>
+                {!proofReady && <p className="error">{t("evidence.notReady")}</p>}
+                {proofReady && !lines.length && <p>{t("evidence.noLines")}</p>}
+                {proofReady && lines.length > 0 && <p><small>{t("evidence.count", { n: backed, total: lines.length })}</small></p>}
+                {proofReady && lines.map(({ line, items: its }, i) => (
+                  <div key={line} className={its.length ? "ev-line backed" : "ev-line"}>
+                    <p className="ev-text">{line}</p>
+                    <ProofChips items={its} t={t} removeAction={deleteProofItem} />
+                    <details open={!its.length && i === lines.findIndex((l) => !l.items.length)}>
+                      <summary>{its.length ? t("evidence.addMore") : t("evidence.addFirst")}</summary>
+                      <EvidenceForm achievement={line} uid={i} />
+                    </details>
+                  </div>
+                ))}
+                {proofReady && orphans.length > 0 && (
+                  <div className="ev-line">
+                    <p className="ev-text muted">{t("evidence.orphans")}</p>
+                    <ProofChips items={orphans} t={t} removeAction={deleteProofItem} />
+                  </div>
+                )}
+              </div>
+
+              {eff.auto.size > 0 && (
+                <div className="card found">
+                  <h3>{t("profile.found")}</h3>
+                  <ul>
+                    {[...eff.auto].map((tag) => <li key={tag}><strong>{L(tag)}</strong> · {t("profile.from")} &ldquo;{eff.evidence[tag]}&rdquo;</li>)}
+                  </ul>
+                </div>
+              )}
+              <ResumeBullets />
+            </>
+          )}
+          <Pager tab="proof" t={t} />
+        </div>
+
+      <div className="tab-panel" data-tab-panel="path" hidden={tab !== "path"}>
+          <Head id="path" title={t("profile.step2")} lead={t("tabs.lead.path")} />
+          <div className="card">
+            {!profile && <p>{t("profile.saveFirstMatches")}</p>}
+            {profile && !matches.length && <p>{t("profile.tickSome")}</p>}
+            {plan && !matches.some((m) => m.idx === plan.role_idx) && (
+              <div className="match target">
+                <div className="match-head"><strong>{pathName(dict, plan.role_idx)}</strong><span className="badge badge-full">{t("profile.target")}</span></div>
+                <PlanBlock plan={plan} done={done} t={t} dict={dict} />
+              </div>
+            )}
+            {[...matches].sort((x, y) => (y.idx === plan?.role_idx) - (x.idx === plan?.role_idx)).map((m) => {
+              const isTarget = plan?.role_idx === m.idx;
+              return (
+                <div key={m.idx} className={isTarget ? "match target" : "match"}>
+                  <div className="match-head"><strong>{pathName(dict, m.idx)}</strong><span className={isTarget ? "badge badge-full" : "badge"}>{isTarget ? t("profile.target") : dict.profile.strength[m.level]}</span></div>
+                  <div className="meter" aria-label={`${Math.round(m.ratio * 100)}% of this role's skills`}><span style={{ width: `${Math.round(m.ratio * 100)}%` }} /></div>
+                  <p>{t("profile.youHave")} {m.matched.map(L).join(", ")}</p>
+                  {m.matched.some((tag) => eff.evidence[tag]) && (
+                    <ul className="evidence">
+                      {m.matched.filter((tag) => eff.evidence[tag]).map((tag) => <li key={tag}><small>{L(tag)}: &ldquo;{eff.evidence[tag]}&rdquo;</small></li>)}
+                    </ul>
+                  )}
+                  <p>{t("profile.missing")} {m.gaps.length ? m.gaps.map(L).join(", ") : t("profile.nothingCore")}</p>
+                  {isTarget && <PlanBlock plan={plan} done={done} t={t} dict={dict} />}
+                  <div className="job-actions">
+                    {!isTarget && (
+                      <form action={setTarget}>
+                        <input type="hidden" name="role_idx" value={m.idx} />
+                        <button type="submit">{t("profile.makeTarget")}</button>
+                      </form>
+                    )}
+                    <SearchFor query={`${CAREER_PATHS[m.idx].search} jobs`}>{t("profile.seeJobs")}</SearchFor>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <Pager tab="path" t={t} />
+        </div>
+
+      <div className="tab-panel" data-tab-panel="jobs" hidden={tab !== "jobs"}>
+        <Head id="jobs" title={t("profile.step3")} lead={t("tabs.lead.jobs")} />
+        {billing.ready && !ok && <AiBar s={billing} t={t} />}
+        <div className="card">
+          {profile ? (
+            <JobSearch starters={[
+              dict.profile.starterInterns,
+              dict.profile.starterNear,
+              matches[0] ? [t("profile.starterRole", { role: pathName(dict, matches[0].idx) }), `${CAREER_PATHS[matches[0].idx].search} jobs`] : dict.profile.starterEntry,
+              dict.profile.starterRemote
+            ]} />
+          ) : <p>{t("profile.jobsFirst")}</p>}
+        </div>
+        <Pager tab="jobs" t={t} />
       </div>
 
-      <Step n="3" id="jobs">{t("profile.step3")}</Step>
-      <div className="card">
-        {profile ? (
-          // Each starter is [what the chip says, what it searches for].
-          <JobSearch starters={[
-            dict.profile.starterInterns,
-            dict.profile.starterNear,
-            matches[0] ? [t("profile.starterRole", { role: pathName(dict, matches[0].idx) }), `${CAREER_PATHS[matches[0].idx].search} jobs`] : dict.profile.starterEntry,
-            dict.profile.starterRemote
-          ]} />
-        ) : <p>{t("profile.jobsFirst")}</p>}
-      </div>
-
-      <Step n="4" id="proof">{t("profile.step4")}</Step>
-      <div className="card">
-        {!profile ? (
-          <p>{t("profile.proofFirst")}</p>
-        ) : p.is_public && p.public_code ? (
-          <>
-            <p className="ok">{t("profile.proofLive")}</p>
-            <p className="proof-url"><a href={`/p/${p.public_code}`}>{proofUrl}</a></p>
-            <div className="job-actions">
-              <CopyButton text={proofUrl} />
-              <form action={setPublic}><input type="hidden" name="on" value="0" /><button type="submit" className="ghost">{t("profile.linkOff")}</button></form>
+      <div className="tab-panel" data-tab-panel="share" hidden={tab !== "share"}>
+          <Head id="share" title={t("tabs.shareTitle")} lead={t("tabs.lead.share")} />
+          <div className="card">
+            {!profile ? (
+              <p>{t("profile.proofFirst")}</p>
+            ) : p.is_public && p.public_code ? (
+              <>
+                <p className="ok">{t("profile.proofLive")}</p>
+                <p className="proof-url"><a href={`/p/${p.public_code}`}>{proofUrl}</a></p>
+                <div className="job-actions">
+                  <CopyButton text={proofUrl} />
+                  <form action={setPublic}><input type="hidden" name="on" value="0" /><button type="submit" className="ghost">{t("profile.linkOff")}</button></form>
+                </div>
+                <ShareButtons url={proofUrl} text={t("share.proofText")} />
+              </>
+            ) : (
+              <>
+                {lines.length > 0 && backed < lines.length && <p className="muted">{t("tabs.shareTip", { n: lines.length - backed })}</p>}
+                <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">{t("profile.createLink")}</button></form>
+              </>
+            )}
+          </div>
+          {invite && (
+            <div className="card invite-card" aria-label={t("invite.title")}>
+              <h3>{t("invite.title")}</h3>
+              <p>{t("invite.text", { n: INVITE_BONUS })}</p>
+              <p className="proof-url"><small>{inviteUrl}</small></p>
+              <div className="job-actions"><CopyButton text={inviteUrl} label={t("invite.copy")} /></div>
+              <ShareButtons url={inviteUrl} text={t("share.inviteText")} />
+              <p><small>{invite.count ? t("invite.count", { n: invite.count }) : t("invite.none")} {t("invite.cap")}</small></p>
             </div>
-            <ShareButtons url={proofUrl} text={t("share.proofText")} />
-          </>
-        ) : (
-          <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">{t("profile.createLink")}</button></form>
-        )}
-      </div>
-      {profile && <ResumeBullets />}
-      {invite && (
-        <section className="card invite-card" aria-label={t("invite.title")}>
-          <h3>{t("invite.title")}</h3>
-          <p>{t("invite.text", { n: INVITE_BONUS })}</p>
-          <p className="proof-url"><small>{inviteUrl}</small></p>
-          <div className="job-actions"><CopyButton text={inviteUrl} label={t("invite.copy")} /></div>
-          <ShareButtons url={inviteUrl} text={t("share.inviteText")} />
-          <p><small>{invite.count ? t("invite.count", { n: invite.count }) : t("invite.none")} {t("invite.cap")}</small></p>
-        </section>
-      )}
+          )}
+          <Pager tab="share" t={t} />
+        </div>
+
+      <Tabs fallback={profile ? "proof" : "profile"} />
+
       <Goldie coach={{
         firstName,
         hasProfile: !!profile,

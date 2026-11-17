@@ -9,3 +9,12 @@ export const getPublicProfile = cache(async (code) => {
   const { data } = await supabase.rpc("public_profile", { code });
   return (data && data[0]) || null;
 });
+
+// The proof the owner attached to their achievements (links, references, numbers, places). Empty until
+// supabase/006_proof_items.sql has been run, or while the link is switched off.
+export const getPublicProof = cache(async (code) => {
+  if (!/^[a-z0-9]{10}$/.test(String(code))) return [];
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, { auth: { persistSession: false } });
+  const { data, error } = await supabase.rpc("public_proof_items", { code });
+  return error ? [] : data || [];
+});

@@ -40,22 +40,27 @@ async function context() {
   return { t, lang, dict, country, place, summarize };
 }
 
+// The Passport is split into tabs: the Profile tab sends the "about you" fields, the Proof tab sends only
+// the achievements. Only the fields a form actually sent are saved, so one tab never blanks the other.
 export async function saveProfile(formData) {
   const { supabase, user } = await currentUser();
-  const sport = clean(formData.get("sport"), 40);
-  const { error } = await supabase.from("sports_profiles").upsert({
-    user_id: user.id,
-    full_name: clean(formData.get("full_name"), 100),
-    location: clean(formData.get("location"), 100),
-    role: clean(formData.get("role"), 40),
-    sport: SPORTS.includes(sport) ? sport : "",
-    skills: formData.getAll("skills").filter((s) => SKILLS[s]),
-    interests: formData.getAll("interests").filter((s) => INTERESTS[s]),
-    goal: clean(formData.get("goal"), 200),
-    achievements: clean(formData.get("achievements"), 4000),
-    updated_at: new Date().toISOString()
-  });
-  if (error) redirect(`/profile?error=${encodeURIComponent((await getT()).t("profile.saveError"))}`);
+  const tab = formData.get("tab") === "proof" ? "proof" : "profile";
+  const row = { user_id: user.id, updated_at: new Date().toISOString() };
+  if (formData.has("full_name")) {
+    const sport = clean(formData.get("sport"), 40);
+    Object.assign(row, {
+      full_name: clean(formData.get("full_name"), 100),
+      location: clean(formData.get("location"), 100),
+      role: clean(formData.get("role"), 40),
+      sport: SPORTS.includes(sport) ? sport : "",
+      skills: formData.getAll("skills").filter((s) => SKILLS[s]),
+      interests: formData.getAll("interests").filter((s) => INTERESTS[s]),
+      goal: clean(formData.get("goal"), 200)
+    });
+  }
+  if (formData.has("achievements")) row.achievements = clean(formData.get("achievements"), 4000);
+  const { error } = await supabase.from("sports_profiles").upsert(row);
+  if (error) redirect(`/profile?tab=${tab}&error=${encodeURIComponent((await getT()).t("profile.saveError"))}`);
   // Invited by a friend? Once this Passport has an achievement, both get their bonus answers (once only).
   const jar = await cookies();
   const ref = jar.get(REF_COOKIE)?.value;
@@ -65,7 +70,63 @@ export async function saveProfile(formData) {
     jar.delete(REF_COOKIE);
   }
   revalidatePath("/profile");
-  redirect(invited ? "/profile?saved=1&invited=1" : "/profile?saved=1");
+  // Saving "about you" moves on to the Proof tab, the next thing to fill in.
+  redirect(`/profile?tab=proof&saved=1${invited ? "&invited=1" : ""}`);
+}
+
+// Proof the user attaches to one achievement line. No one signs it off; the public page says "added by".
+const PROOF_KINDS = ["link", "reference", "number", "where"];
+const MAX_PROOF = 60;
+
+export async function addProofItem(formData) {
+  const { supabase, user } = await currentUser();
+  const { t } = await getT();
+  const back = (q) => redirect(`/profile?tab=proof&${q}#proof-list`);
+  const kind = String(formData.get("kind"));
+  const achievement = clean(formData.get("achievement"), 200);
+  if (!PROOF_KINDS.includes(kind) || !achievement) back(`error=${encodeURIComponent(t("evidence.pickLine"))}`);
+  const item = { user_id: user.id, achievement, kind };
+  if (kind === "link") {
+    let url = clean(formData.get("url"), 300);
+    if (url && !/^https?:\/\//i.test(url)) url = `https://${url}`;
+    try { if (!new URL(url).hostname.includes(".")) url = ""; } catch { url = ""; }
+    if (!url) back(`error=${encodeURIComponent(t("evidence.badLink"))}`);
+    Object.assign(item, { url, title: clean(formData.get("title"), 120) });
+  } else if (kind === "reference") {
+    const ref_name = clean(formData.get("ref_name"), 100);
+    if (!ref_name) back(`error=${encodeURIComponent(t("evidence.needName"))}`);
+    Object.assign(item, {
+      ref_name,
+      ref_role: clean(formData.get("ref_role"), 100),
+      ref_org: clean(formData.get("ref_org"), 100),
+      ref_relation: clean(formData.get("ref_relation"), 100),
+      ref_contact: clean(formData.get("ref_contact"), 120),
+      show_contact: formData.get("show_contact") === "on"
+    });
+  } else if (kind === "number") {
+    const stat = clean(formData.get("stat"), 120);
+    if (!stat) back(`error=${encodeURIComponent(t("evidence.needValue"))}`);
+    item.stat = stat;
+  } else {
+    const place = clean(formData.get("place"), 120);
+    if (!place) back(`error=${encodeURIComponent(t("evidence.needValue"))}`);
+    item.place = place;
+  }
+  const { count, error: countError } = await supabase.from("proof_items").select("id", { count: "exact", head: true }).eq("user_id", user.id);
+  if (countError) back(`error=${encodeURIComponent(t("evidence.notReady"))}`);
+  if ((count || 0) >= MAX_PROOF) back(`error=${encodeURIComponent(t("evidence.full", { n: MAX_PROOF }))}`);
+  const { error } = await supabase.from("proof_items").insert(item);
+  if (error) back(`error=${encodeURIComponent(t("evidence.saveError"))}`);
+  revalidatePath("/profile");
+  back("added=1");
+}
+
+export async function deleteProofItem(formData) {
+  const { supabase, user } = await currentUser();
+  const id = String(formData.get("id") || "");
+  if (/^[0-9a-f-]{36}$/i.test(id)) await supabase.from("proof_items").delete().eq("id", id).eq("user_id", user.id);
+  revalidatePath("/profile");
+  redirect("/profile?tab=proof#proof-list");
 }
 
 export async function setTarget(formData) {
@@ -76,7 +137,7 @@ export async function setTarget(formData) {
   // Skills found in achievements count as "have", so the plan doesn't ask the user to build them again.
   await supabase.from("plans").upsert({ user_id: user.id, role_idx: idx, steps: buildPlanSteps(idx, effectiveProfile(profile), dictFor("en")), updated_at: new Date().toISOString() });
   revalidatePath("/profile");
-  redirect("/profile#path");
+  redirect("/profile?tab=path");
 }
 
 // Uploaded résumé file (PDF, Word or text) to plain text for the résumé filler. Nothing is saved here:
@@ -204,9 +265,9 @@ export async function setPublic(formData) {
   const update = { is_public: on };
   if (on && !profile.public_code) update.public_code = randomBytes(5).toString("hex"); // 10 lowercase hex characters
   const { error } = await supabase.from("sports_profiles").update(update).eq("user_id", user.id);
-  if (error) redirect(`/profile?error=${encodeURIComponent((await getT()).t("profile.linkError"))}`);
+  if (error) redirect(`/profile?tab=share&error=${encodeURIComponent((await getT()).t("profile.linkError"))}`);
   revalidatePath("/profile");
-  redirect("/profile#proof");
+  redirect("/profile?tab=share");
 }
 
 // Ticks a plan step. A note about what they did is saved as a new achievement line, so the plan builds proof.
