@@ -1,6 +1,6 @@
 # LJSportMind
 
-Sports career discovery with proof: a Sports Profile, career matches, a development plan, and LJ Coach Certification (graded levels with a credential ID). "Advice is everywhere. Proof isn't." Free for athletes; schools and clubs are the intended buyers.
+Proof for anyone breaking into sports: a Passport with a portfolio (files, links, references who confirm with one click) and one public link employers can trust, plus career matches and live jobs. "Advice is everywhere. Proof isn't." Free for candidates; employers (including schools and clubs) are the intended buyers. Focus: international candidates whose right to work is already sorted (no legal or visa help). Full spec: `prd.md`.
 
 ## Apps in this repo
 
@@ -33,6 +33,7 @@ Sports career discovery with proof: a Sports Profile, career matches, a developm
 
 - Stay inside this project folder.
 - Never delete files or install tools without asking first.
-- Keep `research/`, `strategy/`, `prd.md`, `build-log.md` and `pricing simulator/` private: out of git and deploys.
+- Keep `research/`, `strategy/`, `interviews/`, `build-log.md`, `build-logs/` and `pricing simulator/` private: out of git and deploys.
+- `prd.md` is in git (so graders can read it) but stays off the live site (`.vercelignore`). Keep it current when the product changes.
 - Never put secret keys in code or chat; the owner adds them with `vercel env add`.
 - Don't fabricate data: scores and match facts come from real sources.

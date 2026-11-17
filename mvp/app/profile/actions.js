@@ -424,3 +424,15 @@ export async function addGapToPlan(tag) {
   revalidatePath("/profile");
   return { ok: true };
 }
+
+// Makes (or returns) the private link a reference opens to confirm one portfolio reference.
+// Needs supabase/007_reference_confirm.sql; returns { error } until it has been run.
+export async function referenceConfirmLink(id) {
+  const { supabase } = await currentUser();
+  const { t } = await getT();
+  if (!/^[0-9a-f-]{36}$/i.test(String(id || ""))) return { error: t("confirm.linkError") };
+  const { data, error } = await supabase.rpc("reference_confirm_link", { item: id });
+  if (error || !data) return { error: t("confirm.linkError") };
+  revalidatePath("/profile");
+  return { url: `https://ljsportmind-mvp.vercel.app/r/${data}` };
+}

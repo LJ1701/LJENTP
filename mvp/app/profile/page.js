@@ -212,7 +212,7 @@ export default async function ProfilePage({ searchParams }) {
                 </div>
                 <div className="card" id="portfolio-list">
                   <h3>{t("evidence.yours")} <small>· {t("evidence.count", { n: items.length, files: items.filter((i) => i.kind === "file").length, max: 20 })}</small></h3>
-                  {items.length ? <PortfolioCards items={items} urls={urls} t={t} removeAction={deletePortfolioItem} /> : <p className="muted">{t("evidence.empty")}</p>}
+                  {items.length ? <PortfolioCards items={items} urls={urls} t={t} lang={lang} removeAction={deletePortfolioItem} /> : <p className="muted">{t("evidence.empty")}</p>}
                 </div>
               </>
             )}
