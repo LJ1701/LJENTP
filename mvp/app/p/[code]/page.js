@@ -66,7 +66,7 @@ export default async function PublicProfile({ params }) {
       {items.length > 0 && (
         <section id="portfolio">
           <h2>{t("evidence.publicTitle")}</h2>
-          <PortfolioCards items={items} urls={urls} t={t} />
+          <PortfolioCards items={items} urls={urls} t={t} lang={lang} />
           <p><small>{t("evidence.publicNote", { name })}</small></p>
         </section>
       )}
