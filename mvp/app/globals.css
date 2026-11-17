@@ -531,3 +531,14 @@ a.ev-chip:hover { border-color: var(--accent); color: var(--accent-light); }
 .ref-claim li { margin: 4px 0; overflow-wrap: anywhere; }
 .ref-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
 .ref-actions button { margin: 0; }
+
+/* Where you can work: the country chips on the Profile tab and the note on the Jobs tab. */
+.work-countries { border: 1px solid var(--line, #2a2f3a); border-radius: 10px; padding: 10px 14px 4px; margin: 14px 0; }
+.work-countries legend { padding: 0 6px; font-weight: 600; }
+.country-chips { margin-bottom: 10px; }
+.country-chips .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 6px 0; }
+.country-chips .chips li { display: inline-flex; align-items: center; gap: 2px; padding: 3px 4px 3px 10px; border: 1px solid var(--accent); border-radius: 999px; font-size: 14px; }
+.country-chips .chips button.mini { margin: 0; padding: 0 7px; }
+.work-note { margin: 0 0 12px; padding: 8px 12px; border-left: 3px solid var(--accent); background: rgba(255, 255, 255, 0.03); border-radius: 6px; }
+.work-note p { margin: 0 0 6px; }
+.work-note button.mini { margin: 0; }

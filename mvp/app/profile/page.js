@@ -20,7 +20,8 @@ import CopyButton from "./copy-button";
 import { billingStatus, FREE_ANSWERS } from "@/lib/billing";
 import { joinProgram, leaveProgram } from "../billing/actions";
 import { getT, getCountry } from "@/lib/i18n-server";
-import { countryName } from "@/lib/countries";
+import { countryName, REGIONS } from "@/lib/countries";
+import { CountryChips, WorkCountryNote } from "./work-countries";
 
 export const dynamic = "force-dynamic";
 
@@ -187,6 +188,12 @@ export default async function ProfilePage({ searchParams }) {
             </fieldset>
             <label htmlFor="goal">{t("profile.goal")}</label>
             <input id="goal" name="goal" type="text" placeholder={t("profile.goalPh")} defaultValue={p.goal} />
+            {/* Where they can already work (self-stated) and where they'd like to. No visa or legal advice. */}
+            <fieldset className="work-countries">
+              <legend>{t("work.title")}</legend>
+              <CountryChips name="work_countries" label={t("work.canLabel")} hint={t("work.canHint")} initial={p.work_countries || []} />
+              <CountryChips name="target_countries" label={t("work.wantLabel")} initial={p.target_countries || []} />
+            </fieldset>
             {/* New users have no Proof tab content yet, so the achievements box stays here until the first save. */}
             {!profile && (
               <>
@@ -283,6 +290,7 @@ export default async function ProfilePage({ searchParams }) {
         <Head id="jobs" title={t("profile.step3")} />
         {billing.ready && !ok && <AiBar s={billing} t={t} />}
         <div className="card">
+          {profile && <WorkCountryNote work={p.work_countries || []} regions={Object.fromEntries(Object.entries(REGIONS).map(([k, r]) => [k, r.codes]))} />}
           {profile ? (
             <JobSearch starters={[
               dict.profile.starterInterns,

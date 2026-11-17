@@ -4,6 +4,7 @@ import { labelIn, pathName, stepText } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
 import { getT } from "@/lib/i18n-server";
 import PortfolioCards from "../../portfolio-cards";
+import { countryName } from "@/lib/countries";
 
 export const dynamic = "force-dynamic";
 // Title and description for link previews (LinkedIn, iMessage, group chats); the image is opengraph-image.js.
@@ -44,6 +45,8 @@ export default async function PublicProfile({ params }) {
         <h1>{name}</h1>
         <p className="muted">{[dict.roles[p.role] || p.role, dict.sports[p.sport] || p.sport].filter(Boolean).join(" · ")}</p>
         {p.goal && <p><strong>{t("public.goal")}</strong> {p.goal}</p>}
+        {p.work_countries?.length > 0 && <p><strong>{t("work.publicCan")}</strong> {p.work_countries.map((c) => countryName(c, lang)).join(", ")} <small className="muted">({t("work.publicStated", { name })})</small></p>}
+        {p.target_countries?.length > 0 && <p><strong>{t("work.publicWant")}</strong> {p.target_countries.map((c) => countryName(c, lang)).join(", ")}</p>}
         {items.length > 0 && <p className="hero-stats"><a href="#portfolio">{t("evidence.publicCount", { n: items.length })}</a></p>}
       </div>
 
