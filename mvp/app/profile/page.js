@@ -26,7 +26,7 @@ export const dynamic = "force-dynamic";
 
 // The Passport has five tabs. Each one is a link (?tab=...), so it works without JavaScript and the
 // browser's back button moves between tabs.
-const TABS = ["profile", "proof", "portfolio", "path", "jobs", "share"];
+const TABS = ["profile", "portfolio", "path", "jobs", "share"];
 
 // The saved plan for the target role: progress, then steps that turn into proof when ticked.
 const PlanBlock = ({ plan, done, t, dict }) => (
@@ -60,10 +60,9 @@ const AiBar = ({ s, t }) => (
 );
 
 // Tab heading: a short title and one line saying what this tab is for.
-const Head = ({ title, lead, id }) => (
+const Head = ({ title, id }) => (
   <div className="tab-head" id={id}>
     <h2>{title}</h2>
-    {lead && <p className="muted">{lead}</p>}
   </div>
 );
 
@@ -110,15 +109,15 @@ export default async function ProfilePage({ searchParams }) {
   // Progress across the five tabs: what counts as "done" for each.
   const doneTabs = {
     profile: !!(profile && (p.full_name || p.role) && (p.skills?.length || p.interests?.length)),
-    proof: lines.length > 0,
-    portfolio: items.length > 0,
+    portfolio: items.length > 0 || lines.length > 0,
     path: !!plan,
     jobs: false,
     share: !!(p.is_public && p.public_code)
   };
-  const countable = ["profile", "proof", "portfolio", "path", "share"];
+  const countable = ["profile", "portfolio", "path", "share"];
   const progress = countable.filter((k) => doneTabs[k]).length;
-  const tab = TABS.includes(askedTab) ? askedTab : profile ? "proof" : "profile";
+  // Old links (?tab=proof) open the Portfolio, where achievements now live.
+  const tab = askedTab === "proof" ? "portfolio" : TABS.includes(askedTab) ? askedTab : profile ? "portfolio" : "profile";
   const href = (k) => `/profile?tab=${k}`;
 
   return (
@@ -140,7 +139,7 @@ export default async function ProfilePage({ searchParams }) {
       </div>
       {saveStage && <SaveAccount stage={saveStage} pendingEmail={user.new_email} />}
       {profileError && <p className="error">{t("profile.dbMissing")}</p>}
-      {saved && <p className="ok flash">{t(saved === "proof" ? "tabs.saved" : "tabs.savedProfile")}</p>}
+      {saved && <p className="ok flash">{t(saved === "portfolio" ? "tabs.savedAchievements" : "tabs.saved")}</p>}
       {added && <p className="ok flash">{t("evidence.added")}</p>}
       {error && <p className="error flash">{error}</p>}
       {ok && <p className="ok flash">{ok}</p>}
@@ -149,7 +148,7 @@ export default async function ProfilePage({ searchParams }) {
       {billing.ready && ok && <AiBar s={billing} t={t} />}
 
       <div className="tab-panel" data-tab-panel="profile" hidden={tab !== "profile"}>
-          <Head id="passport" title={t("profile.step1")} lead={t("tabs.lead.profile")} />
+          <Head id="passport" title={t("profile.step1")} />
           <form action={saveProfile} className="card" key={p.updated_at || "new"}>
             <input type="hidden" name="tab" value="profile" />
             {!profile && <PendingNote />}
@@ -200,53 +199,47 @@ export default async function ProfilePage({ searchParams }) {
           <Pager tab="profile" t={t} />
         </div>
 
-      <div className="tab-panel" data-tab-panel="proof" hidden={tab !== "proof"}>
-          <Head id="proof" title={t("tabs.proofTitle")} lead={t("tabs.lead.proof")} />
-          {!profile ? <div className="card"><p>{t("profile.proofFirst")}</p><a className="cta small" data-tab-link="profile" href={href("profile")}>{t("tabs.goProfile")}</a></div> : (
-            <>
-              <form action={saveProfile} className="card" key={p.updated_at || "new"}>
-                <input type="hidden" name="tab" value="proof" />
-                <ProofBuilder hasProfile />
-                <label htmlFor="achievements">{t("profile.achievements")}</label>
-                <textarea id="achievements" name="achievements" rows={5} placeholder={t("profile.achievementsPh")} defaultValue={p.achievements} />
-                <button type="submit">{t("tabs.saveAchievements")}</button>
-              </form>
-
-              {eff.auto.size > 0 && (
-                <div className="card found">
-                  <h3>{t("profile.found")}</h3>
-                  <ul>
-                    {[...eff.auto].map((tag) => <li key={tag}><strong>{L(tag)}</strong> · {t("profile.from")} &ldquo;{eff.evidence[tag]}&rdquo;</li>)}
-                  </ul>
-                </div>
-              )}
-              <ResumeBullets />
-            </>
-          )}
-          <Pager tab="proof" t={t} />
-        </div>
-
+      {/* Portfolio: files, links and references that back up what you've done, plus the achievements list itself. */}
       <div className="tab-panel" data-tab-panel="portfolio" hidden={tab !== "portfolio"}>
-        <Head id="portfolio" title={t("tabs.portfolioTitle")} lead={t("tabs.lead.portfolio")} />
-        {!profile ? <div className="card"><p>{t("profile.proofFirst")}</p><a className="cta small" data-tab-link="profile" href={href("profile")}>{t("tabs.goProfile")}</a></div> : !portfolioReady ? (
-          <div className="card"><p className="error">{t("evidence.notReady")}</p></div>
-        ) : (
+        <Head id="portfolio" title={t("tabs.portfolioTitle")} />
+        {!profile ? <div className="card"><p>{t("profile.proofFirst")}</p><a className="cta small" data-tab-link="profile" href={href("profile")}>{t("tabs.goProfile")}</a></div> : (
           <>
-            <div className="card">
-              <h3>{t("evidence.addTitle")}</h3>
-              <PortfolioForm lines={lines} />
-            </div>
-            <div className="card" id="portfolio-list">
-              <h3>{t("evidence.yours")} <small>· {t("evidence.count", { n: items.length, files: items.filter((i) => i.kind === "file").length, max: 20 })}</small></h3>
-              {items.length ? <PortfolioCards items={items} urls={urls} t={t} removeAction={deletePortfolioItem} /> : <p className="muted">{t("evidence.empty")}</p>}
-            </div>
+            {!portfolioReady ? <div className="card"><p className="error">{t("evidence.notReady")}</p></div> : (
+              <>
+                <div className="card">
+                  <h3>{t("evidence.addTitle")}</h3>
+                  <PortfolioForm lines={lines} />
+                </div>
+                <div className="card" id="portfolio-list">
+                  <h3>{t("evidence.yours")} <small>· {t("evidence.count", { n: items.length, files: items.filter((i) => i.kind === "file").length, max: 20 })}</small></h3>
+                  {items.length ? <PortfolioCards items={items} urls={urls} t={t} removeAction={deletePortfolioItem} /> : <p className="muted">{t("evidence.empty")}</p>}
+                </div>
+              </>
+            )}
+            <form action={saveProfile} className="card" key={p.updated_at || "new"} id="achievements-card">
+              <input type="hidden" name="tab" value="portfolio" />
+              <h3>{t("tabs.proofTitle")}</h3>
+              <ProofBuilder hasProfile />
+              <label htmlFor="achievements">{t("profile.achievements")}</label>
+              <textarea id="achievements" name="achievements" rows={5} placeholder={t("profile.achievementsPh")} defaultValue={p.achievements} />
+              <button type="submit">{t("tabs.saveAchievements")}</button>
+            </form>
+            {eff.auto.size > 0 && (
+              <div className="card found">
+                <h3>{t("profile.found")}</h3>
+                <ul>
+                  {[...eff.auto].map((tag) => <li key={tag}><strong>{L(tag)}</strong> · {t("profile.from")} &ldquo;{eff.evidence[tag]}&rdquo;</li>)}
+                </ul>
+              </div>
+            )}
+            <ResumeBullets />
           </>
         )}
         <Pager tab="portfolio" t={t} />
       </div>
 
       <div className="tab-panel" data-tab-panel="path" hidden={tab !== "path"}>
-          <Head id="path" title={t("profile.step2")} lead={t("tabs.lead.path")} />
+          <Head id="path" title={t("profile.step2")} />
           <div className="card">
             {!profile && <p>{t("profile.saveFirstMatches")}</p>}
             {profile && !matches.length && <p>{t("profile.tickSome")}</p>}
@@ -287,7 +280,7 @@ export default async function ProfilePage({ searchParams }) {
         </div>
 
       <div className="tab-panel" data-tab-panel="jobs" hidden={tab !== "jobs"}>
-        <Head id="jobs" title={t("profile.step3")} lead={t("tabs.lead.jobs")} />
+        <Head id="jobs" title={t("profile.step3")} />
         {billing.ready && !ok && <AiBar s={billing} t={t} />}
         <div className="card">
           {profile ? (
@@ -303,7 +296,7 @@ export default async function ProfilePage({ searchParams }) {
       </div>
 
       <div className="tab-panel" data-tab-panel="share" hidden={tab !== "share"}>
-          <Head id="share" title={t("tabs.shareTitle")} lead={t("tabs.lead.share")} />
+          <Head id="share" title={t("tabs.shareTitle")} />
           <div className="card">
             {!profile ? (
               <p>{t("profile.proofFirst")}</p>
@@ -337,7 +330,7 @@ export default async function ProfilePage({ searchParams }) {
           <Pager tab="share" t={t} />
         </div>
 
-      <Tabs fallback={profile ? "proof" : "profile"} />
+      <Tabs fallback={profile ? "portfolio" : "profile"} />
 
       <Goldie coach={{
         firstName,

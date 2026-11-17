@@ -6,7 +6,7 @@ import { useEffect } from "react";
 // and "See jobs" buttons can open the right tab:
 //   window.dispatchEvent(new CustomEvent("passport:show", { detail: { tab: "jobs" } }))
 // A job search ("goldie:search") opens the Jobs tab on its own.
-const TABS = ["profile", "proof", "path", "jobs", "share"];
+const TABS = ["profile", "portfolio", "path", "jobs", "share"];
 
 export function showTab(tab, push = true) {
   if (!TABS.includes(tab)) return;
@@ -30,7 +30,7 @@ export function showTab(tab, push = true) {
   }
 }
 
-export default function Tabs({ fallback = "proof" }) {
+export default function Tabs({ fallback = "portfolio" }) {
   useEffect(() => {
     const onClick = (e) => {
       const a = e.target.closest?.("[data-tab-link]");

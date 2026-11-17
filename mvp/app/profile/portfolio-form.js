@@ -73,7 +73,6 @@ export default function PortfolioForm({ lines }) {
           </button>
         ))}
       </div>
-      <p className="muted small-print">{t(`evidence.help.${kind}`)}</p>
 
       {kind === "file" && (
         <>

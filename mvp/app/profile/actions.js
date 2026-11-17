@@ -44,7 +44,7 @@ async function context() {
 // the achievements. Only the fields a form actually sent are saved, so one tab never blanks the other.
 export async function saveProfile(formData) {
   const { supabase, user } = await currentUser();
-  const tab = formData.get("tab") === "proof" ? "proof" : "profile";
+  const tab = formData.get("tab") === "portfolio" ? "portfolio" : "profile";
   const row = { user_id: user.id, updated_at: new Date().toISOString() };
   if (formData.has("full_name")) {
     const sport = clean(formData.get("sport"), 40);
@@ -70,9 +70,8 @@ export async function saveProfile(formData) {
     jar.delete(REF_COOKIE);
   }
   revalidatePath("/profile");
-  // Each save moves on to the next thing to fill in: Profile -> Achievements -> Portfolio.
-  const next = tab === "proof" ? "portfolio" : "proof";
-  redirect(`/profile?tab=${next}&saved=${tab}${invited ? "&invited=1" : ""}`);
+  // Saving "about you" moves on to the Portfolio, where achievements and their files/links live.
+  redirect(`/profile?tab=portfolio&saved=${tab}${invited ? "&invited=1" : ""}${tab === "portfolio" ? "#achievements-card" : ""}`);
 }
 
 // Portfolio: files, links and references the user adds themselves. No one signs them off; the public
