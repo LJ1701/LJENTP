@@ -12,7 +12,7 @@ import { quickIntent, parseJobs } from "@/lib/intent";
 import { resumeFileText } from "@/lib/resume-file";
 import { canUseAi, spendAnswer, FREE_ANSWERS } from "@/lib/billing";
 import { getT, getCountry, dictFor } from "@/lib/i18n-server";
-import { adzunaFor, countryName } from "@/lib/countries";
+import { adzunaFor, countryName, isCountry } from "@/lib/countries";
 import { cookies } from "next/headers";
 import { applyReferral, REF_COOKIE } from "@/lib/referrals";
 
@@ -57,6 +57,10 @@ export async function saveProfile(formData) {
       interests: formData.getAll("interests").filter((s) => INTERESTS[s]),
       goal: clean(formData.get("goal"), 200)
     });
+    // Self-stated countries (sent by the Profile form only). Saved once supabase/008_work_countries.sql has run.
+    const list = (k) => [...new Set(formData.getAll(k).map(String).filter((c) => /^[A-Z]{2}$/.test(c) && isCountry(c)))].slice(0, 10);
+    row.work_countries = list("work_countries");
+    row.target_countries = list("target_countries");
   }
   if (formData.has("achievements")) row.achievements = clean(formData.get("achievements"), 4000);
   const { error } = await supabase.from("sports_profiles").upsert(row);

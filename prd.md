@@ -24,8 +24,8 @@
 
 **Focus: international candidates.**
 - The app already works in 10 languages and searches jobs in 19 countries.
-- The direction is something like an exchange program, but for sports jobs: candidates from one country are placed with employers in another.
-- **Legal boundary:** LJSportMind does **not** help with visas or work permits, and gives no legal advice. A candidate is matched to employers in a country **only after** they say their right to work there is already sorted. *(Not built yet: see section 8.)*
+- Candidates say which countries they can already work in and where they'd like to work. Employers see it on the proof page, and job search points them to the countries they listed.
+- **Legal boundary:** LJSportMind does **not** help with visas or work permits, and gives no legal advice. Candidates list only countries where their right to work is already sorted; the app says so where they pick them, and doesn't check it.
 - **Why international:**
   - Proof matters most when the employer can't call the candidate's old boss down the road.
   - A verified, translated proof page crosses borders better than a résumé.
@@ -145,7 +145,7 @@ These were built before this decision. Keeping user AI payments may be fine as a
 |---|---|---|
 | 1 | **Passport in tabs:** Profile → Portfolio → Path → Jobs → Share | Live |
 | 2 | **Portfolio:** upload files (PDF, image, short video, 10 MB), add links, name references. No sign-off needed. Each item can be tied to an achievement line | Live |
-| 3 | **Reference confirmation:** the user gets a private link and sends it themselves. The reference sees exactly what was claimed and answers "Yes, that's right" (with an optional comment) or "That's not right". The public page shows "Confirmed by <name>" for confirmed ones only. Owners see declines privately | On branch (database step done) |
+| 3 | **Reference confirmation:** the user gets a private link and sends it themselves. The reference sees exactly what was claimed and answers "Yes, that's right" (with an optional comment) or "That's not right". The public page shows "Confirmed by <name>" for confirmed ones only. Owners see declines privately | Live (17 Nov) |
 | 4 | **Public proof link:** one page for employers. It's on only while the owner switches it on; contacts are hidden unless shown | Live |
 | 5 | **Skill detection** from the user's own words, with the line each skill came from | Live |
 | 6 | **Career matches** (8 sports career paths) and a saved **plan** | Live |
@@ -153,7 +153,7 @@ These were built before this decision. Keeping user AI payments may be fine as a
 | 8 | **Goldie**, a guide that answers common requests instantly and uses AI (Google Gemini) for real questions | Live |
 | 9 | **10 languages** | Live |
 | 10 | **Accounts:** guest first, then save with email | Live |
-| 11 | **Work authorization:** "I can already work in: [countries]", shown to employers. LJSportMind doesn't check it or advise on it | Not built |
+| 11 | **Where you can work:** "Countries where I can already work" and "Countries I'd like to work in" (up to 10 each, self-stated, no visa advice). The public page shows "Can work in: …, as stated by <name>". The Jobs tab notes when the search country isn't one they listed, with one-click searches in their countries | Live (17 Nov) |
 | 12 | **Employer side:** search confirmed candidates, post jobs | Not built |
 | 13 | **Stronger confirmation:** check the confirmer's work email; label personal emails | Not built |
 
