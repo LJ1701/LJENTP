@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
-import { getPublicProfile, getPublicProof } from "@/lib/public-profile";
+import { getPublicProfile, getPublicPortfolio } from "@/lib/public-profile";
 import { labelIn, pathName, stepText } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
 import { getT } from "@/lib/i18n-server";
-import ProofChips, { groupProof } from "../../proof-chips";
+import PortfolioCards from "../../portfolio-cards";
 
 export const dynamic = "force-dynamic";
 // Title and description for link previews (LinkedIn, iMessage, group chats); the image is opengraph-image.js.
@@ -25,13 +25,15 @@ export async function generateMetadata({ params }) {
 export default async function PublicProfile({ params }) {
   const { code } = await params;
   if (!/^[a-z0-9]{10}$/.test(code)) notFound();
-  const [p, items] = await Promise.all([getPublicProfile(code), getPublicProof(code)]);
+  const [p, { items, urls }] = await Promise.all([getPublicProfile(code), getPublicPortfolio(code)]);
   if (!p) notFound();
 
   const { t, lang, dict } = await getT();
   const eff = effectiveProfile(p);
   const done = p.steps ? p.steps.filter((s) => s.done).length : 0;
-  const { lines } = groupProof(p.achievements, items);
+  const lines = String(p.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  // Portfolio items the owner tied to an achievement show as small tags under that line.
+  const shownBy = (line) => items.filter((i) => i.achievement && i.achievement.trim() === line);
   const name = p.full_name || t("public.title");
   const tags = [...eff.skills, ...eff.interests];
 
@@ -42,20 +44,29 @@ export default async function PublicProfile({ params }) {
         <h1>{name}</h1>
         <p className="muted">{[dict.roles[p.role] || p.role, dict.sports[p.sport] || p.sport].filter(Boolean).join(" · ")}</p>
         {p.goal && <p><strong>{t("public.goal")}</strong> {p.goal}</p>}
-        {lines.length > 0 && <p className="hero-stats"><small>{t("evidence.publicCount", { n: lines.filter((l) => l.items.length).length, total: lines.length })}</small></p>}
+        {items.length > 0 && <p className="hero-stats"><a href="#portfolio">{t("evidence.publicCount", { n: items.length })}</a></p>}
       </div>
 
       {lines.length > 0 && (
         <section>
           <h2>{t("public.achievements")}</h2>
           <ul className="ev-public">
-            {lines.map(({ line, items: its }) => (
-              <li key={line} className={its.length ? "ev-line backed" : "ev-line"}>
+            {lines.map((line) => (
+              <li key={line} className={shownBy(line).length ? "ev-line backed" : "ev-line"}>
                 <p className="ev-text">{line}</p>
-                <ProofChips items={its} t={t} />
+                {shownBy(line).length > 0 && (
+                  <p className="ev-tags">{shownBy(line).map((i) => <a key={i.id} href="#portfolio" className="ev-chip"><span className="ev-kind">{t(`evidence.kind.${i.kind}`)}</span> {i.kind === "reference" ? i.ref_name : i.title || i.file_name || i.url}</a>)}</p>
+                )}
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {items.length > 0 && (
+        <section id="portfolio">
+          <h2>{t("evidence.publicTitle")}</h2>
+          <PortfolioCards items={items} urls={urls} t={t} />
           <p><small>{t("evidence.publicNote", { name })}</small></p>
         </section>
       )}

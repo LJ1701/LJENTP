@@ -70,63 +70,70 @@ export async function saveProfile(formData) {
     jar.delete(REF_COOKIE);
   }
   revalidatePath("/profile");
-  // Saving "about you" moves on to the Proof tab, the next thing to fill in.
-  redirect(`/profile?tab=proof&saved=1${invited ? "&invited=1" : ""}`);
+  // Each save moves on to the next thing to fill in: Profile -> Achievements -> Portfolio.
+  const next = tab === "proof" ? "portfolio" : "proof";
+  redirect(`/profile?tab=${next}&saved=${tab}${invited ? "&invited=1" : ""}`);
 }
 
-// Proof the user attaches to one achievement line. No one signs it off; the public page says "added by".
-const PROOF_KINDS = ["link", "reference", "number", "where"];
-const MAX_PROOF = 60;
+// Portfolio: files, links and references the user adds themselves. No one signs them off; the public
+// page says "added by". Files go straight from the browser to Supabase Storage (portfolio/<user id>/...),
+// then this saves the row. Returns { ok } or { error } for the form to show.
+const PORTFOLIO_KINDS = ["file", "link", "reference"];
+const MAX_ITEMS = 40;
+const MAX_FILES = 20;
+const FILE_TYPES = ["application/pdf", "image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/quicktime", "video/webm"];
 
-export async function addProofItem(formData) {
+export async function addPortfolioItem(input) {
   const { supabase, user } = await currentUser();
   const { t } = await getT();
-  const back = (q) => redirect(`/profile?tab=proof&${q}#proof-list`);
-  const kind = String(formData.get("kind"));
-  const achievement = clean(formData.get("achievement"), 200);
-  if (!PROOF_KINDS.includes(kind) || !achievement) back(`error=${encodeURIComponent(t("evidence.pickLine"))}`);
-  const item = { user_id: user.id, achievement, kind };
-  if (kind === "link") {
-    let url = clean(formData.get("url"), 300);
+  const v = (k, max) => clean(input && input[k], max);
+  const kind = v("kind", 20);
+  if (!PORTFOLIO_KINDS.includes(kind)) return { error: t("evidence.saveError") };
+  const item = { user_id: user.id, kind, title: v("title", 120), description: v("description", 200), achievement: v("achievement", 200) };
+  if (kind === "file") {
+    const path = v("file_path", 300);
+    if (!path.startsWith(`${user.id}/`) || path.includes("..")) return { error: t("evidence.needFile") };
+    const type = v("file_type", 80);
+    if (!FILE_TYPES.includes(type)) return { error: t("evidence.fileType") };
+    Object.assign(item, { file_path: path, file_name: v("file_name", 160), file_type: type, file_size: Math.max(0, Math.min(Number(input.file_size) || 0, 10485760)) });
+    if (!item.title) item.title = item.file_name.replace(/\.[a-z0-9]+$/i, "").slice(0, 120);
+  } else if (kind === "link") {
+    let url = v("url", 300);
     if (url && !/^https?:\/\//i.test(url)) url = `https://${url}`;
     try { if (!new URL(url).hostname.includes(".")) url = ""; } catch { url = ""; }
-    if (!url) back(`error=${encodeURIComponent(t("evidence.badLink"))}`);
-    Object.assign(item, { url, title: clean(formData.get("title"), 120) });
-  } else if (kind === "reference") {
-    const ref_name = clean(formData.get("ref_name"), 100);
-    if (!ref_name) back(`error=${encodeURIComponent(t("evidence.needName"))}`);
-    Object.assign(item, {
-      ref_name,
-      ref_role: clean(formData.get("ref_role"), 100),
-      ref_org: clean(formData.get("ref_org"), 100),
-      ref_relation: clean(formData.get("ref_relation"), 100),
-      ref_contact: clean(formData.get("ref_contact"), 120),
-      show_contact: formData.get("show_contact") === "on"
-    });
-  } else if (kind === "number") {
-    const stat = clean(formData.get("stat"), 120);
-    if (!stat) back(`error=${encodeURIComponent(t("evidence.needValue"))}`);
-    item.stat = stat;
+    if (!url) return { error: t("evidence.badLink") };
+    item.url = url;
   } else {
-    const place = clean(formData.get("place"), 120);
-    if (!place) back(`error=${encodeURIComponent(t("evidence.needValue"))}`);
-    item.place = place;
+    const ref_name = v("ref_name", 100);
+    if (!ref_name) return { error: t("evidence.needName") };
+    Object.assign(item, { ref_name, ref_role: v("ref_role", 100), ref_org: v("ref_org", 100), ref_relation: v("ref_relation", 100), ref_contact: v("ref_contact", 120), show_contact: !!input.show_contact });
   }
-  const { count, error: countError } = await supabase.from("proof_items").select("id", { count: "exact", head: true }).eq("user_id", user.id);
-  if (countError) back(`error=${encodeURIComponent(t("evidence.notReady"))}`);
-  if ((count || 0) >= MAX_PROOF) back(`error=${encodeURIComponent(t("evidence.full", { n: MAX_PROOF }))}`);
-  const { error } = await supabase.from("proof_items").insert(item);
-  if (error) back(`error=${encodeURIComponent(t("evidence.saveError"))}`);
+  const { data: rows, error: readError } = await supabase.from("portfolio_items").select("kind").eq("user_id", user.id);
+  if (readError) return { error: t("evidence.notReady") };
+  if (rows.length >= MAX_ITEMS) return { error: t("evidence.full", { n: MAX_ITEMS }) };
+  if (kind === "file" && rows.filter((r) => r.kind === "file").length >= MAX_FILES) return { error: t("evidence.filesFull", { n: MAX_FILES }) };
+  const { error } = await supabase.from("portfolio_items").insert(item);
+  if (error) {
+    if (item.file_path) await supabase.storage.from("portfolio").remove([item.file_path]);
+    return { error: t("evidence.saveError") };
+  }
   revalidatePath("/profile");
-  back("added=1");
+  return { ok: true };
 }
 
-export async function deleteProofItem(formData) {
+// Removes one portfolio item, and its file if it has one.
+export async function deletePortfolioItem(formData) {
   const { supabase, user } = await currentUser();
   const id = String(formData.get("id") || "");
-  if (/^[0-9a-f-]{36}$/i.test(id)) await supabase.from("proof_items").delete().eq("id", id).eq("user_id", user.id);
+  if (/^[0-9a-f-]{36}$/i.test(id)) {
+    const { data: item } = await supabase.from("portfolio_items").select("file_path").eq("id", id).eq("user_id", user.id).maybeSingle();
+    if (item) {
+      await supabase.from("portfolio_items").delete().eq("id", id).eq("user_id", user.id);
+      if (item.file_path) await supabase.storage.from("portfolio").remove([item.file_path]);
+    }
+  }
   revalidatePath("/profile");
-  redirect("/profile?tab=proof#proof-list");
+  redirect("/profile?tab=portfolio");
 }
 
 export async function setTarget(formData) {

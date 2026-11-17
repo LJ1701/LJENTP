@@ -2,14 +2,15 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SKILLS, INTERESTS, SPORTS, ROLES, CAREER_PATHS, topMatches, labelIn, pathName, stepText, jobLinks } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
-import { saveProfile, setTarget, setPublic, deleteProofItem } from "./actions";
+import { saveProfile, setTarget, setPublic, deletePortfolioItem } from "./actions";
 import PlanSteps from "./plan-steps";
 import ResumeFill from "./resume-fill";
 import ResumeBullets from "./resume-bullets";
 import ProofBuilder from "./proof-builder";
-import EvidenceForm from "./evidence-form";
+import PortfolioForm from "./portfolio-form";
 import Tabs from "./tabs";
-import ProofChips, { groupProof } from "../proof-chips";
+import PortfolioCards from "../portfolio-cards";
+import { signedUrls } from "@/lib/portfolio";
 import ShareButtons from "../share-buttons";
 import { getInvite, INVITE_BONUS } from "@/lib/referrals";
 import Goldie from "../goldie";
@@ -25,7 +26,7 @@ export const dynamic = "force-dynamic";
 
 // The Passport has five tabs. Each one is a link (?tab=...), so it works without JavaScript and the
 // browser's back button moves between tabs.
-const TABS = ["profile", "proof", "path", "jobs", "share"];
+const TABS = ["profile", "proof", "portfolio", "path", "jobs", "share"];
 
 // The saved plan for the target role: progress, then steps that turn into proof when ticked.
 const PlanBlock = ({ plan, done, t, dict }) => (
@@ -85,15 +86,16 @@ export default async function ProfilePage({ searchParams }) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  const [{ data: profile, error: profileError }, { data: plan }, proofRes, billing] = await Promise.all([
+  const [{ data: profile, error: profileError }, { data: plan }, portfolioRes, billing] = await Promise.all([
     supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle(),
     supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle(),
-    supabase.from("proof_items").select("*").eq("user_id", user.id).order("created_at"),
+    supabase.from("portfolio_items").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
     billingStatus(user.id)
   ]);
-  // proof_items only exists once supabase/006_proof_items.sql has been run; until then proof tags are hidden.
-  const proofReady = !proofRes.error;
-  const items = proofReady ? proofRes.data || [] : [];
+  // portfolio_items only exists once supabase/006_portfolio.sql has been run; until then the tab says so.
+  const portfolioReady = !portfolioRes.error;
+  const items = portfolioReady ? portfolioRes.data || [] : [];
+  const urls = await signedUrls(supabase, items);
   const invite = await getInvite(user.id);
   const inviteUrl = invite ? `https://ljsportmind-mvp.vercel.app/?ref=${invite.code}` : "";
   const p = profile || {};
@@ -103,18 +105,18 @@ export default async function ProfilePage({ searchParams }) {
   const proofUrl = p.public_code ? `https://ljsportmind-mvp.vercel.app/p/${p.public_code}` : "";
   const firstName = (p.full_name || "").split(" ")[0];
   const saveStage = user.is_anonymous ? (user.new_email ? "pending" : "guest") : user.user_metadata?.needs_password ? "password" : null;
-  const { lines, orphans } = groupProof(p.achievements, items);
-  const backed = lines.filter((l) => l.items.length).length;
+  const lines = String(p.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean);
 
   // Progress across the five tabs: what counts as "done" for each.
   const doneTabs = {
     profile: !!(profile && (p.full_name || p.role) && (p.skills?.length || p.interests?.length)),
-    proof: backed > 0,
+    proof: lines.length > 0,
+    portfolio: items.length > 0,
     path: !!plan,
     jobs: false,
     share: !!(p.is_public && p.public_code)
   };
-  const countable = ["profile", "proof", "path", "share"];
+  const countable = ["profile", "proof", "portfolio", "path", "share"];
   const progress = countable.filter((k) => doneTabs[k]).length;
   const tab = TABS.includes(askedTab) ? askedTab : profile ? "proof" : "profile";
   const href = (k) => `/profile?tab=${k}`;
@@ -138,7 +140,7 @@ export default async function ProfilePage({ searchParams }) {
       </div>
       {saveStage && <SaveAccount stage={saveStage} pendingEmail={user.new_email} />}
       {profileError && <p className="error">{t("profile.dbMissing")}</p>}
-      {saved && <p className="ok flash">{t("tabs.saved")}</p>}
+      {saved && <p className="ok flash">{t(saved === "proof" ? "tabs.saved" : "tabs.savedProfile")}</p>}
       {added && <p className="ok flash">{t("evidence.added")}</p>}
       {error && <p className="error flash">{error}</p>}
       {ok && <p className="ok flash">{ok}</p>}
@@ -210,30 +212,6 @@ export default async function ProfilePage({ searchParams }) {
                 <button type="submit">{t("tabs.saveAchievements")}</button>
               </form>
 
-              <div className="card" id="proof-list">
-                <h3>{t("evidence.title")}</h3>
-                <p className="muted">{t("evidence.lead")}</p>
-                {!proofReady && <p className="error">{t("evidence.notReady")}</p>}
-                {proofReady && !lines.length && <p>{t("evidence.noLines")}</p>}
-                {proofReady && lines.length > 0 && <p><small>{t("evidence.count", { n: backed, total: lines.length })}</small></p>}
-                {proofReady && lines.map(({ line, items: its }, i) => (
-                  <div key={line} className={its.length ? "ev-line backed" : "ev-line"}>
-                    <p className="ev-text">{line}</p>
-                    <ProofChips items={its} t={t} removeAction={deleteProofItem} />
-                    <details open={!its.length && i === lines.findIndex((l) => !l.items.length)}>
-                      <summary>{its.length ? t("evidence.addMore") : t("evidence.addFirst")}</summary>
-                      <EvidenceForm achievement={line} uid={i} />
-                    </details>
-                  </div>
-                ))}
-                {proofReady && orphans.length > 0 && (
-                  <div className="ev-line">
-                    <p className="ev-text muted">{t("evidence.orphans")}</p>
-                    <ProofChips items={orphans} t={t} removeAction={deleteProofItem} />
-                  </div>
-                )}
-              </div>
-
               {eff.auto.size > 0 && (
                 <div className="card found">
                   <h3>{t("profile.found")}</h3>
@@ -247,6 +225,25 @@ export default async function ProfilePage({ searchParams }) {
           )}
           <Pager tab="proof" t={t} />
         </div>
+
+      <div className="tab-panel" data-tab-panel="portfolio" hidden={tab !== "portfolio"}>
+        <Head id="portfolio" title={t("tabs.portfolioTitle")} lead={t("tabs.lead.portfolio")} />
+        {!profile ? <div className="card"><p>{t("profile.proofFirst")}</p><a className="cta small" data-tab-link="profile" href={href("profile")}>{t("tabs.goProfile")}</a></div> : !portfolioReady ? (
+          <div className="card"><p className="error">{t("evidence.notReady")}</p></div>
+        ) : (
+          <>
+            <div className="card">
+              <h3>{t("evidence.addTitle")}</h3>
+              <PortfolioForm lines={lines} />
+            </div>
+            <div className="card" id="portfolio-list">
+              <h3>{t("evidence.yours")} <small>· {t("evidence.count", { n: items.length, files: items.filter((i) => i.kind === "file").length, max: 20 })}</small></h3>
+              {items.length ? <PortfolioCards items={items} urls={urls} t={t} removeAction={deletePortfolioItem} /> : <p className="muted">{t("evidence.empty")}</p>}
+            </div>
+          </>
+        )}
+        <Pager tab="portfolio" t={t} />
+      </div>
 
       <div className="tab-panel" data-tab-panel="path" hidden={tab !== "path"}>
           <Head id="path" title={t("profile.step2")} lead={t("tabs.lead.path")} />
@@ -322,7 +319,7 @@ export default async function ProfilePage({ searchParams }) {
               </>
             ) : (
               <>
-                {lines.length > 0 && backed < lines.length && <p className="muted">{t("tabs.shareTip", { n: lines.length - backed })}</p>}
+                {portfolioReady && !items.length && <p className="muted">{t("tabs.shareTip")}</p>}
                 <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">{t("profile.createLink")}</button></form>
               </>
             )}
