@@ -73,9 +73,16 @@ create policy "Portfolio: read own files" on storage.objects for select to authe
 create policy "Portfolio: delete own files" on storage.objects for delete to authenticated
   using (bucket_id = 'portfolio' and (storage.foldername(name))[1] = (select auth.uid())::text);
 -- Anyone may open a file only while its owner's public link is switched on (the page makes a
--- short-lived link to it; the bucket itself stays private and can't be listed).
+-- short-lived link to it; the bucket itself stays private). Visitors can't read sports_profiles,
+-- so this small helper answers just "is this folder's owner public?".
+create or replace function public.portfolio_owner_is_public(folder text)
+returns boolean
+language sql stable security definer set search_path = ''
+as $$
+  select exists (select 1 from public.sports_profiles p where p.user_id::text = folder and p.is_public);
+$$;
+revoke all on function public.portfolio_owner_is_public(text) from public;
+grant execute on function public.portfolio_owner_is_public(text) to anon, authenticated;
+
 create policy "Portfolio: read files of public profiles" on storage.objects for select to anon, authenticated
-  using (bucket_id = 'portfolio' and exists (
-    select 1 from public.sports_profiles p
-    where p.user_id::text = (storage.foldername(name))[1] and p.is_public
-  ));
+  using (bucket_id = 'portfolio' and public.portfolio_owner_is_public((storage.foldername(name))[1]));
