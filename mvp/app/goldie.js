@@ -7,7 +7,7 @@ import { newSince } from "./profile/actions";
 import GuestButton from "./guest-button";
 import { useT } from "./i18n-provider";
 
-// Goldie: LJSportMind's guide, an original gold ball mascot in the logo colours (octagon from the logo,
+// Goldie: The Assist's guide, an original gold ball mascot in the logo colours (octagon from the logo,
 // seams from every sport). On the Passport page Goldie is the AI coach and can move the page for the user;
 // on other pages Goldie gives a short scripted welcome (no AI call, so no Gemini quota is used).
 
@@ -96,7 +96,7 @@ function SkinBody({ skin }) {
       <path d="M21 15 Q35 50 21 85" fill="none" stroke="#1a1206" strokeOpacity="0.5" strokeWidth="2.2" />
       <path d="M79 15 Q65 50 79 85" fill="none" stroke="#1a1206" strokeOpacity="0.5" strokeWidth="2.2" />
       <path d="M8 46 Q14 44 18 40 M92 46 Q86 44 82 40" fill="none" stroke="#1a1206" strokeOpacity="0.4" strokeWidth="1.8" />
-      {/* The LJSportMind octagon on top, like a soccer ball panel */}
+      {/* The The Assist octagon on top, like a soccer ball panel */}
       <polygon points="50,10 57,13 60,20 57,27 50,30 43,27 40,20 43,13" fill="#101218" stroke="#e9c77b" strokeWidth="1.6" />
       <polygon points="50,15 54,17 55.5,20 54,23 50,25 46,23 44.5,20 46,17" fill="none" stroke="#e9c77b" strokeOpacity="0.7" strokeWidth="1" />
     </>

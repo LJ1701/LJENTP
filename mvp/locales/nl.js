@@ -1,12 +1,12 @@
 // Dutch. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const nl = {
-  nav: { language: "Taal", myPassport: "Mijn Paspoort", home: "LJSportMind home" },
-  footer: { advice: "Advies is overal.", proof: "Bewijs niet.", follow: "Volg @ljsoccer01 op TikTok", by: "LJSportMind door LJSOCCER", careers: "Sportberoepen" },
+  nav: { language: "Taal", myPassport: "Mijn Paspoort", home: "The Assist home" },
+  footer: { advice: "Advies is overal.", proof: "Bewijs niet.", follow: "Volg @ljsoccer01 op TikTok", by: "The Assist door LJSOCCER", careers: "Sportberoepen" },
   meta: { description: "Vind je plek in de sportwereld en bewijs het: een Sportpaspoort, passende beroepen, actuele sportvacatures en een opgeslagen plan." },
   time: { today: "vandaag", oneDay: "1 dag geleden", days: "{n} dagen geleden", earlierToday: "eerder vandaag" },
 
   home: {
-    eyebrow: "Sportloopbaanoriëntatie met AI · door LJSOCCER",
+    eyebrow: "Elke carrière begint met een assist",
     title: "Vind je plek in de sportwereld.",
     titleGold: "Bewijs het.",
     sub: "Hou je van sport? Vind een sportbaan die bij je past. Laat dan zien wat je kunt.",
@@ -383,16 +383,16 @@ const nl = {
 
   // Passport tabs and the proof a user attaches to achievements (no sign-off needed).
   tabs: {"savedAchievements":"Opgeslagen. Je matches op het tabblad Pad zijn bijgewerkt.","savedProfile":"Opgeslagen. Volgende stap: zet je prestaties erin.","label":"Paspoortonderdelen","progress":"{n} van {total} klaar","profile":"Profiel","proof":"Prestaties","portfolio":"Portfolio","path":"Pad","jobs":"Vacatures","share":"Delen","proofTitle":"Jouw prestaties","portfolioTitle":"Jouw portfolio","shareTitle":"Deel je paspoort","saved":"Opgeslagen. Volgende stap: voeg bestanden of links toe aan je portfolio.","saveNext":"Opslaan en verder","saveAchievements":"Prestaties opslaan","goProfile":"Vul je profiel in","shareTip":"Je portfolio is leeg. Je kunt toch delen, maar bestanden en links maken je prestaties geloofwaardiger.","lead":{"profile":"Wie je bent, je sport en de vaardigheden die je meebrengt.","proof":"Wat je gedaan hebt, één regel per prestatie. Met een getal als het kan; Goldie helpt.","portfolio":"Upload bestanden of voeg links toe die je werk laten zien: video's, statistieken, certificaten, ontwerpen, artikelen. Je voegt ze zelf toe; niemand hoeft iets goed te keuren.","path":"Sportbanen die bij je passen, en een plan voor de baan die je kiest.","jobs":"Echte vacatures, met een passingscheck op basis van je profiel.","share":"Eén link die werkgevers kunnen openen, plus uitnodigingen."}},
-  evidence: {"addTitle":"Toevoegen aan je portfolio","yours":"In je portfolio","count":"{n} items · {files} van {max} bestanden","empty":"Nog niets. Voeg een bestand of link toe die je werk laat zien.","kindLabel":"Wat voeg je toe?","kind":{"file":"Bestand","link":"Link","reference":"Referentie"},"help":{"file":"Een pdf, afbeelding of korte video: statistiekblad, certificaat, flyer die je ontwierp, highlightclip.","link":"YouTube, Hudl, Instagram, een artikel, een Google Drive-map, je website.","reference":"Iemand die je werk zag: coach, leidinggevende, docent of teamgenoot. Diegene hoeft niets goed te keuren."},"f":{"file":"Kies een bestand","url":"Link","title":"Titel","description":"Wat het laat zien","achievement":"Laat deze prestatie zien","ref_name":"Naam","ref_role":"Functie","ref_org":"Organisatie","ref_relation":"Hoe diegene je kent","ref_contact":"E-mail of telefoon"},"ph":{"url":"https://…","title":"bijv. Highlights seizoen 2025","description":"bijv. Alle thuiswedstrijden waarbij ik het scorebord deed","ref_name":"bijv. Jordan Smith","ref_role":"bijv. Hoofdcoach","ref_org":"bijv. Dallas FC","ref_relation":"bijv. Mijn leidinggevende, 2 seizoenen","ref_contact":"bijv. jordan@club.nl"},"noAchievement":"Niet aan één prestatie gekoppeld","optional":"optioneel","showContact":"Contactgegevens tonen op mijn openbare link","fileRules":"PDF, JPG, PNG, WEBP, GIF, MP4, MOV of WEBM · tot {mb} MB","add":"Toevoegen aan portfolio","saving":"Opslaan…","uploading":"Uploaden…","added":"Toegevoegd aan je portfolio.","remove":"Uit portfolio verwijderen","private":"privé","shows":"Laat zien:","fileUnavailable":"Het bestand kan nu niet worden geopend.","badLink":"Die link klopt niet. Plak het volledige webadres.","needName":"Voeg de naam van de persoon toe.","needFile":"Kies eerst een bestand.","fileType":"Dit bestandstype wordt niet ondersteund. Gebruik een pdf, afbeelding of korte video.","fileTooBig":"Het bestand is groter dan {mb} MB. Probeer een kleiner bestand, of zet het op YouTube of Google Drive en voeg de link toe.","full":"Je hebt {n} items. Verwijder er een om een nieuwe toe te voegen.","filesFull":"Je hebt {n} bestanden geüpload. Verwijder er een of voeg een link toe.","saveError":"Opslaan mislukt. Probeer het opnieuw.","uploadError":"Uploaden mislukt. Controleer je verbinding en probeer het opnieuw.","notReady":"Het portfolio is nog niet ingeschakeld. De eigenaar van de site moet één databasestap uitvoeren.","publicTitle":"Portfolio","publicCount":"{n} items in portfolio","publicNote":"Toegevoegd door {name}. LJSportMind controleert deze bestanden, links en referenties niet: open ze of neem zelf contact op met de referenties."},
+  evidence: {"addTitle":"Toevoegen aan je portfolio","yours":"In je portfolio","count":"{n} items · {files} van {max} bestanden","empty":"Nog niets. Voeg een bestand of link toe die je werk laat zien.","kindLabel":"Wat voeg je toe?","kind":{"file":"Bestand","link":"Link","reference":"Referentie"},"help":{"file":"Een pdf, afbeelding of korte video: statistiekblad, certificaat, flyer die je ontwierp, highlightclip.","link":"YouTube, Hudl, Instagram, een artikel, een Google Drive-map, je website.","reference":"Iemand die je werk zag: coach, leidinggevende, docent of teamgenoot. Diegene hoeft niets goed te keuren."},"f":{"file":"Kies een bestand","url":"Link","title":"Titel","description":"Wat het laat zien","achievement":"Laat deze prestatie zien","ref_name":"Naam","ref_role":"Functie","ref_org":"Organisatie","ref_relation":"Hoe diegene je kent","ref_contact":"E-mail of telefoon"},"ph":{"url":"https://…","title":"bijv. Highlights seizoen 2025","description":"bijv. Alle thuiswedstrijden waarbij ik het scorebord deed","ref_name":"bijv. Jordan Smith","ref_role":"bijv. Hoofdcoach","ref_org":"bijv. Dallas FC","ref_relation":"bijv. Mijn leidinggevende, 2 seizoenen","ref_contact":"bijv. jordan@club.nl"},"noAchievement":"Niet aan één prestatie gekoppeld","optional":"optioneel","showContact":"Contactgegevens tonen op mijn openbare link","fileRules":"PDF, JPG, PNG, WEBP, GIF, MP4, MOV of WEBM · tot {mb} MB","add":"Toevoegen aan portfolio","saving":"Opslaan…","uploading":"Uploaden…","added":"Toegevoegd aan je portfolio.","remove":"Uit portfolio verwijderen","private":"privé","shows":"Laat zien:","fileUnavailable":"Het bestand kan nu niet worden geopend.","badLink":"Die link klopt niet. Plak het volledige webadres.","needName":"Voeg de naam van de persoon toe.","needFile":"Kies eerst een bestand.","fileType":"Dit bestandstype wordt niet ondersteund. Gebruik een pdf, afbeelding of korte video.","fileTooBig":"Het bestand is groter dan {mb} MB. Probeer een kleiner bestand, of zet het op YouTube of Google Drive en voeg de link toe.","full":"Je hebt {n} items. Verwijder er een om een nieuwe toe te voegen.","filesFull":"Je hebt {n} bestanden geüpload. Verwijder er een of voeg een link toe.","saveError":"Opslaan mislukt. Probeer het opnieuw.","uploadError":"Uploaden mislukt. Controleer je verbinding en probeer het opnieuw.","notReady":"Het portfolio is nog niet ingeschakeld. De eigenaar van de site moet één databasestap uitvoeren.","publicTitle":"Portfolio","publicCount":"{n} items in portfolio","publicNote":"Toegevoegd door {name}. The Assist controleert deze bestanden, links en referenties niet: open ze of neem zelf contact op met de referenties."},
 
-  confirm: {"ask":"Vraag om bevestiging","showLink":"Link opnieuw tonen","waiting":"Wacht op hun antwoord.","sendIt":"Stuur dit zelf naar {ref}. Ze openen het, zien wat je schreef en antwoorden met één klik. Geen account nodig.","copyMessage":"Bericht kopiëren","email":"Openen in mijn e-mail","subject":"Kun je bevestigen dat ik met je heb gewerkt?","message":"Hoi {ref}, ik maak een bewijspagina voor banen in de sport en heb jou als referentie genoemd. Kun je bevestigen dat het klopt? Eén klik: {url}","linkError":"Kon de link niet maken. Probeer het over een minuut.","confirmedBy":"Bevestigd door {ref}","declinedBy":"{ref} zegt dat dit niet klopt. Alleen jij ziet dit; je kunt het verwijderen.","eyebrow":"Referentiecheck","title":"Heb je met {owner} gewerkt?","intro":"{owner} heeft je als referentie toegevoegd op hun LJSportMind-bewijspagina. Controleer wat ze over je schreven.","you":"Jij:","relation":"Hoe je ze kent:","achievement":"Waar je voor instaat:","note":"Hun notitie:","commentLabel":"Wil je iets zeggen over {owner}?","commentPh":"bijv. Bediende het hele seizoen het scorebord, altijd op tijd.","yes":"Ja, dat klopt","no":"Dat klopt niet","fine":"Je antwoord en opmerking verschijnen alleen op hun openbare pagina als je bevestigt. We vragen niet om je e-mail.","thanks":"Bedankt. Je bevestiging staat nu op de pagina van {owner}.","thanksDeclined":"Bedankt. We hebben laten weten dat het niet klopt; er wordt niets openbaar getoond.","ownerError":"Dit is je eigen referentie. Stuur de link naar hen zodat zij kunnen antwoorden.","error":"Er ging iets mis. Probeer het opnieuw."},
-  work: {"title":"Waar je kunt werken","canLabel":"Landen waar ik al mag werken","canHint":"Noem alleen landen waar je al mag werken. LJSportMind controleert dit niet en helpt niet met visa of werkvergunningen.","wantLabel":"Landen waar ik graag zou werken","add":"Land toevoegen…","remove":"{country} verwijderen","max":"Je hebt {n} landen toegevoegd, het maximum.","jobsNone":"Tip: laat werkgevers zien waar je al mag werken.","addInProfile":"Voeg het toe in je Profiel","jobsOutside":"Je hebt {country} niet opgegeven als land waar je al mag werken. Bekijk de eisen van elke werkgever; LJSportMind geeft geen advies over visa of werkvergunningen.","searchIn":"Banen: {country}","publicCan":"Mag werken in:","publicStated":"volgens {name}","publicWant":"Wil graag werken in:"},
+  confirm: {"ask":"Vraag om bevestiging","showLink":"Link opnieuw tonen","waiting":"Wacht op hun antwoord.","sendIt":"Stuur dit zelf naar {ref}. Ze openen het, zien wat je schreef en antwoorden met één klik. Geen account nodig.","copyMessage":"Bericht kopiëren","email":"Openen in mijn e-mail","subject":"Kun je bevestigen dat ik met je heb gewerkt?","message":"Hoi {ref}, ik maak een bewijspagina voor banen in de sport en heb jou als referentie genoemd. Kun je bevestigen dat het klopt? Eén klik: {url}","linkError":"Kon de link niet maken. Probeer het over een minuut.","confirmedBy":"Bevestigd door {ref}","declinedBy":"{ref} zegt dat dit niet klopt. Alleen jij ziet dit; je kunt het verwijderen.","eyebrow":"Referentiecheck","title":"Heb je met {owner} gewerkt?","intro":"{owner} heeft je als referentie toegevoegd op hun bewijspagina op The Assist. Controleer wat ze over je schreven.","you":"Jij:","relation":"Hoe je ze kent:","achievement":"Waar je voor instaat:","note":"Hun notitie:","commentLabel":"Wil je iets zeggen over {owner}?","commentPh":"bijv. Bediende het hele seizoen het scorebord, altijd op tijd.","yes":"Ja, dat klopt","no":"Dat klopt niet","fine":"Je antwoord en opmerking verschijnen alleen op hun openbare pagina als je bevestigt. We vragen niet om je e-mail.","thanks":"Bedankt. Je bevestiging staat nu op de pagina van {owner}.","thanksDeclined":"Bedankt. We hebben laten weten dat het niet klopt; er wordt niets openbaar getoond.","ownerError":"Dit is je eigen referentie. Stuur de link naar hen zodat zij kunnen antwoorden.","error":"Er ging iets mis. Probeer het opnieuw."},
+  work: {"title":"Waar je kunt werken","canLabel":"Landen waar ik al mag werken","canHint":"Noem alleen landen waar je al mag werken. The Assist controleert dit niet en helpt niet met visa of werkvergunningen.","wantLabel":"Landen waar ik graag zou werken","add":"Land toevoegen…","remove":"{country} verwijderen","max":"Je hebt {n} landen toegevoegd, het maximum.","jobsNone":"Tip: laat werkgevers zien waar je al mag werken.","addInProfile":"Voeg het toe in je Profiel","jobsOutside":"Je hebt {country} niet opgegeven als land waar je al mag werken. Bekijk de eisen van elke werkgever; The Assist geeft geen advies over visa of werkvergunningen.","searchIn":"Banen: {country}","publicCan":"Mag werken in:","publicStated":"volgens {name}","publicWant":"Wil graag werken in:"},
   public: {
     title: "Sportprofiel",
-    metaTitle: "{name} · LJSportMind Sportpaspoort",
+    metaTitle: "{name} · The Assist Sportpaspoort",
     metaProofs: "{n} vaardigheden met bewijs",
     metaSee: "Bekijk het bewijs.",
-    badge: "LJSportMind Sportprofiel",
+    badge: "The Assist Sportprofiel",
     goal: "Doel:",
     skillsTitle: "Vaardigheden en interesses",
     evidence: "bewijs:",
@@ -488,7 +488,7 @@ const nl = {
   },
 
   pricing: {
-    metaTitle: "Prijzen · LJSportMind",
+    metaTitle: "Prijzen · The Assist",
     metaDescription: "Gratis voor iedereen. Extra AI-antwoorden, Pro en programma’s voor scholen en clubs.",
     eyebrow: "Prijzen",
     title: "Je bewijs opbouwen is gratis.",
@@ -547,7 +547,7 @@ const nl = {
   },
 
   program: {
-    metaTitle: "Programmadashboard · LJSportMind",
+    metaTitle: "Programmadashboard · The Assist",
     eyebrow: "Voor scholen, clubs en programma’s",
     title: "Start een",
     titleGold: "gratis pilot van 30 dagen",
@@ -567,9 +567,9 @@ const nl = {
     seats: "{used} van {seats} plaatsen gebruikt",
     started: "Je pilot is live. Deel de code met je studenten.",
     joinCode: "Deelnamecode",
-    howToJoin: "Studenten: open LJSportMind, begin een Paspoort en vul deze code in onder ‘AI-antwoorden’ op je Paspoortpagina.",
+    howToJoin: "Studenten: open The Assist, begin een Paspoort en vul deze code in onder ‘AI-antwoorden’ op je Paspoortpagina.",
     copyInvite: "Uitnodiging voor studenten kopiëren",
-    invite: "Doe mee met ons programma op LJSportMind: ga naar {url}, maak je gratis Sportpaspoort en vul code {code} in voor onbeperkt AI-antwoorden.",
+    invite: "Doe mee met ons programma op The Assist: ga naar {url}, maak je gratis Sportpaspoort en vul code {code} in voor onbeperkt AI-antwoorden.",
     outcomes: "Resultaten",
     none: "Nog geen studenten. Deel de code; de cijfers verschijnen hier zodra ze hun Paspoorten opbouwen.",
     statStudents: "studenten doen mee",
@@ -585,7 +585,7 @@ const nl = {
   },
 
   paid: {
-    metaTitle: "Betaling · LJSportMind",
+    metaTitle: "Betaling · The Assist",
     title: "Betaling",
     thanks: "Bedankt",
     failed: "We konden die betaling niet bevestigen. Is er iets afgeschreven, neem dan contact op en we lossen het op.",
@@ -617,7 +617,7 @@ const nl = {
     email: "E-mail",
     copyLink: "Link kopiëren",
     proofText: "Bekijk wat ik kan bewijzen voor een sportcarrière, alles in één link:",
-    inviteText: "Ik bouw mijn bewijs voor een sportcarrière op LJSportMind. Doe mee via mijn link en we krijgen allebei 5 extra AI-antwoorden:",
+    inviteText: "Ik bouw mijn bewijs voor een sportcarrière op The Assist. Doe mee via mijn link en we krijgen allebei 5 extra AI-antwoorden:",
     jobText: "Ik zag deze sportbaan en dacht aan jou: {title} bij {company}"
   },
 
@@ -633,13 +633,13 @@ const nl = {
 
   careers: {
     eyebrow: "Gids voor sportberoepen",
-    indexTitle: "Sportberoepen: vaardigheden, eerste stappen en actuele vacatures · LJSportMind",
+    indexTitle: "Sportberoepen: vaardigheden, eerste stappen en actuele vacatures · The Assist",
     indexDescription: "Acht sportberoepen, de vaardigheden die werkgevers zoeken, hoe je ze deze week laat zien en echte open vacatures.",
     indexH1: "Vind je weg in de",
     indexH1Gold: "sport.",
     indexSub: "Acht manieren om de sportwereld in te gaan, de vaardigheden die elk nodig heeft en echte vacatures die nu open staan. Gratis, geen account nodig.",
     read: "Lees de gids",
-    metaTitle: "{role}: vaardigheden, eerste stappen en actuele vacatures · LJSportMind",
+    metaTitle: "{role}: vaardigheden, eerste stappen en actuele vacatures · The Assist",
     metaDescription: "Welke vaardigheden werkgevers zoeken in {role}, hoe je ze deze week laat zien en echte open vacatures.",
     intro: "{role}: wat je nodig hebt, de vaardigheden die werkgevers zoeken, hoe je ze deze week laat zien en echte open vacatures.",
     skillsTitle: "Vaardigheden die werkgevers zoeken",

@@ -109,7 +109,7 @@ export async function pdfText(base64) {
 // Unlike a general chatbot, the coach is given the user's saved profile, matches and plan (read on the
 // server, never from the browser), must quote evidence from their own achievements, and can suggest one
 // of the app's career paths, which the page turns into a real "Make this my target role" button.
-const COACH_RULES = `You are Goldie, the LJSportMind guide and career coach: a friendly gold ball with the LJSportMind logo.
+const COACH_RULES = `You are Goldie, the The Assist guide and career coach: a friendly gold ball with the The Assist logo.
 You help one person find a career in the sports industry (any sport, any background) and use the app.
 Personality: upbeat, warm, short sentences, a light sports touch. Never cheesy, never more than one sports pun.
 You are given their saved Sports Profile, their top career matches and their plan. Use them in every answer.

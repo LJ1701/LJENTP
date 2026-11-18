@@ -1,4 +1,5 @@
 <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+  <!-- The Assist: the letter A, with a gold pass cutting through it as the crossbar (the assist). -->
   <defs>
     <linearGradient id="goldRing" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#e9c77b"/>
@@ -6,15 +7,8 @@
       <stop offset="100%" stop-color="#9c6f2f"/>
     </linearGradient>
   </defs>
-
   <circle cx="110" cy="110" r="94" fill="#16213a" stroke="url(#goldRing)" stroke-width="6"/>
-
-  <!-- Frames and letters are mirror images around x = 110 and centred on y = 110. -->
-  <rect x="54" y="58" width="112" height="104" fill="none" stroke="#f4f4f4" stroke-width="2.5"/>
-  <rect x="61" y="65" width="98" height="90" fill="none" stroke="#f4f4f4" stroke-width="1.5"/>
-
-  <g fill="none" stroke="#f7f7f7" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M76,79 L76,141 L101,141"/>
-    <path d="M144,79 L144,117 Q144,141 119,141"/>
-  </g>
+  <path d="M68,158 L110,60 L152,158" fill="none" stroke="#f7f7f7" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M58,136 Q108,104 150,122" fill="none" stroke="url(#goldRing)" stroke-width="9" stroke-linecap="round"/>
+  <polygon points="170,128 146,134 152,112" fill="#e9c77b"/>
 </svg>

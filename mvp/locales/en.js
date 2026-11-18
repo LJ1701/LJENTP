@@ -1,13 +1,13 @@
 // English: the source text. Every other language file has the same keys; anything missing falls back to this.
 // {name} marks a value the app fills in. Keep keys in sync across all ten files.
 const en = {
-  nav: { language: "Language", myPassport: "My Passport", home: "LJSportMind home" },
-  footer: { advice: "Advice is everywhere.", proof: "Proof isn't.", follow: "Follow @ljsoccer01 on TikTok", by: "LJSportMind by LJSOCCER", careers: "Sports careers" },
+  nav: { language: "Language", myPassport: "My Passport", home: "The Assist home" },
+  footer: { advice: "Advice is everywhere.", proof: "Proof isn't.", follow: "Follow @ljsoccer01 on TikTok", by: "The Assist by LJSOCCER", careers: "Sports careers" },
   meta: { description: "Find your place in the sports industry and prove it: a Sports Passport, career matches, live sports jobs and a saved plan." },
   time: { today: "today", oneDay: "1 day ago", days: "{n} days ago", earlierToday: "earlier today" },
 
   home: {
-    eyebrow: "AI sports career discovery · by LJSOCCER",
+    eyebrow: "Every career starts with an assist",
     title: "Find your place in the sports industry.",
     titleGold: "Prove it.",
     sub: "Love sports? Find a job in sports that fits you. Then show what you can do.",
@@ -385,16 +385,16 @@ const en = {
 
   // Passport tabs and the proof a user attaches to achievements (no sign-off needed).
   tabs: {"savedAchievements":"Saved. Your matches on the Path tab are updated.","savedProfile":"Saved. Next: list your achievements.","label":"Passport sections","progress":"{n} of {total} done","profile":"Profile","proof":"Achievements","portfolio":"Portfolio","path":"Path","jobs":"Jobs","share":"Share","proofTitle":"Your achievements","portfolioTitle":"Your portfolio","shareTitle":"Share your Passport","saved":"Saved. Next: add files or links to your portfolio.","saveNext":"Save and continue","saveAchievements":"Save achievements","goProfile":"Fill in your profile","shareTip":"Your portfolio is empty. You can still share, but files and links make your achievements easier to believe.","lead":{"profile":"Who you are, your sport, and the skills you bring.","proof":"What you've done, one line each. Add a number if you can; Goldie can help.","portfolio":"Upload files or add links that show your work: highlight videos, stats, certificates, designs, articles. You add them yourself; no one has to sign off.","path":"Sports careers you fit, and a plan for the one you pick.","jobs":"Real postings, with a fit check against your profile.","share":"One link employers can open, plus invites."}},
-  evidence: {"addTitle":"Add to your portfolio","yours":"In your portfolio","count":"{n} items · {files} of {max} files","empty":"Nothing here yet. Add a file or a link that shows your work.","kindLabel":"What are you adding?","kind":{"file":"File","link":"Link","reference":"Reference"},"help":{"file":"A PDF, image or short video: a stats sheet, certificate, flyer you designed, highlight clip.","link":"YouTube, Hudl, Instagram, an article, a Google Drive folder, your website.","reference":"Someone who saw your work: a coach, supervisor, teacher or teammate. They don't need to approve anything, but after adding them you can ask them to confirm with one click."},"f":{"file":"Choose a file","url":"Link","title":"Title","description":"What it shows","achievement":"Shows this achievement","ref_name":"Their name","ref_role":"Their role","ref_org":"Organisation","ref_relation":"How they know you","ref_contact":"Email or phone"},"ph":{"url":"https://…","title":"e.g. 2025 season highlights","description":"e.g. Every home game I ran the scoreboard for","ref_name":"e.g. Jordan Smith","ref_role":"e.g. Head Coach","ref_org":"e.g. Dallas FC","ref_relation":"e.g. My supervisor for 2 seasons","ref_contact":"e.g. jordan@club.com"},"noAchievement":"Not tied to one achievement","optional":"optional","showContact":"Show their contact details on my public link","fileRules":"PDF, JPG, PNG, WEBP, GIF, MP4, MOV or WEBM · up to {mb} MB","add":"Add to portfolio","saving":"Saving…","uploading":"Uploading…","added":"Added to your portfolio.","remove":"Remove from portfolio","private":"private","shows":"Shows:","fileUnavailable":"File can't be opened right now.","badLink":"That link doesn't look right. Paste the full web address.","needName":"Add the person's name.","needFile":"Choose a file first.","fileType":"That type of file isn't supported. Use a PDF, image or short video.","fileTooBig":"That file is over {mb} MB. Try a smaller one, or upload it to YouTube or Google Drive and add the link.","full":"You've reached {n} portfolio items. Remove one to add another.","filesFull":"You've uploaded {n} files. Remove one, or add a link instead.","saveError":"Couldn't save that. Try again.","uploadError":"The upload didn't work. Check your connection and try again.","notReady":"The portfolio isn't switched on yet. The site owner needs to run one database step.","publicTitle":"Portfolio","publicCount":"{n} portfolio items","publicNote":"Added by {name}. LJSportMind does not check these files, links or references; open them or contact the references yourself."},
+  evidence: {"addTitle":"Add to your portfolio","yours":"In your portfolio","count":"{n} items · {files} of {max} files","empty":"Nothing here yet. Add a file or a link that shows your work.","kindLabel":"What are you adding?","kind":{"file":"File","link":"Link","reference":"Reference"},"help":{"file":"A PDF, image or short video: a stats sheet, certificate, flyer you designed, highlight clip.","link":"YouTube, Hudl, Instagram, an article, a Google Drive folder, your website.","reference":"Someone who saw your work: a coach, supervisor, teacher or teammate. They don't need to approve anything, but after adding them you can ask them to confirm with one click."},"f":{"file":"Choose a file","url":"Link","title":"Title","description":"What it shows","achievement":"Shows this achievement","ref_name":"Their name","ref_role":"Their role","ref_org":"Organisation","ref_relation":"How they know you","ref_contact":"Email or phone"},"ph":{"url":"https://…","title":"e.g. 2025 season highlights","description":"e.g. Every home game I ran the scoreboard for","ref_name":"e.g. Jordan Smith","ref_role":"e.g. Head Coach","ref_org":"e.g. Dallas FC","ref_relation":"e.g. My supervisor for 2 seasons","ref_contact":"e.g. jordan@club.com"},"noAchievement":"Not tied to one achievement","optional":"optional","showContact":"Show their contact details on my public link","fileRules":"PDF, JPG, PNG, WEBP, GIF, MP4, MOV or WEBM · up to {mb} MB","add":"Add to portfolio","saving":"Saving…","uploading":"Uploading…","added":"Added to your portfolio.","remove":"Remove from portfolio","private":"private","shows":"Shows:","fileUnavailable":"File can't be opened right now.","badLink":"That link doesn't look right. Paste the full web address.","needName":"Add the person's name.","needFile":"Choose a file first.","fileType":"That type of file isn't supported. Use a PDF, image or short video.","fileTooBig":"That file is over {mb} MB. Try a smaller one, or upload it to YouTube or Google Drive and add the link.","full":"You've reached {n} portfolio items. Remove one to add another.","filesFull":"You've uploaded {n} files. Remove one, or add a link instead.","saveError":"Couldn't save that. Try again.","uploadError":"The upload didn't work. Check your connection and try again.","notReady":"The portfolio isn't switched on yet. The site owner needs to run one database step.","publicTitle":"Portfolio","publicCount":"{n} portfolio items","publicNote":"Added by {name}. The Assist does not check these files, links or references; open them or contact the references yourself."},
 
-  confirm: {"ask":"Ask them to confirm","showLink":"Show the link again","waiting":"Waiting for their answer.","sendIt":"Send this to {ref} yourself. They open it, see what you wrote, and answer with one click. No account needed.","copyMessage":"Copy message","email":"Open in my email","subject":"Could you confirm I worked with you?","message":"Hi {ref}, I'm building a proof page for sports jobs and listed you as a reference. Could you confirm it's right? It takes one click: {url}","linkError":"Couldn't make the link. Try again in a minute.","confirmedBy":"Confirmed by {ref}","declinedBy":"{ref} said this isn't right. Only you can see this; you may want to remove it.","eyebrow":"Reference check","title":"Did you work with {owner}?","intro":"{owner} added you as a reference on their LJSportMind proof page. Please check what they wrote about you.","you":"You:","relation":"How you know them:","achievement":"What you can vouch for:","note":"Their note:","commentLabel":"Anything you'd like to say about {owner}?","commentPh":"e.g. Ran our game-day scoreboard all season, always on time.","yes":"Yes, that's right","no":"That's not right","fine":"Your answer and comment appear on their public page only if you confirm. We don't ask for your email.","thanks":"Thank you. Your confirmation now shows on {owner}'s proof page.","thanksDeclined":"Thank you. We've told them it isn't right; nothing is shown publicly.","ownerError":"This is your own reference. Send the link to them so they can answer.","error":"Something went wrong. Please try again."},
-  work: {"title":"Where you can work","canLabel":"Countries where I can already work","canHint":"Only list countries where you're already allowed to work. LJSportMind doesn't check this and doesn't help with visas or work permits.","wantLabel":"Countries I'd like to work in","add":"Add a country…","remove":"Remove {country}","max":"You've added {n} countries, the most allowed.","jobsNone":"Tip: tell employers where you can already work.","addInProfile":"Add it in your Profile","jobsOutside":"You haven't listed {country} as a country where you can already work. Check each employer's requirements; LJSportMind doesn't advise on visas or work permits.","searchIn":"Jobs in {country}","publicCan":"Can work in:","publicStated":"as stated by {name}","publicWant":"Would like to work in:"},
+  confirm: {"ask":"Ask them to confirm","showLink":"Show the link again","waiting":"Waiting for their answer.","sendIt":"Send this to {ref} yourself. They open it, see what you wrote, and answer with one click. No account needed.","copyMessage":"Copy message","email":"Open in my email","subject":"Could you confirm I worked with you?","message":"Hi {ref}, I'm building a proof page for sports jobs and listed you as a reference. Could you confirm it's right? It takes one click: {url}","linkError":"Couldn't make the link. Try again in a minute.","confirmedBy":"Confirmed by {ref}","declinedBy":"{ref} said this isn't right. Only you can see this; you may want to remove it.","eyebrow":"Reference check","title":"Did you work with {owner}?","intro":"{owner} added you as a reference on their proof page on The Assist. Please check what they wrote about you.","you":"You:","relation":"How you know them:","achievement":"What you can vouch for:","note":"Their note:","commentLabel":"Anything you'd like to say about {owner}?","commentPh":"e.g. Ran our game-day scoreboard all season, always on time.","yes":"Yes, that's right","no":"That's not right","fine":"Your answer and comment appear on their public page only if you confirm. We don't ask for your email.","thanks":"Thank you. Your confirmation now shows on {owner}'s proof page.","thanksDeclined":"Thank you. We've told them it isn't right; nothing is shown publicly.","ownerError":"This is your own reference. Send the link to them so they can answer.","error":"Something went wrong. Please try again."},
+  work: {"title":"Where you can work","canLabel":"Countries where I can already work","canHint":"Only list countries where you're already allowed to work. The Assist doesn't check this and doesn't help with visas or work permits.","wantLabel":"Countries I'd like to work in","add":"Add a country…","remove":"Remove {country}","max":"You've added {n} countries, the most allowed.","jobsNone":"Tip: tell employers where you can already work.","addInProfile":"Add it in your Profile","jobsOutside":"You haven't listed {country} as a country where you can already work. Check each employer's requirements; The Assist doesn't advise on visas or work permits.","searchIn":"Jobs in {country}","publicCan":"Can work in:","publicStated":"as stated by {name}","publicWant":"Would like to work in:"},
   public: {
     title: "Sports Profile",
-    metaTitle: "{name} · LJSportMind Sports Passport",
+    metaTitle: "{name} · The Assist Sports Passport",
     metaProofs: "{n} skills backed by proof",
     metaSee: "See the evidence.",
-    badge: "LJSportMind Sports Profile",
+    badge: "The Assist Sports Profile",
     goal: "Goal:",
     skillsTitle: "Skills and interests",
     evidence: "evidence:",
@@ -490,7 +490,7 @@ const en = {
   },
 
   pricing: {
-    metaTitle: "Pricing · LJSportMind",
+    metaTitle: "Pricing · The Assist",
     metaDescription: "Free for everyone. Extra AI answers, Pro, and programs for schools and clubs.",
     eyebrow: "Pricing",
     title: "Free to build your proof.",
@@ -549,7 +549,7 @@ const en = {
   },
 
   program: {
-    metaTitle: "Program dashboard · LJSportMind",
+    metaTitle: "Program dashboard · The Assist",
     eyebrow: "For schools, clubs and programs",
     title: "Start a",
     titleGold: "free 30-day pilot",
@@ -569,9 +569,9 @@ const en = {
     seats: "{used} of {seats} seats used",
     started: "Your pilot is live. Share the join code with your students.",
     joinCode: "Join code",
-    howToJoin: "Students: open LJSportMind, start a Passport, then enter this code under “AI answers” on their Passport page.",
+    howToJoin: "Students: open The Assist, start a Passport, then enter this code under “AI answers” on their Passport page.",
     copyInvite: "Copy invite for students",
-    invite: "Join our LJSportMind program: go to {url}, start your free Sports Passport, then enter code {code} for unlimited AI answers.",
+    invite: "Join our program on The Assist: go to {url}, start your free Sports Passport, then enter code {code} for unlimited AI answers.",
     outcomes: "Outcomes",
     none: "No students yet. Share the join code; numbers appear here as they build their Passports.",
     statStudents: "students joined",
@@ -587,7 +587,7 @@ const en = {
   },
 
   paid: {
-    metaTitle: "Payment · LJSportMind",
+    metaTitle: "Payment · The Assist",
     title: "Payment",
     thanks: "Thank you",
     failed: "We couldn't confirm that payment. If you were charged, contact us and we'll fix it.",
@@ -619,7 +619,7 @@ const en = {
     email: "Email",
     copyLink: "Copy link",
     proofText: "See what I can prove for a sports career, all in one link:",
-    inviteText: "I'm building my sports career proof on LJSportMind. Join with my link and we both get 5 extra AI answers:",
+    inviteText: "I'm building my sports career proof on The Assist. Join with my link and we both get 5 extra AI answers:",
     jobText: "Saw this sports job and thought of you: {title} at {company}"
   },
 
@@ -635,13 +635,13 @@ const en = {
 
   careers: {
     eyebrow: "Sports career guide",
-    indexTitle: "Sports career paths: skills, first steps and live jobs · LJSportMind",
+    indexTitle: "Sports career paths: skills, first steps and live jobs · The Assist",
     indexDescription: "Eight sports career paths, the skills employers look for, how to show each skill this week, and real open jobs.",
     indexH1: "Find your path in",
     indexH1Gold: "sports.",
     indexSub: "Eight ways into the sports industry, the skills each one needs, and real jobs open right now. Free, no account needed.",
     read: "Read the guide",
-    metaTitle: "{role}: skills, first steps and live jobs · LJSportMind",
+    metaTitle: "{role}: skills, first steps and live jobs · The Assist",
     metaDescription: "Skills employers look for in {role}, how to show each one this week, and real open jobs right now.",
     intro: "{role}: what it takes, the skills employers look for, how to show each one this week, and real jobs open now.",
     skillsTitle: "Skills employers look for",

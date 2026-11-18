@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
   const { code } = await params;
   const p = await getPublicProfile(code);
   const { t, dict } = await getT();
-  if (!p) return { title: `${t("public.title")} · LJSportMind`, robots: { index: false } };
+  if (!p) return { title: `${t("public.title")} · The Assist`, robots: { index: false } };
   const eff = effectiveProfile(p);
   const proofs = Object.keys(eff.evidence).length;
   const title = t("public.metaTitle", { name: p.full_name || t("public.title") });
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
 
 // Read-only public proof page. Works signed out: the database functions return this one profile and its
 // proof only while its owner has the link switched on. Proof is added by the owner, not checked by
-// LJSportMind, so the page says so instead of calling anything "verified".
+// The Assist, so the page says so instead of calling anything "verified".
 export default async function PublicProfile({ params }) {
   const { code } = await params;
   if (!/^[a-z0-9]{10}$/.test(code)) notFound();

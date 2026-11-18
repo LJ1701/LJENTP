@@ -5,7 +5,7 @@ import { referenceConfirmLink } from "./actions";
 import CopyButton from "./copy-button";
 
 // On the owner's reference card: makes the private confirm link, then helps them send it themselves
-// (copy, or open their own email app with a message ready). LJSportMind never emails anyone.
+// (copy, or open their own email app with a message ready). The Assist never emails anyone.
 export default function ConfirmRequest({ id, refName, contact, waiting }) {
   const { t } = useT();
   const [url, setUrl] = useState("");

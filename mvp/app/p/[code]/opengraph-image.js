@@ -4,12 +4,12 @@ import { effectiveProfile } from "@/lib/detect";
 import { CAREER_PATHS, topMatches } from "@/lib/careers";
 
 // The gold card people see when a proof link is pasted into LinkedIn, iMessage or a group chat.
-export const alt = "LJSportMind Sports Passport";
+export const alt = "The Assist Sports Passport";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 // Same file as public/logo.svg, embedded so the image works on the server without reading files.
-const LOGO = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjIwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ29sZFJpbmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2U5Yzc3YiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2M5OTc0YSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5YzZmMmYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgoKICA8Y2lyY2xlIGN4PSIxMTAiIGN5PSIxMTAiIHI9Ijk0IiBmaWxsPSIjMTYyMTNhIiBzdHJva2U9InVybCgjZ29sZFJpbmcpIiBzdHJva2Utd2lkdGg9IjYiLz4KCiAgPCEtLSBGcmFtZXMgYW5kIGxldHRlcnMgYXJlIG1pcnJvciBpbWFnZXMgYXJvdW5kIHggPSAxMTAgYW5kIGNlbnRyZWQgb24geSA9IDExMC4gLS0+CiAgPHJlY3QgeD0iNTQiIHk9IjU4IiB3aWR0aD0iMTEyIiBoZWlnaHQ9IjEwNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZjRmNGY0IiBzdHJva2Utd2lkdGg9IjIuNSIvPgogIDxyZWN0IHg9IjYxIiB5PSI2NSIgd2lkdGg9Ijk4IiBoZWlnaHQ9IjkwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmNGY0ZjQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CgogIDxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y3ZjdmNyIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxwYXRoIGQ9Ik03Niw3OSBMNzYsMTQxIEwxMDEsMTQxIi8+CiAgICA8cGF0aCBkPSJNMTQ0LDc5IEwxNDQsMTE3IFExNDQsMTQxIDExOSwxNDEiLz4KICA8L2c+Cjwvc3ZnPgo=";
+const LOGO = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjIwIDIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8IS0tIFRoZSBBc3Npc3Q6IHRoZSBsZXR0ZXIgQSwgd2l0aCBhIGdvbGQgcGFzcyBjdXR0aW5nIHRocm91Z2ggaXQgYXMgdGhlIGNyb3NzYmFyICh0aGUgYXNzaXN0KS4gLS0+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdvbGRSaW5nIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNlOWM3N2IiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNjOTk3NGEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjOWM2ZjJmIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGN4PSIxMTAiIGN5PSIxMTAiIHI9Ijk0IiBmaWxsPSIjMTYyMTNhIiBzdHJva2U9InVybCgjZ29sZFJpbmcpIiBzdHJva2Utd2lkdGg9IjYiLz4KICA8cGF0aCBkPSJNNjgsMTU4IEwxMTAsNjAgTDE1MiwxNTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y3ZjdmNyIgc3Ryb2tlLXdpZHRoPSIxNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPHBhdGggZD0iTTU4LDEzNiBRMTA4LDEwNCAxNTAsMTIyIiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZ29sZFJpbmcpIiBzdHJva2Utd2lkdGg9IjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwb2x5Z29uIHBvaW50cz0iMTcwLDEyOCAxNDYsMTM0IDE1MiwxMTIiIGZpbGw9IiNlOWM3N2IiLz4KPC9zdmc+Cg==";
 
 export default async function Image({ params }) {
   const { code } = await params;
@@ -25,7 +25,7 @@ export default async function Image({ params }) {
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 64, color: "#f3f1ea", background: "radial-gradient(circle at 80% 20%, #2a2010 0%, #050608 60%)", fontFamily: "sans-serif" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <img src={LOGO} width={84} height={84} />
-          <div style={{ display: "flex", fontSize: 38, fontWeight: 700 }}>LJSport<span style={{ color: "#e9c77b" }}>Mind</span></div>
+          <div style={{ display: "flex", fontSize: 38, fontWeight: 700 }}>The&nbsp;<span style={{ color: "#e9c77b" }}>Assist</span></div>
           <div style={{ marginLeft: "auto", display: "flex", padding: "10px 22px", borderRadius: 999, background: gold, color: "#1a1206", fontSize: 24, fontWeight: 700 }}>SPORTS PASSPORT</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>

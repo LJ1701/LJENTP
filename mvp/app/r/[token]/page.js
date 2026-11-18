@@ -4,7 +4,7 @@ import { getT } from "@/lib/i18n-server";
 import { answerReference } from "./actions";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Confirm a reference · LJSportMind", robots: { index: false } };
+export const metadata = { title: "Confirm a reference · The Assist", robots: { index: false } };
 
 // The page a reference opens from the private link the user sent them. It shows exactly what the user
 // claimed about them and asks one question. No account needed.
