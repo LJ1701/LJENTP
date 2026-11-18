@@ -29,7 +29,6 @@ export default async function RootLayout({ children }) {
     <html lang={lang} className={`${inter.variable} ${grotesk.variable}`}>
       <body>
         <I18nProvider lang={lang} dict={dict} country={country} countries={countryList(lang)} regions={regionList(lang)}>
-          <div className="bg-glow" aria-hidden="true" />
           <header className="topbar">
             <div className="topbar-inner">
               <a href="/" className="brand" aria-label={t("nav.home")}>
