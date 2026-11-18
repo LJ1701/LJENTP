@@ -606,3 +606,47 @@ input[type="text"], input[type="email"], input[type="password"], input[type="num
 /* Header: links never wrap onto two lines; on narrower screens the employer link moves to the footer only. */
 .topbar-link, .topbar-cta { white-space: nowrap; }
 @media (max-width: 860px) { .topbar-link[href="/employers"] { display: none; } }
+
+/* Stories, personal layout (18 Nov): each story leads with the person (initial, name, role) and their own words. */
+.stories-head { text-align: center; }
+.stories-head .muted { max-width: 560px; margin-left: auto; margin-right: auto; }
+.story-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 4px 0 6px; }
+.story-chips a { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); color: var(--text); text-decoration: none; font-size: 14px; }
+.story-chips a.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.story-head { display: flex; align-items: center; gap: 14px; }
+.story-avatar { flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--navy); color: #fff; font-family: var(--font-display), sans-serif; font-weight: 700; font-size: 20px; box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--gold-ink); }
+.story-head.big .story-avatar { width: 72px; height: 72px; font-size: 28px; }
+.story-who { flex: 1; min-width: 0; }
+.story-who h1, .story-who h2 { margin: 0; line-height: 1.15; }
+.story-who h1 { font-size: 30px; }
+.story-who h2 { font-size: 21px; }
+.story-who h2 a { color: var(--navy); text-decoration: none; }
+.story-who p { margin: 2px 0 0; color: var(--muted); }
+.story-tag { flex: none; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: var(--tint); color: var(--accent); font-size: 12px; font-weight: 600; }
+.story-quote { margin: 14px 0 10px; padding: 2px 0 2px 16px; border-left: 3px solid var(--gold-ink); font-size: 17px; line-height: 1.55; color: var(--text); font-style: italic; }
+.story-facts { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+.story-read { display: inline-block; margin-top: 12px; font-weight: 600; text-decoration: none; }
+.story-read:hover { text-decoration: underline; }
+.story-card { padding: 22px; }
+.story-invite-wide { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--tint); box-shadow: none; }
+.story-invite-wide h2 { font-size: 19px; margin: 0 0 4px; }
+.story-invite-wide p { margin: 0; }
+.story-invite-wide .cta { margin: 0; white-space: nowrap; }
+.story-back { margin: 10px 0 0; }
+.story-hero { padding: 26px; }
+.story-where { margin: 2px 0 0; }
+.story-big-quote { margin: 20px 0 4px; padding: 18px 20px; border-radius: 12px; background: #fbf6ec; border: 1px solid #efe2c6; }
+.story-big-quote figcaption { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-ink); margin-bottom: 6px; }
+.story-big-quote blockquote { margin: 0; font-size: 20px; line-height: 1.5; font-style: italic; color: var(--navy); }
+.story-turning ul { list-style: none; padding: 0; margin: 10px 0 0; }
+.story-turning li { display: flex; gap: 12px; align-items: baseline; padding: 10px 0; border-top: 1px solid var(--border-soft); }
+.story-turning li:first-child { border-top: 0; }
+.story-turning li strong { flex: none; min-width: 44px; color: var(--gold-ink); }
+.story-ask { background: var(--card-2); }
+@media (max-width: 600px) {
+  .story-head { flex-wrap: wrap; }
+  .story-tag { order: 3; margin-left: 66px; }
+  .story-head.big .story-tag { margin-left: 86px; }
+  .story-invite-wide { flex-direction: column; align-items: flex-start; }
+  .story-big-quote blockquote { font-size: 18px; }
+}
