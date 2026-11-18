@@ -583,3 +583,26 @@ input[type="text"], input[type="email"], input[type="password"], input[type="num
 /* Phones: keep "The Assist" on one line in the header. */
 .brand span { white-space: nowrap; }
 @media (max-width: 520px) { .brand { font-size: 17px; gap: 6px; } .brand-logo { width: 32px; height: 32px; } }
+
+/* Stories ("How I got in"): the list, one story's path as a timeline, and the form. */
+.story-list { list-style: none; padding: 0; margin: 0; }
+.story-card h2 { margin-bottom: 2px; }
+.story-card h2 a { color: var(--navy); text-decoration: none; }
+.story-card h2 a:hover { text-decoration: underline; }
+.story-meta { margin: 0 0 8px; font-size: 14px; }
+.story-path { list-style: none; padding: 0 0 0 18px; margin: 8px 0; border-left: 2px solid var(--border); }
+.story-step { position: relative; display: flex; flex-direction: column; gap: 2px; padding: 6px 0 10px; }
+.story-step::before { content: ""; position: absolute; left: -25px; top: 11px; width: 10px; height: 10px; border-radius: 50%; background: var(--card); border: 2px solid var(--accent); }
+.story-step.kind-paid::before { background: var(--accent); }
+.story-step.kind-referral::before { border-color: var(--gold-ink); background: var(--gold-ink); }
+.story-kind { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.story-text { white-space: pre-line; margin: 0; }
+.story-summary .plain-steps li { margin: 4px 0; }
+.story-step-row { display: grid; grid-template-columns: 170px 90px 1fr; gap: 8px; margin-top: 8px; }
+.story-step-row select, .story-step-row input { margin: 0; }
+.story-steps-form { margin-top: 16px; }
+.story-invite .cta { margin-top: 4px; }
+@media (max-width: 600px) { .story-step-row { grid-template-columns: 1fr 90px; } .story-step-row input[name="step_text"] { grid-column: 1 / -1; } }
+/* Header: links never wrap onto two lines; on narrower screens the employer link moves to the footer only. */
+.topbar-link, .topbar-cta { white-space: nowrap; }
+@media (max-width: 860px) { .topbar-link[href="/employers"] { display: none; } }

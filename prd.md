@@ -1,6 +1,6 @@
 # PRD: The Assist
 
-*Renamed from The Assist on 17 Nov 2026. Tagline: "Every career starts with an assist." The name is the moat: a reference who confirms your work is the assist.*
+*Renamed from LJSportMind on 17 Nov 2026. Tagline: "Every career starts with an assist." The name is the moat: a reference who confirms your work is the assist. Second line (18 Nov): "Show what you've done. See how others got in." It replaced "Advice is everywhere. Proof isn't.", which stopped being true once Stories added advice from people who got in.*
 
 *Updated 17 Nov 2026. Replaces the 21 Oct 2026 version (kept privately). Rewritten after professor feedback: one problem, one paying customer, a moat we build on purpose, and an honest answer on scale.*
 
@@ -161,6 +161,8 @@ These were built before this decision. Keeping user AI payments may be fine as a
 | 12 | **Employer side, step 1:** a "For employers" page. Employers post a role by linking the posting they already have (LinkedIn, Indeed, TeamWork Online or their careers page). After the owner approves it, it shows in candidates' Jobs tab with "Apply on LinkedIn/Indeed/TeamWork Online" and a reminder to include the proof link. Free during early access | Built 17 Nov (needs `mvp/supabase/009_employer_roles.sql`) |
 | 12b | **Employer side, step 2:** search confirmed candidates, contact them, pay | Not built |
 | 13 | **Stronger confirmation:** check the confirmer's work email; label personal emails | Not built |
+| 14 | **Stories ("How I got in"):** people who got into sports share their real path step by step (type of step, year, one line each), what helped, whether someone vouched for them, advice, and optionally their first-job pay range and a link to their proof page. Job seekers filter by field and country. A "Paths into [field]" summary appears only once a field has 3+ stories. The author publishes it (or saves a private draft); the owner can hide a story, and the author can't undo that. Guests can't post. From person-3's interview: he learned most from former students a year or two ahead | Built 18 Nov (needs `mvp/supabase/010_stories.sql` and `011_stories_author_publish.sql`, both run) |
+| 15 | **Paid feedback, demand test only:** an "Ask [name] for feedback on your proof" waitlist on every story. Nothing is charged and the author isn't contacted. If enough people join, build paid feedback with The Assist taking a percentage | Built 18 Nov (waitlist only; no payments) |
 
 **Dropped since October:** LJ Coach Certification and the Body ID scan. Our early (synthetic, AI-simulated) test interviews suggested employers would ignore a certificate made by us, and proof from real work and real people is stronger. To confirm with real hiring managers.
 
@@ -183,6 +185,8 @@ These were built before this decision. Keeping user AI payments may be fine as a
   - Row-level security means each user can only read and change their own rows.
   - Visitors can only see a profile while its public link is on.
 - **Confirmations:** stored on the reference item: a random 64-character link token, the answer, the date and an optional comment of up to 300 characters. We don't ask confirmers for their email.
+- **Stories:** one per account in `stories` (name or initials shown, role, field, country, steps, answers, optional pay range). Authors can only read and change their own; visitors only see approved stories, through a function that never returns the author's email or account id.
+- **Feedback waitlist:** `feedback_waitlist` (which story, the account if signed in, an optional email). Nobody but the owner can read it.
 - **Never kept:** résumé files read in the browser.
 
 ## 11. Known limits
@@ -198,6 +202,7 @@ These were built before this decision. Keeping user AI payments may be fine as a
 
 1. Would hiring managers open a proof link, and would a confirmed reference change who they interview? *(3 interviews)*
 2. What would an employer pay, and for what: posts, search or contact?
-3. Students first (both interviewees hinted at this), or international candidates first?
-4. Which countries first for international placement? Where are our first employers?
-5. Name: renamed to **The Assist** (17 Nov), after person-2 said founder initials in a product name look personal. Still to do: a USPTO trademark search and a web address of its own (the app is still at ljsportmind-mvp.vercel.app).
+3. Will job seekers want paid feedback from people who got in? *(count waitlist joins on Stories; interview 1–2 talent coaches about price and a platform cut)*
+4. Students first (both interviewees hinted at this), or international candidates first?
+5. Which countries first for international placement? Where are our first employers?
+6. Name: renamed to **The Assist** (17 Nov), after person-2 said founder initials in a product name look personal. Still to do: a USPTO trademark search and a web address of its own (the app is still at ljsportmind-mvp.vercel.app).

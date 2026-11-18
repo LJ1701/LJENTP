@@ -36,6 +36,7 @@ export default async function RootLayout({ children }) {
                 <span>The <span className="gold-text">Assist</span></span>
               </a>
               <div className="topbar-right">
+                <a href="/stories" className="topbar-link">{t("nav.stories")}</a>
                 <a href="/employers" className="topbar-link">{t("nav.employers")}</a>
                 <LanguagePicker />
                 <a href="/profile" className="topbar-cta">{t("nav.myPassport")}</a>
