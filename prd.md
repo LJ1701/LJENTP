@@ -173,6 +173,7 @@ These were built before this decision. Keeping user AI payments may be fine as a
 - **Tabs instead of one long page.** Our professor found the demo scattered, and one long page hid the proof. Each tab now does one job.
 - **No dates on achievements.** Many people can't remember exact dates, and dates weren't needed to judge the proof.
 - **Guest first.** People try it before giving an email.
+- **Colours carry meaning.** A light, clean background, because employers are the buyer and it should read like a document they can trust. Navy (trust) for headings and buttons; green only for "confirmed" and success; gold (achievement) only on one headline word and the logo; red and amber only for problems.
 
 ## 10. Data we store
 
