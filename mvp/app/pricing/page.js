@@ -59,22 +59,16 @@ export default async function Pricing({ searchParams }) {
           <ul>{P.freeItems.map((x) => <li key={x}>{fill(x, { n: FREE_ANSWERS })}</li>)}</ul>
           <a className="cta small" href={user ? "/profile" : "/"}>{user ? t("pricing.openPassport") : t("pricing.startFree")}</a>
         </div>
-        <div className="card price">
-          <h2>{t("pricing.packName")}</h2>
-          <p className="price-tag">$5 <small>{t("pricing.oneTime")}</small></p>
-          <ul>{P.packItems.map((x) => <li key={x}>{x}</li>)}</ul>
-          <form action={buy}><input type="hidden" name="kind" value="pack" /><button type="submit" disabled={!user || guest}>{t("pricing.buyPack")}</button></form>
-        </div>
+        {/* Candidates never pay (17 Nov 2026 decision: employers pay). The $5 pack and $9 Pro code stays in
+            billing/actions.js for anyone already subscribed, but isn't offered any more. */}
         <div className="card price featured">
-          <span className="badge badge-full">{t("pricing.mostAi")}</span>
-          <h2>{t("pricing.proName")}</h2>
-          <p className="price-tag">$9 <small>{t("pricing.perMonth")}</small></p>
-          <ul>{P.proItems.map((x) => <li key={x}>{x}</li>)}</ul>
-          <form action={buy}><input type="hidden" name="kind" value="pro" /><button type="submit" disabled={!user || guest || status?.pro}>{status?.pro ? t("pricing.havePro") : t("pricing.goPro")}</button></form>
+          <span className="badge badge-full">{t("pricing.employerBadge")}</span>
+          <h2>{t("pricing.employerName")}</h2>
+          <p className="price-tag">{t("pricing.employerPrice")}</p>
+          <ul>{P.employerItems.map((x) => <li key={x}>{x}</li>)}</ul>
+          <a className="cta small" href="/employers#post">{t("pricing.employerCta")}</a>
         </div>
       </div>
-      {!user && <p className="muted center"><small>{t("pricing.startFreeNote")}</small></p>}
-      {guest && <p className="muted center"><small>{t("pricing.guestNote")} <a href="/profile">{t("pricing.guestLink")}</a></small></p>}
 
       <h2 className="step-title" id="schools">{t("pricing.schoolsTitle")}</h2>
       <div className="card">

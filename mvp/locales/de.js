@@ -1,15 +1,15 @@
 // German. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const de = {
-  nav: { language: "Sprache", myPassport: "Mein Pass", home: "The Assist Startseite" },
+  nav: { employers: "Für Arbeitgeber", language: "Sprache", myPassport: "Mein Pass", home: "The Assist Startseite" },
   footer: { advice: "Ratschläge gibt es überall.", proof: "Nachweise nicht.", follow: "Folge @ljsoccer01 auf TikTok", by: "The Assist von LJSOCCER", careers: "Sportberufe" },
   meta: { description: "Finde deinen Platz in der Sportbranche und beweise es: ein Sportpass, passende Berufe, aktuelle Sportjobs und ein gespeicherter Plan." },
   time: { today: "heute", oneDay: "vor 1 Tag", days: "vor {n} Tagen", earlierToday: "heute früher" },
 
   home: {
     eyebrow: "Jede Karriere beginnt mit einer Vorlage",
-    title: "Finde deinen Platz in der Sportbranche.",
-    titleGold: "Beweise es.",
-    sub: "Du liebst Sport? Finde einen Sportjob, der zu dir passt. Dann zeig, was du kannst.",
+    title: "Deine Arbeit ist der Beweis.",
+    titleGold: "Zeig sie.",
+    sub: "Lade jede Datei oder jeden Link hoch, der zeigt, was du gemacht hast, und nenne die Leute, die es gesehen haben. Sie bestätigen mit einem Klick, und Arbeitgeber bekommen einen Link, dem sie vertrauen können.",
     openPassport: "Meinen Sportpass öffnen →",
     free: "Kostenlos · kein Konto nötig ·",
     signIn: "Anmelden",
@@ -17,11 +17,7 @@ const de = {
     statsInterns: "Praktika",
     statsEmployers: "Arbeitgeber · stündlich gezählt",
     justPosted: "Gerade veröffentlicht",
-    how: [
-      ["Pass", "Trag ein, was du gemacht hast, in deinen eigenen Worten, oder füge deinen Lebenslauf ein."],
-      ["Passung", "Sieh die Sportberufe und echten Jobs, die zu dir passen, mit einem Nachweis für jede Fähigkeit."],
-      ["Nachweis", "Ein Link und ehrliche Lebenslauf-Punkte für jede Bewerbung."]
-    ],
+    how: [["Nachweise hinzufügen","Jede Datei oder jeder Link: Highlight-Videos, Statistiken, Zertifikate, Designs, Artikel."],["Bestätigen lassen","Wer deine Arbeit gesehen hat, bestätigt sie mit einem Klick. Zum Start braucht es keine Freigabe."],["Mit Nachweis bewerben","Ein Link für jede Bewerbung, auf LinkedIn, Indeed, TeamWork Online oder anderswo."]],
     whoTitle: "Für alle, die in den Sport wollen",
     who: ["Studierende", "Sportler:innen jeder Sportart", "Ehemalige Spieler:innen", "Trainer:innen", "Creator", "Quereinsteiger:innen", "Fans mit Plan"],
     errorSignin: "Dieser Bestätigungslink hat nicht funktioniert oder ist abgelaufen. Melde dich an oder erstelle das Konto erneut. Du speicherst einen Gast-Pass? Öffne den Browser, in dem du ihn begonnen hast, und lade neu: deine E-Mail ist vielleicht schon bestätigt.",
@@ -29,7 +25,9 @@ const de = {
     signedInAs: "Angemeldet als {email}",
     goPassport: "Zu meinem Sportpass →",
     leaveGuest: "Gastmodus verlassen (dieser Pass geht verloren)",
-    signOut: "Abmelden"
+    signOut: "Abmelden",
+    employers: "Du stellst ein? Stelle posten →",
+    jobsTitle: "Dann setz deine Nachweise ein: aktuelle Sportjobs"
   },
 
   search: {
@@ -387,6 +385,8 @@ const de = {
 
   confirm: {"ask":"Um Bestätigung bitten","showLink":"Link erneut zeigen","waiting":"Warte auf Antwort.","sendIt":"Schick das selbst an {ref}. Die Person öffnet es, sieht, was du geschrieben hast, und antwortet mit einem Klick. Kein Konto nötig.","copyMessage":"Nachricht kopieren","email":"In meiner E-Mail öffnen","subject":"Kannst du bestätigen, dass ich mit dir gearbeitet habe?","message":"Hallo {ref}, ich erstelle eine Nachweisseite für Jobs im Sport und habe dich als Referenz angegeben. Kannst du bestätigen, dass es stimmt? Ein Klick: {url}","linkError":"Link konnte nicht erstellt werden. Versuch es in einer Minute.","confirmedBy":"Bestätigt von {ref}","declinedBy":"{ref} sagt, das stimmt nicht. Nur du siehst das; du kannst es entfernen.","eyebrow":"Referenzprüfung","title":"Hast du mit {owner} gearbeitet?","intro":"{owner} hat dich als Referenz auf der Nachweisseite bei The Assist angegeben. Bitte prüfe, was über dich steht.","you":"Du:","relation":"Woher ihr euch kennt:","achievement":"Was du bestätigen kannst:","note":"Notiz:","commentLabel":"Möchtest du etwas über {owner} sagen?","commentPh":"z. B. Hat die ganze Saison die Anzeigetafel bedient, immer pünktlich.","yes":"Ja, das stimmt","no":"Das stimmt nicht","fine":"Deine Antwort und dein Kommentar erscheinen nur bei Bestätigung auf der öffentlichen Seite. Wir fragen nicht nach deiner E-Mail.","thanks":"Danke. Deine Bestätigung steht jetzt auf der Seite von {owner}.","thanksDeclined":"Danke. Wir haben mitgeteilt, dass es nicht stimmt; öffentlich wird nichts gezeigt.","ownerError":"Das ist deine eigene Referenz. Schick den Link an die Person, damit sie antwortet.","error":"Etwas ist schiefgelaufen. Bitte versuch es erneut."},
   work: {"title":"Wo du arbeiten kannst","canLabel":"Länder, in denen ich schon arbeiten darf","canHint":"Nenne nur Länder, in denen du bereits arbeiten darfst. The Assist prüft das nicht und hilft nicht bei Visa oder Arbeitserlaubnissen.","wantLabel":"Länder, in denen ich gern arbeiten würde","add":"Land hinzufügen…","remove":"{country} entfernen","max":"Du hast {n} Länder hinzugefügt, das Maximum.","jobsNone":"Tipp: Zeig Arbeitgebern, wo du schon arbeiten darfst.","addInProfile":"Im Profil hinzufügen","jobsOutside":"Du hast {country} nicht als Land angegeben, in dem du schon arbeiten darfst. Prüfe die Anforderungen der Arbeitgeber; The Assist berät nicht zu Visa oder Arbeitserlaubnissen.","searchIn":"Jobs: {country}","publicCan":"Darf arbeiten in:","publicStated":"laut {name}","publicWant":"Möchte arbeiten in:"},
+  employers: {"metaTitle":"Für Arbeitgeber · The Assist","eyebrow":"Für Arbeitgeber","title":"Stelle Leute ein, die es","titleGold":"beweisen können.","sub":"Jeder Bewerber auf The Assist hat eine Nachweisseite: die Dateien und Links hinter seiner Erfahrung und Referenzen, die sie bestätigt haben. Poste eine Stelle, die du schon auf LinkedIn, Indeed oder TeamWork Online hast, und Bewerber bewerben sich dort mit ihren Nachweisen.","cta":"Stelle posten","seeTitle":"Was du auf der Nachweisseite eines Bewerbers siehst","see":[["Die Nachweise","Highlight-Videos, Statistiken, Zertifikate, Designs und Artikel: die Arbeit selbst, nicht nur eine Lebenslaufzeile."],["Bestätigte Referenzen","Vorgesetzte und Trainer, die die Arbeit bestätigt haben, mit Name, Rolle und Kommentar."],["Wo sie arbeiten dürfen","Länder, in denen der Bewerber nach eigener Angabe schon arbeiten darf. Visa übernehmen wir nicht."]],"howTitle":"So funktioniert das Posten","how":["Füge den Link zu einer Stelle ein, die du schon auf LinkedIn, Indeed, TeamWork Online oder deiner Karriereseite gepostet hast.","Wir prüfen sie und veröffentlichen sie im Jobs-Tab der Bewerber, meist innerhalb von 2 Werktagen.","Bewerber bewerben sich wie gewohnt dort, wo du gepostet hast, mit ihrem Nachweis-Link."],"price":"Kostenlos im Early Access. Kein Konto nötig. Später zahlen Arbeitgeber, um Bewerber mit Nachweisen zu suchen und zu kontaktieren.","formTitle":"Stelle posten","company":"Unternehmen oder Organisation","roleTitle":"Stellenbezeichnung","rolePh":"Ticketing-Koordinator","link":"Link zur Stellenanzeige","linkHint":"LinkedIn, Indeed, TeamWork Online oder deine eigene Karriereseite.","country":"Land","anyCountry":"Beliebig oder remote","name":"Dein Name","email":"Geschäftliche E-Mail","wantsProof":"Bewerber bitten, ihren Nachweis-Link anzugeben","submit":"Diese Stelle posten","privacy":"Name und E-Mail nutzen wir nur, um dich zu dieser Stelle zu kontaktieren. Bewerber sehen sie nie.","thanks":"Danke. Wir prüfen den Link und veröffentlichen die Stelle, meist innerhalb von 2 Werktagen.","missing":"Gib Unternehmen, Stellenbezeichnung und deinen Namen an.","badEmail":"Diese E-Mail sieht nicht richtig aus.","badLink":"Dieser Link sieht nicht richtig aus. Füge die vollständige Adresse der Anzeige ein.","notOn":"Das Posten von Stellen ist noch nicht aktiv. Versuch es bald wieder.","liveTitle":"Stellen auf The Assist ({n})"},
+  postedRoles: {"title":"Von Arbeitgebern auf The Assist gepostet","sub":"Diese Arbeitgeber wollen Nachweise. Bewirb dich dort, wo sie die Stelle gepostet haben, mit deinem Nachweis-Link.","includeLink":"Dein Nachweis-Link:","copyLink":"Meinen Link kopieren","noLink":"Schalte zuerst deinen Nachweis-Link ein, damit du ihn angeben kannst.","turnOn":"Zu Teilen","applyOn":{"linkedin":"Auf LinkedIn bewerben","indeed":"Auf Indeed bewerben","teamwork":"Auf TeamWork Online bewerben","other":"Auf ihrer Website bewerben"}},
   public: {
     title: "Sportprofil",
     metaTitle: "{name} · The Assist Sportpass",
@@ -463,7 +463,7 @@ const de = {
     directorSees: "Die Programmleitung sieht nur Summen, nie deinen Namen, deinen Pass oder deine Chats.",
     seePlans: "Tarife ansehen",
     stayFree: "Jobsuchen und Sofortantworten bleiben kostenlos.",
-    outOfAnswers: "Du hast deine {n} kostenlosen KI-Antworten diesen Monat aufgebraucht. Hol dir 25 weitere für 5 $, wechsle zu Pro für unbegrenzte Antworten oder tritt mit dem Code dem Programm deiner Schule bei.",
+    outOfAnswers: "Du hast deine {n} kostenlosen KI-Antworten für diesen Monat genutzt. Sie erneuern sich am 1. Portfolio, Nachweis-Link, Jobsuche und Passt-Check funktionieren weiter.",
     saveFirst: "Speichere zuerst deinen Pass mit deiner E-Mail (oben auf deiner Pass-Seite), damit dein Kauf bei deinem Konto bleibt.",
     notOn: "Zahlungen sind noch nicht aktiviert.",
     alreadyPro: "Du hast bereits Pro.",
@@ -489,11 +489,11 @@ const de = {
 
   pricing: {
     metaTitle: "Preise · The Assist",
-    metaDescription: "Kostenlos für alle. Zusätzliche KI-Antworten, Pro und Programme für Schulen und Vereine.",
+    metaDescription: "Kostenlos für Bewerber. Arbeitgeber zahlen, um Bewerber mit Nachweisen zu erreichen (kostenlos im Early Access).",
     eyebrow: "Preise",
-    title: "Nachweise aufbauen ist kostenlos.",
-    titleGold: "Zahl nur für mehr KI.",
-    sub: "Dein Pass, passende Berufe, dein Plan, die Live-Jobsuche, Passungs-Checks und dein Nachweis-Link sind für alle kostenlos, immer.",
+    title: "Kostenlos für Bewerber.",
+    titleGold: "Arbeitgeber zahlen.",
+    sub: "Pass, Portfolio, bestätigte Referenzen, Nachweis-Link, Jobsuche und Passt-Checks sind kostenlos, immer.",
     canceled: "Zahlung abgebrochen. Es wurde nichts berechnet.",
     yourPlan: "Dein Tarif",
     proLine: "Pro: unbegrenzte KI-Antworten",
@@ -543,7 +543,12 @@ const de = {
     message: "Sollten wir noch etwas wissen? (optional)",
     request: "Pilotprojekt anfragen",
     codeTitle: "Hast du einen Code von deinem Programm?",
-    startPassport: "Starte deinen Pass und gib dort den Code ein."
+    startPassport: "Starte deinen Pass und gib dort den Code ein.",
+    employerBadge: "Early Access",
+    employerName: "Arbeitgeber",
+    employerPrice: "Vorerst kostenlos",
+    employerItems: ["Poste eine Stelle, die du schon auf LinkedIn, Indeed oder TeamWork Online hast","Bewerber kommen mit einer Nachweisseite: Dateien, Links und bestätigte Referenzen","Sieh, wo jeder Bewerber bereits arbeiten darf"],
+    employerCta: "Stelle posten"
   },
 
   program: {

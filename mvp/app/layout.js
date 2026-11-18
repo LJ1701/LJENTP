@@ -37,6 +37,7 @@ export default async function RootLayout({ children }) {
                 <span>The <span className="gold-text">Assist</span></span>
               </a>
               <div className="topbar-right">
+                <a href="/employers" className="topbar-link">{t("nav.employers")}</a>
                 <LanguagePicker />
                 <a href="/profile" className="topbar-cta">{t("nav.myPassport")}</a>
               </div>
@@ -47,6 +48,8 @@ export default async function RootLayout({ children }) {
             <p className="footer-tag">{t("footer.advice")} <span className="gold-text">{t("footer.proof")}</span></p>
             <p>
               <a href="/careers">{t("footer.careers")}</a>
+              <span aria-hidden="true"> · </span>
+              <a href="/employers">{t("nav.employers")}</a>
               <span aria-hidden="true"> · </span>
               <a href="https://www.tiktok.com/@ljsoccer01" target="_blank" rel="noopener noreferrer">{t("footer.follow")}</a>
               <span aria-hidden="true"> · </span>

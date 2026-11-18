@@ -134,7 +134,7 @@ A copycat can copy the code but starts with **zero confirmations and zero confir
   - contact candidates.
 - **Not decided yet:** price and format (per job post, monthly seat or yearly plan). This needs the hiring-manager interviews first.
 
-**What the app charges today (to be reviewed against this model):**
+**Decided 17 Nov: candidates are never charged.** The pricing page now shows "Free" for candidates and "Employers: free for now". The $5 and $9 AI offers were removed from the app (the code stays for anyone already subscribed). Before that, the app charged:
 - extra AI answers, $5 for 25;
 - Pro, $9 a month;
 - a school program, from $1,500 a year (unlimited AI and a dashboard for staff).
@@ -158,7 +158,8 @@ These were built before this decision. Keeping user AI payments may be fine as a
 | 9 | **10 languages** | Live |
 | 10 | **Accounts:** guest first, then save with email | Live |
 | 11 | **Where you can work:** "Countries where I can already work" and "Countries I'd like to work in" (up to 10 each, self-stated, no visa advice). The public page shows "Can work in: …, as stated by <name>". The Jobs tab notes when the search country isn't one they listed, with one-click searches in their countries | Live (17 Nov) |
-| 12 | **Employer side:** search confirmed candidates, post jobs | Not built |
+| 12 | **Employer side, step 1:** a "For employers" page. Employers post a role by linking the posting they already have (LinkedIn, Indeed, TeamWork Online or their careers page). After the owner approves it, it shows in candidates' Jobs tab with "Apply on LinkedIn/Indeed/TeamWork Online" and a reminder to include the proof link. Free during early access | Built 17 Nov (needs `mvp/supabase/009_employer_roles.sql`) |
+| 12b | **Employer side, step 2:** search confirmed candidates, contact them, pay | Not built |
 | 13 | **Stronger confirmation:** check the confirmer's work email; label personal emails | Not built |
 
 **Dropped since October:** LJ Coach Certification and the Body ID scan. Our early (synthetic, AI-simulated) test interviews suggested employers would ignore a certificate made by us, and proof from real work and real people is stronger. To confirm with real hiring managers.

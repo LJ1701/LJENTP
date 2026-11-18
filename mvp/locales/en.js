@@ -1,16 +1,16 @@
 // English: the source text. Every other language file has the same keys; anything missing falls back to this.
 // {name} marks a value the app fills in. Keep keys in sync across all ten files.
 const en = {
-  nav: { language: "Language", myPassport: "My Passport", home: "The Assist home" },
+  nav: { employers: "For employers", language: "Language", myPassport: "My Passport", home: "The Assist home" },
   footer: { advice: "Advice is everywhere.", proof: "Proof isn't.", follow: "Follow @ljsoccer01 on TikTok", by: "The Assist by LJSOCCER", careers: "Sports careers" },
   meta: { description: "Find your place in the sports industry and prove it: a Sports Passport, career matches, live sports jobs and a saved plan." },
   time: { today: "today", oneDay: "1 day ago", days: "{n} days ago", earlierToday: "earlier today" },
 
   home: {
     eyebrow: "Every career starts with an assist",
-    title: "Find your place in the sports industry.",
-    titleGold: "Prove it.",
-    sub: "Love sports? Find a job in sports that fits you. Then show what you can do.",
+    title: "Your work is the evidence.",
+    titleGold: "Show it.",
+    sub: "Upload any file or link that shows what you've done, and name the people who saw it. They confirm with one click, and employers get one link they can trust.",
     openPassport: "Open my Sports Passport →",
     free: "Free · no account needed ·",
     signIn: "Sign in",
@@ -18,11 +18,7 @@ const en = {
     statsInterns: "internships",
     statsEmployers: "employers · counted hourly",
     justPosted: "Just posted",
-    how: [
-      ["Passport", "Add what you've done, in your own words, or paste your résumé."],
-      ["Fit", "See the sports careers and real jobs you fit, with proof for each skill."],
-      ["Proof", "One link and honest résumé bullets for every application."]
-    ],
+    how: [["Add evidence","Any file or link: highlight videos, stats sheets, certificates, flyers you designed, articles."],["Get it confirmed","The people who saw your work confirm it with one click. Nothing needs their sign-off to start."],["Apply with proof","One link for every application, on LinkedIn, Indeed, TeamWork Online or anywhere else."]],
     whoTitle: "Built for everyone heading into sports",
     who: ["Students", "Athletes, any sport", "Former players", "Coaches", "Creators", "Career changers", "Fans with a plan"],
     errorSignin: "That confirmation link didn't work or has expired. Try signing in, or create the account again. Saving a guest Passport? Open the browser you started it in and refresh: your email may already be confirmed.",
@@ -30,7 +26,9 @@ const en = {
     signedInAs: "Signed in as {email}",
     goPassport: "Go to my Sports Passport →",
     leaveGuest: "Leave guest mode (you lose this Passport)",
-    signOut: "Sign out"
+    signOut: "Sign out",
+    employers: "Hiring? Post a role →",
+    jobsTitle: "Then put your proof to work: live sports jobs"
   },
 
   search: {
@@ -389,6 +387,8 @@ const en = {
 
   confirm: {"ask":"Ask them to confirm","showLink":"Show the link again","waiting":"Waiting for their answer.","sendIt":"Send this to {ref} yourself. They open it, see what you wrote, and answer with one click. No account needed.","copyMessage":"Copy message","email":"Open in my email","subject":"Could you confirm I worked with you?","message":"Hi {ref}, I'm building a proof page for sports jobs and listed you as a reference. Could you confirm it's right? It takes one click: {url}","linkError":"Couldn't make the link. Try again in a minute.","confirmedBy":"Confirmed by {ref}","declinedBy":"{ref} said this isn't right. Only you can see this; you may want to remove it.","eyebrow":"Reference check","title":"Did you work with {owner}?","intro":"{owner} added you as a reference on their proof page on The Assist. Please check what they wrote about you.","you":"You:","relation":"How you know them:","achievement":"What you can vouch for:","note":"Their note:","commentLabel":"Anything you'd like to say about {owner}?","commentPh":"e.g. Ran our game-day scoreboard all season, always on time.","yes":"Yes, that's right","no":"That's not right","fine":"Your answer and comment appear on their public page only if you confirm. We don't ask for your email.","thanks":"Thank you. Your confirmation now shows on {owner}'s proof page.","thanksDeclined":"Thank you. We've told them it isn't right; nothing is shown publicly.","ownerError":"This is your own reference. Send the link to them so they can answer.","error":"Something went wrong. Please try again."},
   work: {"title":"Where you can work","canLabel":"Countries where I can already work","canHint":"Only list countries where you're already allowed to work. The Assist doesn't check this and doesn't help with visas or work permits.","wantLabel":"Countries I'd like to work in","add":"Add a country…","remove":"Remove {country}","max":"You've added {n} countries, the most allowed.","jobsNone":"Tip: tell employers where you can already work.","addInProfile":"Add it in your Profile","jobsOutside":"You haven't listed {country} as a country where you can already work. Check each employer's requirements; The Assist doesn't advise on visas or work permits.","searchIn":"Jobs in {country}","publicCan":"Can work in:","publicStated":"as stated by {name}","publicWant":"Would like to work in:"},
+  employers: {"metaTitle":"For employers · The Assist","eyebrow":"For employers","title":"Hire people who can","titleGold":"prove it.","sub":"Every candidate on The Assist has a proof page: the files and links behind their experience, and references who confirmed it. Post a role you already have on LinkedIn, Indeed or TeamWork Online, and candidates apply there with their proof.","cta":"Post a role","seeTitle":"What you see on a candidate's proof page","see":[["Their evidence","Highlight videos, stats, certificates, designs and articles: the work itself, not just a résumé line."],["Confirmed references","Supervisors and coaches who confirmed the work, with their name, role and comment."],["Where they can work","Countries the candidate says they can already work in. We don't handle visas."]],"howTitle":"How posting works","how":["Paste the link to a role you've already posted on LinkedIn, Indeed, TeamWork Online or your careers page.","We check it and publish it in candidates' Jobs tab, usually within 2 working days.","Candidates apply where you posted it, as usual, with their proof link included."],"price":"Free during early access. No account needed. Employers will pay later to search and contact candidates with proof.","formTitle":"Post a role","company":"Company or organisation","roleTitle":"Role title","rolePh":"Ticketing coordinator","link":"Link to the posting","linkHint":"LinkedIn, Indeed, TeamWork Online or your own careers page.","country":"Country","anyCountry":"Any or remote","name":"Your name","email":"Work email","wantsProof":"Ask candidates to include their proof link","submit":"Post this role","privacy":"Your name and email are only used to contact you about this role. They're never shown to candidates.","thanks":"Thanks. We'll check the link and publish the role, usually within 2 working days.","missing":"Fill in the company, role title and your name.","badEmail":"That email doesn't look right.","badLink":"That link doesn't look right. Paste the full web address of the posting.","notOn":"Posting roles isn't switched on yet. Try again soon.","liveTitle":"Roles on The Assist now ({n})"},
+  postedRoles: {"title":"Posted by employers on The Assist","sub":"These employers asked for proof. Apply where they posted the role, and include your proof link.","includeLink":"Your proof link:","copyLink":"Copy my proof link","noLink":"Turn on your proof link first, so you can include it.","turnOn":"Go to Share","applyOn":{"linkedin":"Apply on LinkedIn","indeed":"Apply on Indeed","teamwork":"Apply on TeamWork Online","other":"Apply on their site"}},
   public: {
     title: "Sports Profile",
     metaTitle: "{name} · The Assist Sports Passport",
@@ -465,7 +465,7 @@ const en = {
     directorSees: "Your program director sees totals only, never your name, Passport or chats.",
     seePlans: "See plans",
     stayFree: "Job searches and instant answers stay free.",
-    outOfAnswers: "You've used your {n} free AI answers this month. Get 25 more for $5, go Pro for unlimited, or join your school's program with its code.",
+    outOfAnswers: "You've used your {n} free AI answers this month. They reset on the 1st. Your portfolio, proof link, job search and fit checks keep working.",
     saveFirst: "Save your Passport with your email first (top of your Passport page), so your purchase stays with your account.",
     notOn: "Payments aren't switched on yet.",
     alreadyPro: "You already have Pro.",
@@ -491,11 +491,11 @@ const en = {
 
   pricing: {
     metaTitle: "Pricing · The Assist",
-    metaDescription: "Free for everyone. Extra AI answers, Pro, and programs for schools and clubs.",
+    metaDescription: "Free for candidates. Employers pay to reach candidates with proof (free during early access).",
     eyebrow: "Pricing",
-    title: "Free to build your proof.",
-    titleGold: "Pay only for more AI.",
-    sub: "Your Passport, career matches, plan, live job search, fit checks and proof link are free for everyone, always.",
+    title: "Free for candidates.",
+    titleGold: "Employers pay.",
+    sub: "Your Passport, portfolio, confirmed references, proof link, job search and fit checks are free, always.",
     canceled: "Payment cancelled. Nothing was charged.",
     yourPlan: "Your plan",
     proLine: "Pro: unlimited AI answers",
@@ -545,7 +545,12 @@ const en = {
     message: "Anything we should know? (optional)",
     request: "Request a pilot",
     codeTitle: "Have a join code from your program?",
-    startPassport: "Start your Passport, then enter the code there."
+    startPassport: "Start your Passport, then enter the code there.",
+    employerBadge: "Early access",
+    employerName: "Employers",
+    employerPrice: "Free for now",
+    employerItems: ["Post a role you already have on LinkedIn, Indeed or TeamWork Online","Candidates apply with a proof page: files, links and confirmed references","See where each candidate can already work"],
+    employerCta: "Post a role"
   },
 
   program: {
