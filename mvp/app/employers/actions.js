@@ -1,6 +1,6 @@
 "use server";
 import { redirect } from "next/navigation";
-import { adminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { sourceOf } from "@/lib/employer-roles";
 import { isCountry } from "@/lib/countries";
 import { getT } from "@/lib/i18n-server";
@@ -24,13 +24,14 @@ export async function postRole(formData) {
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact_email)) back(t("employers.badEmail"));
   if (!posting_url) back(t("employers.badLink"));
   const country = clean(formData.get("country"), 2);
-  const db = adminClient();
-  if (!db) back(t("employers.notOn"));
+  // Runs as the visitor: the database only lets them add a 'pending' row, never read or change any.
+  const db = await createClient();
   const { error } = await db.from("employer_roles").insert({
     company, contact_name, contact_email, role_title, posting_url,
     source: sourceOf(posting_url),
     country: isCountry(country) && /^[A-Z]{2}$/.test(country) ? country : "",
-    wants_proof: formData.get("wants_proof") === "on"
+    wants_proof: formData.get("wants_proof") === "on",
+    status: "pending"
   });
   if (error) back(t("employers.notOn"));
   redirect("/employers?posted=1#post");

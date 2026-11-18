@@ -20,9 +20,12 @@ create table if not exists public.employer_roles (
 );
 create index if not exists employer_roles_status on public.employer_roles (status, created_at desc);
 
--- Private table: no one can read or write it directly. The app's server adds rows (with the service key)
--- and shows approved roles through the function below, which never returns contact details.
+-- Private table: anyone may ADD a role, but only as 'pending'. No one can read, change or delete rows
+-- through the app; approved roles are shown through the function below, which never returns contact details.
 alter table public.employer_roles enable row level security;
+drop policy if exists "Anyone can post a pending role" on public.employer_roles;
+create policy "Anyone can post a pending role" on public.employer_roles for insert to anon, authenticated
+  with check (status = 'pending');
 
 create or replace function public.approved_roles()
 returns table (id uuid, company text, role_title text, posting_url text, source text, country text, created_at timestamptz)
