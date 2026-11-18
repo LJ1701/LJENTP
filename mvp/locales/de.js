@@ -1,12 +1,12 @@
 // German. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const de = {
-  nav: { language: "Sprache", myPassport: "Mein Pass", home: "LJSportMind Startseite" },
-  footer: { advice: "Ratschläge gibt es überall.", proof: "Nachweise nicht.", follow: "Folge @ljsoccer01 auf TikTok", by: "LJSportMind von LJSOCCER", careers: "Sportberufe" },
+  nav: { language: "Sprache", myPassport: "Mein Pass", home: "The Assist Startseite" },
+  footer: { advice: "Ratschläge gibt es überall.", proof: "Nachweise nicht.", follow: "Folge @ljsoccer01 auf TikTok", by: "The Assist von LJSOCCER", careers: "Sportberufe" },
   meta: { description: "Finde deinen Platz in der Sportbranche und beweise es: ein Sportpass, passende Berufe, aktuelle Sportjobs und ein gespeicherter Plan." },
   time: { today: "heute", oneDay: "vor 1 Tag", days: "vor {n} Tagen", earlierToday: "heute früher" },
 
   home: {
-    eyebrow: "KI-Berufsorientierung im Sport · von LJSOCCER",
+    eyebrow: "Jede Karriere beginnt mit einer Vorlage",
     title: "Finde deinen Platz in der Sportbranche.",
     titleGold: "Beweise es.",
     sub: "Du liebst Sport? Finde einen Sportjob, der zu dir passt. Dann zeig, was du kannst.",
@@ -383,16 +383,16 @@ const de = {
 
   // Passport tabs and the proof a user attaches to achievements (no sign-off needed).
   tabs: {"savedAchievements":"Gespeichert. Deine Treffer im Tab Weg sind aktualisiert.","savedProfile":"Gespeichert. Als Nächstes: Liste deine Erfolge auf.","label":"Passbereiche","progress":"{n} von {total} erledigt","profile":"Profil","proof":"Erfolge","portfolio":"Portfolio","path":"Weg","jobs":"Jobs","share":"Teilen","proofTitle":"Deine Erfolge","portfolioTitle":"Dein Portfolio","shareTitle":"Teile deinen Pass","saved":"Gespeichert. Als Nächstes: Dateien oder Links zum Portfolio hinzufügen.","saveNext":"Speichern und weiter","saveAchievements":"Erfolge speichern","goProfile":"Profil ausfüllen","shareTip":"Dein Portfolio ist leer. Du kannst trotzdem teilen, aber Dateien und Links machen deine Erfolge glaubwürdiger.","lead":{"profile":"Wer du bist, deine Sportart und deine Fähigkeiten.","proof":"Was du gemacht hast, eine Zeile pro Erfolg. Mit Zahl, wenn möglich; Goldie hilft.","portfolio":"Lade Dateien hoch oder füge Links hinzu, die deine Arbeit zeigen: Videos, Statistiken, Zertifikate, Designs, Artikel. Du fügst sie selbst hinzu; niemand muss freigeben.","path":"Sportberufe, die zu dir passen, und ein Plan für den, den du wählst.","jobs":"Echte Stellen, mit Passungscheck anhand deines Profils.","share":"Ein Link, den Arbeitgeber öffnen können, plus Einladungen."}},
-  evidence: {"addTitle":"Zum Portfolio hinzufügen","yours":"In deinem Portfolio","count":"{n} Einträge · {files} von {max} Dateien","empty":"Noch leer. Füge eine Datei oder einen Link hinzu, der deine Arbeit zeigt.","kindLabel":"Was fügst du hinzu?","kind":{"file":"Datei","link":"Link","reference":"Referenz"},"help":{"file":"Ein PDF, Bild oder kurzes Video: Statistikblatt, Zertifikat, selbst gestalteter Flyer, Highlight-Clip.","link":"YouTube, Hudl, Instagram, ein Artikel, ein Google-Drive-Ordner, deine Website.","reference":"Jemand, der deine Arbeit gesehen hat: Trainer, Vorgesetzte, Lehrkraft oder Teamkollege. Sie müssen nichts freigeben."},"f":{"file":"Datei wählen","url":"Link","title":"Titel","description":"Was es zeigt","achievement":"Zeigt diesen Erfolg","ref_name":"Name","ref_role":"Funktion","ref_org":"Organisation","ref_relation":"Woher ihr euch kennt","ref_contact":"E-Mail oder Telefon"},"ph":{"url":"https://…","title":"z. B. Highlights Saison 2025","description":"z. B. Alle Heimspiele, bei denen ich die Anzeigetafel bedient habe","ref_name":"z. B. Jordan Smith","ref_role":"z. B. Cheftrainer","ref_org":"z. B. Dallas FC","ref_relation":"z. B. Mein Vorgesetzter für 2 Saisons","ref_contact":"z. B. jordan@verein.de"},"noAchievement":"Keinem Erfolg zugeordnet","optional":"optional","showContact":"Kontaktdaten auf meinem öffentlichen Link zeigen","fileRules":"PDF, JPG, PNG, WEBP, GIF, MP4, MOV oder WEBM · bis {mb} MB","add":"Zum Portfolio hinzufügen","saving":"Speichern…","uploading":"Hochladen…","added":"Zum Portfolio hinzugefügt.","remove":"Aus dem Portfolio entfernen","private":"privat","shows":"Zeigt:","fileUnavailable":"Die Datei kann gerade nicht geöffnet werden.","badLink":"Der Link sieht nicht richtig aus. Füge die vollständige Adresse ein.","needName":"Füge den Namen der Person hinzu.","needFile":"Wähle zuerst eine Datei.","fileType":"Dieser Dateityp wird nicht unterstützt. Nutze PDF, Bild oder kurzes Video.","fileTooBig":"Die Datei ist größer als {mb} MB. Nimm eine kleinere oder lade sie auf YouTube oder Google Drive hoch und füge den Link hinzu.","full":"Du hast {n} Einträge erreicht. Entferne einen, um einen neuen hinzuzufügen.","filesFull":"Du hast {n} Dateien hochgeladen. Entferne eine oder füge einen Link hinzu.","saveError":"Speichern fehlgeschlagen. Versuch es erneut.","uploadError":"Hochladen fehlgeschlagen. Prüfe deine Verbindung und versuch es erneut.","notReady":"Das Portfolio ist noch nicht aktiviert. Der Betreiber muss einen Datenbankschritt ausführen.","publicTitle":"Portfolio","publicCount":"{n} Einträge im Portfolio","publicNote":"Hinzugefügt von {name}. LJSportMind prüft diese Dateien, Links und Referenzen nicht: Öffne sie oder kontaktiere die Referenzen selbst."},
+  evidence: {"addTitle":"Zum Portfolio hinzufügen","yours":"In deinem Portfolio","count":"{n} Einträge · {files} von {max} Dateien","empty":"Noch leer. Füge eine Datei oder einen Link hinzu, der deine Arbeit zeigt.","kindLabel":"Was fügst du hinzu?","kind":{"file":"Datei","link":"Link","reference":"Referenz"},"help":{"file":"Ein PDF, Bild oder kurzes Video: Statistikblatt, Zertifikat, selbst gestalteter Flyer, Highlight-Clip.","link":"YouTube, Hudl, Instagram, ein Artikel, ein Google-Drive-Ordner, deine Website.","reference":"Jemand, der deine Arbeit gesehen hat: Trainer, Vorgesetzte, Lehrkraft oder Teamkollege. Sie müssen nichts freigeben."},"f":{"file":"Datei wählen","url":"Link","title":"Titel","description":"Was es zeigt","achievement":"Zeigt diesen Erfolg","ref_name":"Name","ref_role":"Funktion","ref_org":"Organisation","ref_relation":"Woher ihr euch kennt","ref_contact":"E-Mail oder Telefon"},"ph":{"url":"https://…","title":"z. B. Highlights Saison 2025","description":"z. B. Alle Heimspiele, bei denen ich die Anzeigetafel bedient habe","ref_name":"z. B. Jordan Smith","ref_role":"z. B. Cheftrainer","ref_org":"z. B. Dallas FC","ref_relation":"z. B. Mein Vorgesetzter für 2 Saisons","ref_contact":"z. B. jordan@verein.de"},"noAchievement":"Keinem Erfolg zugeordnet","optional":"optional","showContact":"Kontaktdaten auf meinem öffentlichen Link zeigen","fileRules":"PDF, JPG, PNG, WEBP, GIF, MP4, MOV oder WEBM · bis {mb} MB","add":"Zum Portfolio hinzufügen","saving":"Speichern…","uploading":"Hochladen…","added":"Zum Portfolio hinzugefügt.","remove":"Aus dem Portfolio entfernen","private":"privat","shows":"Zeigt:","fileUnavailable":"Die Datei kann gerade nicht geöffnet werden.","badLink":"Der Link sieht nicht richtig aus. Füge die vollständige Adresse ein.","needName":"Füge den Namen der Person hinzu.","needFile":"Wähle zuerst eine Datei.","fileType":"Dieser Dateityp wird nicht unterstützt. Nutze PDF, Bild oder kurzes Video.","fileTooBig":"Die Datei ist größer als {mb} MB. Nimm eine kleinere oder lade sie auf YouTube oder Google Drive hoch und füge den Link hinzu.","full":"Du hast {n} Einträge erreicht. Entferne einen, um einen neuen hinzuzufügen.","filesFull":"Du hast {n} Dateien hochgeladen. Entferne eine oder füge einen Link hinzu.","saveError":"Speichern fehlgeschlagen. Versuch es erneut.","uploadError":"Hochladen fehlgeschlagen. Prüfe deine Verbindung und versuch es erneut.","notReady":"Das Portfolio ist noch nicht aktiviert. Der Betreiber muss einen Datenbankschritt ausführen.","publicTitle":"Portfolio","publicCount":"{n} Einträge im Portfolio","publicNote":"Hinzugefügt von {name}. The Assist prüft diese Dateien, Links und Referenzen nicht: Öffne sie oder kontaktiere die Referenzen selbst."},
 
-  confirm: {"ask":"Um Bestätigung bitten","showLink":"Link erneut zeigen","waiting":"Warte auf Antwort.","sendIt":"Schick das selbst an {ref}. Die Person öffnet es, sieht, was du geschrieben hast, und antwortet mit einem Klick. Kein Konto nötig.","copyMessage":"Nachricht kopieren","email":"In meiner E-Mail öffnen","subject":"Kannst du bestätigen, dass ich mit dir gearbeitet habe?","message":"Hallo {ref}, ich erstelle eine Nachweisseite für Jobs im Sport und habe dich als Referenz angegeben. Kannst du bestätigen, dass es stimmt? Ein Klick: {url}","linkError":"Link konnte nicht erstellt werden. Versuch es in einer Minute.","confirmedBy":"Bestätigt von {ref}","declinedBy":"{ref} sagt, das stimmt nicht. Nur du siehst das; du kannst es entfernen.","eyebrow":"Referenzprüfung","title":"Hast du mit {owner} gearbeitet?","intro":"{owner} hat dich als Referenz auf der LJSportMind-Nachweisseite angegeben. Bitte prüfe, was über dich steht.","you":"Du:","relation":"Woher ihr euch kennt:","achievement":"Was du bestätigen kannst:","note":"Notiz:","commentLabel":"Möchtest du etwas über {owner} sagen?","commentPh":"z. B. Hat die ganze Saison die Anzeigetafel bedient, immer pünktlich.","yes":"Ja, das stimmt","no":"Das stimmt nicht","fine":"Deine Antwort und dein Kommentar erscheinen nur bei Bestätigung auf der öffentlichen Seite. Wir fragen nicht nach deiner E-Mail.","thanks":"Danke. Deine Bestätigung steht jetzt auf der Seite von {owner}.","thanksDeclined":"Danke. Wir haben mitgeteilt, dass es nicht stimmt; öffentlich wird nichts gezeigt.","ownerError":"Das ist deine eigene Referenz. Schick den Link an die Person, damit sie antwortet.","error":"Etwas ist schiefgelaufen. Bitte versuch es erneut."},
-  work: {"title":"Wo du arbeiten kannst","canLabel":"Länder, in denen ich schon arbeiten darf","canHint":"Nenne nur Länder, in denen du bereits arbeiten darfst. LJSportMind prüft das nicht und hilft nicht bei Visa oder Arbeitserlaubnissen.","wantLabel":"Länder, in denen ich gern arbeiten würde","add":"Land hinzufügen…","remove":"{country} entfernen","max":"Du hast {n} Länder hinzugefügt, das Maximum.","jobsNone":"Tipp: Zeig Arbeitgebern, wo du schon arbeiten darfst.","addInProfile":"Im Profil hinzufügen","jobsOutside":"Du hast {country} nicht als Land angegeben, in dem du schon arbeiten darfst. Prüfe die Anforderungen der Arbeitgeber; LJSportMind berät nicht zu Visa oder Arbeitserlaubnissen.","searchIn":"Jobs: {country}","publicCan":"Darf arbeiten in:","publicStated":"laut {name}","publicWant":"Möchte arbeiten in:"},
+  confirm: {"ask":"Um Bestätigung bitten","showLink":"Link erneut zeigen","waiting":"Warte auf Antwort.","sendIt":"Schick das selbst an {ref}. Die Person öffnet es, sieht, was du geschrieben hast, und antwortet mit einem Klick. Kein Konto nötig.","copyMessage":"Nachricht kopieren","email":"In meiner E-Mail öffnen","subject":"Kannst du bestätigen, dass ich mit dir gearbeitet habe?","message":"Hallo {ref}, ich erstelle eine Nachweisseite für Jobs im Sport und habe dich als Referenz angegeben. Kannst du bestätigen, dass es stimmt? Ein Klick: {url}","linkError":"Link konnte nicht erstellt werden. Versuch es in einer Minute.","confirmedBy":"Bestätigt von {ref}","declinedBy":"{ref} sagt, das stimmt nicht. Nur du siehst das; du kannst es entfernen.","eyebrow":"Referenzprüfung","title":"Hast du mit {owner} gearbeitet?","intro":"{owner} hat dich als Referenz auf der Nachweisseite bei The Assist angegeben. Bitte prüfe, was über dich steht.","you":"Du:","relation":"Woher ihr euch kennt:","achievement":"Was du bestätigen kannst:","note":"Notiz:","commentLabel":"Möchtest du etwas über {owner} sagen?","commentPh":"z. B. Hat die ganze Saison die Anzeigetafel bedient, immer pünktlich.","yes":"Ja, das stimmt","no":"Das stimmt nicht","fine":"Deine Antwort und dein Kommentar erscheinen nur bei Bestätigung auf der öffentlichen Seite. Wir fragen nicht nach deiner E-Mail.","thanks":"Danke. Deine Bestätigung steht jetzt auf der Seite von {owner}.","thanksDeclined":"Danke. Wir haben mitgeteilt, dass es nicht stimmt; öffentlich wird nichts gezeigt.","ownerError":"Das ist deine eigene Referenz. Schick den Link an die Person, damit sie antwortet.","error":"Etwas ist schiefgelaufen. Bitte versuch es erneut."},
+  work: {"title":"Wo du arbeiten kannst","canLabel":"Länder, in denen ich schon arbeiten darf","canHint":"Nenne nur Länder, in denen du bereits arbeiten darfst. The Assist prüft das nicht und hilft nicht bei Visa oder Arbeitserlaubnissen.","wantLabel":"Länder, in denen ich gern arbeiten würde","add":"Land hinzufügen…","remove":"{country} entfernen","max":"Du hast {n} Länder hinzugefügt, das Maximum.","jobsNone":"Tipp: Zeig Arbeitgebern, wo du schon arbeiten darfst.","addInProfile":"Im Profil hinzufügen","jobsOutside":"Du hast {country} nicht als Land angegeben, in dem du schon arbeiten darfst. Prüfe die Anforderungen der Arbeitgeber; The Assist berät nicht zu Visa oder Arbeitserlaubnissen.","searchIn":"Jobs: {country}","publicCan":"Darf arbeiten in:","publicStated":"laut {name}","publicWant":"Möchte arbeiten in:"},
   public: {
     title: "Sportprofil",
-    metaTitle: "{name} · LJSportMind Sportpass",
+    metaTitle: "{name} · The Assist Sportpass",
     metaProofs: "{n} Fähigkeiten mit Nachweis",
     metaSee: "Sieh dir die Belege an.",
-    badge: "LJSportMind Sportprofil",
+    badge: "The Assist Sportprofil",
     goal: "Ziel:",
     skillsTitle: "Fähigkeiten und Interessen",
     evidence: "Beleg:",
@@ -488,7 +488,7 @@ const de = {
   },
 
   pricing: {
-    metaTitle: "Preise · LJSportMind",
+    metaTitle: "Preise · The Assist",
     metaDescription: "Kostenlos für alle. Zusätzliche KI-Antworten, Pro und Programme für Schulen und Vereine.",
     eyebrow: "Preise",
     title: "Nachweise aufbauen ist kostenlos.",
@@ -547,7 +547,7 @@ const de = {
   },
 
   program: {
-    metaTitle: "Programm-Dashboard · LJSportMind",
+    metaTitle: "Programm-Dashboard · The Assist",
     eyebrow: "Für Schulen, Vereine und Programme",
     title: "Starte ein",
     titleGold: "kostenloses 30-Tage-Pilotprojekt",
@@ -567,9 +567,9 @@ const de = {
     seats: "{used} von {seats} Plätzen belegt",
     started: "Dein Pilotprojekt läuft. Teile den Code mit deinen Studierenden.",
     joinCode: "Beitrittscode",
-    howToJoin: "Studierende: Öffnet LJSportMind, startet einen Pass und gebt diesen Code unter „KI-Antworten“ auf eurer Pass-Seite ein.",
+    howToJoin: "Studierende: Öffnet The Assist, startet einen Pass und gebt diesen Code unter „KI-Antworten“ auf eurer Pass-Seite ein.",
     copyInvite: "Einladung für Studierende kopieren",
-    invite: "Tritt unserem Programm bei LJSportMind bei: Geh auf {url}, erstelle deinen kostenlosen Sportpass und gib den Code {code} ein, um unbegrenzte KI-Antworten zu bekommen.",
+    invite: "Tritt unserem Programm bei The Assist bei: Geh auf {url}, erstelle deinen kostenlosen Sportpass und gib den Code {code} ein, um unbegrenzte KI-Antworten zu bekommen.",
     outcomes: "Ergebnisse",
     none: "Noch keine Studierenden. Teile den Code; die Zahlen erscheinen hier, sobald sie ihre Pässe aufbauen.",
     statStudents: "Studierende beigetreten",
@@ -585,7 +585,7 @@ const de = {
   },
 
   paid: {
-    metaTitle: "Zahlung · LJSportMind",
+    metaTitle: "Zahlung · The Assist",
     title: "Zahlung",
     thanks: "Danke",
     failed: "Wir konnten diese Zahlung nicht bestätigen. Falls dir etwas berechnet wurde, melde dich und wir klären das.",
@@ -617,7 +617,7 @@ const de = {
     email: "E-Mail",
     copyLink: "Link kopieren",
     proofText: "Sieh dir an, was ich für eine Sportkarriere nachweisen kann, alles in einem Link:",
-    inviteText: "Ich baue auf LJSportMind meine Nachweise für eine Sportkarriere auf. Melde dich über meinen Link an und wir bekommen beide 5 zusätzliche KI-Antworten:",
+    inviteText: "Ich baue auf The Assist meine Nachweise für eine Sportkarriere auf. Melde dich über meinen Link an und wir bekommen beide 5 zusätzliche KI-Antworten:",
     jobText: "Diesen Sportjob habe ich gesehen und an dich gedacht: {title} bei {company}"
   },
 
@@ -633,13 +633,13 @@ const de = {
 
   careers: {
     eyebrow: "Leitfaden für Sportberufe",
-    indexTitle: "Sportberufe: Fähigkeiten, erste Schritte und aktuelle Jobs · LJSportMind",
+    indexTitle: "Sportberufe: Fähigkeiten, erste Schritte und aktuelle Jobs · The Assist",
     indexDescription: "Acht Sportberufe, die Fähigkeiten, die Arbeitgeber suchen, wie du jede diese Woche zeigst, und echte offene Stellen.",
     indexH1: "Finde deinen Weg im",
     indexH1Gold: "Sport.",
     indexSub: "Acht Wege in die Sportbranche, die Fähigkeiten für jeden davon und echte Stellen, die jetzt offen sind. Kostenlos, ohne Konto.",
     read: "Leitfaden lesen",
-    metaTitle: "{role}: Fähigkeiten, erste Schritte und aktuelle Jobs · LJSportMind",
+    metaTitle: "{role}: Fähigkeiten, erste Schritte und aktuelle Jobs · The Assist",
     metaDescription: "Welche Fähigkeiten Arbeitgeber im Bereich {role} suchen, wie du jede diese Woche zeigst, und echte offene Stellen.",
     intro: "{role}: was es braucht, welche Fähigkeiten Arbeitgeber suchen, wie du jede diese Woche zeigst, und echte offene Stellen.",
     skillsTitle: "Fähigkeiten, die Arbeitgeber suchen",

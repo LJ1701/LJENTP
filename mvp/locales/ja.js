@@ -1,12 +1,12 @@
 // Japanese. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const ja = {
-  nav: { language: "言語", myPassport: "マイパスポート", home: "LJSportMind ホーム" },
-  footer: { advice: "アドバイスはどこにでもある。", proof: "証拠はそうではない。", follow: "TikTokで@ljsoccer01をフォロー", by: "LJSOCCERのLJSportMind", careers: "スポーツの職業" },
+  nav: { language: "言語", myPassport: "マイパスポート", home: "The Assist ホーム" },
+  footer: { advice: "アドバイスはどこにでもある。", proof: "証拠はそうではない。", follow: "TikTokで@ljsoccer01をフォロー", by: "LJSOCCERのThe Assist", careers: "スポーツの職業" },
   meta: { description: "スポーツ業界で自分の居場所を見つけて証明しよう。スポーツパスポート、合う職業、最新のスポーツ求人、保存できるプラン。" },
   time: { today: "今日", oneDay: "1日前", days: "{n}日前", earlierToday: "今日の早い時間" },
 
   home: {
-    eyebrow: "AIによるスポーツキャリア探し · LJSOCCER",
+    eyebrow: "すべてのキャリアはアシストから始まる",
     title: "スポーツ業界で自分の居場所を見つけよう。",
     titleGold: "そして証明しよう。",
     sub: "スポーツが好き？自分に合うスポーツの仕事を見つけて、できることを見せましょう。",
@@ -383,16 +383,16 @@ const ja = {
 
   // Passport tabs and the proof a user attaches to achievements (no sign-off needed).
   tabs: {"savedAchievements":"保存しました。「キャリア」タブのマッチが更新されました。","savedProfile":"保存しました。次は実績を書きましょう。","label":"パスポートの項目","progress":"{total}件中{n}件完了","profile":"プロフィール","proof":"実績","portfolio":"ポートフォリオ","path":"キャリア","jobs":"求人","share":"共有","proofTitle":"あなたの実績","portfolioTitle":"あなたのポートフォリオ","shareTitle":"パスポートを共有","saved":"保存しました。次はポートフォリオにファイルやリンクを追加しましょう。","saveNext":"保存して次へ","saveAchievements":"実績を保存","goProfile":"プロフィールを入力","shareTip":"ポートフォリオが空です。このまま共有できますが、ファイルやリンクがあると実績が信頼されやすくなります。","lead":{"profile":"あなたのこと、競技、持っているスキル。","proof":"やったことを1行ずつ。できれば数字を入れましょう。Goldieが手伝います。","portfolio":"あなたの仕事を示すファイルのアップロードやリンクの追加：動画、成績、資格、デザイン、記事。自分で追加でき、誰かの承認は不要です。","path":"あなたに合うスポーツのキャリアと、選んだ道のプラン。","jobs":"実際の求人と、プロフィールに基づくフィットチェック。","share":"採用担当者が開ける1本のリンクと招待。"}},
-  evidence: {"addTitle":"ポートフォリオに追加","yours":"ポートフォリオの中身","count":"{n}件 · ファイル {files}/{max}","empty":"まだ何もありません。仕事を示すファイルかリンクを追加しましょう。","kindLabel":"何を追加しますか？","kind":{"file":"ファイル","link":"リンク","reference":"推薦者"},"help":{"file":"PDF、画像、短い動画：成績表、資格証、自作のチラシ、ハイライト動画など。","link":"YouTube、Hudl、Instagram、記事、Googleドライブのフォルダ、あなたのサイト。","reference":"あなたの仕事を見た人：コーチ、上司、先生、チームメイト。承認は不要です。"},"f":{"file":"ファイルを選択","url":"リンク","title":"タイトル","description":"内容","achievement":"この実績を示す","ref_name":"氏名","ref_role":"役職","ref_org":"所属","ref_relation":"あなたとの関係","ref_contact":"メールまたは電話"},"ph":{"url":"https://…","title":"例：2025シーズンのハイライト","description":"例：スコアボードを担当したホーム全試合","ref_name":"例：Jordan Smith","ref_role":"例：ヘッドコーチ","ref_org":"例：Dallas FC","ref_relation":"例：2シーズン担当の上司","ref_contact":"例：jordan@club.jp"},"noAchievement":"特定の実績とは結び付けない","optional":"任意","showContact":"公開リンクに連絡先を表示する","fileRules":"PDF・JPG・PNG・WEBP・GIF・MP4・MOV・WEBM · 最大{mb}MB","add":"ポートフォリオに追加","saving":"保存中…","uploading":"アップロード中…","added":"ポートフォリオに追加しました。","remove":"ポートフォリオから削除","private":"非公開","shows":"示す実績：","fileUnavailable":"今はファイルを開けません。","badLink":"リンクが正しくないようです。完全なURLを貼り付けてください。","needName":"その人の名前を入力してください。","needFile":"先にファイルを選んでください。","fileType":"このファイル形式には対応していません。PDF、画像、短い動画を使ってください。","fileTooBig":"ファイルが{mb}MBを超えています。小さいファイルにするか、YouTubeやGoogleドライブに上げてリンクを追加してください。","full":"{n}件に達しました。追加するには1件削除してください。","filesFull":"{n}個のファイルをアップロード済みです。1つ削除するか、リンクを追加してください。","saveError":"保存できませんでした。もう一度お試しください。","uploadError":"アップロードに失敗しました。接続を確認してもう一度お試しください。","notReady":"ポートフォリオはまだ有効ではありません。サイト管理者がデータベースの手順を1つ実行する必要があります。","publicTitle":"ポートフォリオ","publicCount":"ポートフォリオ {n}件","publicNote":"{name}さんが追加。LJSportMindはこれらのファイル・リンク・推薦者を確認していません。開いて確かめるか、推薦者に直接連絡してください。"},
+  evidence: {"addTitle":"ポートフォリオに追加","yours":"ポートフォリオの中身","count":"{n}件 · ファイル {files}/{max}","empty":"まだ何もありません。仕事を示すファイルかリンクを追加しましょう。","kindLabel":"何を追加しますか？","kind":{"file":"ファイル","link":"リンク","reference":"推薦者"},"help":{"file":"PDF、画像、短い動画：成績表、資格証、自作のチラシ、ハイライト動画など。","link":"YouTube、Hudl、Instagram、記事、Googleドライブのフォルダ、あなたのサイト。","reference":"あなたの仕事を見た人：コーチ、上司、先生、チームメイト。承認は不要です。"},"f":{"file":"ファイルを選択","url":"リンク","title":"タイトル","description":"内容","achievement":"この実績を示す","ref_name":"氏名","ref_role":"役職","ref_org":"所属","ref_relation":"あなたとの関係","ref_contact":"メールまたは電話"},"ph":{"url":"https://…","title":"例：2025シーズンのハイライト","description":"例：スコアボードを担当したホーム全試合","ref_name":"例：Jordan Smith","ref_role":"例：ヘッドコーチ","ref_org":"例：Dallas FC","ref_relation":"例：2シーズン担当の上司","ref_contact":"例：jordan@club.jp"},"noAchievement":"特定の実績とは結び付けない","optional":"任意","showContact":"公開リンクに連絡先を表示する","fileRules":"PDF・JPG・PNG・WEBP・GIF・MP4・MOV・WEBM · 最大{mb}MB","add":"ポートフォリオに追加","saving":"保存中…","uploading":"アップロード中…","added":"ポートフォリオに追加しました。","remove":"ポートフォリオから削除","private":"非公開","shows":"示す実績：","fileUnavailable":"今はファイルを開けません。","badLink":"リンクが正しくないようです。完全なURLを貼り付けてください。","needName":"その人の名前を入力してください。","needFile":"先にファイルを選んでください。","fileType":"このファイル形式には対応していません。PDF、画像、短い動画を使ってください。","fileTooBig":"ファイルが{mb}MBを超えています。小さいファイルにするか、YouTubeやGoogleドライブに上げてリンクを追加してください。","full":"{n}件に達しました。追加するには1件削除してください。","filesFull":"{n}個のファイルをアップロード済みです。1つ削除するか、リンクを追加してください。","saveError":"保存できませんでした。もう一度お試しください。","uploadError":"アップロードに失敗しました。接続を確認してもう一度お試しください。","notReady":"ポートフォリオはまだ有効ではありません。サイト管理者がデータベースの手順を1つ実行する必要があります。","publicTitle":"ポートフォリオ","publicCount":"ポートフォリオ {n}件","publicNote":"{name}さんが追加。The Assistはこれらのファイル・リンク・推薦者を確認していません。開いて確かめるか、推薦者に直接連絡してください。"},
 
-  confirm: {"ask":"確認を依頼する","showLink":"リンクをもう一度表示","waiting":"返事を待っています。","sendIt":"{ref} さんにご自身で送ってください。相手は開いて内容を確認し、ワンクリックで回答できます。アカウント不要です。","copyMessage":"メッセージをコピー","email":"メールで開く","subject":"一緒に働いたことを確認していただけますか？","message":"{ref} さん、スポーツ業界の仕事向けに実績ページを作っていて、推薦者としてお名前を載せました。内容が正しいか確認していただけますか？ワンクリックです：{url}","linkError":"リンクを作成できませんでした。少し待ってから再試行してください。","confirmedBy":"{ref} さんが確認済み","declinedBy":"{ref} さんは正しくないと回答しました。これはあなたにしか見えません。削除を検討してください。","eyebrow":"推薦者の確認","title":"{owner} さんと一緒に働きましたか？","intro":"{owner} さんが LJSportMind の実績ページにあなたを推薦者として追加しました。あなたについて書かれた内容をご確認ください。","you":"あなた：","relation":"関係：","achievement":"保証できる内容：","note":"メモ：","commentLabel":"{owner} さんについて一言ありますか？","commentPh":"例：シーズン中ずっとスコアボードを担当し、いつも時間通りでした。","yes":"はい、正しいです","no":"正しくありません","fine":"回答とコメントは、確認した場合のみ公開ページに表示されます。メールアドレスは求めません。","thanks":"ありがとうございます。確認が {owner} さんのページに表示されました。","thanksDeclined":"ありがとうございます。正しくないことを伝えました。公開されるものはありません。","ownerError":"これはあなた自身の推薦者です。相手にリンクを送って回答してもらってください。","error":"問題が発生しました。もう一度お試しください。"},
-  work: {"title":"働ける国","canLabel":"すでに働ける国","canHint":"すでに就労が認められている国だけを選んでください。LJSportMind は確認せず、ビザや就労許可の手続きも支援しません。","wantLabel":"働きたい国","add":"国を追加…","remove":"{country} を削除","max":"{n} か国まで追加できます。","jobsNone":"ヒント：すでに働ける国を雇用主に伝えましょう。","addInProfile":"プロフィールで追加","jobsOutside":"{country} は「すでに働ける国」に入っていません。各雇用主の条件を確認してください。LJSportMind はビザや就労許可について助言しません。","searchIn":"{country} の求人","publicCan":"働ける国：","publicStated":"{name} さんの申告","publicWant":"働きたい国："},
+  confirm: {"ask":"確認を依頼する","showLink":"リンクをもう一度表示","waiting":"返事を待っています。","sendIt":"{ref} さんにご自身で送ってください。相手は開いて内容を確認し、ワンクリックで回答できます。アカウント不要です。","copyMessage":"メッセージをコピー","email":"メールで開く","subject":"一緒に働いたことを確認していただけますか？","message":"{ref} さん、スポーツ業界の仕事向けに実績ページを作っていて、推薦者としてお名前を載せました。内容が正しいか確認していただけますか？ワンクリックです：{url}","linkError":"リンクを作成できませんでした。少し待ってから再試行してください。","confirmedBy":"{ref} さんが確認済み","declinedBy":"{ref} さんは正しくないと回答しました。これはあなたにしか見えません。削除を検討してください。","eyebrow":"推薦者の確認","title":"{owner} さんと一緒に働きましたか？","intro":"{owner} さんが The Assist の実績ページにあなたを推薦者として追加しました。あなたについて書かれた内容をご確認ください。","you":"あなた：","relation":"関係：","achievement":"保証できる内容：","note":"メモ：","commentLabel":"{owner} さんについて一言ありますか？","commentPh":"例：シーズン中ずっとスコアボードを担当し、いつも時間通りでした。","yes":"はい、正しいです","no":"正しくありません","fine":"回答とコメントは、確認した場合のみ公開ページに表示されます。メールアドレスは求めません。","thanks":"ありがとうございます。確認が {owner} さんのページに表示されました。","thanksDeclined":"ありがとうございます。正しくないことを伝えました。公開されるものはありません。","ownerError":"これはあなた自身の推薦者です。相手にリンクを送って回答してもらってください。","error":"問題が発生しました。もう一度お試しください。"},
+  work: {"title":"働ける国","canLabel":"すでに働ける国","canHint":"すでに就労が認められている国だけを選んでください。The Assist は確認せず、ビザや就労許可の手続きも支援しません。","wantLabel":"働きたい国","add":"国を追加…","remove":"{country} を削除","max":"{n} か国まで追加できます。","jobsNone":"ヒント：すでに働ける国を雇用主に伝えましょう。","addInProfile":"プロフィールで追加","jobsOutside":"{country} は「すでに働ける国」に入っていません。各雇用主の条件を確認してください。The Assist はビザや就労許可について助言しません。","searchIn":"{country} の求人","publicCan":"働ける国：","publicStated":"{name} さんの申告","publicWant":"働きたい国："},
   public: {
     title: "スポーツプロフィール",
-    metaTitle: "{name} · LJSportMind スポーツパスポート",
+    metaTitle: "{name} · The Assist スポーツパスポート",
     metaProofs: "証拠のあるスキル {n}件",
     metaSee: "証拠を見る。",
-    badge: "LJSportMind スポーツプロフィール",
+    badge: "The Assist スポーツプロフィール",
     goal: "目標：",
     skillsTitle: "スキルと興味",
     evidence: "証拠：",
@@ -488,7 +488,7 @@ const ja = {
   },
 
   pricing: {
-    metaTitle: "料金 · LJSportMind",
+    metaTitle: "料金 · The Assist",
     metaDescription: "誰でも無料。追加のAI回答、Pro、学校やクラブ向けプログラム。",
     eyebrow: "料金",
     title: "証拠づくりは無料。",
@@ -547,7 +547,7 @@ const ja = {
   },
 
   program: {
-    metaTitle: "プログラムのダッシュボード · LJSportMind",
+    metaTitle: "プログラムのダッシュボード · The Assist",
     eyebrow: "学校、クラブ、プログラム向け",
     title: "始めよう：",
     titleGold: "30日間の無料パイロット",
@@ -567,9 +567,9 @@ const ja = {
     seats: "{seats}席中{used}席使用",
     started: "パイロットが始まりました。学生に参加コードを共有してください。",
     joinCode: "参加コード",
-    howToJoin: "学生の皆さん：LJSportMindを開いてパスポートを始め、パスポートページの「AI回答」でこのコードを入力してください。",
+    howToJoin: "学生の皆さん：The Assistを開いてパスポートを始め、パスポートページの「AI回答」でこのコードを入力してください。",
     copyInvite: "学生への招待文をコピー",
-    invite: "LJSportMindのプログラムに参加しましょう：{url} を開いて無料のスポーツパスポートを始め、コード {code} を入力するとAI回答が無制限になります。",
+    invite: "The Assistのプログラムに参加しましょう：{url} を開いて無料のスポーツパスポートを始め、コード {code} を入力するとAI回答が無制限になります。",
     outcomes: "成果",
     none: "まだ学生はいません。参加コードを共有すると、学生がパスポートを作るにつれてここに数字が表示されます。",
     statStudents: "人の学生が参加",
@@ -585,7 +585,7 @@ const ja = {
   },
 
   paid: {
-    metaTitle: "支払い · LJSportMind",
+    metaTitle: "支払い · The Assist",
     title: "支払い",
     thanks: "ありがとうございます",
     failed: "支払いを確認できませんでした。請求されている場合はご連絡ください。対応します。",
@@ -617,7 +617,7 @@ const ja = {
     email: "メール",
     copyLink: "リンクをコピー",
     proofText: "スポーツキャリアで私が証明できることを、1つのリンクにまとめました：",
-    inviteText: "LJSportMindでスポーツキャリアの証拠を作っています。私のリンクから参加すると、2人ともAI回答が5回分増えます：",
+    inviteText: "The Assistでスポーツキャリアの証拠を作っています。私のリンクから参加すると、2人ともAI回答が5回分増えます：",
     jobText: "このスポーツの仕事を見て、あなたを思い出しました：{company}の{title}"
   },
 
@@ -633,13 +633,13 @@ const ja = {
 
   careers: {
     eyebrow: "スポーツキャリアガイド",
-    indexTitle: "スポーツの職業：スキル、最初の一歩、最新の求人 · LJSportMind",
+    indexTitle: "スポーツの職業：スキル、最初の一歩、最新の求人 · The Assist",
     indexDescription: "8つのスポーツの職業、雇用主が求めるスキル、今週それぞれを示す方法、実際の求人。",
     indexH1: "見つけよう、",
     indexH1Gold: "スポーツでのあなたの道。",
     indexSub: "スポーツ業界への8つの道、それぞれに必要なスキル、今募集中の実際の求人。無料、アカウント不要。",
     read: "ガイドを読む",
-    metaTitle: "{role}：スキル、最初の一歩、最新の求人 · LJSportMind",
+    metaTitle: "{role}：スキル、最初の一歩、最新の求人 · The Assist",
     metaDescription: "{role}で雇用主が求めるスキル、今週それぞれを示す方法、今募集中の実際の求人。",
     intro: "{role}：必要なこと、雇用主が求めるスキル、今週それぞれを示す方法、今募集中の実際の求人。",
     skillsTitle: "雇用主が求めるスキル",

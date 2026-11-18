@@ -2,7 +2,7 @@
 // which the owner adds in Vercel. Price IDs aren't secret; they're the test-mode prices made on 4 Nov 2026.
 export const PRICES = {
   pack: process.env.STRIPE_PRICE_PACK || "price_1UYDzGAYt2KEVvH17KpwB3Eq", // 25 AI answers, $5 one time
-  pro: process.env.STRIPE_PRICE_PRO || "price_1UYE0vAYt2KEVvH1b1FmUP8G"    // LJSportMind Pro, $9 a month
+  pro: process.env.STRIPE_PRICE_PRO || "price_1UYE0vAYt2KEVvH1b1FmUP8G"    // The Assist Pro, $9 a month
 };
 
 export const stripeEnabled = () => !!process.env.STRIPE_SECRET_KEY;

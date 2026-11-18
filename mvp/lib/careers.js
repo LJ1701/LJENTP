@@ -1,4 +1,4 @@
-// Career data and matching for the MVP, taken from the live LJSportMind site (script.js), English only.
+// Career data and matching for the MVP, taken from the live The Assist site (script.js), English only.
 
 export const SPORTS = ["American football", "Basketball", "Baseball", "Soccer", "Hockey", "Volleyball", "Several sports", "Other"];
 

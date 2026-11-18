@@ -6,7 +6,7 @@ import { I18nProvider, LanguagePicker } from "./i18n-provider";
 import { countryList, regionList } from "@/lib/countries";
 import { getT, getCountry } from "@/lib/i18n-server";
 
-// Same fonts and logo as the live LJSportMind site (ljentp.vercel.app).
+// Same fonts and logo as the live The Assist site (ljentp.vercel.app).
 const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-body" });
 const grotesk = Space_Grotesk({ subsets: ["latin", "latin-ext"], weight: ["600", "700"], variable: "--font-display" });
 
@@ -15,7 +15,7 @@ export async function generateMetadata() {
   return {
     // Absolute links for share previews (LinkedIn, iMessage) always point at the public site.
     metadataBase: new URL("https://ljsportmind-mvp.vercel.app"),
-    title: "LJSportMind",
+    title: "The Assist",
     description: t("meta.description"),
     icons: { icon: "/logo.svg" }
   };
@@ -34,7 +34,7 @@ export default async function RootLayout({ children }) {
             <div className="topbar-inner">
               <a href="/" className="brand" aria-label={t("nav.home")}>
                 <img src="/logo.svg" alt="" width={38} height={38} className="brand-logo" />
-                <span>LJSport<span className="gold-text">Mind</span></span>
+                <span>The <span className="gold-text">Assist</span></span>
               </a>
               <div className="topbar-right">
                 <LanguagePicker />

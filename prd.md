@@ -1,4 +1,6 @@
-# PRD: LJSportMind
+# PRD: The Assist
+
+*Renamed from The Assist on 17 Nov 2026. Tagline: "Every career starts with an assist." The name is the moat: a reference who confirms your work is the assist.*
 
 *Updated 17 Nov 2026. Replaces the 21 Oct 2026 version (kept privately). Rewritten after professor feedback: one problem, one paying customer, a moat we build on purpose, and an honest answer on scale.*
 
@@ -16,7 +18,7 @@
 
 **What we are *not* solving as the core problem: finding job listings.** Job search stays in the app because it's why people come back (section 6), but it is a supporting feature, not the product. TeamWork Online, LinkedIn and Indeed already list jobs.
 
-**One-line pitch:** *LJSportMind lets anyone breaking into sports show proof of their work in one link: files, links and references who confirm it with one click. Employers get candidates they can trust.*
+**One-line pitch:** *The Assist lets anyone breaking into sports show proof of their work in one link: files, links and references who confirm it with one click. Employers get candidates they can trust.*
 
 ## 2. Who it's for
 
@@ -25,7 +27,7 @@
 **Focus: international candidates.**
 - The app already works in 10 languages and searches jobs in 19 countries.
 - Candidates say which countries they can already work in and where they'd like to work. Employers see it on the proof page, and job search points them to the countries they listed.
-- **Legal boundary:** LJSportMind does **not** help with visas or work permits, and gives no legal advice. Candidates list only countries where their right to work is already sorted; the app says so where they pick them, and doesn't check it.
+- **Legal boundary:** The Assist does **not** help with visas or work permits, and gives no legal advice. Candidates list only countries where their right to work is already sorted; the app says so where they pick them, and doesn't check it.
 - **Why international:**
   - Proof matters most when the employer can't call the candidate's old boss down the road.
   - A verified, translated proof page crosses borders better than a résumé.
@@ -67,7 +69,7 @@
 
 The competitor depends on the problem. For "employers can't see what a candidate can do", the closest is:
 
-| | **TeamWork Online** (main competitor) | **LJSportMind** |
+| | **TeamWork Online** (main competitor) | **The Assist** |
 |---|---|---|
 | What it is | The biggest sports and live-events job board: listings, applications, a candidate profile, career fairs | A proof page per candidate: portfolio files, links and references who confirm with one click |
 | Who pays | Employers (job posts, recruiting tools) | Employers (planned, section 7) |
@@ -79,6 +81,8 @@ The competitor depends on the problem. For "employers can't see what a candidate
 **Others to know:**
 - **WorkInSports** and **LinkedIn**: listings and résumés.
 - **Prospect HQ**: athlete-only hiring, free for athletes and schools, paid by employers. It's the closest business model, but it's limited to athletes.
+- **Free Agent**: a career network for verified college, pro and Olympic athletes, backed by about $17M in angel funding ([BetaKit](https://betakit.com/free-agent-is-building-a-linkedin-style-career-marketplace-for-athletes/)) ⚠️. Athletes only.
+- **Tropheo**: verifies sports *accomplishments* with QR codes and NFC tags ([App Store](https://apps.apple.com/us/app/tropheo/id6747730894)). Close to our proof idea, but for athletic records, not jobs.
 - **Teamworks**: software colleges use to run their teams. It's not a hiring tool, and is often confused with TeamWork Online.
 
 ## 5. The moat we will build: a network of confirmed proof
@@ -112,7 +116,7 @@ A copycat can copy the code but starts with **zero confirmations and zero confir
 **Why that's acceptable:**
 - Job search is the supporting feature, not the product.
 - Each employer feed is independent, so losing one doesn't break the rest.
-- The long-term answer is **employers posting directly** on LJSportMind, which is also the business model.
+- The long-term answer is **employers posting directly** on The Assist, which is also the business model.
 
 **Scaling the product itself:** each proof page is one database row plus files in storage. It runs on Vercel and Supabase, which grow with paid plans; the cost rises with users, not with code.
 
@@ -164,7 +168,7 @@ These were built before this decision. Keeping user AI payments may be fine as a
 - **Proof with no sign-off required.** Requiring approval would block anyone whose old supervisor is slow to answer. Confirmation is an optional extra, not a gate.
 - **The user sends the confirm link themselves.** We never email people on the user's behalf, so there's no spam risk. A message from someone they know is also more likely to be opened.
 - **One-click confirm, no account.** Every extra step loses confirmers, and confirmers are the network.
-- **"Added by the user" is shown honestly.** The public page says LJSportMind doesn't check files or links. Only references who confirmed are marked confirmed.
+- **"Added by the user" is shown honestly.** The public page says The Assist doesn't check files or links. Only references who confirmed are marked confirmed.
 - **Tabs instead of one long page.** Our professor found the demo scattered, and one long page hid the proof. Each tab now does one job.
 - **No dates on achievements.** Many people can't remember exact dates, and dates weren't needed to judge the proof.
 - **Guest first.** People try it before giving an email.
@@ -194,4 +198,4 @@ These were built before this decision. Keeping user AI payments may be fine as a
 2. What would an employer pay, and for what: posts, search or contact?
 3. Students first (both interviewees hinted at this), or international candidates first?
 4. Which countries first for international placement? Where are our first employers?
-5. Rename: person-2 suggested dropping "LJ". Similar names exist ("SportMind Health" on iOS, "Sportmindit" on Android). Check trademarks before deciding.
+5. Name: renamed to **The Assist** (17 Nov), after person-2 said founder initials in a product name look personal. Still to do: a USPTO trademark search and a web address of its own (the app is still at ljsportmind-mvp.vercel.app).
