@@ -1,14 +1,14 @@
 // Spanish. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const es = {
-  nav: { language: "Idioma", myPassport: "Mi Pasaporte", home: "Inicio de The Assist" },
+  nav: { employers: "Para empleadores", language: "Idioma", myPassport: "Mi Pasaporte", home: "Inicio de The Assist" },
   footer: { advice: "Los consejos están en todas partes.", proof: "Las pruebas, no.", follow: "Sigue a @ljsoccer01 en TikTok", by: "The Assist por LJSOCCER", careers: "Carreras deportivas" },
   meta: { description: "Encuentra tu lugar en la industria del deporte y demuéstralo: un Pasaporte Deportivo, carreras afines, empleos deportivos en vivo y un plan guardado." },
   time: { today: "hoy", oneDay: "hace 1 día", days: "hace {n} días", earlierToday: "hoy más temprano" },
   home: {
     eyebrow: "Toda carrera empieza con una asistencia",
-    title: "Encuentra tu lugar en la industria del deporte.",
-    titleGold: "Demuéstralo.",
-    sub: "¿Te encanta el deporte? Encuentra un trabajo en el deporte que te encaje. Luego muestra lo que sabes hacer.",
+    title: "Tu trabajo es la prueba.",
+    titleGold: "Muéstralo.",
+    sub: "Sube cualquier archivo o enlace que muestre lo que has hecho y nombra a quienes lo vieron. Lo confirman con un clic y los empleadores reciben un enlace en el que pueden confiar.",
     openPassport: "Abrir mi Pasaporte Deportivo →",
     free: "Gratis · sin cuenta ·",
     signIn: "Iniciar sesión",
@@ -16,11 +16,7 @@ const es = {
     statsInterns: "prácticas",
     statsEmployers: "empleadores · se cuenta cada hora",
     justPosted: "Recién publicado",
-    how: [
-      ["Pasaporte", "Añade lo que has hecho, con tus palabras, o pega tu currículum."],
-      ["Encaje", "Mira las carreras deportivas y los empleos reales que te encajan, con pruebas de cada habilidad."],
-      ["Prueba", "Un enlace y frases de currículum honestas para cada candidatura."]
-    ],
+    how: [["Añade pruebas","Cualquier archivo o enlace: vídeos destacados, estadísticas, certificados, diseños, artículos."],["Consigue la confirmación","Quienes vieron tu trabajo lo confirman con un clic. No hace falta su aprobación para empezar."],["Postula con pruebas","Un enlace para cada candidatura, en LinkedIn, Indeed, TeamWork Online o donde sea."]],
     whoTitle: "Hecho para todos los que quieren entrar en el deporte",
     who: ["Estudiantes", "Atletas de cualquier deporte", "Exjugadores", "Entrenadores", "Creadores", "Quienes cambian de carrera", "Aficionados con un plan"],
     errorSignin: "Ese enlace de confirmación no funcionó o caducó. Intenta iniciar sesión o crea la cuenta de nuevo. ¿Guardabas un Pasaporte de invitado? Abre el navegador donde lo empezaste y actualiza: puede que tu correo ya esté confirmado.",
@@ -28,7 +24,9 @@ const es = {
     signedInAs: "Sesión iniciada como {email}",
     goPassport: "Ir a mi Pasaporte Deportivo →",
     leaveGuest: "Salir del modo invitado (perderás este Pasaporte)",
-    signOut: "Cerrar sesión"
+    signOut: "Cerrar sesión",
+    employers: "¿Contratas? Publica un puesto →",
+    jobsTitle: "Después, usa tus pruebas: empleos deportivos en vivo"
   },
   search: {
     label: "¿Qué empleo deportivo quieres?",
@@ -370,6 +368,8 @@ const es = {
 
   confirm: {"ask":"Pídele que lo confirme","showLink":"Mostrar el enlace otra vez","waiting":"Esperando su respuesta.","sendIt":"Envíaselo tú a {ref}. Lo abre, ve lo que escribiste y responde con un clic. Sin cuenta.","copyMessage":"Copiar mensaje","email":"Abrir en mi correo","subject":"¿Puedes confirmar que trabajé contigo?","message":"Hola {ref}, estoy creando una página de pruebas para empleos en el deporte y te puse como referencia. ¿Puedes confirmar que es correcto? Es un clic: {url}","linkError":"No se pudo crear el enlace. Inténtalo en un minuto.","confirmedBy":"Confirmado por {ref}","declinedBy":"{ref} dijo que esto no es correcto. Solo tú lo ves; quizá quieras quitarlo.","eyebrow":"Verificación de referencia","title":"¿Trabajaste con {owner}?","intro":"{owner} te añadió como referencia en su página de pruebas de The Assist. Revisa lo que escribió sobre ti.","you":"Tú:","relation":"Cómo le conoces:","achievement":"Lo que puedes avalar:","note":"Su nota:","commentLabel":"¿Algo que quieras decir sobre {owner}?","commentPh":"p. ej. Llevó el marcador en todos los partidos, siempre puntual.","yes":"Sí, es correcto","no":"No es correcto","fine":"Tu respuesta y comentario solo aparecen en su página pública si confirmas. No pedimos tu correo.","thanks":"Gracias. Tu confirmación ya aparece en la página de {owner}.","thanksDeclined":"Gracias. Le hemos dicho que no es correcto; no se muestra nada en público.","ownerError":"Esta es tu propia referencia. Envíale el enlace para que responda.","error":"Algo salió mal. Inténtalo de nuevo."},
   work: {"title":"Dónde puedes trabajar","canLabel":"Países donde ya puedo trabajar","canHint":"Indica solo países donde ya tienes permiso para trabajar. The Assist no lo comprueba ni ayuda con visados o permisos de trabajo.","wantLabel":"Países donde me gustaría trabajar","add":"Añadir un país…","remove":"Quitar {country}","max":"Has añadido {n} países, el máximo.","jobsNone":"Consejo: indica a los empleadores dónde ya puedes trabajar.","addInProfile":"Añádelo en tu Perfil","jobsOutside":"No has indicado {country} como país donde ya puedes trabajar. Revisa los requisitos de cada empleador; The Assist no asesora sobre visados ni permisos de trabajo.","searchIn":"Empleos en {country}","publicCan":"Puede trabajar en:","publicStated":"según {name}","publicWant":"Le gustaría trabajar en:"},
+  employers: {"metaTitle":"Para empleadores · The Assist","eyebrow":"Para empleadores","title":"Contrata a quien puede","titleGold":"demostrarlo.","sub":"Cada candidato en The Assist tiene una página de pruebas: los archivos y enlaces detrás de su experiencia, y referencias que la confirmaron. Publica un puesto que ya tengas en LinkedIn, Indeed o TeamWork Online y los candidatos postulan allí con sus pruebas.","cta":"Publicar un puesto","seeTitle":"Lo que ves en la página de pruebas de un candidato","see":[["Sus pruebas","Vídeos destacados, estadísticas, certificados, diseños y artículos: el trabajo en sí, no solo una línea del currículum."],["Referencias confirmadas","Supervisores y entrenadores que confirmaron el trabajo, con su nombre, cargo y comentario."],["Dónde puede trabajar","Países donde el candidato dice que ya puede trabajar. No gestionamos visados."]],"howTitle":"Cómo funciona publicar","how":["Pega el enlace de un puesto que ya publicaste en LinkedIn, Indeed, TeamWork Online o tu página de empleo.","Lo revisamos y lo publicamos en la pestaña Empleos de los candidatos, normalmente en 2 días hábiles.","Los candidatos postulan donde lo publicaste, como siempre, incluyendo su enlace de pruebas."],"price":"Gratis durante el acceso anticipado. Sin cuenta. Más adelante los empleadores pagarán por buscar y contactar candidatos con pruebas.","formTitle":"Publicar un puesto","company":"Empresa u organización","roleTitle":"Puesto","rolePh":"Coordinador de taquilla","link":"Enlace a la oferta","linkHint":"LinkedIn, Indeed, TeamWork Online o tu propia página de empleo.","country":"País","anyCountry":"Cualquiera o remoto","name":"Tu nombre","email":"Correo de trabajo","wantsProof":"Pedir a los candidatos que incluyan su enlace de pruebas","submit":"Publicar este puesto","privacy":"Tu nombre y correo solo se usan para contactarte sobre este puesto. Nunca se muestran a los candidatos.","thanks":"Gracias. Revisaremos el enlace y publicaremos el puesto, normalmente en 2 días hábiles.","missing":"Completa la empresa, el puesto y tu nombre.","badEmail":"Ese correo no parece correcto.","badLink":"Ese enlace no parece correcto. Pega la dirección completa de la oferta.","notOn":"Publicar puestos aún no está activado. Inténtalo pronto.","liveTitle":"Puestos en The Assist ahora ({n})"},
+  postedRoles: {"title":"Publicado por empleadores en The Assist","sub":"Estos empleadores pidieron pruebas. Postula donde publicaron el puesto e incluye tu enlace de pruebas.","includeLink":"Tu enlace de pruebas:","copyLink":"Copiar mi enlace","noLink":"Activa primero tu enlace de pruebas para poder incluirlo.","turnOn":"Ir a Compartir","applyOn":{"linkedin":"Postular en LinkedIn","indeed":"Postular en Indeed","teamwork":"Postular en TeamWork Online","other":"Postular en su web"}},
   public: {
     title: "Perfil deportivo",
     metaTitle: "{name} · Pasaporte Deportivo de The Assist",
@@ -444,7 +444,7 @@ const es = {
     directorSees: "El director de tu programa solo ve totales, nunca tu nombre, tu Pasaporte ni tus chats.",
     seePlans: "Ver planes",
     stayFree: "Las búsquedas de empleo y las respuestas instantáneas siguen siendo gratis.",
-    outOfAnswers: "Ya usaste tus {n} respuestas de IA gratuitas de este mes. Consigue 25 más por 5 $, hazte Pro para tenerlas ilimitadas o únete al programa de tu escuela con su código.",
+    outOfAnswers: "Has usado tus {n} respuestas de IA gratis este mes. Se renuevan el día 1. Tu portafolio, enlace de pruebas, búsqueda de empleo y comprobaciones siguen funcionando.",
     saveFirst: "Primero guarda tu Pasaporte con tu email (arriba en la página de tu Pasaporte), para que tu compra quede en tu cuenta.",
     notOn: "Los pagos aún no están activados.",
     alreadyPro: "Ya tienes Pro.",
@@ -470,11 +470,11 @@ const es = {
 
   pricing: {
     metaTitle: "Precios · The Assist",
-    metaDescription: "Gratis para todos. Respuestas de IA extra, Pro y programas para escuelas y clubes.",
+    metaDescription: "Gratis para candidatos. Los empleadores pagan por llegar a candidatos con pruebas (gratis durante el acceso anticipado).",
     eyebrow: "Precios",
-    title: "Construir tus pruebas es gratis.",
-    titleGold: "Paga solo por más IA.",
-    sub: "Tu Pasaporte, tus carreras afines, tu plan, la búsqueda de empleo en vivo, las comprobaciones de encaje y tu enlace de pruebas son gratis para todos, siempre.",
+    title: "Gratis para candidatos.",
+    titleGold: "Pagan los empleadores.",
+    sub: "Tu Pasaporte, portafolio, referencias confirmadas, enlace de pruebas, búsqueda de empleo y comprobaciones son gratis, siempre.",
     canceled: "Pago cancelado. No se cobró nada.",
     yourPlan: "Tu plan",
     proLine: "Pro: respuestas de IA ilimitadas",
@@ -524,7 +524,12 @@ const es = {
     message: "¿Algo que debamos saber? (opcional)",
     request: "Solicitar un piloto",
     codeTitle: "¿Tienes un código de tu programa?",
-    startPassport: "Empieza tu Pasaporte y luego introduce ahí el código."
+    startPassport: "Empieza tu Pasaporte y luego introduce ahí el código.",
+    employerBadge: "Acceso anticipado",
+    employerName: "Empleadores",
+    employerPrice: "Gratis por ahora",
+    employerItems: ["Publica un puesto que ya tengas en LinkedIn, Indeed o TeamWork Online","Los candidatos postulan con una página de pruebas: archivos, enlaces y referencias confirmadas","Ve dónde puede trabajar ya cada candidato"],
+    employerCta: "Publicar un puesto"
   },
 
   program: {

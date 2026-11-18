@@ -6,7 +6,7 @@ import { getSubscription, periodEnd, stripeEnabled } from "@/lib/stripe";
 export const FREE_ANSWERS = 20;
 export const month = () => new Date().toISOString().slice(0, 7); // e.g. "2026-11" (UTC)
 
-export const OUT_OF_ANSWERS = `You've used your ${FREE_ANSWERS} free AI answers this month. Get 25 more for $5, go Pro for unlimited, or join your school's program with its code.`;
+export const OUT_OF_ANSWERS = `You've used your ${FREE_ANSWERS} free AI answers this month. They reset on the 1st. Your portfolio, proof link, job search and fit checks keep working.`;
 
 // Pro that has passed its end date: ask Stripe whether the subscription renewed, and move the date on if so.
 async function refreshPro(db, row) {

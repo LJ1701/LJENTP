@@ -22,6 +22,8 @@ import { joinProgram, leaveProgram } from "../billing/actions";
 import { getT, getCountry } from "@/lib/i18n-server";
 import { countryName, REGIONS } from "@/lib/countries";
 import { CountryChips, WorkCountryNote } from "./work-countries";
+import EmployerRoles from "./employer-roles";
+import { approvedRoles } from "@/lib/employer-roles";
 
 export const dynamic = "force-dynamic";
 
@@ -44,7 +46,6 @@ const AiBar = ({ s, t }) => (
     <p><strong>{t("billing.aiAnswers")}</strong>{" "}
       {s.pro ? t("billing.unlimitedPro") : s.program ? t("billing.unlimitedProgram", { name: s.program.name }) : <>{t("billing.freeLeft", { left: s.freeLeft, n: FREE_ANSWERS })}{s.packLeft > 0 && ` · ${t("billing.bought", { n: s.packLeft })}`}</>}
       <br /><small>{t("billing.alwaysFree")}</small></p>
-    {!s.unlimited && <a className="cta small" href="/pricing">{t("billing.getMore")}</a>}
     {s.program ? (
       <form action={leaveProgram}><button type="submit" className="ghost mini">{t("billing.leaveProgram")}</button></form>
     ) : (
@@ -86,11 +87,12 @@ export default async function ProfilePage({ searchParams }) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  const [{ data: profile, error: profileError }, { data: plan }, portfolioRes, billing] = await Promise.all([
+  const [{ data: profile, error: profileError }, { data: plan }, portfolioRes, billing, roles] = await Promise.all([
     supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle(),
     supabase.from("plans").select("*").eq("user_id", user.id).maybeSingle(),
     supabase.from("portfolio_items").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
-    billingStatus(user.id)
+    billingStatus(user.id),
+    approvedRoles()
   ]);
   // portfolio_items only exists once supabase/006_portfolio.sql has been run; until then the tab says so.
   const portfolioReady = !portfolioRes.error;
@@ -289,6 +291,7 @@ export default async function ProfilePage({ searchParams }) {
       <div className="tab-panel" data-tab-panel="jobs" hidden={tab !== "jobs"}>
         <Head id="jobs" title={t("profile.step3")} />
         {billing.ready && !ok && <AiBar s={billing} t={t} />}
+        {profile && <EmployerRoles roles={roles} proofUrl={p.is_public ? proofUrl : ""} t={t} lang={lang} />}
         <div className="card">
           {profile && <WorkCountryNote work={p.work_countries || []} regions={Object.fromEntries(Object.entries(REGIONS).map(([k, r]) => [k, r.codes]))} />}
           {profile ? (

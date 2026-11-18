@@ -16,7 +16,6 @@ export default function ResumeBullets() {
         {pending ? t("bullets.writing") : t("bullets.write")}
       </button>
       {result && result.error && <p className={result.upgrade ? "warn" : "error"}>{result.error}</p>}
-      {result && result.upgrade && <p><a className="cta small" href="/pricing">{t("billing.seePlans")}</a></p>}
       {result && result.bullets && (
         <>
           <ul>{result.bullets.map((b, i) => <li key={i}>{b}</li>)}</ul>

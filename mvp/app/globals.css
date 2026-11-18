@@ -542,3 +542,18 @@ a.ev-chip:hover { border-color: var(--accent); color: var(--accent-light); }
 .work-note { margin: 0 0 12px; padding: 8px 12px; border-left: 3px solid var(--accent); background: rgba(255, 255, 255, 0.03); border-radius: 6px; }
 .work-note p { margin: 0 0 6px; }
 .work-note button.mini { margin: 0; }
+
+/* Employers: header link, the employer page, and posted roles in the Jobs tab. */
+.topbar-link { color: var(--muted); text-decoration: none; font-size: 14px; margin-right: 6px; }
+.topbar-link:hover { color: var(--accent-light); }
+@media (max-width: 520px) { .topbar-link { display: none; } }
+.home-jobs-title { text-align: center; font-size: 20px; margin: 28px 0 8px; }
+.employer-how { margin-top: 8px; }
+.plain-steps { padding-left: 20px; }
+.plain-steps li { margin: 6px 0; }
+.check-line { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+.check-line input { width: auto; margin: 0; }
+.role-list { list-style: none; padding: 0; margin: 10px 0 0; }
+.role-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-top: 1px solid var(--border); }
+.role-list li:first-child { border-top: 0; }
+.employer-roles .ref-actions small { color: var(--muted); }

@@ -125,7 +125,7 @@ export default function CoachChat({ paths, targetIdx, starters, compact = false,
         )))}
         {pending && <p className="msg msg-coach"><em>{t("coach.thinking")}</em></p>}
         {error && <p className={offline || upgrade ? "warn" : "error"}>{error}</p>}
-        {error && upgrade && <p><a className="cta small" href="/pricing">{t("billing.seePlans")}</a> <small>{t("billing.stayFree")}</small></p>}
+        {error && upgrade && <p><small>{t("billing.stayFree")}</small></p>}
         {error && offline && (
           <div className="chips">
             <button type="button" onClick={() => send(t("coach.msgInterns"))} disabled={pending}>{t("coach.findInterns")}</button>

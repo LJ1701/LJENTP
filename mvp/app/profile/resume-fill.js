@@ -73,7 +73,7 @@ export default function ResumeFill() {
       <label htmlFor="resume-text" className="visually-hidden">{t("resume.label")}</label>
       <textarea id="resume-text" rows={6} maxLength={12000} value={text} onChange={(e) => setText(e.target.value)} placeholder={t("resume.placeholder")} />
       <button type="button" disabled={!text.trim() || reading} onClick={() => setMsg(fill(text))}>{t("resume.fill")}</button>
-      {error && <p className="error">{error.error}{error.upgrade && <> <a href="/pricing">{t("billing.seePlans")}</a></>}</p>}
+      {error && <p className="error">{error.error}</p>}
       {msg && <p className="ok">{msg}</p>}
     </details>
   );

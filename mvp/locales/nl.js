@@ -1,15 +1,15 @@
 // Dutch. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const nl = {
-  nav: { language: "Taal", myPassport: "Mijn Paspoort", home: "The Assist home" },
+  nav: { employers: "Voor werkgevers", language: "Taal", myPassport: "Mijn Paspoort", home: "The Assist home" },
   footer: { advice: "Advies is overal.", proof: "Bewijs niet.", follow: "Volg @ljsoccer01 op TikTok", by: "The Assist door LJSOCCER", careers: "Sportberoepen" },
   meta: { description: "Vind je plek in de sportwereld en bewijs het: een Sportpaspoort, passende beroepen, actuele sportvacatures en een opgeslagen plan." },
   time: { today: "vandaag", oneDay: "1 dag geleden", days: "{n} dagen geleden", earlierToday: "eerder vandaag" },
 
   home: {
     eyebrow: "Elke carrière begint met een assist",
-    title: "Vind je plek in de sportwereld.",
-    titleGold: "Bewijs het.",
-    sub: "Hou je van sport? Vind een sportbaan die bij je past. Laat dan zien wat je kunt.",
+    title: "Je werk is het bewijs.",
+    titleGold: "Laat het zien.",
+    sub: "Upload elk bestand of elke link die laat zien wat je hebt gedaan, en noem de mensen die het zagen. Zij bevestigen met één klik, en werkgevers krijgen één link die ze kunnen vertrouwen.",
     openPassport: "Mijn Sportpaspoort openen →",
     free: "Gratis · geen account nodig ·",
     signIn: "Inloggen",
@@ -17,11 +17,7 @@ const nl = {
     statsInterns: "stages",
     statsEmployers: "werkgevers · elk uur geteld",
     justPosted: "Net geplaatst",
-    how: [
-      ["Paspoort", "Vul in wat je hebt gedaan, in je eigen woorden, of plak je cv."],
-      ["Match", "Zie welke sportberoepen en echte vacatures bij je passen, met bewijs voor elke vaardigheid."],
-      ["Bewijs", "Eén link en eerlijke cv-punten voor elke sollicitatie."]
-    ],
+    how: [["Bewijs toevoegen","Elk bestand of elke link: highlightvideo's, statistieken, certificaten, ontwerpen, artikelen."],["Laat het bevestigen","Wie je werk zag, bevestigt het met één klik. Om te beginnen is geen goedkeuring nodig."],["Solliciteer met bewijs","Eén link voor elke sollicitatie, op LinkedIn, Indeed, TeamWork Online of elders."]],
     whoTitle: "Voor iedereen die de sport in wil",
     who: ["Studenten", "Sporters, elke sport", "Oud-spelers", "Trainers", "Creators", "Carrièreswitchers", "Fans met een plan"],
     errorSignin: "Die bevestigingslink werkte niet of is verlopen. Probeer in te loggen of maak het account opnieuw aan. Sla je een gastpaspoort op? Open de browser waarin je begon en vernieuw de pagina: je e-mail is misschien al bevestigd.",
@@ -29,7 +25,9 @@ const nl = {
     signedInAs: "Ingelogd als {email}",
     goPassport: "Naar mijn Sportpaspoort →",
     leaveGuest: "Gastmodus verlaten (je verliest dit paspoort)",
-    signOut: "Uitloggen"
+    signOut: "Uitloggen",
+    employers: "Werving? Plaats een functie →",
+    jobsTitle: "Zet je bewijs daarna in: actuele sportbanen"
   },
 
   search: {
@@ -387,6 +385,8 @@ const nl = {
 
   confirm: {"ask":"Vraag om bevestiging","showLink":"Link opnieuw tonen","waiting":"Wacht op hun antwoord.","sendIt":"Stuur dit zelf naar {ref}. Ze openen het, zien wat je schreef en antwoorden met één klik. Geen account nodig.","copyMessage":"Bericht kopiëren","email":"Openen in mijn e-mail","subject":"Kun je bevestigen dat ik met je heb gewerkt?","message":"Hoi {ref}, ik maak een bewijspagina voor banen in de sport en heb jou als referentie genoemd. Kun je bevestigen dat het klopt? Eén klik: {url}","linkError":"Kon de link niet maken. Probeer het over een minuut.","confirmedBy":"Bevestigd door {ref}","declinedBy":"{ref} zegt dat dit niet klopt. Alleen jij ziet dit; je kunt het verwijderen.","eyebrow":"Referentiecheck","title":"Heb je met {owner} gewerkt?","intro":"{owner} heeft je als referentie toegevoegd op hun bewijspagina op The Assist. Controleer wat ze over je schreven.","you":"Jij:","relation":"Hoe je ze kent:","achievement":"Waar je voor instaat:","note":"Hun notitie:","commentLabel":"Wil je iets zeggen over {owner}?","commentPh":"bijv. Bediende het hele seizoen het scorebord, altijd op tijd.","yes":"Ja, dat klopt","no":"Dat klopt niet","fine":"Je antwoord en opmerking verschijnen alleen op hun openbare pagina als je bevestigt. We vragen niet om je e-mail.","thanks":"Bedankt. Je bevestiging staat nu op de pagina van {owner}.","thanksDeclined":"Bedankt. We hebben laten weten dat het niet klopt; er wordt niets openbaar getoond.","ownerError":"Dit is je eigen referentie. Stuur de link naar hen zodat zij kunnen antwoorden.","error":"Er ging iets mis. Probeer het opnieuw."},
   work: {"title":"Waar je kunt werken","canLabel":"Landen waar ik al mag werken","canHint":"Noem alleen landen waar je al mag werken. The Assist controleert dit niet en helpt niet met visa of werkvergunningen.","wantLabel":"Landen waar ik graag zou werken","add":"Land toevoegen…","remove":"{country} verwijderen","max":"Je hebt {n} landen toegevoegd, het maximum.","jobsNone":"Tip: laat werkgevers zien waar je al mag werken.","addInProfile":"Voeg het toe in je Profiel","jobsOutside":"Je hebt {country} niet opgegeven als land waar je al mag werken. Bekijk de eisen van elke werkgever; The Assist geeft geen advies over visa of werkvergunningen.","searchIn":"Banen: {country}","publicCan":"Mag werken in:","publicStated":"volgens {name}","publicWant":"Wil graag werken in:"},
+  employers: {"metaTitle":"Voor werkgevers · The Assist","eyebrow":"Voor werkgevers","title":"Neem mensen aan die het","titleGold":"kunnen bewijzen.","sub":"Elke kandidaat op The Assist heeft een bewijspagina: de bestanden en links achter hun ervaring, en referenties die die bevestigden. Plaats een functie die je al op LinkedIn, Indeed of TeamWork Online hebt, en kandidaten solliciteren daar met hun bewijs.","cta":"Functie plaatsen","seeTitle":"Wat je ziet op de bewijspagina van een kandidaat","see":[["Hun bewijs","Highlightvideo's, statistieken, certificaten, ontwerpen en artikelen: het werk zelf, niet alleen een cv-regel."],["Bevestigde referenties","Leidinggevenden en coaches die het werk bevestigden, met naam, rol en opmerking."],["Waar ze mogen werken","Landen waar de kandidaat zegt al te mogen werken. Visa regelen wij niet."]],"howTitle":"Zo werkt plaatsen","how":["Plak de link van een functie die je al op LinkedIn, Indeed, TeamWork Online of je carrièrepagina plaatste.","Wij controleren hem en zetten hem in het Banen-tabblad van kandidaten, meestal binnen 2 werkdagen.","Kandidaten solliciteren zoals gewoonlijk waar je hem plaatste, met hun bewijslink erbij."],"price":"Gratis tijdens early access. Geen account nodig. Later betalen werkgevers om kandidaten met bewijs te zoeken en te benaderen.","formTitle":"Functie plaatsen","company":"Bedrijf of organisatie","roleTitle":"Functietitel","rolePh":"Ticketingcoördinator","link":"Link naar de vacature","linkHint":"LinkedIn, Indeed, TeamWork Online of je eigen carrièrepagina.","country":"Land","anyCountry":"Elk of op afstand","name":"Je naam","email":"Werk-e-mail","wantsProof":"Vraag kandidaten hun bewijslink mee te sturen","submit":"Deze functie plaatsen","privacy":"Je naam en e-mail gebruiken we alleen om contact op te nemen over deze functie. Kandidaten zien ze nooit.","thanks":"Bedankt. We controleren de link en plaatsen de functie, meestal binnen 2 werkdagen.","missing":"Vul het bedrijf, de functietitel en je naam in.","badEmail":"Dat e-mailadres lijkt niet te kloppen.","badLink":"Die link lijkt niet te kloppen. Plak het volledige adres van de vacature.","notOn":"Functies plaatsen staat nog niet aan. Probeer het binnenkort opnieuw.","liveTitle":"Functies op The Assist nu ({n})"},
+  postedRoles: {"title":"Geplaatst door werkgevers op The Assist","sub":"Deze werkgevers vragen om bewijs. Solliciteer waar ze de functie plaatsten en voeg je bewijslink toe.","includeLink":"Je bewijslink:","copyLink":"Mijn link kopiëren","noLink":"Zet eerst je bewijslink aan, zodat je hem kunt meesturen.","turnOn":"Naar Delen","applyOn":{"linkedin":"Solliciteer op LinkedIn","indeed":"Solliciteer op Indeed","teamwork":"Solliciteer op TeamWork Online","other":"Solliciteer op hun site"}},
   public: {
     title: "Sportprofiel",
     metaTitle: "{name} · The Assist Sportpaspoort",
@@ -463,7 +463,7 @@ const nl = {
     directorSees: "Je programmaleider ziet alleen totalen, nooit je naam, Paspoort of chats.",
     seePlans: "Bekijk abonnementen",
     stayFree: "Vacatures zoeken en directe antwoorden blijven gratis.",
-    outOfAnswers: "Je hebt je {n} gratis AI-antwoorden van deze maand gebruikt. Koop er 25 bij voor $5, neem Pro voor onbeperkt, of sluit je met de code aan bij het programma van je school.",
+    outOfAnswers: "Je hebt je {n} gratis AI-antwoorden van deze maand gebruikt. Ze worden op de 1e vernieuwd. Je portfolio, bewijslink, zoeken naar banen en checks blijven werken.",
     saveFirst: "Sla eerst je Paspoort op met je e-mail (bovenaan je Paspoortpagina), zodat je aankoop bij je account blijft.",
     notOn: "Betalingen staan nog niet aan.",
     alreadyPro: "Je hebt al Pro.",
@@ -489,11 +489,11 @@ const nl = {
 
   pricing: {
     metaTitle: "Prijzen · The Assist",
-    metaDescription: "Gratis voor iedereen. Extra AI-antwoorden, Pro en programma’s voor scholen en clubs.",
+    metaDescription: "Gratis voor kandidaten. Werkgevers betalen om kandidaten met bewijs te bereiken (gratis tijdens early access).",
     eyebrow: "Prijzen",
-    title: "Je bewijs opbouwen is gratis.",
-    titleGold: "Betaal alleen voor meer AI.",
-    sub: "Je Paspoort, passende beroepen, plan, live vacatures zoeken, matchchecks en bewijslink zijn gratis voor iedereen, altijd.",
+    title: "Gratis voor kandidaten.",
+    titleGold: "Werkgevers betalen.",
+    sub: "Je Paspoort, portfolio, bevestigde referenties, bewijslink, zoeken naar banen en checks zijn gratis, altijd.",
     canceled: "Betaling geannuleerd. Er is niets afgeschreven.",
     yourPlan: "Jouw abonnement",
     proLine: "Pro: onbeperkt AI-antwoorden",
@@ -543,7 +543,12 @@ const nl = {
     message: "Moeten we nog iets weten? (optioneel)",
     request: "Pilot aanvragen",
     codeTitle: "Heb je een code van je programma?",
-    startPassport: "Begin je Paspoort en vul daar de code in."
+    startPassport: "Begin je Paspoort en vul daar de code in.",
+    employerBadge: "Early access",
+    employerName: "Werkgevers",
+    employerPrice: "Voorlopig gratis",
+    employerItems: ["Plaats een functie die je al op LinkedIn, Indeed of TeamWork Online hebt","Kandidaten solliciteren met een bewijspagina: bestanden, links en bevestigde referenties","Zie waar elke kandidaat al mag werken"],
+    employerCta: "Functie plaatsen"
   },
 
   program: {

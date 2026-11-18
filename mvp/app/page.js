@@ -23,6 +23,7 @@ export default async function Home({ searchParams }) {
             <p className="hero-sub">{t("home.sub")}</p>
             {user ? <a href="/profile" className="cta big">{t("home.openPassport")}</a> : <GuestButton />}
             {!user && <p className="hero-note"><small>{t("home.free")} <a href="#start">{t("home.signIn")}</a></small></p>}
+            <p className="hero-note"><small><a href="/employers">{t("home.employers")}</a></small></p>
           </div>
           <div className="hero-visual">
             <div className="orbit orbit-1" aria-hidden="true" />
@@ -38,6 +39,13 @@ export default async function Home({ searchParams }) {
             <HeroGoldie />
           </div>
         </div>
+        <ol className="how-strip">
+          {dict.home.how.map(([title, text], i) => (
+            <li key={title}><span className="step-num">{i + 1}</span><div><strong>{title}</strong><span>{text}</span></div></li>
+          ))}
+        </ol>
+        {/* Jobs come second: somewhere to use the proof, not the product itself. */}
+        <h2 className="home-jobs-title">{t("home.jobsTitle")}</h2>
         <div className="live-stats">
           <span className="live-dot" aria-hidden="true" />
           <span><strong>{stats.total.toLocaleString(lang)}</strong> {t("home.statsJobs")}</span>
@@ -53,11 +61,6 @@ export default async function Home({ searchParams }) {
             </div>
           </div>
         )}
-        <ol className="how-strip">
-          {dict.home.how.map(([title, text], i) => (
-            <li key={title}><span className="step-num">{i + 1}</span><div><strong>{title}</strong><span>{text}</span></div></li>
-          ))}
-        </ol>
       </section>
 
       {/* Who it's for is said once, in the hero line. A tester (person-2, 17 Nov 2026) noticed it was repeated
