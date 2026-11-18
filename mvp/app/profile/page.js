@@ -99,12 +99,12 @@ export default async function ProfilePage({ searchParams }) {
   const items = portfolioReady ? portfolioRes.data || [] : [];
   const urls = await signedUrls(supabase, items);
   const invite = await getInvite(user.id);
-  const inviteUrl = invite ? `https://ljsportmind-mvp.vercel.app/?ref=${invite.code}` : "";
+  const inviteUrl = invite ? `https://theassist.vercel.app/?ref=${invite.code}` : "";
   const p = profile || {};
   const eff = effectiveProfile(profile);
   const matches = profile ? topMatches(eff) : [];
   const done = plan ? plan.steps.filter((s) => s.done).length : 0;
-  const proofUrl = p.public_code ? `https://ljsportmind-mvp.vercel.app/p/${p.public_code}` : "";
+  const proofUrl = p.public_code ? `https://theassist.vercel.app/p/${p.public_code}` : "";
   const firstName = (p.full_name || "").split(" ")[0];
   const saveStage = user.is_anonymous ? (user.new_email ? "pending" : "guest") : user.user_metadata?.needs_password ? "password" : null;
   const lines = String(p.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean);

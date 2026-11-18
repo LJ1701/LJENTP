@@ -1,7 +1,7 @@
 import { CAREER_SLUGS } from "@/lib/careers";
 
 // Tells search engines which public pages exist. Passports and proof links are private or opt-in, so they're left out.
-const BASE = "https://ljsportmind-mvp.vercel.app";
+const BASE = "https://theassist.vercel.app";
 export default function sitemap() {
   const now = new Date();
   return [

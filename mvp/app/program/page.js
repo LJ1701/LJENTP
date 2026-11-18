@@ -79,7 +79,7 @@ export default async function ProgramPage({ searchParams }) {
 
   const o = await outcomes(db, program.code);
   const active = new Date(program.active_until) > new Date();
-  const joinUrl = "https://ljsportmind-mvp.vercel.app/pricing#schools";
+  const joinUrl = "https://theassist.vercel.app/pricing#schools";
 
   return (
     <>

@@ -1,6 +1,6 @@
 # The Assist (formerly LJSportMind)
 
-*Renamed 17 Nov 2026. Tagline: "Every career starts with an assist." The live URL and Vercel project names still say ljsportmind until the owner changes them.*
+*Renamed 17 Nov 2026. Tagline: "Every career starts with an assist." Official web address since 18 Nov 2026: https://theassist.vercel.app. The old address (ljsportmind-mvp.vercel.app) still works, so links already shared keep working, and the Vercel project is still named ljsportmind-mvp.*
 
 Proof for anyone breaking into sports: a Passport with a portfolio (files, links, references who confirm with one click) and one public link employers can trust, plus career matches and live jobs. "Show what you've done. See how others got in." Free for candidates; employers (including schools and clubs) are the intended buyers. Focus: international candidates whose right to work is already sorted (no legal or visa help). Full spec: `prd.md`.
 
@@ -9,7 +9,7 @@ Proof for anyone breaking into sports: a Passport with a portfolio (files, links
 | Folder | What | Live URL | How it deploys |
 |---|---|---|---|
 | repo root | Old LJSportMind site (no longer updated) (plain HTML/CSS/JS + `api/` functions) | https://ljentp.vercel.app | Vercel, from GitHub `main` |
-| `mvp/` | The Assist, the current app: Passport, portfolio, confirmed references, public proof link, jobs | https://ljsportmind-mvp.vercel.app | Vercel, from GitHub `main` (project `ljsportmind-mvp`, root directory `mvp/`, own `mvp/.vercelignore`) |
+| `mvp/` | The Assist, the current app: Passport, portfolio, confirmed references, public proof link, jobs | https://theassist.vercel.app (old: ljsportmind-mvp.vercel.app, still works) | Vercel, from GitHub `main` (project `ljsportmind-mvp`, root directory `mvp/`, own `mvp/.vercelignore`) |
 | `live-studio/` | LJ LIVE, a separate app (live scores → posts) | https://lj-live.vercel.app | `vercel --prod` from `live-studio/` (not Git-connected) |
 
 ## Stack

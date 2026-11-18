@@ -14,7 +14,7 @@ export async function generateMetadata() {
   const { t } = await getT();
   return {
     // Absolute links for share previews (LinkedIn, iMessage) always point at the public site.
-    metadataBase: new URL("https://ljsportmind-mvp.vercel.app"),
+    metadataBase: new URL("https://theassist.vercel.app"),
     title: "The Assist",
     description: t("meta.description"),
     icons: { icon: "/logo.svg" }
