@@ -60,12 +60,8 @@ export default async function Home({ searchParams }) {
         </ol>
       </section>
 
-      <section className="who card">
-        <h2>{t("home.whoTitle")}</h2>
-        <div className="who-grid">
-          {dict.home.who.map((w) => <span key={w} className="pill">{w}</span>)}
-        </div>
-      </section>
+      {/* Who it's for is said once, in the hero line. A tester (person-2, 17 Nov 2026) noticed it was repeated
+          here in a "Built for everyone" box, so that box was removed. */}
 
       <div id="start" />
       {error === "signin" && <p className="error">{t("home.errorSignin")}</p>}
