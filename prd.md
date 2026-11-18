@@ -4,7 +4,7 @@
 
 *Updated 17 Nov 2026. Replaces the 21 Oct 2026 version (kept privately). Rewritten after professor feedback: one problem, one paying customer, a moat we build on purpose, and an honest answer on scale.*
 
-**Live app:** https://ljsportmind-mvp.vercel.app (Next.js + Supabase, folder `mvp/`). The older plain-HTML site at https://ljentp.vercel.app is no longer where new work happens. **LJ LIVE** (`live-studio/`) is a separate product and is not covered here.
+**Live app:** https://theassist.vercel.app (Next.js + Supabase, folder `mvp/`). The older plain-HTML site at https://ljentp.vercel.app is no longer where new work happens. **LJ LIVE** (`live-studio/`) is a separate product and is not covered here.
 
 ---
 
@@ -143,7 +143,7 @@ These were built before this decision. Keeping user AI payments may be fine as a
 
 ## 8. Features and status
 
-**Live** = on https://ljsportmind-mvp.vercel.app · **On branch** = built, waiting to be merged · **Not built**.
+**Live** = on https://theassist.vercel.app · **On branch** = built, waiting to be merged · **Not built**.
 
 | # | Feature | Status |
 |---|---|---|
@@ -205,4 +205,4 @@ These were built before this decision. Keeping user AI payments may be fine as a
 3. Will job seekers want paid feedback from people who got in? *(count waitlist joins on Stories; interview 1–2 talent coaches about price and a platform cut)*
 4. Students first (both interviewees hinted at this), or international candidates first?
 5. Which countries first for international placement? Where are our first employers?
-6. Name: renamed to **The Assist** (17 Nov), after person-2 said founder initials in a product name look personal. Still to do: a USPTO trademark search and a web address of its own (the app is still at ljsportmind-mvp.vercel.app).
+6. Name: renamed to **The Assist** (17 Nov), after person-2 said founder initials in a product name look personal. Web address changed 18 Nov to **theassist.vercel.app** (the old address still works). Still to do: a USPTO trademark search.

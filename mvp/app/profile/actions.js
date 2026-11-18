@@ -438,5 +438,5 @@ export async function referenceConfirmLink(id) {
   const { data, error } = await supabase.rpc("reference_confirm_link", { item: id });
   if (error || !data) return { error: t("confirm.linkError") };
   revalidatePath("/profile");
-  return { url: `https://ljsportmind-mvp.vercel.app/r/${data}` };
+  return { url: `https://theassist.vercel.app/r/${data}` };
 }

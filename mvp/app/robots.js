@@ -2,6 +2,6 @@
 export default function robots() {
   return {
     rules: [{ userAgent: "*", allow: "/", disallow: ["/profile", "/program", "/billing", "/auth", "/r/", "/stories/new"] }],
-    sitemap: "https://ljsportmind-mvp.vercel.app/sitemap.xml"
+    sitemap: "https://theassist.vercel.app/sitemap.xml"
   };
 }
