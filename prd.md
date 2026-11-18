@@ -24,13 +24,13 @@
 
 **Users (free): anyone breaking into the sports industry**, whether or not they played. That includes students, recent graduates, career changers, former players and coaches.
 
-**Focus: international candidates.**
+**Expansion: international jobs (not a separate audience).** The audience stays everyone breaking into sports; international means the same proof page and job search reach sports jobs in other countries.
 - The app already works in 10 languages and searches jobs in 19 countries.
 - Candidates say which countries they can already work in and where they'd like to work. Employers see it on the proof page, and job search points them to the countries they listed.
 - **Legal boundary:** The Assist does **not** help with visas or work permits, and gives no legal advice. Candidates list only countries where their right to work is already sorted; the app says so where they pick them, and doesn't check it.
-- **Why international:**
-  - Proof matters most when the employer can't call the candidate's old boss down the road.
-  - A verified, translated proof page crosses borders better than a résumé.
+- **Why expand into international jobs:**
+  - Proof matters most when the employer can't call the candidate's old boss down the road, which is always the case for a job abroad.
+  - A confirmed, translated proof page crosses borders better than a résumé.
 
 **Paying customers: employers.** Teams, clubs, leagues, venues, sports companies, and schools and athletic departments (they hire too).
 
@@ -203,6 +203,6 @@ A copycat can copy the code but starts with **zero confirmations and zero confir
 1. Would hiring managers open a proof link, and would a confirmed reference change who they interview? *(3 interviews)*
 2. What would an employer pay, and for what: posts, search or contact?
 3. Will job seekers want paid feedback from people who got in? *(count waitlist joins on Stories; interview 1–2 talent coaches about price and a platform cut)*
-4. Students first (both interviewees hinted at this), or international candidates first?
-5. Which countries first for international placement? Where are our first employers?
+4. Students first (both interviewees hinted at this), or career changers first?
+5. Which countries first when expanding into international jobs? Where are our first employers?
 6. Name: renamed to **The Assist** (17 Nov), after person-2 said founder initials in a product name look personal. Web address changed 18 Nov to **theassist.vercel.app** (the old address still works). Still to do: a USPTO trademark search.
