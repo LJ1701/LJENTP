@@ -575,3 +575,11 @@ a.ev-chip:hover { border-color: var(--accent); color: var(--accent-light); }
 h1, h2, h3 { color: var(--navy); }
 input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="url"], select, textarea { border-color: var(--border); }
 @media (max-width: 760px) { .hero-visual { max-width: 170px; } }
+/* Phones: the floating Goldie in the corner is enough; the second one beside the logo overlapped it. */
+@media (max-width: 760px) { .hero-goldie { display: none; } }
+/* Desktop: smaller logo so Goldie and the bubble sit in the corner beside it, not on top of it. */
+.hero-logo { width: 50%; }
+.hero-goldie { left: -14%; bottom: -10%; }
+/* Phones: keep "The Assist" on one line in the header. */
+.brand span { white-space: nowrap; }
+@media (max-width: 520px) { .brand { font-size: 17px; gap: 6px; } .brand-logo { width: 32px; height: 32px; } }
