@@ -20,7 +20,7 @@ export default async function Home({ searchParams }) {
           <div className="hero-copy">
             <p className="eyebrow">{t("home.eyebrow")}</p>
             <h1 id="heroTitle" className="hero-title">{t("home.title")} <span className="gold-text">{t("home.titleGold")}</span></h1>
-            <p className="hero-sub">{t("home.sub")}</p>
+            {/* No sub line: the 3 steps below already say how it works. */}
             {user ? <a href="/profile" className="cta big">{t("home.openPassport")}</a> : <GuestButton />}
             {!user && <p className="hero-note"><small>{t("home.free")} <a href="#start">{t("home.signIn")}</a></small></p>}
             <p className="hero-note"><small><a href="/employers">{t("home.employers")}</a></small></p>
