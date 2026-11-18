@@ -122,24 +122,24 @@ A copycat can copy the code but starts with **zero confirmations and zero confir
 
 ## 7. Business model
 
-**Employers pay. Candidates never pay to build or share proof.**
+**Two paying sides: users and employers. Building and sharing proof stays free.**
 
-- **Why employers, in plain terms (not just the numbers):**
-  - The employer has the money and the pain: screening hundreds of applications they can't trust.
-  - The candidate has the pain but no money.
-  - Schools and athletic departments are employers too, so they fit here.
-- **Planned paid features (not built):**
-  - search candidates with confirmed proof, by role and country;
-  - post jobs;
-  - contact candidates.
-- **Not decided yet:** price and format (per job post, monthly seat or yearly plan). This needs the hiring-manager interviews first.
+*Changed 18 Nov 2026. The 17 Nov model was "employers pay, candidates never do". The owner now thinks users paying may be the better business, so the model has both. Live model (inputs you can change): https://claude.ai/artifact/95CgxHPyGBNDYzhYq5Zp2z*
 
-**Decided 17 Nov: candidates are never charged.** The pricing page now shows "Free" for candidates and "Employers: free for now". The $5 and $9 AI offers were removed from the app (the code stays for anyone already subscribed). Before that, the app charged:
-- extra AI answers, $5 for 25;
-- Pro, $9 a month;
-- a school program, from $1,500 a year (unlimited AI and a dashboard for staff).
+**Free for everyone, always:** the proof page, portfolio, one-click confirmations, Stories and job search. Keeping these free grows the network of confirmers, which is the moat (section 5).
 
-These were built before this decision. Keeping user AI payments may be fine as a small extra, but they are not the business.
+**Users pay for people and help, not for the basics:**
+- **Pro subscription:** more AI help and booking feedback. *Price: placeholder.* The app had a $9/month Pro, switched off on 17 Nov (the code is still there).
+- **Paid feedback:** a user books a review of their proof from someone who got in; The Assist keeps a share of the fee. *Fee and share: placeholders.* Demand is being tested with the "Ask for feedback" waitlist on each story.
+
+**Employers pay** (unchanged): search candidates with confirmed proof by role and country, post jobs, contact candidates. *Price and format (per post, monthly seat or yearly plan): set after hiring-manager interviews.* Schools and athletic departments hire too, so they count as employers.
+
+**Evidence, both ways (honest):**
+- **For users paying:** person-3 pays a talent coach for detailed feedback on his work, and says peers pay "like, 30 bucks a month" for a sportscaster job-lead list (second-hand, price unverified). What people pay for is **people and access**.
+- **Against:** neither interviewee paid anything *while job hunting*. person-1: "Time, for sure. Money, no." person-3 paid only once he was working in the industry.
+- **So:** the user side has to sell feedback from people who've done it, not software. The waitlist count and 1–2 coach interviews decide the prices.
+
+**History:** before 17 Nov the app charged extra AI answers ($5 for 25), Pro ($9 a month) and a school program (from $1,500 a year).
 
 ## 8. Features and status
 
