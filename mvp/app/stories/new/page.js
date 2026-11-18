@@ -10,8 +10,8 @@ export async function generateMetadata() {
   return { title: t("stories.formMeta") };
 }
 
-// Write or edit your own story. Needs a saved account (guests can't post). Every save goes back to
-// "waiting for approval", so nothing appears on /stories until the owner has checked it.
+// Write or edit your own story. Needs a saved account (guests can't post). The author publishes it themselves,
+// or keeps it as a draft only they can see.
 export default async function NewStory({ searchParams }) {
   const { saved, deleted, error } = await searchParams;
   const { t, lang } = await getT();
@@ -43,7 +43,8 @@ export default async function NewStory({ searchParams }) {
       </div>
 
       <div className="card" id="form">
-        {saved && <p className="ok">{t("stories.saved")}</p>}
+        {saved === "live" && <p className="ok">{t("stories.published")} <a href="/stories">{t("stories.seeIt")}</a></p>}
+        {saved === "draft" && <p className="ok">{t("stories.drafted")}</p>}
         {deleted && <p className="ok">{t("stories.deleted")}</p>}
         {mine && !saved && <p className="muted">{t(`stories.status.${mine.status}`)}</p>}
         {error && <p className="error">{error}</p>}
@@ -101,7 +102,12 @@ export default async function NewStory({ searchParams }) {
             {PAY_RANGES.map((p) => <option key={p} value={p}>{t(`stories.pay.${p}`)}</option>)}
           </select>
           <label className="check-line"><input type="checkbox" name="link_proof" defaultChecked={!!s.link_proof} /> {t("stories.linkProof")}</label>
-          <button type="submit">{mine ? t("stories.update") : t("stories.submit")}</button>
+          {mine && mine.status === "rejected" ? <p className="error">{t("stories.status.rejected")}</p> : (
+            <div className="job-actions">
+              <button type="submit" name="publish" value="1">{t("stories.publish")}</button>
+              <button type="submit" name="publish" value="0" className="ghost">{t("stories.saveDraft")}</button>
+            </div>
+          )}
           <p className="muted"><small>{t("stories.privacy")}</small></p>
         </form>
         {mine && (

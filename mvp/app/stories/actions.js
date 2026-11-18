@@ -8,8 +8,8 @@ import { FIELDS, PAY_RANGES, cleanSteps } from "@/lib/stories";
 const clean = (v, max) => String(v || "").trim().slice(0, max);
 const back = (msg) => redirect(`/stories/new?error=${encodeURIComponent(msg)}#form`);
 
-// Save (or update) the signed-in person's own story. Always saved as 'pending': the owner approves it in
-// Supabase before anyone else sees it, and any edit sends it back for approval.
+// Save (or update) the signed-in person's own story. The author decides: "Publish" makes it visible to everyone
+// right away; "Save as draft" keeps it private to them. The owner can still hide a story in Supabase ('rejected').
 export async function saveStory(formData) {
   const { t } = await getT();
   const db = await createClient();
@@ -35,12 +35,12 @@ export async function saveStory(formData) {
     advice: clean(formData.get("advice"), 1000),
     pay_range: PAY_RANGES.includes(pay) ? pay : "",
     link_proof: formData.get("link_proof") === "on",
-    status: "pending",
+    status: formData.get("publish") === "1" ? "approved" : "pending",
     updated_at: new Date().toISOString()
   };
   const { error } = await db.from("stories").upsert(row, { onConflict: "user_id" });
   if (error) back(t("stories.notOn"));
-  redirect("/stories/new?saved=1#form");
+  redirect(`/stories/new?saved=${row.status === "approved" ? "live" : "draft"}#form`);
 }
 
 export async function deleteStory() {
