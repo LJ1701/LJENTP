@@ -36,7 +36,7 @@ export default async function Image({ params }) {
         <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
           {p && <div style={{ display: "flex", padding: "14px 24px", borderRadius: 18, border: "2px solid #c9974a", fontSize: 28 }}>{proofs ? `${proofs} skills backed by proof` : `${eff.skills.length + eff.interests.length} skills and interests`}</div>}
           {p && p.steps && <div style={{ display: "flex", padding: "14px 24px", borderRadius: 18, border: "2px solid rgba(233,199,123,0.35)", fontSize: 28 }}>{done}/{p.steps.length} plan steps done</div>}
-          <div style={{ marginLeft: "auto", fontSize: 26, color: "#e9c77b" }}>Advice is everywhere. Proof isn&apos;t.</div>
+          <div style={{ marginLeft: "auto", fontSize: 26, color: "#e9c77b" }}>Every career starts with an assist</div>
         </div>
       </div>
     ),

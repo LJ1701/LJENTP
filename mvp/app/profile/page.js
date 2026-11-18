@@ -328,6 +328,13 @@ export default async function ProfilePage({ searchParams }) {
               </>
             )}
           </div>
+          {user && !user.is_anonymous && (
+            <div className="card story-invite">
+              <h3>{t("stories.cardTitle")}</h3>
+              <p className="muted">{t("stories.cardText")}</p>
+              <a className="cta small" href="/stories/new">{t("stories.cardBtn")}</a>
+            </div>
+          )}
           {invite && (
             <div className="card invite-card" aria-label={t("invite.title")}>
               <h3>{t("invite.title")}</h3>

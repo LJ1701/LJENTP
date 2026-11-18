@@ -2,7 +2,7 @@
 
 *Renamed 17 Nov 2026. Tagline: "Every career starts with an assist." The live URL and Vercel project names still say ljsportmind until the owner changes them.*
 
-Proof for anyone breaking into sports: a Passport with a portfolio (files, links, references who confirm with one click) and one public link employers can trust, plus career matches and live jobs. "Advice is everywhere. Proof isn't." Free for candidates; employers (including schools and clubs) are the intended buyers. Focus: international candidates whose right to work is already sorted (no legal or visa help). Full spec: `prd.md`.
+Proof for anyone breaking into sports: a Passport with a portfolio (files, links, references who confirm with one click) and one public link employers can trust, plus career matches and live jobs. "Show what you've done. See how others got in." Free for candidates; employers (including schools and clubs) are the intended buyers. Focus: international candidates whose right to work is already sorted (no legal or visa help). Full spec: `prd.md`.
 
 ## Apps in this repo
 

@@ -8,6 +8,7 @@ export default function sitemap() {
     { url: `${BASE}/`, lastModified: now, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/careers`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     ...CAREER_SLUGS.map((s) => ({ url: `${BASE}/careers/${s}`, lastModified: now, changeFrequency: "daily", priority: 0.8 })),
+    { url: `${BASE}/stories`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE}/pricing`, lastModified: now, changeFrequency: "monthly", priority: 0.5 }
   ];
 }
