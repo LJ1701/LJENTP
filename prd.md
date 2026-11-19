@@ -24,13 +24,13 @@
 
 **Users (free): anyone breaking into the sports industry**, whether or not they played. That includes students, recent graduates, career changers, former players and coaches.
 
-**Focus: international candidates.**
+**Expansion: international jobs (not a separate audience).** The audience stays everyone breaking into sports; international means the same proof page and job search reach sports jobs in other countries.
 - The app already works in 10 languages and searches jobs in 19 countries.
 - Candidates say which countries they can already work in and where they'd like to work. Employers see it on the proof page, and job search points them to the countries they listed.
 - **Legal boundary:** The Assist does **not** help with visas or work permits, and gives no legal advice. Candidates list only countries where their right to work is already sorted; the app says so where they pick them, and doesn't check it.
-- **Why international:**
-  - Proof matters most when the employer can't call the candidate's old boss down the road.
-  - A verified, translated proof page crosses borders better than a résumé.
+- **Why expand into international jobs:**
+  - Proof matters most when the employer can't call the candidate's old boss down the road, which is always the case for a job abroad.
+  - A confirmed, translated proof page crosses borders better than a résumé.
 
 **Paying customers: employers.** Teams, clubs, leagues, venues, sports companies, and schools and athletic departments (they hire too).
 
@@ -122,24 +122,37 @@ A copycat can copy the code but starts with **zero confirmations and zero confir
 
 ## 7. Business model
 
-**Employers pay. Candidates never pay to build or share proof.**
+**Users first, employers too. Building and sharing proof stays free.**
 
-- **Why employers, in plain terms (not just the numbers):**
-  - The employer has the money and the pain: screening hundreds of applications they can't trust.
-  - The candidate has the pain but no money.
-  - Schools and athletic departments are employers too, so they fit here.
-- **Planned paid features (not built):**
-  - search candidates with confirmed proof, by role and country;
-  - post jobs;
-  - contact candidates.
-- **Not decided yet:** price and format (per job post, monthly seat or yearly plan). This needs the hiring-manager interviews first.
+*Changed 18 Nov 2026. The 17 Nov model was "employers pay, candidates never do". Users are now the main paying side, and employers pay full price as well. Live model (inputs you can change): https://claude.ai/artifact/95CgxHPyGBNDYzhYq5Zp2z*
 
-**Decided 17 Nov: candidates are never charged.** The pricing page now shows "Free" for candidates and "Employers: free for now". The $5 and $9 AI offers were removed from the app (the code stays for anyone already subscribed). Before that, the app charged:
-- extra AI answers, $5 for 25;
-- Pro, $9 a month;
-- a school program, from $1,500 a year (unlimited AI and a dashboard for staff).
+**Free for everyone, always:** the proof page, portfolio, one-click confirmations, Stories and job search. Keeping these free brings in the people that both paying sides want.
 
-These were built before this decision. Keeping user AI payments may be fine as a small extra, but they are not the business.
+**Users pay first, for people and help, not for the basics:**
+- **Paid feedback:** a user books a review of their proof from someone who got in.
+  - **At least $60, for at least 30 minutes.** Longer sessions cost more, and the person giving feedback sets the price above the minimum.
+  - **The Assist keeps 20%** (an assumption, to check with 1–2 coaches).
+  - Demand is being tested with the "Ask for feedback" waitlist on each story.
+- **Pro subscription:** priority feedback booking and job alerts, $9–15 a month. The app had a $9/month Pro, switched off on 17 Nov (the code is still there).
+
+**Employers pay full price, with no cheap or free plan:**
+- $2,500–6,000 a year to search candidates by role and country, post jobs and contact candidates (a hypothesis from the price tiers in research).
+- Schools and athletic departments hire too, so they count as employers.
+
+**Not sold, ever:** paying to show up first when employers search. Ranking stays about the proof.
+
+**Markets: Texas first, then national, then global.**
+- **Texas, year 3:** $97K / $464K / $2.0M a year (conservative / base / optimistic). Users bring in 54–58% of that.
+- **United States, year 5:** $1.1M / $5.0M / $21.8M, the Texas model scaled by population.
+- **Global:** next. Job search already covers 19 countries.
+- **Every input is an assumption.** Users only lead if The Assist reaches about 3.4% or more of Texas sports job seekers by year 3.
+
+**Evidence, both ways (honest):**
+- **For users paying:** person-3 pays a talent coach for detailed feedback on his work, and says peers pay "like, 30 bucks a month" for a sportscaster job-lead list (second-hand, price unverified). What people pay for is **people and access**.
+- **Against:** neither interviewee paid anything *while job hunting*. person-1: "Time, for sure. Money, no." person-3 paid only once he was working in the industry.
+- **So:** the user side sells feedback from people who've done it, not software. The waitlist count, 1–2 coach interviews and the first paid sessions decide the prices.
+
+**History:** before 17 Nov the app charged extra AI answers ($5 for 25), Pro ($9 a month) and a school program (from $1,500 a year).
 
 ## 8. Features and status
 
@@ -203,6 +216,6 @@ These were built before this decision. Keeping user AI payments may be fine as a
 1. Would hiring managers open a proof link, and would a confirmed reference change who they interview? *(3 interviews)*
 2. What would an employer pay, and for what: posts, search or contact?
 3. Will job seekers want paid feedback from people who got in? *(count waitlist joins on Stories; interview 1–2 talent coaches about price and a platform cut)*
-4. Students first (both interviewees hinted at this), or international candidates first?
-5. Which countries first for international placement? Where are our first employers?
+4. Students first (both interviewees hinted at this), or career changers first?
+5. Which countries first when expanding into international jobs? Where are our first employers?
 6. Name: renamed to **The Assist** (17 Nov), after person-2 said founder initials in a product name look personal. Web address changed 18 Nov to **theassist.vercel.app** (the old address still works). Still to do: a USPTO trademark search.
