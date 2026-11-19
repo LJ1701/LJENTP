@@ -122,22 +122,35 @@ A copycat can copy the code but starts with **zero confirmations and zero confir
 
 ## 7. Business model
 
-**Two paying sides: users and employers. Building and sharing proof stays free.**
+**Users first, employers too. Building and sharing proof stays free.**
 
-*Changed 18 Nov 2026. The 17 Nov model was "employers pay, candidates never do". The owner now thinks users paying may be the better business, so the model has both. Live model (inputs you can change): https://claude.ai/artifact/95CgxHPyGBNDYzhYq5Zp2z*
+*Changed 18 Nov 2026. The 17 Nov model was "employers pay, candidates never do". Users are now the main paying side, and employers pay full price as well. Live model (inputs you can change): https://claude.ai/artifact/95CgxHPyGBNDYzhYq5Zp2z*
 
-**Free for everyone, always:** the proof page, portfolio, one-click confirmations, Stories and job search. Keeping these free grows the network of confirmers, which is the moat (section 5).
+**Free for everyone, always:** the proof page, portfolio, one-click confirmations, Stories and job search. Keeping these free brings in the people that both paying sides want.
 
-**Users pay for people and help, not for the basics:**
-- **Pro subscription:** more AI help and booking feedback. *Price: placeholder.* The app had a $9/month Pro, switched off on 17 Nov (the code is still there).
-- **Paid feedback:** a user books a review of their proof from someone who got in; The Assist keeps a share of the fee. *Fee and share: placeholders.* Demand is being tested with the "Ask for feedback" waitlist on each story.
+**Users pay first, for people and help, not for the basics:**
+- **Paid feedback:** a user books a review of their proof from someone who got in.
+  - **At least $60, for at least 30 minutes.** Longer sessions cost more, and the person giving feedback sets the price above the minimum.
+  - **The Assist keeps 20%** (an assumption, to check with 1–2 coaches).
+  - Demand is being tested with the "Ask for feedback" waitlist on each story.
+- **Pro subscription:** priority feedback booking and job alerts, $9–15 a month. The app had a $9/month Pro, switched off on 17 Nov (the code is still there).
 
-**Employers pay** (unchanged): search candidates with confirmed proof by role and country, post jobs, contact candidates. *Price and format (per post, monthly seat or yearly plan): set after hiring-manager interviews.* Schools and athletic departments hire too, so they count as employers.
+**Employers pay full price, with no cheap or free plan:**
+- $2,500–6,000 a year to search candidates by role and country, post jobs and contact candidates (a hypothesis from the price tiers in research).
+- Schools and athletic departments hire too, so they count as employers.
+
+**Not sold, ever:** paying to show up first when employers search. Ranking stays about the proof.
+
+**Markets: Texas first, then national, then global.**
+- **Texas, year 3:** $97K / $464K / $2.0M a year (conservative / base / optimistic). Users bring in 54–58% of that.
+- **United States, year 5:** $1.1M / $5.0M / $21.8M, the Texas model scaled by population.
+- **Global:** next. Job search already covers 19 countries.
+- **Every input is an assumption.** Users only lead if The Assist reaches about 3.4% or more of Texas sports job seekers by year 3.
 
 **Evidence, both ways (honest):**
 - **For users paying:** person-3 pays a talent coach for detailed feedback on his work, and says peers pay "like, 30 bucks a month" for a sportscaster job-lead list (second-hand, price unverified). What people pay for is **people and access**.
 - **Against:** neither interviewee paid anything *while job hunting*. person-1: "Time, for sure. Money, no." person-3 paid only once he was working in the industry.
-- **So:** the user side has to sell feedback from people who've done it, not software. The waitlist count and 1–2 coach interviews decide the prices.
+- **So:** the user side sells feedback from people who've done it, not software. The waitlist count, 1–2 coach interviews and the first paid sessions decide the prices.
 
 **History:** before 17 Nov the app charged extra AI answers ($5 for 25), Pro ($9 a month) and a school program (from $1,500 a year).
 
