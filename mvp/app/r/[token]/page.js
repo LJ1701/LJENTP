@@ -9,8 +9,8 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Confirm a reference · The Assist", robots: { index: false } };
 
 // The page a reference opens from the private link the user sent them. It shows exactly what the user
-// claimed about them and asks one question. To answer, the reference first proves their email with a
-// one-time link (supabase/013_trust.sql), so a confirmation can't be faked from a second browser.
+// claimed about them and asks one question. To answer, the reference first signs in with Google or Microsoft
+// (supabase/013_trust.sql checks this too), so a confirmation can't be faked from a second browser.
 export default async function ReferenceRequest({ params, searchParams }) {
   const { token } = await params;
   const { result } = await searchParams;
@@ -22,7 +22,8 @@ export default async function ReferenceRequest({ params, searchParams }) {
   const { t, lang } = await getT();
   const who = [r.ref_role, r.ref_org].filter(Boolean).join(", ");
   const answered = r.confirm_status === "confirmed" || r.confirm_status === "declined";
-  const signedIn = !!(user && !user.is_anonymous && user.email && user.email_confirmed_at);
+  const viaProvider = (user?.identities || []).some((i) => i.provider === "google" || i.provider === "azure");
+  const signedIn = !!(user && !user.is_anonymous && user.email && user.email_confirmed_at && viaProvider);
   const domain = signedIn ? emailDomain(user.email) : "";
   const errors = { owner: t("confirm.ownerError"), email: t("trust.emailFirst"), limit: t("trust.limit"), link: t("trust.linkExpired") };
 

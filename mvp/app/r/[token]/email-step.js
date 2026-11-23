@@ -3,37 +3,34 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useT } from "../../i18n-provider";
 
-// Before answering, the reference proves who they are: we email them a one-time sign-in link, and opening it
-// brings them back here signed in. A work email shows as "work email (@club.com)" on the proof page.
+// Before answering, the reference proves who they are by signing in with Google or Microsoft, which have
+// already checked that the email is theirs. They come straight back here signed in. A work account
+// (e.g. @club.com) shows as "work email (@club.com)" on the proof page; the full address is never shown.
 export default function EmailStep({ token }) {
   const { t } = useT();
-  const [email, setEmail] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [sent, setSent] = useState("");
+  const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
 
-  async function send(e) {
-    e.preventDefault();
-    setBusy(true); setError("");
-    const { error: err } = await createClient().auth.signInWithOtp({
-      email,
-      options: { shouldCreateUser: true, emailRedirectTo: `${window.location.origin}/auth/callback?next=/r/${token}` }
+  async function go(provider) {
+    setBusy(provider); setError("");
+    const { error: err } = await createClient().auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?next=/r/${token}`,
+        ...(provider === "azure" ? { scopes: "email" } : {})
+      }
     });
-    setBusy(false);
-    if (err) setError(/rate|limit|seconds/i.test(err.message) ? t("trust.emailWait") : t("confirm.error"));
-    else setSent(email);
+    if (err) { setBusy(""); setError(t("trust.signInError")); }
   }
 
-  if (sent) return <p className="ok">{t("trust.emailSent", { email: sent })}</p>;
   return (
-    <form onSubmit={send} className="email-step">
-      <label htmlFor="ref-email">{t("trust.emailLabel")}</label>
-      <div className="save-row">
-        <input id="ref-email" type="email" required autoComplete="email" placeholder="you@club.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <button type="submit" disabled={busy}>{busy ? t("save.sending") : t("trust.emailSend")}</button>
+    <div className="email-step">
+      <div className="ref-actions">
+        <button type="button" disabled={!!busy} onClick={() => go("google")}>{busy === "google" ? "…" : t("trust.signInGoogle")}</button>
+        <button type="button" disabled={!!busy} onClick={() => go("azure")}>{busy === "azure" ? "…" : t("trust.signInMicrosoft")}</button>
       </div>
-      <p className="muted"><small>{t("trust.emailWhy")}</small></p>
+      <p className="muted"><small>{t("trust.signInWhy")}</small></p>
       {error && <p className="error">{error}</p>}
-    </form>
+    </div>
   );
 }

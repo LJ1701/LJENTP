@@ -31,8 +31,8 @@ as $$
   ]) or lower(coalesce(d, '')) like 'yahoo.%' or lower(coalesce(d, '')) like 'hotmail.%' or lower(coalesce(d, '')) like 'outlook.%';
 $$;
 
--- The reference answers. Now they must be signed in with an email (not a guest): the one-time email link
--- proves they own that address. One answer per link; never the owner; at most 20 confirmations a day.
+-- The reference answers. Now they must be signed in with Google or Microsoft (not a guest, not a typed-in
+-- email): those accounts prove who they are. One answer per link; never the owner; at most 20 confirmations a day.
 create or replace function public.reference_answer(token text, answer text, note text)
 returns text
 language plpgsql volatile security definer set search_path = ''
@@ -48,6 +48,8 @@ begin
   if me is null or coalesce((auth.jwt() ->> 'is_anonymous')::boolean, false) then return 'email'; end if;
   select u.email into my_email from auth.users u where u.id = me and u.email_confirmed_at is not null;
   if my_email is null then return 'email'; end if;
+  -- Identity comes from Google or Microsoft (they have already checked the address), not a typed-in email.
+  if not exists (select 1 from auth.identities a where a.user_id = me and a.provider in ('google', 'azure')) then return 'email'; end if;
   select i.id, i.user_id, i.confirm_status into it from public.portfolio_items i
   where i.kind = 'reference' and i.confirm_token = token;
   if not found then return 'missing'; end if;
