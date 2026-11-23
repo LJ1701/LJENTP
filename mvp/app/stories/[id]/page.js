@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import ReportForm from "../../report-form";
 import { getT } from "@/lib/i18n-server";
 import { countryName } from "@/lib/countries";
 import { approvedStories } from "@/lib/stories";
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }) {
 // nothing is charged and the author isn't contacted.
 export default async function Story({ params, searchParams }) {
   const { id } = await params;
-  const { asked } = await searchParams;
+  const { asked, reported } = await searchParams;
   const [{ t, lang }, s] = await Promise.all([getT(), find(id)]);
   if (!s) notFound();
   const steps = Array.isArray(s.steps) ? s.steps : [];
@@ -87,6 +88,7 @@ export default async function Story({ params, searchParams }) {
         )}
       </div>
       <p className="muted center"><small>{t("stories.disclaimer")}</small></p>
+      {reported ? <p className="ok center"><small>{t("trust.report.thanks")}</small></p> : <ReportForm kind="story" target={id} t={t} />}
     </>
   );
 }

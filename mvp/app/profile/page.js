@@ -23,6 +23,8 @@ import { getT, getCountry } from "@/lib/i18n-server";
 import { countryName, REGIONS } from "@/lib/countries";
 import { CountryChips, WorkCountryNote } from "./work-countries";
 import EmployerRoles from "./employer-roles";
+import TrustCard from "./trust-card";
+import { emailDomain } from "@/lib/trust";
 import { approvedRoles } from "@/lib/employer-roles";
 
 export const dynamic = "force-dynamic";
@@ -104,6 +106,10 @@ export default async function ProfilePage({ searchParams }) {
   const eff = effectiveProfile(profile);
   const matches = profile ? topMatches(eff) : [];
   const done = plan ? plan.steps.filter((s) => s.done).length : 0;
+  // Trust: a public link needs a confirmed email; school emails and LinkedIn add badges (supabase/013_trust.sql).
+  const emailOk = !!(user && !user.is_anonymous && user.email && user.email_confirmed_at);
+  const schoolDomain = emailOk && /(\.edu|\.edu\.[a-z]{2}|\.ac\.[a-z]{2})$/.test(emailDomain(user.email)) ? emailDomain(user.email) : "";
+  const hasLinkedin = (user?.identities || []).some((i) => i.provider === "linkedin_oidc" || i.provider === "linkedin");
   const proofUrl = p.public_code ? `https://theassist.vercel.app/p/${p.public_code}` : "";
   const firstName = (p.full_name || "").split(" ")[0];
   const saveStage = user.is_anonymous ? (user.new_email ? "pending" : "guest") : user.user_metadata?.needs_password ? "password" : null;
@@ -221,7 +227,7 @@ export default async function ProfilePage({ searchParams }) {
                 </div>
                 <div className="card" id="portfolio-list">
                   <h3>{t("evidence.yours")} <small>· {t("evidence.count", { n: items.length, files: items.filter((i) => i.kind === "file").length, max: 20 })}</small></h3>
-                  {items.length ? <PortfolioCards items={items} urls={urls} t={t} lang={lang} removeAction={deletePortfolioItem} /> : <p className="muted">{t("evidence.empty")}</p>}
+                  {items.length ? <PortfolioCards items={items} urls={urls} t={t} lang={lang} removeAction={deletePortfolioItem} ownerName={p.full_name || ""} /> : <p className="muted">{t("evidence.empty")}</p>}
                 </div>
               </>
             )}
@@ -324,10 +330,13 @@ export default async function ProfilePage({ searchParams }) {
             ) : (
               <>
                 {portfolioReady && !items.length && <p className="muted">{t("tabs.shareTip")}</p>}
-                <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">{t("profile.createLink")}</button></form>
+                {emailOk ? (
+                  <form action={setPublic}><input type="hidden" name="on" value="1" /><button type="submit">{t("profile.createLink")}</button></form>
+                ) : <p className="warn">{t("trust.needEmail")}</p>}
               </>
             )}
           </div>
+          {profile && <TrustCard emailOk={emailOk} school={schoolDomain} linkedin={hasLinkedin} />}
           {user && !user.is_anonymous && (
             <div className="card story-invite">
               <h3>{t("stories.cardTitle")}</h3>

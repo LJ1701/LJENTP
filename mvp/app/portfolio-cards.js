@@ -3,12 +3,27 @@
 // A reference can confirm through a private link (supabase/007_reference_confirm.sql); the owner sees every
 // answer, the public page only "confirmed" ones.
 import ConfirmRequest from "./profile/confirm-request";
+import LinkProof from "./profile/link-proof";
 
 const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; } };
 const fileKind = (type) => (type.startsWith("image/") ? "image" : type.startsWith("video/") ? "video" : "pdf");
 const ICON = { image: "🖼", video: "🎬", pdf: "📄", link: "🔗", reference: "👤" };
 
-function Card({ it, url, t, removeAction, lang }) {
+// How much this item has been checked (supabase/013_trust.sql). Shown on every card, so an employer can tell
+// "added by the owner" from "a named person confirmed it from a work email".
+function TrustLine({ it, t, ownerName, owner }) {
+  const verifiedLink = it.kind === "link" && (it.link_verified || !!it.link_verified_at);
+  if (it.kind === "reference") {
+    if (it.confirm_status !== "confirmed") return owner ? null : <p className="trust trust-1"><small>{t("trust.namedBy", { name: ownerName })}</small></p>;
+    const how = it.confirmer_kind === "work" ? t("trust.workEmail", { domain: it.confirmer_domain || "" })
+      : it.confirmer_kind === "personal" ? t("trust.personalEmail") : t("trust.emailNotChecked");
+    return <p className={`trust ${it.confirmer_kind === "work" ? "trust-4" : "trust-3"}`}><small>{how}</small></p>;
+  }
+  if (verifiedLink) return <p className="trust trust-3"><small>✓ {owner ? t("trust.linkVerifiedYou") : t("trust.linkVerified", { name: ownerName })}</small></p>;
+  return <p className="trust trust-2"><small>{owner ? t("trust.addedByYou") : t("trust.addedBy", { name: ownerName })}</small></p>;
+}
+
+function Card({ it, url, t, removeAction, lang, ownerName }) {
   const fk = it.kind === "file" ? fileKind(it.file_type) : it.kind;
   const title = it.kind === "reference" ? it.ref_name : it.title || (it.kind === "link" ? hostOf(it.url) : it.file_name);
   const href = it.kind === "link" ? it.url : it.kind === "file" ? url : null;
@@ -35,6 +50,8 @@ function Card({ it, url, t, removeAction, lang }) {
             {it.confirm_note && <p className="pf-desc">&ldquo;{it.confirm_note}&rdquo;</p>}
           </div>
         )}
+        <TrustLine it={it} t={t} ownerName={ownerName} owner={!!removeAction} />
+        {it.kind === "link" && removeAction && !it.link_verified_at && <LinkProof id={it.id} />}
         {it.kind === "reference" && it.confirm_status === "declined" && removeAction && (
           <p className="error"><small>{t("confirm.declinedBy", { ref: it.ref_name })}</small></p>
         )}
@@ -52,11 +69,11 @@ function Card({ it, url, t, removeAction, lang }) {
   );
 }
 
-export default function PortfolioCards({ items, urls = {}, t, removeAction, lang = "en" }) {
+export default function PortfolioCards({ items, urls = {}, t, removeAction, lang = "en", ownerName = "" }) {
   if (!items || !items.length) return null;
   return (
     <ul className="pf-grid">
-      {items.map((it) => <Card key={it.id} it={it} url={urls[it.file_path]} t={t} removeAction={removeAction} lang={lang} />)}
+      {items.map((it) => <Card key={it.id} it={it} url={urls[it.file_path]} t={t} removeAction={removeAction} lang={lang} ownerName={ownerName} />)}
     </ul>
   );
 }

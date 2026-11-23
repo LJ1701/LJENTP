@@ -21,3 +21,12 @@ export const getPublicPortfolio = cache(async (code) => {
   if (error || !data) return { items: [], urls: {} };
   return { items: data, urls: await signedUrls(supabase, data) };
 });
+
+// Trust badges for one public profile: email confirmed, school email, LinkedIn connected.
+// Empty until supabase/013_trust.sql has been run.
+export const getPublicTrust = cache(async (code) => {
+  if (!/^[a-z0-9]{10}$/.test(String(code))) return null;
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, { auth: { persistSession: false } });
+  const { data, error } = await supabase.rpc("public_trust", { code });
+  return error || !data ? null : data[0] || null;
+});

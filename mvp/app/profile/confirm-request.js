@@ -11,7 +11,7 @@ export default function ConfirmRequest({ id, refName, contact, waiting }) {
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const message = url ? t("confirm.message", { ref: refName, url }) : "";
+  const message = url ? t("trust.message", { ref: refName, url }) : "";
   const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact || "") ? contact : "";
 
   if (!url) {
@@ -30,7 +30,7 @@ export default function ConfirmRequest({ id, refName, contact, waiting }) {
   }
   return (
     <div className="pf-confirm">
-      <p className="pf-meta"><small>{t("confirm.sendIt", { ref: refName })}</small></p>
+      <p className="pf-meta"><small>{t("trust.sendIt", { ref: refName })}</small></p>
       <p className="proof-url"><small>{url}</small></p>
       <div className="ref-actions">
         <CopyButton text={message} label={t("confirm.copyMessage")} />

@@ -15,6 +15,8 @@ import { getT, getCountry, dictFor } from "@/lib/i18n-server";
 import { adzunaFor, countryName, isCountry } from "@/lib/countries";
 import { cookies } from "next/headers";
 import { applyReferral, REF_COOKIE } from "@/lib/referrals";
+import { adminClient } from "@/lib/supabase/admin";
+import { pageContains } from "@/lib/trust";
 
 // Server actions: they run on the server as the signed-in user, so row level security applies.
 async function currentUser() {
@@ -270,6 +272,10 @@ async function quickAnswer(quick, profile, plan, ctx) {
 export async function setPublic(formData) {
   const { supabase, user } = await currentUser();
   const on = formData.get("on") === "1";
+  // A public proof page needs a confirmed email behind it, so a scammer can't spin up throwaway guest pages.
+  if (on && (user.is_anonymous || !user.email || !user.email_confirmed_at)) {
+    redirect(`/profile?tab=share&error=${encodeURIComponent((await getT()).t("trust.needEmail"))}`);
+  }
   const { data: profile } = await supabase.from("sports_profiles").select("public_code").eq("user_id", user.id).maybeSingle();
   if (!profile) redirect(`/profile?error=${encodeURIComponent((await getT()).t("profile.proofFirst"))}`);
   const update = { is_public: on };
@@ -439,4 +445,33 @@ export async function referenceConfirmLink(id) {
   if (error || !data) return { error: t("confirm.linkError") };
   revalidatePath("/profile");
   return { url: `https://theassist.vercel.app/r/${data}` };
+}
+
+// Link ownership, step 1: a short code the owner pastes into the page they linked to (video description, bio, post).
+export async function linkProofCode(id) {
+  const { supabase } = await currentUser();
+  const { t } = await getT();
+  if (!/^[0-9a-f-]{36}$/i.test(String(id || ""))) return { error: t("trust.linkError") };
+  const { data, error } = await supabase.rpc("portfolio_link_code", { item: id });
+  if (error || !data) return { error: t("trust.linkError") };
+  return { code: data };
+}
+
+// Link ownership, step 2: the server opens the page and looks for the code. Only the server can mark a link
+// verified (the service-role key); users have no way to set it themselves.
+export async function checkLinkProof(id) {
+  const { supabase, user } = await currentUser();
+  const { t } = await getT();
+  if (!/^[0-9a-f-]{36}$/i.test(String(id || ""))) return { error: t("trust.linkError") };
+  const { data: item } = await supabase.from("portfolio_items").select("id, url, link_code, kind").eq("id", id).eq("user_id", user.id).maybeSingle();
+  if (!item || item.kind !== "link" || !item.link_code) return { error: t("trust.linkError") };
+  const admin = adminClient();
+  if (!admin) return { error: t("trust.linkUnavailable") };
+  const result = await pageContains(item.url, item.link_code);
+  if (result === "unreachable") return { error: t("trust.linkUnreachable") };
+  if (result === "missing") return { error: t("trust.linkMissing", { code: item.link_code }) };
+  const { error } = await admin.from("portfolio_items").update({ link_verified_at: new Date().toISOString() }).eq("id", id).eq("user_id", user.id);
+  if (error) return { error: t("trust.linkError") };
+  revalidatePath("/profile");
+  return { ok: true };
 }
