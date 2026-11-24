@@ -3,7 +3,9 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useT } from "../../i18n-provider";
 
-// Before answering, the reference proves who they are by signing in with Google or Microsoft, which have
+const MICROSOFT = false;
+
+// Before answering, the reference proves who they are by signing in with Google (Microsoft later), which has
 // already checked that the email is theirs. They come straight back here signed in. A work account
 // (e.g. @club.com) shows as "work email (@club.com)" on the proof page; the full address is never shown.
 export default function EmailStep({ token }) {
@@ -27,7 +29,8 @@ export default function EmailStep({ token }) {
     <div className="email-step">
       <div className="ref-actions">
         <button type="button" disabled={!!busy} onClick={() => go("google")}>{busy === "google" ? "…" : t("trust.signInGoogle")}</button>
-        <button type="button" disabled={!!busy} onClick={() => go("azure")}>{busy === "azure" ? "…" : t("trust.signInMicrosoft")}</button>
+        {/* Microsoft ("azure") is ready in the code and database; show it once it's switched on in Supabase. */}
+        {MICROSOFT && <button type="button" disabled={!!busy} onClick={() => go("azure")}>{busy === "azure" ? "…" : t("trust.signInMicrosoft")}</button>}
       </div>
       <p className="muted"><small>{t("trust.signInWhy")}</small></p>
       {error && <p className="error">{error}</p>}
