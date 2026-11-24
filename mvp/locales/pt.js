@@ -1,7 +1,7 @@
 // Portuguese (Brazil). AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const pt = {
   nav: { employers: "Para empregadores", stories: "Histórias", language: "Idioma", myPassport: "Meu Passaporte", home: "Início do The Assist" },
-  footer: { advice: "Mostre o que você fez.", proof: "Veja como outros chegaram lá.", follow: "Siga @ljsoccer01 no TikTok", by: "The Assist por LJSOCCER", careers: "Carreiras no esporte" },
+  footer: { privacy: "Privacidade", terms: "Termos", advice: "Mostre o que você fez.", proof: "Veja como outros chegaram lá.", follow: "Siga @ljsoccer01 no TikTok", by: "The Assist por LJSOCCER", careers: "Carreiras no esporte" },
   meta: { description: "Encontre seu lugar na indústria do esporte e prove: um Passaporte Esportivo, carreiras compatíveis, vagas esportivas ao vivo e um plano salvo." },
   time: { today: "hoje", oneDay: "há 1 dia", days: "há {n} dias", earlierToday: "hoje mais cedo" },
   home: {

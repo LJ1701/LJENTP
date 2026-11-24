@@ -1,7 +1,7 @@
 // Hindi. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const hi = {
   nav: { employers: "नियोक्ताओं के लिए", stories: "कहानियाँ", language: "भाषा", myPassport: "मेरा पासपोर्ट", home: "The Assist होम" },
-  footer: { advice: "दिखाइए आपने क्या किया है।", proof: "देखिए दूसरे कैसे पहुँचे।", follow: "TikTok पर @ljsoccer01 को फ़ॉलो करें", by: "LJSOCCER का The Assist", careers: "खेल करियर" },
+  footer: { privacy: "गोपनीयता", terms: "शर्तें", advice: "दिखाइए आपने क्या किया है।", proof: "देखिए दूसरे कैसे पहुँचे।", follow: "TikTok पर @ljsoccer01 को फ़ॉलो करें", by: "LJSOCCER का The Assist", careers: "खेल करियर" },
   meta: { description: "खेल उद्योग में अपनी जगह खोजें और उसे साबित करें: एक स्पोर्ट्स पासपोर्ट, मेल खाते करियर, ताज़ा खेल नौकरियाँ और एक सहेजी गई योजना।" },
   time: { today: "आज", oneDay: "1 दिन पहले", days: "{n} दिन पहले", earlierToday: "आज पहले" },
 

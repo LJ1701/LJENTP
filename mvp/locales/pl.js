@@ -1,7 +1,7 @@
 // Polish. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const pl = {
   nav: { employers: "Dla pracodawców", stories: "Historie", language: "Język", myPassport: "Mój Paszport", home: "Strona główna The Assist" },
-  footer: { advice: "Pokaż, co zrobiłeś.", proof: "Zobacz, jak dostali się inni.", follow: "Obserwuj @ljsoccer01 na TikToku", by: "The Assist od LJSOCCER", careers: "Kariery w sporcie" },
+  footer: { privacy: "Prywatność", terms: "Regulamin", advice: "Pokaż, co zrobiłeś.", proof: "Zobacz, jak dostali się inni.", follow: "Obserwuj @ljsoccer01 na TikToku", by: "The Assist od LJSOCCER", careers: "Kariery w sporcie" },
   meta: { description: "Znajdź swoje miejsce w branży sportowej i udowodnij to: Paszport Sportowy, dopasowane zawody, aktualne oferty pracy w sporcie i zapisany plan." },
   time: { today: "dziś", oneDay: "1 dzień temu", days: "{n} dni temu", earlierToday: "dziś wcześniej" },
 

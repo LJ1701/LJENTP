@@ -1,7 +1,7 @@
 // Japanese. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const ja = {
   nav: { employers: "採用担当者の方へ", stories: "ストーリー", language: "言語", myPassport: "マイパスポート", home: "The Assist ホーム" },
-  footer: { advice: "あなたの実績を見せよう。", proof: "先輩たちの道のりを知ろう。", follow: "TikTokで@ljsoccer01をフォロー", by: "LJSOCCERのThe Assist", careers: "スポーツの職業" },
+  footer: { privacy: "プライバシー", terms: "利用規約", advice: "あなたの実績を見せよう。", proof: "先輩たちの道のりを知ろう。", follow: "TikTokで@ljsoccer01をフォロー", by: "LJSOCCERのThe Assist", careers: "スポーツの職業" },
   meta: { description: "スポーツ業界で自分の居場所を見つけて証明しよう。スポーツパスポート、合う職業、最新のスポーツ求人、保存できるプラン。" },
   time: { today: "今日", oneDay: "1日前", days: "{n}日前", earlierToday: "今日の早い時間" },
 

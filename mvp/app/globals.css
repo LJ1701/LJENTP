@@ -670,3 +670,9 @@ details.report { margin: 18px 0 8px; font-size: 14px; color: var(--muted); }
 details.report summary { cursor: pointer; display: inline-block; }
 details.report form { margin-top: 8px; display: grid; gap: 6px; max-width: 420px; }
 .role-list details.report { margin: 6px 0 0; }
+
+/* Privacy and terms pages */
+.legal { max-width: 720px; margin: 0 auto; }
+.legal h2 { font-size: 1.15rem; margin-top: 1.5rem; }
+.legal ul { padding-left: 1.2rem; }
+.legal li { margin-bottom: 0.4rem; }

@@ -2,7 +2,7 @@
 // {name} marks a value the app fills in. Keep keys in sync across all ten files.
 const en = {
   nav: { employers: "For employers", stories: "Stories", language: "Language", myPassport: "My Passport", home: "The Assist home" },
-  footer: { advice: "Show what you've done.", proof: "See how others got in.", follow: "Follow @ljsoccer01 on TikTok", by: "The Assist by LJSOCCER", careers: "Sports careers" },
+  footer: { privacy: "Privacy", terms: "Terms", advice: "Show what you've done.", proof: "See how others got in.", follow: "Follow @ljsoccer01 on TikTok", by: "The Assist by LJSOCCER", careers: "Sports careers" },
   meta: { description: "Find your place in the sports industry and prove it: a Sports Passport, career matches, live sports jobs and a saved plan." },
   time: { today: "today", oneDay: "1 day ago", days: "{n} days ago", earlierToday: "earlier today" },
 

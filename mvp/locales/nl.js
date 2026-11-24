@@ -1,7 +1,7 @@
 // Dutch. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const nl = {
   nav: { employers: "Voor werkgevers", stories: "Verhalen", language: "Taal", myPassport: "Mijn Paspoort", home: "The Assist home" },
-  footer: { advice: "Laat zien wat je hebt gedaan.", proof: "Zie hoe anderen binnenkwamen.", follow: "Volg @ljsoccer01 op TikTok", by: "The Assist door LJSOCCER", careers: "Sportberoepen" },
+  footer: { privacy: "Privacy", terms: "Voorwaarden", advice: "Laat zien wat je hebt gedaan.", proof: "Zie hoe anderen binnenkwamen.", follow: "Volg @ljsoccer01 op TikTok", by: "The Assist door LJSOCCER", careers: "Sportberoepen" },
   meta: { description: "Vind je plek in de sportwereld en bewijs het: een Sportpaspoort, passende beroepen, actuele sportvacatures en een opgeslagen plan." },
   time: { today: "vandaag", oneDay: "1 dag geleden", days: "{n} dagen geleden", earlierToday: "eerder vandaag" },
 

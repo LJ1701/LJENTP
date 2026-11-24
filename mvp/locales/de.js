@@ -1,7 +1,7 @@
 // German. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const de = {
   nav: { employers: "Für Arbeitgeber", stories: "Wege", language: "Sprache", myPassport: "Mein Pass", home: "The Assist Startseite" },
-  footer: { advice: "Zeig, was du gemacht hast.", proof: "Sieh, wie andere reingekommen sind.", follow: "Folge @ljsoccer01 auf TikTok", by: "The Assist von LJSOCCER", careers: "Sportberufe" },
+  footer: { privacy: "Datenschutz", terms: "Nutzungsbedingungen", advice: "Zeig, was du gemacht hast.", proof: "Sieh, wie andere reingekommen sind.", follow: "Folge @ljsoccer01 auf TikTok", by: "The Assist von LJSOCCER", careers: "Sportberufe" },
   meta: { description: "Finde deinen Platz in der Sportbranche und beweise es: ein Sportpass, passende Berufe, aktuelle Sportjobs und ein gespeicherter Plan." },
   time: { today: "heute", oneDay: "vor 1 Tag", days: "vor {n} Tagen", earlierToday: "heute früher" },
 
