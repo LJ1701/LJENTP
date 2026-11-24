@@ -68,6 +68,8 @@ const nl = {
   },
 
   signin: {
+    google: "Doorgaan met Google",
+    googleError: "Inloggen met Google kon niet starten. Probeer het over een minuut opnieuw.",
     title: "Begin je Sportpaspoort",
     or: "of gebruik je e-mail",
     create: "Account maken",

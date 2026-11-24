@@ -64,6 +64,8 @@ const fr = {
     tryNow: "Essayer maintenant en invité"
   },
   signin: {
+    google: "Continuer avec Google",
+    googleError: "Impossible de lancer la connexion Google. Réessayez dans une minute.",
     title: "Commencez votre Passeport Sport",
     or: "ou utilisez votre e-mail",
     create: "Créer un compte",

@@ -68,6 +68,8 @@ const pl = {
   },
 
   signin: {
+    google: "Kontynuuj z Google",
+    googleError: "Nie udało się rozpocząć logowania przez Google. Spróbuj za minutę.",
     title: "Zacznij swój Paszport Sportowy",
     or: "albo użyj e-maila",
     create: "Utwórz konto",

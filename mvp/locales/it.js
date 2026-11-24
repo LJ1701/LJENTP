@@ -68,6 +68,8 @@ const it = {
   },
 
   signin: {
+    google: "Continua con Google",
+    googleError: "Impossibile avviare l'accesso con Google. Riprova tra un minuto.",
     title: "Inizia il tuo Passaporto Sportivo",
     or: "oppure usa la tua email",
     create: "Crea account",

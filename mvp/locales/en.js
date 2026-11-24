@@ -70,6 +70,8 @@ const en = {
   },
 
   signin: {
+    google: "Continue with Google",
+    googleError: "Couldn't start Google sign-in. Try again in a minute.",
     title: "Start your Sports Passport",
     or: "or use your email",
     create: "Create account",

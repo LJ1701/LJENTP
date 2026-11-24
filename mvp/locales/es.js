@@ -64,6 +64,8 @@ const es = {
     tryNow: "Pruébalo ahora como invitado"
   },
   signin: {
+    google: "Continuar con Google",
+    googleError: "No se pudo iniciar sesión con Google. Inténtalo de nuevo en un minuto.",
     title: "Empieza tu Pasaporte Deportivo",
     or: "o usa tu correo",
     create: "Crear cuenta",

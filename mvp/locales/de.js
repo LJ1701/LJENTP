@@ -68,6 +68,8 @@ const de = {
   },
 
   signin: {
+    google: "Weiter mit Google",
+    googleError: "Google-Anmeldung konnte nicht starten. Versuch es in einer Minute erneut.",
     title: "Starte deinen Sportpass",
     or: "oder nutze deine E-Mail",
     create: "Konto erstellen",

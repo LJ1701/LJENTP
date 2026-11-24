@@ -68,6 +68,8 @@ const ja = {
   },
 
   signin: {
+    google: "Googleで続ける",
+    googleError: "Googleでのサインインを開始できませんでした。1分後にもう一度お試しください。",
     title: "スポーツパスポートを始めよう",
     or: "またはメールアドレスで",
     create: "アカウント作成",
