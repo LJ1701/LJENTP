@@ -31,8 +31,8 @@ as $$
   ]) or lower(coalesce(d, '')) like 'yahoo.%' or lower(coalesce(d, '')) like 'hotmail.%' or lower(coalesce(d, '')) like 'outlook.%';
 $$;
 
--- The reference answers. Now they must be signed in with Google or Microsoft (not a guest, not a typed-in
--- email): those accounts prove who they are. One answer per link; never the owner; at most 20 confirmations a day.
+-- The reference answers. Now they must be signed in with a Google (or, later, Microsoft) WORK account: not a
+-- guest, not a typed-in email, not Gmail/Outlook. That proves they really are someone at that organisation. One answer per link; never the owner; at most 20 confirmations a day.
 create or replace function public.reference_answer(token text, answer text, note text)
 returns text
 language plpgsql volatile security definer set search_path = ''
@@ -62,6 +62,8 @@ begin
     where x.confirmer_id = me and x.confirm_status = 'confirmed' and x.confirmed_at > now() - interval '1 day'
   ) >= 20 then return 'limit'; end if;
   dom := lower(split_part(my_email, '@', 2));
+  -- Only work accounts can confirm (a friend's Gmail proves nothing about the claim).
+  if public.is_personal_email_domain(dom) then return 'personal'; end if;
   update public.portfolio_items
      set confirm_status = answer, confirmed_at = now(), confirm_note = left(coalesce(trim(note), ''), 300),
          confirmer_id = me, confirmer_domain = left(dom, 120),

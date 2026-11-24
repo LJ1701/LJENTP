@@ -2,8 +2,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-// The reference's answer. They must be signed in with an email first (a one-time link proves they own it);
-// the database refuses guests, the owner, a second answer, and more than 20 confirmations a day.
+// The reference's answer. They must be signed in with a Google work account first (not Gmail/Outlook);
+// the database refuses guests, personal accounts, the owner, a second answer, and more than 20 a day.
 export async function answerReference(formData) {
   const token = String(formData.get("token") || "");
   const answer = String(formData.get("answer") || "");

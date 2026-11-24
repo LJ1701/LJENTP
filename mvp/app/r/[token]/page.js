@@ -10,7 +10,7 @@ export const metadata = { title: "Confirm a reference · The Assist", robots: { 
 
 // The page a reference opens from the private link the user sent them. It shows exactly what the user
 // claimed about them and asks one question. To answer, the reference first signs in with Google or Microsoft
-// (supabase/013_trust.sql checks this too), so a confirmation can't be faked from a second browser.
+// with a work account (supabase/013_trust.sql checks this too), so a confirmation can't be faked from a second browser.
 export default async function ReferenceRequest({ params, searchParams }) {
   const { token } = await params;
   const { result } = await searchParams;
@@ -25,7 +25,8 @@ export default async function ReferenceRequest({ params, searchParams }) {
   const viaProvider = (user?.identities || []).some((i) => i.provider === "google" || i.provider === "azure");
   const signedIn = !!(user && !user.is_anonymous && user.email && user.email_confirmed_at && viaProvider);
   const domain = signedIn ? emailDomain(user.email) : "";
-  const errors = { owner: t("confirm.ownerError"), email: t("trust.emailFirst"), limit: t("trust.limit"), link: t("trust.linkExpired") };
+  const personal = signedIn && isPersonalDomain(domain);
+  const errors = { owner: t("confirm.ownerError"), email: t("trust.emailFirst"), limit: t("trust.limit"), link: t("trust.linkExpired"), personal: t("trust.personalRefused") };
 
   return (
     <div className="card ref-request">
@@ -58,9 +59,11 @@ export default async function ReferenceRequest({ params, searchParams }) {
           {result && !errors[result] && result !== "ok" && <p className="error">{t("confirm.error")}</p>}
           {!signedIn ? (
             <EmailStep token={token} />
+          ) : personal ? (
+            <p className="error">{t("trust.personalRefused")}</p>
           ) : (
             <form action={answerReference}>
-              <p className="muted"><small>{t("trust.answeringAs", { email: user.email })} · {isPersonalDomain(domain) ? t("trust.personalEmailShort") : t("trust.workEmailShort", { domain })}</small></p>
+              <p className="muted"><small>{t("trust.answeringAs", { email: user.email })} · {t("trust.workEmailShort", { domain })}</small></p>
               <input type="hidden" name="token" value={token} />
               <label htmlFor="note">{t("confirm.commentLabel", { owner: r.owner_name })} <small>({t("evidence.optional")})</small></label>
               <textarea id="note" name="note" rows={3} maxLength={300} placeholder={t("confirm.commentPh")} />

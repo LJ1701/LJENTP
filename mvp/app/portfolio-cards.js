@@ -17,7 +17,7 @@ function TrustLine({ it, t, ownerName, owner }) {
     if (it.confirm_status !== "confirmed") return owner ? null : <p className="trust trust-1"><small>{t("trust.namedBy", { name: ownerName })}</small></p>;
     const how = it.confirmer_kind === "work" ? t("trust.workEmail", { domain: it.confirmer_domain || "" })
       : it.confirmer_kind === "personal" ? t("trust.personalEmail") : t("trust.emailNotChecked");
-    return <p className={`trust ${it.confirmer_kind === "work" ? "trust-4" : "trust-3"}`}><small>{how}</small></p>;
+    return <p className={`trust ${it.confirmer_kind === "work" ? "trust-4" : "trust-2"}`}><small>{how}</small></p>;
   }
   if (verifiedLink) return <p className="trust trust-3"><small>✓ {owner ? t("trust.linkVerifiedYou") : t("trust.linkVerified", { name: ownerName })}</small></p>;
   return <p className="trust trust-2"><small>{owner ? t("trust.addedByYou") : t("trust.addedBy", { name: ownerName })}</small></p>;
@@ -71,9 +71,13 @@ function Card({ it, url, t, removeAction, lang, ownerName }) {
 
 export default function PortfolioCards({ items, urls = {}, t, removeAction, lang = "en", ownerName = "" }) {
   if (!items || !items.length) return null;
+  // Checked items first (work-account confirmation, then verified link), so the strongest proof is seen first.
+  const rank = (it) => (it.kind === "reference" && it.confirm_status === "confirmed" && it.confirmer_kind === "work" ? 0
+    : it.kind === "link" && (it.link_verified || it.link_verified_at) ? 1 : 2);
+  const sorted = [...items].sort((a, b) => rank(a) - rank(b));
   return (
     <ul className="pf-grid">
-      {items.map((it) => <Card key={it.id} it={it} url={urls[it.file_path]} t={t} removeAction={removeAction} lang={lang} ownerName={ownerName} />)}
+      {sorted.map((it) => <Card key={it.id} it={it} url={urls[it.file_path]} t={t} removeAction={removeAction} lang={lang} ownerName={ownerName} />)}
     </ul>
   );
 }

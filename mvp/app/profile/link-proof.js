@@ -17,7 +17,8 @@ export default function LinkProof({ id }) {
   if (!code) {
     return (
       <div className="pf-confirm">
-        <button type="button" className="mini ghost" disabled={busy} onClick={async () => {
+        <p className="pf-meta"><small>{t("trust.linkNudge")}</small></p>
+        <button type="button" className="mini" disabled={busy} onClick={async () => {
           setBusy(true); setError("");
           const r = await linkProofCode(id);
           setBusy(false);
