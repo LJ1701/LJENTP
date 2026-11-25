@@ -1,6 +1,7 @@
 import "server-only";
 import { GoogleGenAI } from "@google/genai";
 import { LANG_ENGLISH } from "./i18n";
+import { recordAiCall } from "./ai-log";
 
 // Turns the user's achievements into three résumé bullets with Google Gemini. Runs only on the server
 // (the "server-only" import makes the build fail if browser code ever imports this file), so
@@ -16,14 +17,20 @@ const tryOther = (err) => /429|503|quota|exhaust|rate|overload|unavailable/i.tes
 
 // A brief overload (503) on the main model gets one retry after a short pause before switching models: on
 // 5 Nov 2026 the lite model was also returning 503 for structured (JSON) answers, so both failed at once.
-async function generate(ai, request, models = [MODEL, LITE_MODEL]) {
+// Every successful call is logged for cost tracking (lib/ai-log.js); request.feature names the caller.
+async function generate(ai, { feature = "other", ...request }, models = [MODEL, LITE_MODEL]) {
+  const call = async (model) => {
+    const res = await ai.models.generateContent({ ...request, model });
+    await recordAiCall(feature, model, res);
+    return res;
+  };
   for (let i = 0; i < models.length; i++) {
     try {
-      return await ai.models.generateContent({ ...request, model: models[i] });
+      return await call(models[i]);
     } catch (err) {
       if (i === 0 && /503|overload|unavailable/i.test(String((err && (err.status || err.message)) || ""))) {
         await new Promise((r) => setTimeout(r, 1500));
-        try { return await ai.models.generateContent({ ...request, model: models[i] }); } catch (again) { err = again; }
+        try { return await call(models[i]); } catch (again) { err = again; }
       }
       if (i === models.length - 1 || !tryOther(err)) throw err;
     }
@@ -55,7 +62,7 @@ export async function honestBullets(achievements, lang = "en") {
   if (!process.env.GEMINI_API_KEY) return { error: FALLBACK.noKey };
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const res = await generate(ai, {
+    const res = await generate(ai, { feature: "resume_bullets",
       contents: `Achievements:\n${text.slice(0, 4000)}`,
       // Minimal thinking: tested at ~1.5 s with complete answers. Default thinking took 35 s, and its
       // thinking also used up a small output limit, cutting answers off mid-sentence.
@@ -77,30 +84,53 @@ export async function honestBullets(achievements, lang = "en") {
   }
 }
 
-// ---------- Résumé PDF reader ----------
-// Copies the text out of an uploaded résumé PDF (base64), so the Passport's résumé filler can read it.
-// The model only transcribes; the filler then uses the same keyword rules as a pasted résumé.
+// ---------- Résumé reader (PDF or photo) ----------
+// Copies the text out of an uploaded résumé PDF or a photo of a printed résumé (base64), so the Passport's
+// résumé filler can read it. The model only transcribes; the filler then uses the same keyword rules as a
+// pasted résumé. Photo types follow Google's image docs (JPEG, PNG, WebP, HEIC/HEIF; whole request under 20 MB).
 const PDF_INSTRUCTIONS = `Copy out the text of this résumé exactly as written.
 Put each heading, job line and bullet point on its own line. Keep the original words, numbers and order.
 Do not summarize, rewrite, fix, translate or add anything. Plain text only, no markdown.
-If the file is not a résumé or has no readable text, reply with exactly: NO_TEXT`;
+If it is a photo: copy only words you can read clearly. Leave out anything blurry, dark or cut off; never guess a word or number.
+Answer in JSON:
+- "is_resume": false if this is not a résumé or CV (a picture of something else, a blank page, a different document).
+- "clarity": "clear" if every word is easy to read; "partly_unclear" if some words are hard to read; "unreadable" if most of it is blurry, dark or too small to read with certainty. When in doubt, choose the less clear option.
+- "text": the copied text, or "" when it is not a résumé or unreadable.`;
 
-export async function pdfText(base64) {
+// Structured answer, so the code (not the AI's wording) decides whether to trust the text.
+const READ_SCHEMA = {
+  type: "object",
+  properties: {
+    is_resume: { type: "boolean" },
+    clarity: { type: "string", enum: ["clear", "partly_unclear", "unreadable"] },
+    text: { type: "string" }
+  },
+  required: ["is_resume", "clarity", "text"]
+};
+
+export const READABLE_TYPES = ["application/pdf", "image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"];
+
+export async function pdfText(base64, mimeType = "application/pdf") {
+  if (!READABLE_TYPES.includes(mimeType)) return { error: "type" };
   if (!process.env.GEMINI_API_KEY) return { error: "noKey" };
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const res = await generate(ai, {
-      contents: [{ role: "user", parts: [{ inlineData: { mimeType: "application/pdf", data: base64 } }, { text: "Copy out this résumé's text." }] }],
-      config: { systemInstruction: PDF_INSTRUCTIONS, temperature: 0, maxOutputTokens: 6000, thinkingConfig: { thinkingLevel: "minimal" }, abortSignal: AbortSignal.timeout(30000) }
+    const res = await generate(ai, { feature: "resume_read",
+      contents: [{ role: "user", parts: [{ inlineData: { mimeType, data: base64 } }, { text: "Copy out this résumé's text." }] }],
+      config: { systemInstruction: PDF_INSTRUCTIONS, temperature: 0, maxOutputTokens: 6000, thinkingConfig: { thinkingLevel: "minimal" }, responseMimeType: "application/json", responseJsonSchema: READ_SCHEMA, abortSignal: AbortSignal.timeout(30000) }
     });
-    const text = String(res.text || "").trim();
-    if (!text || text === "NO_TEXT") return { error: "unreadable" };
-    return { text };
+    let out;
+    try { out = JSON.parse(String(res.text || "{}")); } catch { return { error: "unreadable" }; }
+    const text = String(out.text || "").trim();
+    // Not a résumé, unreadable, or nothing copied: refuse rather than fill the Passport with guesses.
+    if (out.is_resume !== true || out.clarity === "unreadable" || !["clear", "partly_unclear"].includes(out.clarity) || !text) return { error: "unreadable" };
+    // Some words were hard to read: the text is used, but the page asks the user to check every line.
+    return { text, unclear: out.clarity === "partly_unclear" };
   } catch (err) {
     const msg = String((err && (err.status || err.message)) || "");
     if (/429|quota|exhaust|rate/i.test(msg)) return { error: "limit" };
     if (/abort|timeout|503|overload|unavailable/i.test(msg) || (err && err.name === "AbortError")) return { error: "slow" };
-    console.error("PDF read failed:", msg.slice(0, 200));
+    console.error("Résumé read failed:", msg.slice(0, 200));
     return { error: "error" };
   }
 }
@@ -123,6 +153,7 @@ Guests can save their Passport with an email at the top of the page.
 Rules:
 - Only talk about sports careers, their profile, matches, plan, applications, interviews and how to use this app. Politely decline anything else in one sentence.
 - Never invent facts: no salaries, no statistics, no achievements they did not write. Never write job postings or employer names yourself.
+- CLAIMS THEY ASK YOU TO MAKE: if they ask you to say, add or write something about themselves that is not in their ACHIEVEMENTS (e.g. "say I managed a team of 50"), never repeat it as true, never praise it and never say you will add it. Say you can only use what's in their Passport, and that if it really happened they can add it to their achievements themselves and back it up with proof (a file, a link, or a reference who confirms it). Put nothing about it in "evidence".
 - JOBS AND INTERNSHIPS: whenever they ask for jobs, internships, openings or where to apply, ALWAYS set action "search_jobs". The app then searches real postings (Adzuna plus the career boards of sports employers) and shows them directly under your reply. Never tell them to go search somewhere else, never say you can't show listings. In "reply" just introduce the results in one or two sentences without saying how many or which ones you found, because you cannot see them (e.g. "Here's what's open for sports marketing internships right now. Your social media work is a strong fit for this kind of role.").
 - Only use numbers that appear in their profile or plan.
 - When you refer to their experience, copy the exact achievement line(s) into "evidence" (word for word, from the ACHIEVEMENTS list only).
@@ -166,7 +197,7 @@ export async function coachReply(context, history, mode, lang = "en") {
   if (!process.env.GEMINI_API_KEY) return { error: FALLBACK.noKey };
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const res = await generate(ai, {
+    const res = await generate(ai, { feature: "coach",
       contents: history.map((m) => ({ role: m.role === "coach" ? "model" : "user", parts: [{ text: m.text }] })),
       config: {
         systemInstruction: COACH_RULES + (mode === "interview" ? INTERVIEW_RULES : "") + languageRule(lang) + "\n\n" + context.profileText,
@@ -258,7 +289,7 @@ export async function tailorApplication({ achievements, skills, goal, job }) {
   const posting = [`TITLE: ${job.title}`, `EMPLOYER: ${job.company || "(not given)"}`, job.location ? `LOCATION: ${job.location}` : "", `POSTING:\n${job.text}`].filter(Boolean).join("\n").slice(0, 8000);
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const res = await generate(ai, {
+    const res = await generate(ai, { feature: "tailor_application",
       contents: `ACHIEVEMENTS:\n${text.slice(0, 4000)}\n\nSKILLS: ${skills || "(none ticked)"}\nGOAL: ${goal || "(not given)"}\n\nJOB POSTING:\n${posting}`,
       config: {
         systemInstruction: TAILOR_RULES, temperature: 0.3, maxOutputTokens: 2500,

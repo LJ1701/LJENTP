@@ -9,6 +9,7 @@ import { honestBullets, coachReply, tailorApplication } from "@/lib/gemini";
 import { searchJobs, searchLinks, jobsEnabled, postingText } from "@/lib/jobs";
 import { fitCheck } from "@/lib/fit";
 import { quickIntent, parseJobs } from "@/lib/intent";
+import { cleanTurns, turnsProblem, buildCoachContext, MAX_TURNS } from "@/lib/coach-context";
 import { resumeFileText } from "@/lib/resume-file";
 import { canUseAi, spendAnswer, FREE_ANSWERS } from "@/lib/billing";
 import { getT, getCountry, dictFor } from "@/lib/i18n-server";
@@ -156,8 +157,9 @@ export async function readResumeFile(formData) {
   const { user } = await currentUser();
   const { t } = await getT();
   const file = formData.get("file");
-  // Word and text files are read without AI (free). A PDF read by the AI counts as one AI answer.
-  if (/\.pdf$/i.test(String(file?.name || "")) && !(await canUseAi(user.id))) return { error: t("upload.outOfAnswers"), upgrade: true };
+  // Word and text files are read without AI (free). A PDF or photo read by the AI counts as one AI answer.
+  const usesAi = /\.(pdf|jpe?g|png|webp|heic|heif)$/i.test(String(file?.name || "")) || /^(image\/|application\/pdf)/.test(String(file?.type || ""));
+  if (usesAi && !(await canUseAi(user.id))) return { error: t("upload.outOfAnswers"), upgrade: true };
   const res = await resumeFileText(file);
   if (res.via === "ai") await spendAnswer(user.id);
   return res.error ? { error: t(`upload.${res.error}`) } : res;
@@ -176,20 +178,15 @@ export async function writeBullets() {
 }
 
 // Career Coach: the profile, matches and plan are read here from the database (never sent by the browser),
-// so the coach only ever knows this user's own saved data. Limits keep one visitor from using up the free quota.
-const MAX_TURNS = 10;
-const MAX_CHARS = 500;
-
+// so the coach only ever knows this user's own saved data. Limits (lib/coach-context.js) keep one visitor
+// from using up the free quota.
 export async function askCoach(history, mode) {
   const { supabase, user } = await currentUser();
   const ctx = await context();
   const { t } = ctx;
-  const turns = (Array.isArray(history) ? history : [])
-    .filter((m) => m && (m.role === "user" || m.role === "coach") && typeof m.text === "string")
-    .map((m) => ({ role: m.role, text: m.text.slice(0, m.role === "user" ? MAX_CHARS : 2000) }))
-    .slice(-16);
-  if (!turns.length || turns[turns.length - 1].role !== "user" || !turns[turns.length - 1].text.trim()) return { error: t("coach.typeFirst") };
-  if (turns.filter((m) => m.role === "user").length > MAX_TURNS) return { error: t("coach.limit", { n: MAX_TURNS }) };
+  const turns = cleanTurns(history);
+  const problem = turnsProblem(turns);
+  if (problem) return { error: problem === "limit" ? t("coach.limit", { n: MAX_TURNS }) : t("coach.typeFirst") };
 
   const [{ data: profile }, { data: plan }] = await Promise.all([
     supabase.from("sports_profiles").select("*").eq("user_id", user.id).maybeSingle(),
@@ -197,26 +194,8 @@ export async function askCoach(history, mode) {
   ]);
   // No Passport yet (a new guest): Goldie can still answer and help them fill in step 1.
   const p = profile || {};
-  const eff = effectiveProfile(profile);
-  const achievements = String(p.achievements || "").split("\n").map((l) => l.trim()).filter(Boolean);
-  const matches = profile ? topMatches(eff) : [];
-  const target = plan ? CAREER_PATHS[plan.role_idx] : null;
+  const { contextText, achievements, target } = buildCoachContext({ profile, plan, place: ctx.place });
   if (mode === "interview" && !target) return { error: t("coach.needsTarget") };
-
-  const contextText = [
-    profile ? "" : "NO PASSPORT SAVED YET: help them fill in step 1 first.",
-    `NAME: ${p.full_name || "(not given)"}`,
-    `ROLE: ${p.role || "(not given)"} | SPORT: ${p.sport || "(not given)"} | CITY: ${p.location || "(not given)"}`,
-    `GOAL: ${p.goal || "(not given)"}`,
-    `SKILLS: ${eff.skills.map(label).join(", ") || "(none)"}`,
-    `INTERESTS: ${eff.interests.map(label).join(", ") || "(none)"}`,
-    `ACHIEVEMENTS (quote these exactly as evidence):\n${achievements.map((l) => `- ${l}`).join("\n") || "(none yet)"}`,
-    `TOP MATCHES: ${matches.map((m) => `${m.name} (${m.strength}; has ${m.matched.map(label).join(", ")}; missing ${m.gaps.map(label).join(", ") || "nothing"})`).join(" | ") || "(none yet)"}`,
-    `TARGET ROLE: ${target ? target.name : "(not chosen)"}`,
-    `PLAN: ${plan ? plan.steps.map((s, i) => `${i + 1}. [${s.done ? "done" : "to do"}] ${s.text}`).join(" ") : "(no plan yet)"}`,
-    `JOB SEARCH COUNTRY: ${ctx.place || "any country"}`,
-    `CAREER PATHS (use the number for suggest_role): ${CAREER_PATHS.map((c, i) => `${i}=${c.name}`).join(", ")}`
-  ].filter(Boolean).join("\n");
 
   // Simple requests (find jobs or internships, go to a step, take the tour) are answered by rules, with no AI call.
   if (mode !== "interview") {

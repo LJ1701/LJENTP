@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "evals": "node --no-warnings --env-file-if-exists=.env.local --import ./evals/load-app-code.mjs evals/run.mjs",
+    "ai-costs": "node --no-warnings --env-file-if-exists=.env.local --import ./evals/load-app-code.mjs scripts/ai-costs.mjs",
+    "evals-compare": "node --no-warnings --import ./evals/load-app-code.mjs evals/compare.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.29.1",

@@ -23,6 +23,31 @@ Proof for anyone breaking into sports: a Passport with a portfolio (files, links
 - **Hook** `.claude/hooks/block-env-commit.js` (registered in `.claude/settings.json`) blocks any commit that includes `.env` / `.env.local`, and any forced `git add` of one. Tested 21 Oct 2026.
 - **Skills:** `demo-check` (pre-demo checklist), `update-research` (after interviews), `interview-practice` (role-play).
 
+## Evals (testing Goldie, the AI coach)
+
+A fixed set of test questions for Goldie, each with pass/fail checks. Run it after any change to Goldie, its rules or `mvp/lib/gemini.js`.
+
+- **Cases:** `mvp/evals/cases.json` (a fake test profile, "Sam"; never real people's data). Each case has an `id`, an `input` and `checks`: code checks (action, keywords, location, banned text, no invented numbers) and, where judgment is needed, a `grader` (a second AI call with a short rubric that answers PASS or FAIL plus one sentence).
+- **Run all** (from `mvp/`, needs `GEMINI_API_KEY` in `mvp/.env.local`):
+
+  ```bash
+  npm run evals
+  ```
+
+- **Run some:** `npm run evals -- 08-fake-claim,13-spanish` (saved as `<date>-partial.md`, so it never overwrites the full report).
+- **Results:** `mvp/evals/results/<date>.md`: a table (case, pass/fail, reason), the pass rate, and what Goldie said.
+- **Quota:** runs on the lighter model (`gemini-3.5-flash-lite`) so the main model's free daily quota stays for real users. A full run (22 cases, incl. résumé files in `mvp/evals/files/`) is about 30 AI calls, ~4 minutes. Test the main model with `EVAL_MODEL=gemini-3.5-flash npm run evals`. "SKIPPED" means Google's limit or a busy server, not counted in the pass rate.
+- **Add a case** whenever Goldie gets something wrong in a demo or user test: paste the user's exact message and write what a good answer is.
+
+## AI costs
+
+Every Gemini call is logged (`mvp/lib/ai-log.js`): time, feature (coach, resume_read, resume_bullets, tailor_application), model asked for, model that answered, and input/output/thinking/cached tokens. **Never the user's text.**
+
+- **Live app:** rows go to the `ai_calls` table (run `mvp/supabase/014_ai_calls.sql` once). Only the server's service key can read or write it.
+- **Report:** from `mvp/`, run `npm run ai-costs` (needs `SUPABASE_SERVICE_ROLE_KEY` in `mvp/.env.local`), or `npm run ai-costs -- --file evals/results/<date>-<model>-calls.jsonl` for an eval run. Add `--days 7` for the last week.
+- **Prices:** `mvp/lib/ai-prices.js` (from Google's pricing page, dated). "gemini-3.5-flash" is answered by gemini-3.6-flash, so that price applies. Update the file when Google's prices change.
+- **Compare models:** `EVAL_MODEL=gemini-3.5-flash-lite npm run evals`, then `EVAL_MODEL=gemini-3.5-flash npm run evals`, then `npm run evals-compare`. The free tier allows only ~20 main-model calls a day and the live app shares that key, so run the main-model side early in the day.
+
 ## How to explain changes
 
 - Plain English. I'm a beginner: no jargon without a one-line explanation.

@@ -291,12 +291,13 @@ const pl = {
 
   resume: {
     summary: "⚡ Wklej lub prześlij CV, aby to wypełnić",
-    upload: "📄 Prześlij CV (PDF, Word lub .txt)",
+    upload: "📄 Prześlij CV (PDF, Word, .txt lub zdjęcie)",
+    photo: "📷 Zrób zdjęcie CV",
     reading: "Czytam twoje CV…",
-    uploadNote: "Do 4 MB. Pliki PDF czyta AI Gemini od Google; pliki Word i tekstowe są czytane bez AI. Nic nie zostanie zapisane, dopóki nie klikniesz Zapisz.",
     or: "albo wklej je",
     read: "Przeczytano {file}.",
-    readAi: "Przeczytano {file} (PDF przeczytany przez AI).",
+    readAi: "Odczytano {file} (przez AI).",
+    unclear: "⚠️ Niektóre słowa były trudne do odczytania: sprawdź każdą linię przed zapisaniem.",
     label: "Twoje CV lub sekcja „Informacje” z LinkedIn",
     placeholder: "Wklej tutaj swoje CV lub sekcję „Informacje” z LinkedIn",
     fill: "Wypełnij mój Paszport",
@@ -438,9 +439,9 @@ const pl = {
 
   upload: {
     empty: "Ten plik wygląda na pusty. Spróbuj innego.",
-    big: "Ten plik ma ponad 4 MB. Spróbuj mniejszego PDF lub pliku Word.",
-    type: "Użyj pliku PDF, Word (.docx) lub tekstowego (.txt). Stare pliki .doc najpierw zapisz jako .docx.",
-    unreadable: "Nie udało się odczytać tekstu z tego pliku. Jeśli to zeskanowany obraz, wklej tekst.",
+    big: "Ten plik ma ponad 4 MB. Spróbuj mniejszego pliku lub pliku Word.",
+    type: "Użyj PDF, Word (.docx), pliku tekstowego (.txt) lub zdjęcia (JPG, PNG, WebP, HEIC). Stare pliki .doc: najpierw zapisz jako .docx.",
+    unreadable: "Nie udało się odczytać CV z tego pliku. Jeśli to zdjęcie, zrób je ponownie przy dobrym świetle z płasko leżącą kartką albo wklej tekst.",
     noKey: "Czytanie plików PDF nie jest jeszcze włączone. Prześlij plik Word lub wklej tekst.",
     limit: "AI wyczerpało dzisiejsze darmowe odczyty PDF. Prześlij plik Word lub wklej tekst.",
     slow: "Czytanie tego PDF trwało zbyt długo. Spróbuj ponownie lub wklej tekst.",

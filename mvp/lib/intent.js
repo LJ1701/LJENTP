@@ -30,6 +30,9 @@ const JOB_WORDS = words([
 ]);
 // Questions that want advice, not a list: these go to the AI.
 const ADVICE = /^\s*(?:(?:how|why|what (?:should|do|would|skills|is|are)|should i|can you (?:help|explain|review)|tips|which (?:one|of these)|is it|do i need|explain|tell me why|c[oó]mo|por qu[eé]|qu[eé] (?:debo|deber[ií]a|necesito)|deber[ií]a|cu[aá]l|como|por que|o que (?:devo|preciso)|qual|comment|pourquoi|que dois|quel|quelle|wie|warum|was soll|welche[rs]?|sollte|come|perch[eé]|cosa devo|quale|hoe|waarom|wat moet|welke|jak|dlaczego|co powinien|kt[oó]r[ya])(?![\p{L}])|क्या|क्यों|कैसे|कौन|どう|なぜ|何を|どれ)/iu;
+// Advice words anywhere in the message, not just at the start (Japanese, Hindi and others put them at the end):
+// "仕事のアドバイスをください" is a question for Goldie, not a job search, even though it contains "仕事" (job).
+const ADVICE_ANY = /(?<![\p{L}])(?:advice|advise|recommend\w*|suggest\w*|consejos?|recomi[eé]nd\w*|aconsej\w*|conselhos?|recomend\w*|conseils?|recommand\w*|ratschl[aä]ge?|empfiehl\w*|empfehl\w*|consigli\w*|advies|aanbevel\w*|porad[ay]?|poleć\w*|doradź)(?![\p{L}])|アドバイス|おすすめ|オススメ|相談|向いて|合う|सलाह|सुझाव/iu;
 const TOUR = words(["tour", "show me around", "how does (this|it|the app) work", "where do i start", "get(ting)? started", "what can you do", "help me start",
   "recorrido", "visita guiada", "c[oó]mo funciona", "por d[oó]nde empiezo", "como funciona", "por onde come[cç]o", "visite guid[eé]e", "comment [cç]a marche", "par o[uù] commencer",
   "rundgang", "wie funktioniert", "wo fange ich an", "come funziona", "da dove inizio", "rondleiding", "hoe werkt", "waar begin ik", "jak to dzia[lł]a", "od czego zacz[aą][cć]",
@@ -43,8 +46,8 @@ const FILLER = words([
   "find", "show", "search", "get", "give", "list", "me", "my", "any", "some", "all", "are", "is", "there", "for", "a", "an", "the", "i", "im", "i'm", "want", "need", "looking", "look", "please", "can", "you",
   "sports?", "jobs?", "careers?", "openings?", "positions?", "roles?", "hiring", "vacanc(y|ies)", "gigs?", "right", "now", "currently", "open", "available", "new", "latest", "anywhere", "nationwide",
   "in", "near", "nearby", "around", "local", "remote", "us", "usa", "united", "states", "of", "to", "with", "at", "on", "work", "that", "which", "what", "instead", "also", "more", "other", "too",
-  "b[uú]sca(me)?", "buscar", "encuentra(me)?", "mu[eé]strame", "quiero", "necesito", "de", "del", "la", "el", "los", "las", "un", "una", "en", "para", "y", "deportes?", "deportiv[oa]s?", "empleos?", "trabajos?", "vacantes?", "ofertas?",
-  "encontre", "procuro", "quero", "preciso", "do", "da", "dos", "das", "o", "os", "as", "um", "uma", "em", "no", "na", "e", "esportes?", "esportiv[oa]s?", "desportiv[oa]s?", "empregos?", "vagas?", "trabalhos?",
+  "b[uú]sca(me)?", "buscar", "busco", "buscando", "estoy", "ando", "encuentra(me)?", "mu[eé]strame", "quiero", "necesito", "de", "del", "la", "el", "los", "las", "un", "una", "en", "para", "y", "deportes?", "deportiv[oa]s?", "empleos?", "trabajos?", "vacantes?", "ofertas?",
+  "encontre", "procuro", "procurando", "estou", "quero", "preciso", "do", "da", "dos", "das", "o", "os", "as", "um", "uma", "em", "no", "na", "e", "esportes?", "esportiv[oa]s?", "desportiv[oa]s?", "empregos?", "vagas?", "trabalhos?",
   "trouve(-moi)?", "cherche", "je", "veux", "des", "du", "le", "les", "une", "et", "dans", "sportifs?", "sportives?", "emplois?", "postes?", "offres?",
   "finde", "suche", "ich", "m[oö]chte", "einen?", "der", "die", "das", "und", "im", "f[uü]r", "sportliche?", "stellen", "stellenangebote",
   "trova(mi)?", "cerco", "voglio", "di", "il", "lo", "gli", "dei", "delle", "per", "sportiv[oie]", "lavori", "lavoro", "offerte",
@@ -90,6 +93,6 @@ export function quickIntent(text, city, summarize) {
     const hit = SECTION_WORDS.find(([, re]) => re.test(t));
     if (hit) return { action: hit[0] };
   }
-  if (JOB_WORDS.test(t) && !ADVICE.test(t)) return { action: "search_jobs", query: parseJobs(t, city, summarize) };
+  if (JOB_WORDS.test(t) && !ADVICE.test(t) && !ADVICE_ANY.test(t)) return { action: "search_jobs", query: parseJobs(t, city, summarize) };
   return null;
 }

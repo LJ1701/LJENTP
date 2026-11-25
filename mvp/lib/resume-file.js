@@ -3,7 +3,8 @@ import { inflateRawSync } from "node:zlib";
 import { pdfText } from "./gemini";
 
 // Turns an uploaded résumé file into plain text for the Passport's résumé filler.
-// Word (.docx) and text files are read here on the server with no AI; PDFs are read by Gemini.
+// Word (.docx) and text files are read here on the server with no AI; PDFs and photos are read by Gemini.
+// Nothing is stored: the file is read in memory and only the text goes back to the page.
 export const MAX_RESUME_BYTES = 4 * 1024 * 1024;
 
 // One file from a .zip (a .docx is a zip of XML files), found through the zip's central directory.
@@ -57,7 +58,26 @@ export async function resumeFileText(file) {
   if (name.endsWith(".pdf") || file.type === "application/pdf") {
     if (buf.subarray(0, 5).toString() !== "%PDF-") return { error: "unreadable" };
     const res = await pdfText(buf.toString("base64"));
-    return res.error ? res : { text: res.text.slice(0, 12000), via: "ai" };
+    return res.error ? res : { text: res.text.slice(0, 12000), via: "ai", unclear: !!res.unclear };
+  }
+  const photo = photoType(buf);
+  if (photo) {
+    const res = await pdfText(buf.toString("base64"), photo);
+    return res.error ? res : { text: res.text.slice(0, 12000), via: "ai", unclear: !!res.unclear };
   }
   return { error: "type" };
+}
+
+// Is it really a photo? Checks the file's first bytes (its "signature"), not the name, which anyone can change.
+function photoType(buf) {
+  if (buf.length < 12) return "";
+  if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return "image/jpeg";
+  if (buf.readUInt32BE(0) === 0x89504e47) return "image/png";
+  if (buf.toString("ascii", 0, 4) === "RIFF" && buf.toString("ascii", 8, 12) === "WEBP") return "image/webp";
+  if (buf.toString("ascii", 4, 8) === "ftyp") {
+    const brand = buf.toString("ascii", 8, 12);
+    if (/^(heic|heix|hevc|heim|heis)$/.test(brand)) return "image/heic";
+    if (/^(mif1|msf1|heif)$/.test(brand)) return "image/heif";
+  }
+  return "";
 }

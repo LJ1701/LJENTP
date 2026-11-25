@@ -176,6 +176,9 @@ A copycat can copy the code but starts with **zero confirmations and zero confir
 | 13 | **Stronger confirmation:** check the confirmer's work email; label personal emails | Not built |
 | 14 | **Stories ("How I got in"):** people who got into sports share their real path step by step (type of step, year, one line each), what helped, whether someone vouched for them, advice, and optionally their first-job pay range and a link to their proof page. Job seekers filter by field and country. A "Paths into [field]" summary appears only once a field has 3+ stories. The author publishes it (or saves a private draft); the owner can hide a story, and the author can't undo that. Guests can't post. From person-3's interview: he learned most from former students a year or two ahead | Live 18 Nov (`mvp/supabase/010`–`012`, all run). First story: an MLS club play-by-play broadcaster, from his interview, published with his OK |
 | 15 | **Paid feedback, demand test only:** an "Ask [name] for feedback on your proof" waitlist on every story. Nothing is charged and the author isn't contacted. If enough people join, build paid feedback with The Assist taking a percentage | Built 18 Nov (waitlist only; no payments) |
+| 16 | **Résumé from a photo:** "Take a photo of your résumé" (opens the camera on phones) next to the PDF/Word upload. Photos are shrunk on the phone, read by Gemini on the server, and fill the Passport the same way as a PDF. Blurry, dark or non-résumé photos are refused; partly unclear ones carry a "check every line" warning. Nothing is stored | On branch `goldie-evals` (25 Nov) |
+| 17 | **Evals for Goldie and the résumé reader:** 22 fixed test cases (`mvp/evals/`, run with `npm run evals`); 25 Nov: 22 of 22 after fixing fake claims, "Busco" in Spanish searches and Japanese advice questions | On branch `goldie-evals` (25 Nov) |
+| 18 | **AI cost log:** every Gemini call's tokens (never the user's text) go to the `ai_calls` table; `npm run ai-costs` prints calls, average tokens and cost per call / per 1,000 calls. Plain-English overview of all AI calls in `harness.md` | On branch `goldie-evals` (25 Nov; needs `mvp/supabase/014_ai_calls.sql`) |
 
 **Dropped since October:** LJ Coach Certification and the Body ID scan. Our early (synthetic, AI-simulated) test interviews suggested employers would ignore a certificate made by us, and proof from real work and real people is stronger. To confirm with real hiring managers.
 
@@ -200,7 +203,7 @@ A copycat can copy the code but starts with **zero confirmations and zero confir
 - **Confirmations:** stored on the reference item: a random 64-character link token, the answer, the date and an optional comment of up to 300 characters. We don't ask confirmers for their email.
 - **Stories:** one per account in `stories` (name or initials shown, role, field, country, steps, answers, optional pay range). Authors can only read and change their own; visitors only see approved stories, through a function that never returns the author's email or account id.
 - **Feedback waitlist:** `feedback_waitlist` (which story, the account if signed in, an optional email). Nobody but the owner can read it.
-- **Never kept:** résumé files read in the browser.
+- **Never kept:** uploaded résumé files and photos. They're read in memory on the server (PDFs and photos by Gemini) and only the text goes back to the page.
 
 ## 11. Known limits
 
