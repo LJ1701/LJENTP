@@ -31,7 +31,9 @@ export async function recordAiCall(feature, model, res) {
     }
     const db = adminClient();
     if (!db) return console.log("ai_call", JSON.stringify(row));
-    await Promise.race([db.from("ai_calls").insert(row), new Promise((r) => setTimeout(r, 1500))]);
+    const out = await Promise.race([db.from("ai_calls").insert(row), new Promise((r) => setTimeout(() => r({ error: { message: "timeout" } }), 1500))]);
+    // Table not created yet (014_ai_calls.sql not run) or the database was slow: keep the row in the server log.
+    if (out && out.error) console.log("ai_call", JSON.stringify(row));
   } catch {
     // never let logging break an answer
   }
