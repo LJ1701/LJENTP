@@ -1,7 +1,7 @@
 // Japanese. AI translation (Nov 2026): a native speaker should review it. Same keys as en.js.
 const ja = {
   nav: { employers: "採用担当者の方へ", stories: "ストーリー", language: "言語", myPassport: "マイパスポート", home: "The Assist ホーム" },
-  footer: { advice: "あなたの実績を見せよう。", proof: "先輩たちの道のりを知ろう。", follow: "TikTokで@ljsoccer01をフォロー", by: "LJSOCCERのThe Assist", careers: "スポーツの職業" },
+  footer: { privacy: "プライバシー", terms: "利用規約", advice: "あなたの実績を見せよう。", proof: "先輩たちの道のりを知ろう。", follow: "TikTokで@ljsoccer01をフォロー", by: "LJSOCCERのThe Assist", careers: "スポーツの職業" },
   meta: { description: "スポーツ業界で自分の居場所を見つけて証明しよう。スポーツパスポート、合う職業、最新のスポーツ求人、保存できるプラン。" },
   time: { today: "今日", oneDay: "1日前", days: "{n}日前", earlierToday: "今日の早い時間" },
 
@@ -68,6 +68,8 @@ const ja = {
   },
 
   signin: {
+    google: "Googleで続ける",
+    googleError: "Googleでのサインインを開始できませんでした。1分後にもう一度お試しください。",
     title: "スポーツパスポートを始めよう",
     or: "またはメールアドレスで",
     create: "アカウント作成",
@@ -670,6 +672,7 @@ const ja = {
   sports: {
     "American football": "アメリカンフットボール", "Basketball": "バスケットボール", "Baseball": "野球", "Soccer": "サッカー", "Hockey": "ホッケー",
     "Volleyball": "バレーボール", "Several sports": "複数の競技", "Other": "その他"
-  }
+  },
+  trust: {"needEmail": "公開リンクをオンにする前に、メールでパスポートを保存して確認してください。使い捨ての偽プロフィールを防ぎます。", "needEmailShort": "先にメールを保存してください", "linkError": "できませんでした。1分後にもう一度お試しください。", "linkUnavailable": "リンクの確認はまだ有効になっていません。", "linkUnreachable": "そのページを開けませんでした。公開されているか確認して、もう一度お試しください。", "linkMissing": "ページを開きましたが {code} が見つかりませんでした。ページ（説明、プロフィール、投稿）に貼り付けて保存し、もう一度確認してください。", "proveLink": "このリンクが自分のものだと証明する", "pasteCode": "リンク先のページ（動画の説明、プロフィール、投稿）にこのコードを貼り付けて保存し、確認してください：", "checkNow": "今すぐ確認", "checking": "確認中…", "removeAfter": "確認済みと表示されたら、コードは削除してかまいません。", "addedBy": "{name} が追加（未確認）", "addedByYou": "あなたが追加（未確認）", "linkVerified": "{name} のリンクと確認済み", "linkVerifiedYou": "あなたのリンクと確認済み", "namedBy": "{name} が記載（まだ確認されていません）", "workEmail": "✓ 勤務先メールで確認済み（@{domain}）", "personalEmail": "✓ 個人メールで確認済み", "emailNotChecked": "✓ 確認済み（メール確認の導入前）", "legendTitle": "このページの見方", "legendAdded": "追加：本人が掲載、The Assist は未確認", "legendLink": "リンク確認済み：本人のページだと証明済み", "legendConfirmed": "仕事用アカウントで確認済み：その組織の人がサインインして確認しました", "badgeEmail": "メール確認済み", "badgeEmailMissing": "メールを確認してください（パスポートを保存）", "badgeSchool": "学校のメール（{domain}）", "badgeLinkedin": "LinkedIn 連携済み", "schoolTip": "学校のメール（.edu）で登録すると学校バッジが表示されます", "connectLinkedin": "LinkedIn と連携", "linkedinOff": "LinkedIn 連携はまだ利用できません。", "cardTitle": "雇用主にあなたが誰かを示しましょう", "cardSub": "これらのバッジは公開の実績ページに表示されます。", "postedFrom": "勤務先メールから掲載（@{domain}）", "employerWorkEmail": "勤務先のメールを使ってください（Gmail や Outlook などは不可）。求人が本物だと応募者に伝わります。", "emailFirst": "まずGoogleでサインインしてください。", "linkExpired": "サインインが完了しませんでした。もう一度お試しください。", "limit": "今日は20件確認しました。明日もう一度お試しください。", "answeringAs": "{email} として回答", "workEmailShort": "勤務先メール（@{domain}）", "personalEmailShort": "個人メール", "fine": "確認した場合のみ、回答とコメントが公開ページに表示されます。表示されるのはメールのドメインだけで、アドレス全体は表示されません。あとで取り消せます。", "notYou": "ご本人でない場合はサインアウト", "withdraw": "確認を取り消す", "withdrawn": "確認を取り消しました。", "sendIt": "{ref}さんに自分で送ってください。仕事用のGoogleアカウント（Gmail以外）で1ステップでサインインして回答できます。", "message": "{ref} さん、スポーツの仕事向けの実績ページを作っていて、あなたを推薦者として記載しました。内容が正しいか確認していただけますか？1分で終わります：{url}", "report": {"profile": "このページを報告", "role": "この求人を報告", "story": "このストーリーを報告", "why": "何が問題ですか？", "choose": "理由を選択", "fake": "偽物のようだ", "scam": "詐欺・金銭の要求", "notTheirs": "本人の仕事ではない", "other": "その他", "details": "詳細", "send": "報告を送信", "private": "報告は非公開です。すべて確認します。", "thanks": "ありがとうございます。確認します。"}, "signInGoogle": "Googleで続ける", "signInMicrosoft": "Microsoftで続ける", "signInWhy": "仕事用のGoogleアカウント（例：@club.com）でサインインしてください。その組織に本当に所属していることの証明になります。Gmailなどの個人アカウントでは確認できません。表示されるのはメールのドメインだけで、アドレス全体は表示されません。", "signInError": "サインインを開始できませんでした。1分後にもう一度お試しください。", "personalRefused": "仕事用アカウント（例：@club.com）でサインインしてください。GmailやOutlookなどの個人アカウントでは確認できません。雇用主が見る確認はすべてその組織の人によるものです。", "linkNudge": "まだ確認されていません。このリンクがあなたのものだと証明して、雇用主に信頼してもらいましょう。"}
 };
 export default ja;

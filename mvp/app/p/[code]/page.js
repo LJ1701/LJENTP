@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { getPublicProfile, getPublicPortfolio } from "@/lib/public-profile";
+import { getPublicProfile, getPublicPortfolio, getPublicTrust } from "@/lib/public-profile";
+import ReportForm from "../../report-form";
 import { labelIn, pathName, stepText } from "@/lib/careers";
 import { effectiveProfile } from "@/lib/detect";
 import { getT } from "@/lib/i18n-server";
@@ -23,10 +24,11 @@ export async function generateMetadata({ params }) {
 // Read-only public proof page. Works signed out: the database functions return this one profile and its
 // proof only while its owner has the link switched on. Proof is added by the owner, not checked by
 // The Assist, so the page says so instead of calling anything "verified".
-export default async function PublicProfile({ params }) {
+export default async function PublicProfile({ params, searchParams }) {
   const { code } = await params;
+  const { reported } = (await searchParams) || {};
   if (!/^[a-z0-9]{10}$/.test(code)) notFound();
-  const [p, { items, urls }] = await Promise.all([getPublicProfile(code), getPublicPortfolio(code)]);
+  const [p, { items, urls }, trust] = await Promise.all([getPublicProfile(code), getPublicPortfolio(code), getPublicTrust(code)]);
   if (!p) notFound();
 
   const { t, lang, dict } = await getT();
@@ -47,6 +49,13 @@ export default async function PublicProfile({ params }) {
         {p.goal && <p><strong>{t("public.goal")}</strong> {p.goal}</p>}
         {p.work_countries?.length > 0 && <p><strong>{t("work.publicCan")}</strong> {p.work_countries.map((c) => countryName(c, lang)).join(", ")} <small className="muted">({t("work.publicStated", { name })})</small></p>}
         {p.target_countries?.length > 0 && <p><strong>{t("work.publicWant")}</strong> {p.target_countries.map((c) => countryName(c, lang)).join(", ")}</p>}
+        {trust && (trust.email_verified || trust.school_domain || trust.linkedin) && (
+          <p className="trust-badges">
+            {trust.email_verified && <span className="trust-badge">✓ {t("trust.badgeEmail")}</span>}
+            {trust.school_domain && <span className="trust-badge">✓ {t("trust.badgeSchool", { domain: trust.school_domain })}</span>}
+            {trust.linkedin && <span className="trust-badge">✓ {t("trust.badgeLinkedin")}</span>}
+          </p>
+        )}
         {items.length > 0 && <p className="hero-stats"><a href="#portfolio">{t("evidence.publicCount", { n: items.length })}</a></p>}
       </div>
 
@@ -69,7 +78,15 @@ export default async function PublicProfile({ params }) {
       {items.length > 0 && (
         <section id="portfolio">
           <h2>{t("evidence.publicTitle")}</h2>
-          <PortfolioCards items={items} urls={urls} t={t} lang={lang} />
+          <PortfolioCards items={items} urls={urls} t={t} lang={lang} ownerName={name} />
+          <div className="trust-legend">
+            <p><strong>{t("trust.legendTitle")}</strong></p>
+            <ul>
+              <li><span className="trust trust-2">{t("trust.legendAdded")}</span></li>
+              <li><span className="trust trust-3">{t("trust.legendLink")}</span></li>
+              <li><span className="trust trust-4">{t("trust.legendConfirmed")}</span></li>
+            </ul>
+          </div>
           <p><small>{t("evidence.publicNote", { name })}</small></p>
         </section>
       )}
@@ -100,6 +117,7 @@ export default async function PublicProfile({ params }) {
       )}
 
       <p><small>{t("public.footnote", { date: new Date(p.updated_at).toLocaleDateString(lang) })}</small></p>
+      {reported ? <p className="ok"><small>{t("trust.report.thanks")}</small></p> : <ReportForm kind="profile" target={code} t={t} />}
     </>
   );
 }

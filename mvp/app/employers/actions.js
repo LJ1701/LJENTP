@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { sourceOf } from "@/lib/employer-roles";
 import { isCountry } from "@/lib/countries";
 import { getT } from "@/lib/i18n-server";
+import { emailDomain, isPersonalDomain } from "@/lib/trust";
 
 const clean = (v, max) => String(v || "").trim().slice(0, max);
 const back = (msg) => redirect(`/employers?error=${encodeURIComponent(msg)}#post`);
@@ -22,12 +23,15 @@ export async function postRole(formData) {
   try { if (!new URL(posting_url).hostname.includes(".")) posting_url = ""; } catch { posting_url = ""; }
   if (!company || !contact_name || !role_title) back(t("employers.missing"));
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact_email)) back(t("employers.badEmail"));
+  // Roles must come from a work email, so a scammer can't post a fake job from a free Gmail account.
+  const email_domain = emailDomain(contact_email);
+  if (isPersonalDomain(email_domain)) back(t("trust.employerWorkEmail"));
   if (!posting_url) back(t("employers.badLink"));
   const country = clean(formData.get("country"), 2);
   // Runs as the visitor: the database only lets them add a 'pending' row, never read or change any.
   const db = await createClient();
   const { error } = await db.from("employer_roles").insert({
-    company, contact_name, contact_email, role_title, posting_url,
+    company, contact_name, contact_email, role_title, posting_url, email_domain,
     source: sourceOf(posting_url),
     country: isCountry(country) && /^[A-Z]{2}$/.test(country) ? country : "",
     wants_proof: formData.get("wants_proof") === "on",

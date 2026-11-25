@@ -1,5 +1,6 @@
 import CopyButton from "./copy-button";
 import { countryName } from "@/lib/countries";
+import ReportForm from "../report-form";
 
 // Jobs tab: roles employers posted on The Assist. Candidates apply where the employer posted it
 // (LinkedIn, Indeed, TeamWork Online or the employer's site) and include their proof link.
@@ -15,8 +16,10 @@ export default function EmployerRoles({ roles, proofUrl, t, lang }) {
       <ul className="role-list">
         {roles.map((r) => (
           <li key={r.id}>
-            <div><strong>{r.role_title}</strong> · {r.company}{r.country && <span className="muted"> · {countryName(r.country, lang)}</span>}</div>
+            <div><strong>{r.role_title}</strong> · {r.company}{r.country && <span className="muted"> · {countryName(r.country, lang)}</span>}
+              {r.email_domain && <p className="trust trust-3"><small>{t("trust.postedFrom", { domain: r.email_domain })}</small></p>}</div>
             <a className="cta small" href={r.posting_url} target="_blank" rel="noopener noreferrer nofollow">{t(`postedRoles.applyOn.${r.source}`)} ↗</a>
+            <ReportForm kind="role" target={r.id} t={t} />
           </li>
         ))}
       </ul>

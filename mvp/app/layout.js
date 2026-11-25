@@ -51,6 +51,10 @@ export default async function RootLayout({ children }) {
               <span aria-hidden="true"> · </span>
               <a href="/employers">{t("nav.employers")}</a>
               <span aria-hidden="true"> · </span>
+              <a href="/privacy">{t("footer.privacy")}</a>
+              <span aria-hidden="true"> · </span>
+              <a href="/terms">{t("footer.terms")}</a>
+              <span aria-hidden="true"> · </span>
               <a href="https://www.tiktok.com/@ljsoccer01" target="_blank" rel="noopener noreferrer">{t("footer.follow")}</a>
               <span aria-hidden="true"> · </span>
               <span>{t("footer.by")}</span>
