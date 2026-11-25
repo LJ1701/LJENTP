@@ -8,3 +8,6 @@ interviews/
 build-log.md
 pricing simulator/
 .DS_Store
+mvp/evals/results/*-partial*.md
+mvp/evals/results/*-partial*
+mvp/evals/results/*-calls.jsonl

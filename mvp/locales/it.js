@@ -291,12 +291,13 @@ const it = {
 
   resume: {
     summary: "⚡ Incolla o carica il tuo CV per compilare questo",
-    upload: "📄 Carica CV (PDF, Word o .txt)",
+    upload: "📄 Carica il curriculum (PDF, Word, .txt o foto)",
+    photo: "📷 Fai una foto al curriculum",
     reading: "Lettura del tuo CV…",
-    uploadNote: "Fino a 4 MB. I PDF vengono letti dall’IA Gemini di Google; i file Word e di testo vengono letti senza IA. Nulla viene salvato finché non premi Salva.",
     or: "oppure incollalo",
     read: "{file} letto.",
-    readAi: "{file} letto (PDF letto dall’IA).",
+    readAi: "Letto {file} (letto dall'IA).",
+    unclear: "⚠️ Alcune parole erano difficili da leggere: controlla ogni riga prima di salvare.",
     label: "Il tuo CV o la sezione Informazioni di LinkedIn",
     placeholder: "Incolla qui il tuo CV o la sezione Informazioni di LinkedIn",
     fill: "Compila il mio Passaporto",
@@ -438,9 +439,9 @@ const it = {
 
   upload: {
     empty: "Quel file sembra vuoto. Provane un altro.",
-    big: "Quel file supera i 4 MB. Prova con un PDF più piccolo o un file Word.",
-    type: "Usa un file PDF, Word (.docx) o di testo (.txt). Vecchi file .doc: salvali prima come .docx.",
-    unreadable: "Impossibile leggere il testo di quel file. Se è un’immagine scansionata, incolla il testo.",
+    big: "Il file supera i 4 MB. Prova con un file più piccolo o un file Word.",
+    type: "Usa un PDF, Word (.docx), testo (.txt) o una foto (JPG, PNG, WebP, HEIC). Vecchi file .doc: salvali prima come .docx.",
+    unreadable: "Non è stato possibile leggere un curriculum in quel file. Se è una foto, rifalla con buona luce e il foglio ben steso, oppure incolla il testo.",
     noKey: "La lettura dei PDF non è ancora attiva. Carica un file Word o incolla il testo.",
     limit: "L’IA ha esaurito le letture PDF gratuite di oggi. Carica un file Word o incolla il testo.",
     slow: "La lettura di quel PDF ha richiesto troppo tempo. Riprova o incolla il testo.",

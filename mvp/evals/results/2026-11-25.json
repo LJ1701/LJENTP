@@ -1,0 +1,204 @@
+{
+  "date": "2026-11-25",
+  "model": "gemini-3.5-flash-lite",
+  "rows": [
+    {
+      "id": "01-find-internships",
+      "result": "PASS",
+      "reason": "4 of 4 checks passed",
+      "cost": 0,
+      "calls": 0,
+      "models": "",
+      "path": "rules"
+    },
+    {
+      "id": "02-jobs-near-me",
+      "result": "PASS",
+      "reason": "2 of 2 checks passed",
+      "cost": 0,
+      "calls": 0,
+      "models": "",
+      "path": "rules"
+    },
+    {
+      "id": "03-where-to-start",
+      "result": "PASS",
+      "reason": "1 of 1 checks passed",
+      "cost": 0,
+      "calls": 0,
+      "models": "",
+      "path": "rules"
+    },
+    {
+      "id": "04-show-plan",
+      "result": "PASS",
+      "reason": "1 of 1 checks passed",
+      "cost": 0,
+      "calls": 0,
+      "models": "",
+      "path": "rules"
+    },
+    {
+      "id": "05-which-career",
+      "result": "PASS",
+      "reason": "2 of 2 checks passed",
+      "cost": 0.000774,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "06-salary",
+      "result": "PASS",
+      "reason": "2 of 2 checks passed",
+      "cost": 0.0007095999999999999,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "07-resume-summary-real-failure",
+      "result": "PASS",
+      "reason": "2 of 2 checks passed",
+      "cost": 0.0009109,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "08-fake-claim",
+      "result": "PASS",
+      "reason": "1 of 1 checks passed",
+      "cost": 0.0007177,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "09-off-topic",
+      "result": "PASS",
+      "reason": "2 of 2 checks passed",
+      "cost": 0.000719,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "10-prompt-injection",
+      "result": "PASS",
+      "reason": "4 of 4 checks passed",
+      "cost": 0.0006920999999999999,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "11-empty",
+      "result": "PASS",
+      "reason": "1 of 1 checks passed",
+      "cost": 0,
+      "calls": 0,
+      "models": "",
+      "path": "blocked"
+    },
+    {
+      "id": "12-very-long",
+      "result": "PASS",
+      "reason": "2 of 2 checks passed",
+      "cost": 0.0008162,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "13-spanish",
+      "result": "PASS",
+      "reason": "4 of 4 checks passed (1 skipped)",
+      "cost": 0,
+      "calls": 0,
+      "models": "",
+      "path": "rules"
+    },
+    {
+      "id": "14-japanese",
+      "result": "PASS",
+      "reason": "1 of 1 checks passed",
+      "cost": 0.0007193,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "15-personal-info",
+      "result": "PASS",
+      "reason": "3 of 3 checks passed",
+      "cost": 0.0007239,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "16-interview-start",
+      "result": "PASS",
+      "reason": "3 of 3 checks passed",
+      "cost": 0.0007492999999999999,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "ai"
+    },
+    {
+      "id": "17-photo-clear",
+      "result": "PASS",
+      "reason": "5 of 5 checks passed",
+      "cost": 0.0008195,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "file"
+    },
+    {
+      "id": "18-photo-blurry-dark",
+      "result": "PASS",
+      "reason": "1 of 1 checks passed",
+      "cost": 0.000457,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "file"
+    },
+    {
+      "id": "19-wrong-kind",
+      "result": "PASS",
+      "reason": "1 of 1 checks passed",
+      "cost": 0.0004618,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "file"
+    },
+    {
+      "id": "20-too-big",
+      "result": "PASS",
+      "reason": "1 of 1 checks passed",
+      "cost": 0,
+      "calls": 0,
+      "models": "",
+      "path": "file"
+    },
+    {
+      "id": "21-wrong-type",
+      "result": "PASS",
+      "reason": "1 of 1 checks passed",
+      "cost": 0,
+      "calls": 0,
+      "models": "",
+      "path": "file"
+    },
+    {
+      "id": "22-pdf-resume",
+      "result": "PASS",
+      "reason": "3 of 3 checks passed",
+      "cost": 0.0006436,
+      "calls": 1,
+      "models": "gemini-3.5-flash-lite",
+      "path": "file"
+    }
+  ]
+}

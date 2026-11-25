@@ -291,12 +291,13 @@ const nl = {
 
   resume: {
     summary: "⚡ Plak of upload je cv om dit in te vullen",
-    upload: "📄 Cv uploaden (PDF, Word of .txt)",
+    upload: "📄 Cv uploaden (pdf, Word, .txt of foto)",
+    photo: "📷 Maak een foto van je cv",
     reading: "Je cv wordt gelezen…",
-    uploadNote: "Tot 4 MB. PDF’s worden gelezen door Gemini-AI van Google; Word- en tekstbestanden worden zonder AI gelezen. Er wordt niets opgeslagen tot je op Opslaan drukt.",
     or: "of plak het",
     read: "{file} gelezen.",
-    readAi: "{file} gelezen (PDF gelezen door AI).",
+    readAi: "{file} gelezen (door AI).",
+    unclear: "⚠️ Sommige woorden waren moeilijk te lezen: controleer elke regel voordat je opslaat.",
     label: "Je cv of LinkedIn-info",
     placeholder: "Plak hier je cv of het onderdeel ‘Info’ van LinkedIn",
     fill: "Vul mijn Paspoort in",
@@ -438,9 +439,9 @@ const nl = {
 
   upload: {
     empty: "Dat bestand lijkt leeg. Probeer een ander.",
-    big: "Dat bestand is groter dan 4 MB. Probeer een kleinere PDF of een Word-bestand.",
-    type: "Gebruik een PDF-, Word- (.docx) of tekstbestand (.txt). Oude .doc-bestanden: sla ze eerst op als .docx.",
-    unreadable: "Er kon geen tekst uit dat bestand worden gelezen. Is het een gescande afbeelding, plak dan de tekst.",
+    big: "Dat bestand is groter dan 4 MB. Probeer een kleiner bestand of een Word-bestand.",
+    type: "Gebruik een pdf, Word (.docx), tekst (.txt) of een foto (JPG, PNG, WebP, HEIC). Oude .doc-bestanden: sla ze eerst op als .docx.",
+    unreadable: "Er was geen cv te lezen in dat bestand. Is het een foto, maak hem opnieuw bij goed licht met het blad plat, of plak de tekst.",
     noKey: "PDF’s lezen staat nog niet aan. Upload een Word-bestand of plak de tekst.",
     limit: "De AI heeft de gratis PDF-lezingen van vandaag opgebruikt. Upload een Word-bestand of plak de tekst.",
     slow: "Het lezen van die PDF duurde te lang. Probeer het opnieuw of plak de tekst.",

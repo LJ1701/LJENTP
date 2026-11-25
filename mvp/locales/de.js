@@ -291,12 +291,13 @@ const de = {
 
   resume: {
     summary: "⚡ Füge deinen Lebenslauf ein oder lade ihn hoch, um dies auszufüllen",
-    upload: "📄 Lebenslauf hochladen (PDF, Word oder .txt)",
+    upload: "📄 Lebenslauf hochladen (PDF, Word, .txt oder Foto)",
+    photo: "📷 Lebenslauf fotografieren",
     reading: "Dein Lebenslauf wird gelesen…",
-    uploadNote: "Bis 4 MB. PDFs liest die Gemini-KI von Google; Word- und Textdateien werden ohne KI gelesen. Nichts wird gespeichert, bis du auf Speichern klickst.",
     or: "oder einfügen",
     read: "{file} gelesen.",
-    readAi: "{file} gelesen (PDF von KI gelesen).",
+    readAi: "{file} gelesen (von der KI).",
+    unclear: "⚠️ Einige Wörter waren schwer lesbar: Prüf jede Zeile, bevor du speicherst.",
     label: "Dein Lebenslauf oder LinkedIn-Info",
     placeholder: "Füge hier deinen Lebenslauf oder den Abschnitt „Info“ aus LinkedIn ein",
     fill: "Meinen Pass ausfüllen",
@@ -438,9 +439,9 @@ const de = {
 
   upload: {
     empty: "Diese Datei scheint leer zu sein. Versuch eine andere.",
-    big: "Diese Datei ist größer als 4 MB. Versuch ein kleineres PDF oder eine Word-Datei.",
-    type: "Verwende eine PDF-, Word- (.docx) oder Textdatei (.txt). Alte .doc-Dateien zuerst als .docx speichern.",
-    unreadable: "In dieser Datei konnte kein Text gelesen werden. Wenn es ein eingescanntes Bild ist, füge den Text ein.",
+    big: "Die Datei ist größer als 4 MB. Versuch eine kleinere Datei oder eine Word-Datei.",
+    type: "Nutze ein PDF, Word (.docx), Text (.txt) oder ein Foto (JPG, PNG, WebP, HEIC). Alte .doc-Dateien zuerst als .docx speichern.",
+    unreadable: "In dieser Datei war kein Lebenslauf lesbar. Ist es ein Foto, mach es noch einmal bei gutem Licht mit flachem Blatt, oder füge den Text ein.",
     noKey: "Das Lesen von PDFs ist noch nicht aktiviert. Lade eine Word-Datei hoch oder füge den Text ein.",
     limit: "Die KI hat die kostenlosen PDF-Lesungen für heute aufgebraucht. Lade eine Word-Datei hoch oder füge den Text ein.",
     slow: "Das Lesen dieses PDFs hat zu lange gedauert. Versuch es erneut oder füge den Text ein.",
